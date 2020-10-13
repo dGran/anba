@@ -24,6 +24,7 @@ class UsersTable extends Component
 
     public function render()
     {
+    	// $users = User::factory()->count(100)->create();
         return view('livewire.users.users-list', [
         			'users' => $this->getUsers()
         		])->layout('layouts.app');
@@ -61,6 +62,21 @@ class UsersTable extends Component
     	$this->page = 1;
     }
 
+    public function cancelFilterSearch()
+    {
+    	$this->search = '';
+    }
+
+    public function cancelFilterState()
+    {
+    	$this->state = 'all';
+    }
+
+    public function cancelFilterPerPage()
+    {
+    	$this->perPage = '5';
+    }
+
     public function clearAllFilters()
     {
     	$this->search = '';
@@ -88,6 +104,9 @@ class UsersTable extends Component
 
     public function add()
     {
+		$this->name = '';
+		$this->email = '';
+		$this->password = '';
     	$this->addModal = true;
     }
 
@@ -148,5 +167,6 @@ class UsersTable extends Component
     public function destroy($id)
     {
 		User::destroy($id);
+		session()->flash('message','Usuario eliminado correctamente!');
     }
 }

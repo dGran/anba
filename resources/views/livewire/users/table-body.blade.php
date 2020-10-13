@@ -1,4 +1,4 @@
-<tbody class="bg-white divide-y divide-gray-100">
+<tbody class="bg-white divide-y divide-gray-200">
 	@foreach ($users as $user)
 		<tr>
 			<td class="px-6 py-4 whitespace-no-wrap">
@@ -16,7 +16,7 @@
 					</div>
 				</div>
 			</td>
-			<td class="px-6 py-4 whitespace-no-wrap">
+			<td class="w-32 px-6 py-4 whitespace-no-wrap">
 				<div class="text-sm leading-5 font-medium text-gray-900">
 					{{ $user->created_at }}
 				</div>
