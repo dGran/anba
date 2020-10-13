@@ -1,3 +1,14 @@
+@php
+    $navLinks = [
+        ['href' => '/dashboard', 'name' => 'dashboard', 'text' => 'Dashboard'],
+        ['href' => '/noticias', 'name' => 'news', 'text' => 'Noticias'],
+        ['href' => '/clasificaciones', 'name' => 'standings', 'text' => 'Clasificaciones'],
+        ['href' => '/estadisticas', 'name' => 'stats', 'text' => 'Estadísticas'],
+        ['href' => '/equipos', 'name' => 'teams', 'text' => 'Equipos'],
+        ['href' => '/jugadores', 'name' => 'players', 'text' => 'Jugadores'],
+    ]
+@endphp
+
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -12,24 +23,11 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-jet-nav-link>
-                    <x-jet-nav-link href="#" :active="request()->routeIs('news')">
-                        {{ __('Noticias') }}
-                    </x-jet-nav-link>
-                    <x-jet-nav-link href="#" :active="request()->routeIs('standings')">
-                        {{ __('Clasificaciones') }}
-                    </x-jet-nav-link>
-                    <x-jet-nav-link href="#" :active="request()->routeIs('stats')">
-                        {{ __('Estadísticas') }}
-                    </x-jet-nav-link>
-                    <x-jet-nav-link href="#" :active="request()->routeIs('teams')">
-                        {{ __('Equipos') }}
-                    </x-jet-nav-link>
-                    <x-jet-nav-link href="#" :active="request()->routeIs('players')">
-                        {{ __('Jugadores') }}
-                    </x-jet-nav-link>
+                    @foreach ($navLinks as $link)
+                        <x-nav-link :href="$link['href']" :active="request()->routeIs($link['name'])">
+                            {{ __($link['text']) }}
+                        </x-nav-link>
+                    @endforeach
                 </div>
             </div>
 
@@ -132,9 +130,11 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-jet-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-jet-responsive-nav-link>
+            @foreach ($navLinks as $link)
+                <x-responsive-nav-link :href="$link['href']" :active="request()->routeIs($link['name'])">
+                    {{ __($link['text']) }}
+                </x-responsive-nav-link>
+            @endforeach
         </div>
 
         <!-- Responsive Settings Options -->

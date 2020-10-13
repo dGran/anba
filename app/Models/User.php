@@ -58,4 +58,33 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function scopeName($query, $name)
+    {
+        return $query->where('name', 'LIKE', "%{$name}%");
+    }
+
+    public function scopeEmail($query, $email)
+    {
+        return $query->where('email', 'LIKE', "%{$email}%");
+    }
+
+    public function scopeOrEmail($query, $email)
+    {
+        return $query->OrWhere('email', 'LIKE', "%{$email}%");
+    }
+
+    public function scopeState($query, $state)
+    {
+        switch ($state) {
+            case 'all':
+                break;
+            case 'active':
+                return $query->whereNotNull('email_verified_at');
+                break;
+            case 'inactive':
+                return $query->whereNull('email_verified_at');
+                break;
+        }
+    }
 }
