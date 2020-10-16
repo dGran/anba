@@ -1,11 +1,7 @@
-<div class="pt-2 pb-3">
-	<div class="flex items-center bg-white px-4 sm:px-6 relative">
-{{-- 		<button class="bg-pink-500 text-white active:bg-pink-600 font-bold uppercase text-xs px-4 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1" type="button" style="transition: all .15s ease"
-		wire:click="add">
-			<i class="fas fa-plus"></i>
-		</button> --}}
-		<button wire:click="add" class="text-3xl mt-1 block focus:outline-none">
-			<i class="fas fa-plus-circle text-teal-500"></i>
+<div class="sm:pt-2 pb-3 overflow-x-auto">
+	<div class="flex items-center px-4 sm:px-0 relative">
+		<button class="bg-teal-400 text-white active:bg-teal-600 focus:bg-teal-500 hover:bg-teal-500 font-bold uppercase text-sm px-4 py-2 mt-1 rounded-md outline-none focus:outline-none" type="button" style="transition: all .15s ease" wire:click="add">
+			Nuevo
 		</button>
 		<input
 			class="search-input outline-none border rounded px-4 py-2 text-sm rounded-md border-gray-200 mt-1 ml-3 block w-full focus:border-gray-300 hover:border-gray-300 text-gray-500"
@@ -13,14 +9,14 @@
 			type="text"
 			placeholder="Buscar...( / )"
 			autofocus>
-		<div class="form-input text-sm rounded-md shadow-sm border-gray-200 mt-1 block ml-3">
+		<div class="form-input text-sm rounded-md border-gray-200 mt-1 block ml-3">
 			<select wire:model="state" wire:change="getStateEs" class="outline-none text-gray-500 focus:border-gray-300 hover:border-gray-300 text-gray-500">
 				<option value="all">Todos</option>
 				<option value="active">Activos</option>
 				<option value="inactive">Inactivos</option>
 			</select>
 		</div>
-		<div class="form-input text-sm rounded-md shadow-sm border-gray-200 mt-1 block ml-3">
+		<div class="form-input text-sm rounded-md border-gray-200 mt-1 block ml-3">
 			<select wire:model="perPage" class="outline-none text-gray-500">
 				<option value="5">5 por página</option>
 				<option value="10">10 por página</option>
@@ -73,7 +69,7 @@
 		@endif --}}
 	</div>
 	@if ($search || $perPage !== "5" || $state !== 'all')
-		<div class="flex items-center px-4 pt-2 sm:px-6 gap-2">
+		<div class="flex items-center pt-2 px-4 sm:px-0 gap-2">
 			@if ($search)
 				<div class="text-xxs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-indigo-100 border border-indigo-200 text-indigo-500 rounded cursor-pointer"
 				wire:click="cancelFilterSearch()">

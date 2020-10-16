@@ -19,34 +19,12 @@ class UsersTable extends Component
 	public $state_es = 'todos';
 	public $addModal = false;
 	public $editModal = false;
+	public $confirmDestroyModal = false;
+	public $selected_regs = [];
+	public $selected_regs_names = [];
+	public $selectedModal = false;
 
 	public $user_id, $name, $email, $password;
-
-    public function render()
-    {
-    	// $users = User::factory()->count(100)->create();
-        return view('livewire.users.users-list', [
-        			'users' => $this->getUsers()
-        		])->layout('layouts.app');
-    }
-
-	private function getUsers()
-	{
-		$users = User::name($this->search)
-	        		->orEmail($this->search)
-	    			->state($this->state)
-	        		->orderBy($this->order, $this->orderDirection)
-	        		->paginate($this->perPage);
-	    if ($users->total() > 0 && $users->count() == 0) {
-			$this->page = 1;
-	    	$users = User::name($this->search)
-	        			->orEmail($this->search)
-	    				->state($this->state)
-	        			->orderBy($this->order, $this->orderDirection)
-	        			->paginate($this->perPage);
-		}
-		return $users;
-	}
 
 	protected $queryString = [
 		'search' => ['except' => ''],
@@ -55,6 +33,34 @@ class UsersTable extends Component
 		'state' => ['except' => 'all']
 	];
 
+	// Selected
+	public function cancelSelection()
+	{
+		$this->selected_regs = [];
+	}
+
+	public function viewSelected($view)
+	{
+		$this->selected_regs_names = [];
+		foreach (array_filter($this->selected_regs) as $reg) {
+			$user = User::findOrFail($reg);
+			$this->selected_regs_names[$user->id] = $user;
+		}
+
+		$this->selectedModal = $view;
+	}
+
+	public function destroySelected()
+	{
+		foreach (array_filter($this->selected_regs) as $reg) {
+			User::destroy($reg);
+			session()->flash('message','Usuarios eliminados correctamente!');
+		}
+		$this->selected_regs = [];
+	}
+	// END::Selected
+
+	// Filters
     public function order($field, $direction)
     {
     	$this->order = $field;
@@ -102,6 +108,7 @@ class UsersTable extends Component
     	}
     }
 
+    // Add & Store
     public function add()
     {
 		$this->name = '';
@@ -127,6 +134,13 @@ class UsersTable extends Component
 		]);
 
 		$this->addModal = false;
+    }
+    // END::Add & Store
+
+	// Edit & Update
+    public function editSelected()
+    {
+    	$this->edit(array_key_first(array_filter($this->selected_regs)));
     }
 
     public function edit($id)
@@ -163,10 +177,52 @@ class UsersTable extends Component
 
     	$this->editModal = false;
     }
+    // END::Edit & Update
+
+    public function confirmDestroy($id)
+    {
+		$user = User::find($id);
+		$this->name = $user->name;
+		$this->user_id = $user->id;
+
+		$this->confirmDestroyModal = true;
+    }
+
+    public function cancelDestroy()
+    {
+    	$this->confirmDestroyModal = false;
+    }
 
     public function destroy($id)
     {
+		$this->confirmDestroyModal = false;
 		User::destroy($id);
 		session()->flash('message','Usuario eliminado correctamente!');
     }
+
+    public function render()
+    {
+    	// $users = User::factory()->count(100)->create();
+        return view('livewire.users.users-list', [
+        			'users' => $this->getUsers()
+        		])->layout('layouts.app');
+    }
+
+	private function getUsers()
+	{
+		$users = User::name($this->search)
+	        		->orEmail($this->search)
+	    			->state($this->state)
+	        		->orderBy($this->order, $this->orderDirection)
+	        		->paginate($this->perPage);
+	    if ($users->total() > 0 && $users->count() == 0) {
+			$this->page = 1;
+	    	$users = User::name($this->search)
+	        			->orEmail($this->search)
+	    				->state($this->state)
+	        			->orderBy($this->order, $this->orderDirection)
+	        			->paginate($this->perPage);
+		}
+		return $users;
+	}
 }
