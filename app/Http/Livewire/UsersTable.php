@@ -21,7 +21,6 @@ class UsersTable extends Component
 	public $editModal = false;
 	public $confirmDestroyModal = false;
 	public $selected_regs = [];
-	public $selected_regs_names = [];
 	public $selectedModal = false;
 
 	public $user_id, $name, $email, $password;
@@ -34,6 +33,25 @@ class UsersTable extends Component
 	];
 
 	// Selected
+	public function checkSelected($id)
+	{
+		$array_id = array_search($id, $this->selected_regs);
+		if (!$array_id) {
+			$this->selected_regs[$id] = $id;
+		} else {
+			unset($this->selected_regs[$array_id]);
+		}
+	}
+
+	public function deselect($id)
+	{
+		$array_id = array_search($id, $this->selected_regs);
+		unset($this->selected_regs[$array_id]);
+		if (empty($this->selected_regs)) {
+			$this->selectedModal = false;
+		}
+	}
+
 	public function cancelSelection()
 	{
 		$this->selected_regs = [];
@@ -41,22 +59,7 @@ class UsersTable extends Component
 
 	public function viewSelected($view)
 	{
-		$this->selected_regs_names = [];
-		foreach (array_filter($this->selected_regs) as $reg) {
-			$user = User::findOrFail($reg);
-			$this->selected_regs_names[$user->id] = $user;
-		}
-
 		$this->selectedModal = $view;
-	}
-
-	public function destroySelected()
-	{
-		foreach (array_filter($this->selected_regs) as $reg) {
-			User::destroy($reg);
-			session()->flash('message','Usuarios eliminados correctamente!');
-		}
-		$this->selected_regs = [];
 	}
 	// END::Selected
 
@@ -125,13 +128,19 @@ class UsersTable extends Component
 			'password' => 'required',
 		]);
 
-		User::create([
+		$user = User::create([
 			'name' => $this->name,
 			'email' => $this->email,
             // 'email_verified_at' => now(),
             'password' => bcrypt($this->password),
             'remember_token' => Str::random(10),
 		]);
+
+		if ($user->save()) {
+    		session()->flash('message', 'Registro agregado correctamente.');
+		} else {
+			session()->flash('error', 'Se ha producido un error y no se han podido actualizar los datos.');
+		}
 
 		$this->addModal = false;
     }
@@ -140,7 +149,8 @@ class UsersTable extends Component
 	// Edit & Update
     public function editSelected()
     {
-    	$this->edit(array_key_first(array_filter($this->selected_regs)));
+    	$id = array_key_first($this->selected_regs);
+    	$this->edit($id);
     }
 
     public function edit($id)
@@ -164,27 +174,30 @@ class UsersTable extends Component
 		$this->validate([
 			'name' => 'required',
 			'email' => 'required',
-			'password' => 'required',
 		]);
 
     	$user = User::find($this->user_id);
 
-    	$user->update([
-			'name' => $this->name,
-			'email' => $this->email,
-            'password' => bcrypt($this->password),
-    	]);
+		$user->name = $this->name;
+		$user->email = $this->email;
+
+        if ($user->isDirty()) {
+            if ($user->update()) {
+            	session()->flash('message', 'Registro actualizado correctamente.');
+            } else {
+            	session()->flash('error', 'Se ha producido un error y no se han podido actualizar los datos.');
+            }
+        } else {
+        	session()->flash('info', 'No se han detectado cambios en el registro.');
+        }
 
     	$this->editModal = false;
+        $this->cancelSelection();
     }
     // END::Edit & Update
 
-    public function confirmDestroy($id)
+    public function confirmDestroy()
     {
-		$user = User::find($id);
-		$this->name = $user->name;
-		$this->user_id = $user->id;
-
 		$this->confirmDestroyModal = true;
     }
 
@@ -197,18 +210,29 @@ class UsersTable extends Component
     {
 		$this->confirmDestroyModal = false;
 		User::destroy($id);
-		session()->flash('message','Usuario eliminado correctamente!');
+		session()->flash('message','Usuario eliminado correctamente!.');
     }
+
+	public function destroySelected()
+	{
+		foreach ($this->selected_regs as $reg) {
+			User::destroy($reg);
+		}
+		$this->confirmDestroyModal = false;
+		session()->flash('message','Usuarios seleccionados eliminados correctamente!.');
+		$this->selected_regs = [];
+	}
 
     public function render()
     {
-    	// $users = User::factory()->count(100)->create();
+    	// $users = User::factory()->count(20)->create();
         return view('livewire.users.users-list', [
-        			'users' => $this->getUsers()
+        			'users' => $this->getData(),
+        			'users_selected' => $this->getDataSelected()
         		])->layout('layouts.app');
     }
 
-	private function getUsers()
+	private function getData()
 	{
 		$users = User::name($this->search)
 	        		->orEmail($this->search)
@@ -224,5 +248,10 @@ class UsersTable extends Component
 	        			->paginate($this->perPage);
 		}
 		return $users;
+	}
+
+	private function getDataSelected()
+	{
+		return $users_selected = User::whereIn('id', $this->selected_regs)->orderBy($this->order, $this->orderDirection)->get();
 	}
 }

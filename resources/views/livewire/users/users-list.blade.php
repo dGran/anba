@@ -1,7 +1,7 @@
 <div>
 
     <x-slot name="header">
-        <h2 id="test" class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Tabla: Usuarios') }}
         </h2>
     </x-slot>
@@ -10,10 +10,10 @@
         <p>{{ $reg }}</p>
     @endforeach --}}
 
-    <div class="pt-8 {{ count(array_filter($selected_regs)) > 0 ? 'pb-32' : 'pb-8' }}">
+    <div class="pt-8 {{ $users_selected->count() > 0 ? 'pb-32' : 'pb-8' }}">
     	<div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-    		@include('livewire.partials.session')
+    		@include('livewire.partials.flash-messages')
 
 			<div class="flex flex-col">
 				@include('livewire.users.filters')
@@ -41,9 +41,15 @@
 </div>
 
 <script>
-    Mousetrap.bind(['/'], function() {
+    Mousetrap.bind('/', function() {
         $('.search-input').focus();
         $('.search-input').select();
         return false;
+    });
+
+    document.addEventListener('livewire:load', function () {
+        Mousetrap.bind('esc', function() {
+            @this.cancelSelection();
+        });
     });
 </script>

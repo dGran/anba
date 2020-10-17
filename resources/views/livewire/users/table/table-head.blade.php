@@ -1,7 +1,6 @@
 <thead>
 	<tr class="bg-gray-50">
-		<th></th>
-		<th class="px-6 py-3 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+		<th colspan="2" class="px-6 py-3 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
 			@if ($order == 'name' && $orderDirection == 'asc')
 				<p class="inline-block hover:underline focus:underline cursor-pointer" wire:click="order('name', 'desc')">
 					Nombre
@@ -38,6 +37,6 @@
 		<th class="px-6 py-3 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider text-center">
 			Estado
 		</th>
-		<th class="px-6 py-3 bg-gray-50"></th>
+		{{-- <th class="px-6 py-3 bg-gray-50"></th> --}}
 	</tr>
 </thead>

@@ -13,8 +13,8 @@
 
     <x-slot name="content">
         <ul class="overflow-y-auto h-auto" style="max-height: 25rem">
-            @foreach ($selected_regs_names as $reg)
-                <li class="flex items-center text-gray-600 text-sm border-b border-gray-100 px-6 py-2">
+            @foreach ($users_selected as $reg)
+                <li class="flex items-center text-gray-600 text-sm border-b border-gray-100 px-6 py-2 w-full">
                     <figure class="flex-shrink-0 h-10 w-10">
                         <img class="h-10 w-10 rounded-full" src="{{ $reg['profile_photo_url'] }}" alt="{{ $reg['name'] }}">
                     </figure>
@@ -25,6 +25,11 @@
                         <p class="text-xxs text-gray-400">
                             ID: {{ $reg['id'] }}
                         </p>
+                    </div>
+                    <div class="flex-auto text-right">
+                        <button wire:click="deselect({{ $reg->id }})" class="text-lg text-red-400 hover:text-red-600 focus:text-red-600 focus:outline-none">
+                            <i class="fas fa-minus-circle"></i>
+                        </button>
                     </div>
                 </li>
             @endforeach

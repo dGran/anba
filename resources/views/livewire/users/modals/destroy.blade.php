@@ -1,11 +1,15 @@
 <x-jet-confirmation-modal wire:model="confirmDestroyModal">
     <x-slot name="title">
-        Eliminar usuario "{{ $name }}"
+        @if ($users_selected->count() == 1)
+            Eliminar usuario "{{ $users_selected->first()->name }}"
+        @else
+            Eliminar usuarios seleccionados
+        @endif
     </x-slot>
 
     <x-slot name="content">
         <div class="py-3 text-sm font-medium">
-            <p>¿Estás seguro que deseas eliminar el usuario?</p>
+            <p>¿Estás seguro que deseas eliminar {{ $users_selected->count() == 1 ? 'el usuario' : 'los usuarios' }}?</p>
             <p class="mt-1 text-red-700">Esta acción será irreversible.</p>
         </div>
     </x-slot>
@@ -15,8 +19,14 @@
             Cancelar
         </button>
 
-        <x-jet-danger-button class="ml-2" wire:click="destroy({{ $user_id }})" wire:loading.attr="disabled">
-            Eliminar
-        </x-jet-danger-button>
+        @if ($users_selected->count() == 1)
+            <x-jet-danger-button class="ml-2" wire:click="destroy({{ $users_selected->first()->id }})" wire:loading.attr="disabled">
+                Eliminar
+            </x-jet-danger-button>
+        @else
+            <x-jet-danger-button class="ml-2" wire:click="destroySelected" wire:loading.attr="disabled">
+                Eliminar
+            </x-jet-danger-button>
+        @endif
     </x-slot>
 </x-jet-confirmation-modal>

@@ -9,15 +9,18 @@
 			type="text"
 			placeholder="Buscar...( / )"
 			autofocus>
+		<figure class="ml-3 w-8">
+			<img wire:loading src="https://rivers.mx/img/cargando.gif" alt="loading" class="w-6 h-auto">
+		</figure>
 		<div class="form-input text-sm rounded-md border-gray-200 mt-1 block ml-3">
-			<select wire:model="state" wire:change="getStateEs" class="outline-none text-gray-500 focus:border-gray-300 hover:border-gray-300 text-gray-500">
+			<select wire:model="state" wire:change="getStateEs" class="mousetrap outline-none text-gray-500 focus:border-gray-300 hover:border-gray-300 text-gray-500">
 				<option value="all">Todos</option>
 				<option value="active">Activos</option>
 				<option value="inactive">Inactivos</option>
 			</select>
 		</div>
 		<div class="form-input text-sm rounded-md border-gray-200 mt-1 block ml-3">
-			<select wire:model="perPage" class="outline-none text-gray-500">
+			<select wire:model="perPage" class="mousetrap outline-none text-gray-500">
 				<option value="5">5 por página</option>
 				<option value="10">10 por página</option>
 				<option value="15">15 por página</option>
@@ -27,13 +30,12 @@
 				<option value="1000">1000 por página</option>
 			</select>
 		</div>
-		<figure class="ml-3 w-8">
-			<img wire:loading src="https://rivers.mx/img/cargando.gif" alt="loading" class="w-6 h-auto">
-		</figure>
-		<button wire:click="clearAllFilters" class="group text-xl rounded-md border-gray-200 mt-1 block ml-3 hover:border-gray-300 focus:border-gray-300 focus:outline-none {{ ($search == '' && $perPage == '5' && $state == 'all') ? 'opacity-25 hover:border-gray-200 focus:border-gray-200' : '' }}"
-			{{ ($search == '' && $perPage == '5' && $state == 'all') ? 'disabled' : '' }}>
-			<i class="fas fa-eraser text-gray-500 {{ ($search == '' && $perPage == '5' && $state == 'all') ? 'group-hover:text-gray-500 group-focus:text-gray-500 cursor-not-allowed' : 'group-hover:text-gray-900 group-focus:text-gray-900' }}"></i>
+		<button class="rounded-md bg-white border border-gray-200 mt-1 ml-3 focus:outline-none {{ ($search == '' && $perPage == '5' && $state == 'all') ? 'bg-gray-50 text-gray-300 cursor-not-allowed' : 'text-gray-500 cursor-pointer hover:text-gray-900 focus:text-gray-900 hover:border-gray-300 focus:border-gray-300' }}  text-sm px-4 py-2" type="button" style="transition: all .15s ease" wire:click="clearAllFilters" {{ ($search == '' && $perPage == '5' && $state == 'all') ? 'disabled' : '' }}>
+			<i class="fas fa-eraser"></i>
 		</button>
+{{-- 		<button wire:click="clearAllFilters" class="group text-xl rounded-md border-gray-200 mt-1 block ml-3 hover:border-gray-300 focus:border-gray-300 focus:outline-none {{ ($search == '' && $perPage == '5' && $state == 'all') ? 'opacity-25 hover:border-gray-200 focus:border-gray-200' : '' }}"
+			{{ ($search == '' && $perPage == '5' && $state == 'all') ? 'disabled' : '' }}>
+		</button> --}}
 
 	{{-- 									@if ($search !== '' && $users->count() > 0 )
 			<div class="absolute inset-x-0 top-15 border rounded bg-white mx-5 text-gray-500">
