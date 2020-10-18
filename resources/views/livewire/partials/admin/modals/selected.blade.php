@@ -1,4 +1,4 @@
-<x-dialog-modal wire:model="selectedModal" maxWidth="md">
+<x-modals.dialog wire:model="selectedModal" maxWidth="md">
     <x-slot name="title">
         {{-- Registros seleccionados --}}
         <div class="px-6 py-3 bg-gray-50 text-sm uppercase font-medium tracking-wide flex items-center">
@@ -13,17 +13,19 @@
 
     <x-slot name="content">
         <ul class="overflow-y-auto h-auto" style="max-height: 25rem">
-            @foreach ($users_selected as $reg)
+            @foreach ($regsSelected as $reg)
                 <li class="flex items-center text-gray-600 text-sm border-b border-gray-100 px-6 py-2 w-full">
-                    <figure class="flex-shrink-0 h-10 w-10">
-                        <img class="h-10 w-10 rounded-full" src="{{ $reg['profile_photo_url'] }}" alt="{{ $reg['name'] }}">
-                    </figure>
-                    <div class="pl-3 leading-4">
+                    @if ($modelHasImg)
+                        <figure class="flex-shrink-0 h-10 w-10 mr-3">
+                            <img class="h-10 w-10 rounded-full" src="{{ $reg->getImg() }}" alt="{{ $reg->getName() }}">
+                        </figure>
+                    @endif
+                    <div class="leading-4">
                         <p>
-                            {{ $reg['name'] }}
+                            {{ $reg->getName() }}
                         </p>
                         <p class="text-xxs text-gray-400">
-                            ID: {{ $reg['id'] }}
+                            ID: {{ $reg->id }}
                         </p>
                     </div>
                     <div class="flex-auto text-right">
@@ -38,4 +40,4 @@
 
     <x-slot name="footer">
     </x-slot>
-</x-dialog-modal>
+</x-modals.dialog>

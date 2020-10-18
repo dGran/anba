@@ -11,20 +11,32 @@ class UsersTable extends Component
 {
 	use WithPagination;
 
+	//model info
+	public $modelSingular = "usuario";
+	public $modelPlural = "usuarios";
+	public $modelGender = "male";
+	public $modelHasImg = true;
+
+	//filters
 	public $search = "";
 	public $perPage = '5';
-	public $order = 'id';
-	public $orderDirection = 'desc';
 	public $state = 'all';
 	public $state_es = 'todos';
+	public $order = 'id';
+	public $orderDirection = 'desc';
+
+	// modals
 	public $addModal = false;
 	public $editModal = false;
 	public $confirmDestroyModal = false;
-	public $selected_regs = [];
 	public $selectedModal = false;
 
-	public $user_id, $name, $email, $password;
+	//selected regs
+	public $regsSelectedArray = [];
 
+	//fields
+	public $user_id, $name, $email, $password;
+	//queryString
 	protected $queryString = [
 		'search' => ['except' => ''],
 		'perPage' => ['except' => '5'],
@@ -35,26 +47,26 @@ class UsersTable extends Component
 	// Selected
 	public function checkSelected($id)
 	{
-		$array_id = array_search($id, $this->selected_regs);
+		$array_id = array_search($id, $this->regsSelectedArray);
 		if (!$array_id) {
-			$this->selected_regs[$id] = $id;
+			$this->regsSelectedArray[$id] = $id;
 		} else {
-			unset($this->selected_regs[$array_id]);
+			unset($this->regsSelectedArray[$array_id]);
 		}
 	}
 
 	public function deselect($id)
 	{
-		$array_id = array_search($id, $this->selected_regs);
-		unset($this->selected_regs[$array_id]);
-		if (empty($this->selected_regs)) {
+		$array_id = array_search($id, $this->regsSelectedArray);
+		unset($this->regsSelectedArray[$array_id]);
+		if (empty($this->regsSelectedArray)) {
 			$this->selectedModal = false;
 		}
 	}
 
 	public function cancelSelection()
 	{
-		$this->selected_regs = [];
+		$this->regsSelectedArray = [];
 	}
 
 	public function viewSelected($view)
@@ -120,6 +132,11 @@ class UsersTable extends Component
     	$this->addModal = true;
     }
 
+    public function cancelAdd()
+    {
+    	$this->addModal = false;
+    }
+
     public function store()
     {
 		$this->validate([
@@ -147,12 +164,6 @@ class UsersTable extends Component
     // END::Add & Store
 
 	// Edit & Update
-    public function editSelected()
-    {
-    	$id = array_key_first($this->selected_regs);
-    	$this->edit($id);
-    }
-
     public function edit($id)
     {
     	$user = User::find($id);
@@ -206,6 +217,16 @@ class UsersTable extends Component
     	$this->confirmDestroyModal = false;
     }
 
+    public function nextPage()
+    {
+    	$this->page++;
+    }
+
+    public function previuosPage()
+    {
+		$this->page--;
+    }
+
     public function destroy($id)
     {
 		$this->confirmDestroyModal = false;
@@ -215,20 +236,20 @@ class UsersTable extends Component
 
 	public function destroySelected()
 	{
-		foreach ($this->selected_regs as $reg) {
+		foreach ($this->regsSelectedArray as $reg) {
 			User::destroy($reg);
 		}
 		$this->confirmDestroyModal = false;
 		session()->flash('message','Usuarios seleccionados eliminados correctamente!.');
-		$this->selected_regs = [];
+		$this->regsSelectedArray = [];
 	}
 
     public function render()
     {
     	// $users = User::factory()->count(20)->create();
-        return view('livewire.users.users-list', [
-        			'users' => $this->getData(),
-        			'users_selected' => $this->getDataSelected()
+        return view('livewire.admin.users.index', [
+        			'regs' => $this->getData(),
+        			'regsSelected' => $this->getDataSelected()
         		])->layout('layouts.app');
     }
 
@@ -239,7 +260,7 @@ class UsersTable extends Component
 	    			->state($this->state)
 	        		->orderBy($this->order, $this->orderDirection)
 	        		->paginate($this->perPage);
-	    if ($users->total() > 0 && $users->count() == 0) {
+	    if (($users->total() > 0 && $users->count() == 0) || $this->page < 1) {
 			$this->page = 1;
 	    	$users = User::name($this->search)
 	        			->orEmail($this->search)
@@ -252,6 +273,6 @@ class UsersTable extends Component
 
 	private function getDataSelected()
 	{
-		return $users_selected = User::whereIn('id', $this->selected_regs)->orderBy($this->order, $this->orderDirection)->get();
+		return User::whereIn('id', $this->regsSelectedArray)->orderBy($this->order, $this->orderDirection)->get();
 	}
 }

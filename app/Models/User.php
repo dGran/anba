@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -86,5 +87,27 @@ class User extends Authenticatable
                 return $query->whereNull('email_verified_at');
                 break;
         }
+    }
+
+    public function getImg()
+    {
+        return $this->profile_photo_url;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function getCreatedAtDate()
+    {
+        $date = Carbon::parse($this->created_at)->locale(app()->getLocale());
+        return $date->isoFormat("D MMMM YYYY");
+    }
+
+    public function getCreatedAtTime()
+    {
+        $date = Carbon::parse($this->created_at)->locale(app()->getLocale());
+        return $date->isoFormat("kk[:]mm");
     }
 }

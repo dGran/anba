@@ -16,13 +16,17 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-jet-application-mark class="block h-9 w-auto" />
+                    <a href="{{ route('dashboard') }}" class="flex items-center">
+                        <img src="{{ asset('img/logo.png') }}" alt="logo" class="h-12 block w-auto">
+                        <p class="ml-3 flex flex-col leading-5">
+                            <span class="text-xl font-bold">ANBA</span>
+                            <span class="text-xxs uppercase font-medium">Adictos a la NBA</span>
+                        </p>
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                <div class="hidden space-x-5 sm:-my-px sm:ml-10 sm:flex">
                     @foreach ($navLinks as $link)
                         <x-nav-link :href="$link['href']" :active="request()->routeIs($link['name'])">
                             {{ __($link['text']) }}

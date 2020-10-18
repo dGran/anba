@@ -18,14 +18,16 @@
         @enderror
     </div>
 </div>
-<div class="flex flex-wrap -mx-3 mb-6 md:mb-0">
-    <div class="w-full px-3">
-        <label class="block uppercase tracking-wide text-gray-700 text-xs font-semibold mb-2" for="password">
-            Password
-        </label>
-        <input class="appearance-none block w-full bg-white text-gray-700 border border-gray-200 rounded py-2 px-3 mb-1 leading-tight focus:outline-none hover:border-gray-200 focus:border-gray-300 text-sm" id="password" type="password" placeholder="******************" wire:model="password">
-        @error('password')
-            <p class="text-red-500 text-xs italic">{{ $message }}</p>
-        @enderror
+@if ($addModal)
+    <div class="flex flex-wrap -mx-3 mb-6 md:mb-0">
+        <div class="w-full px-3">
+            <label class="block uppercase tracking-wide text-gray-700 text-xs font-semibold mb-2" for="password">
+                Password
+            </label>
+            <input class="appearance-none block w-full bg-white text-gray-700 border border-gray-200 rounded py-2 px-3 mb-1 leading-tight focus:outline-none hover:border-gray-200 focus:border-gray-300 text-sm" id="password" type="password" placeholder="******************" wire:model="password">
+            @error('password')
+                <p class="text-red-500 text-xs italic">{{ $message }}</p>
+            @enderror
+        </div>
     </div>
-</div>
+@endif

@@ -1,6 +1,6 @@
 @props(['id' => null, 'maxWidth' => null])
 
-<x-modal :id="$id" :maxWidth="$maxWidth" {{ $attributes }}>
+<x-modals.modal :id="$id" :maxWidth="$maxWidth" {{ $attributes }}>
     {{-- <div class=""> --}}
     <div class="">
         {{ $title }}
@@ -14,4 +14,4 @@
     <div class="text-right">
         {{ $footer }}
     </div>
-</x-modal>
+</x-modals.modal>
