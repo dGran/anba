@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Admin;
 
 use App\Models\User;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\withPagination;
 
-class UsersTable extends Component
+class UsersCrud extends Component
 {
 	use WithPagination;
 
@@ -19,7 +19,7 @@ class UsersTable extends Component
 
 	//filters
 	public $search = "";
-	public $perPage = '5';
+	public $perPage = '10';
 	public $state = 'all';
 	public $state_es = 'todos';
 	public $order = 'id';
@@ -30,6 +30,7 @@ class UsersTable extends Component
 	public $editModal = false;
 	public $confirmDestroyModal = false;
 	public $selectedModal = false;
+	public $filtersModal = false;
 
 	//selected regs
 	public $regsSelectedArray = [];
@@ -39,7 +40,7 @@ class UsersTable extends Component
 	//queryString
 	protected $queryString = [
 		'search' => ['except' => ''],
-		'perPage' => ['except' => '5'],
+		'perPage' => ['except' => '10'],
 		'order' => ['except' => 'id'],
 		'state' => ['except' => 'all']
 	];
@@ -76,6 +77,11 @@ class UsersTable extends Component
 	// END::Selected
 
 	// Filters
+	public function viewFilters($view)
+	{
+		$this->filtersModal = $view;
+	}
+
     public function order($field, $direction)
     {
     	$this->order = $field;
@@ -95,14 +101,14 @@ class UsersTable extends Component
 
     public function cancelFilterPerPage()
     {
-    	$this->perPage = '5';
+    	$this->perPage = '10';
     }
 
     public function clearAllFilters()
     {
     	$this->search = '';
     	$this->page = 1;
-    	$this->perPage = '5';
+    	$this->perPage = '10';
 		$this->order = 'id';
 		$this->orderDirection = 'desc';
 		$this->state = 'all';

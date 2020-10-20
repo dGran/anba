@@ -6,8 +6,8 @@
         </h2>
     </x-slot>
 
-    <div class="pt-8 {{ $regsSelected->count() > 0 ? 'pb-32' : 'pb-8' }}">
-    	<div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="py-3">
+    	<div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
 
     		@include('livewire.partials.flash-messages')
 
@@ -17,7 +17,7 @@
 
 				<div class="-my-2 overflow-x-auto">
 					<div class="py-2 align-middle inline-block min-w-full">
-						<div class="border border-gray-200 overflow-hidden sm:rounded-lg">
+						<div class="border border-gray-200 overflow-hidden rounded-lg">
 							@include('livewire.admin.users.table')
 						</div>
 					</div>
@@ -30,17 +30,18 @@
     	</div>
     </div>
 
-    @include('livewire.admin.users.table.selected-options')
+    {{-- @include('livewire.admin.users.table.selected-options') --}}
 
     {{-- modals --}}
     @include('livewire.admin.users.modals.add')
     @include('livewire.admin.users.modals.edit')
+    @include('livewire.admin.users.modals.filters')
     @include('livewire.partials.admin.modals.destroy')
     @include('livewire.partials.admin.modals.selected')
 
 </div>
 
-@include('livewire.partials.admin.js');
+@include('livewire.partials.admin.js')
 <script>
     // dedicated js
 </script>

@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\TeamController;
-use App\Http\Livewire\UsersTable;
+use App\Http\Livewire\Admin\UsersCrud;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,6 +23,10 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
+// Route::middleware(['auth:sanctum', 'verified'])
+// 	->get('/equipos', UsersCrud::class)
+// 	->name('teams');
+
 Route::middleware(['auth:sanctum', 'verified'])
-	->get('/equipos', UsersTable::class)
-	->name('teams');
+	->get('/admin', UsersCrud::class)
+	->name('admin');

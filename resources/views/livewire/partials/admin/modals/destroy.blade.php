@@ -12,7 +12,7 @@
             @if ($regsSelected->count() == 1)
                 <p>¿Estás seguro que deseas eliminar {{ $modelGender = 'male' ? 'el' : 'la' }} {{ $modelSingular }}?</p>
             @else
-                <p>¿Estás seguro que deseas eliminar {{ $modelGender = 'male' ? 'los' : 'las' }} {{ $modelPlural }}?</p>
+                <p>¿Estás seguro que deseas eliminar {{ $modelGender = 'male' ? 'los' : 'las' }} {{ $regsSelected->count() }} {{ $modelPlural }} seleccionados?</p>
             @endif
             <p class="mt-1 text-red-700">Esta acción será irreversible.</p>
         </div>
