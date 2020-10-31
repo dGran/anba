@@ -37,6 +37,5 @@
 		<th class="hidden md:table-cell px-3 sm:px-6 py-2 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider text-center">
 			Estado
 		</th>
-		<th class="px-3 sm:px-6 py-2 bg-gray-50"></th>
 	</tr>
 </thead>

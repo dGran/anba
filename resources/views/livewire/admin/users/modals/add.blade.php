@@ -13,6 +13,12 @@
 
     <x-slot name="footer">
         <div class="px-6 py-4 w-full bg-gray-50">
+            <div class="float-left text-sm flex items-center">
+                <label class="inline-flex items-center">
+                    <input type="checkbox" class="form-checkbox h-5 w-5 text-indigo-400" wire:model="continuousInsert">
+                    <span class="ml-2 text-gray-700">Inserción contínua</span>
+                </label>
+            </div>
             <x-buttons.cancel wire:click="cancelAdd" wire:loading.attr="disabled">
                 Cancelar
             </x-buttons.cancel>

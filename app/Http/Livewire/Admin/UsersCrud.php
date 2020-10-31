@@ -37,6 +37,10 @@ class UsersCrud extends Component
 
 	//fields
 	public $user_id, $name, $email, $password;
+
+	//continuous insertion
+	public $continuousInsert = false;
+
 	//queryString
 	protected $queryString = [
 		'search' => ['except' => ''],
@@ -72,7 +76,9 @@ class UsersCrud extends Component
 
 	public function viewSelected($view)
 	{
-		$this->selectedModal = $view;
+		if (count($this->regsSelectedArray) > 0) {
+			$this->selectedModal = $view;
+		}
 	}
 	// END::Selected
 
@@ -97,6 +103,11 @@ class UsersCrud extends Component
     public function cancelFilterState()
     {
     	$this->state = 'all';
+    }
+
+    public function setFilterPerPage($number)
+    {
+    	$this->perPage = $number;
     }
 
     public function cancelFilterPerPage()
@@ -135,6 +146,8 @@ class UsersCrud extends Component
 		$this->name = '';
 		$this->email = '';
 		$this->password = '';
+
+		$this->resetValidation();
     	$this->addModal = true;
     }
 
@@ -165,7 +178,13 @@ class UsersCrud extends Component
 			session()->flash('error', 'Se ha producido un error y no se han podido actualizar los datos.');
 		}
 
-		$this->addModal = false;
+		if ($this->continuousInsert) {
+			$this->name = '';
+			$this->email = '';
+			$this->password = '';
+		} else {
+			$this->addModal = false;
+		}
     }
     // END::Add & Store
 
@@ -178,6 +197,7 @@ class UsersCrud extends Component
     	$this->email = $user->email;
     	$this->password = $user->password;
 
+		$this->resetValidation();
     	$this->editModal = true;
     }
 
@@ -266,14 +286,18 @@ class UsersCrud extends Component
 	    			->state($this->state)
 	        		->orderBy($this->order, $this->orderDirection)
 	        		->paginate($this->perPage);
-	    if (($users->total() > 0 && $users->count() == 0) || $this->page < 1) {
+	    if (($users->total() > 0 && $users->count() == 0)) {
 			$this->page = 1;
-	    	$users = User::name($this->search)
-	        			->orEmail($this->search)
-	    				->state($this->state)
-	        			->orderBy($this->order, $this->orderDirection)
-	        			->paginate($this->perPage);
 		}
+		if ($this->page == 0) {
+			$this->page = $users->lastPage();
+		}
+    	$users = User::name($this->search)
+        			->orEmail($this->search)
+    				->state($this->state)
+        			->orderBy($this->order, $this->orderDirection)
+        			->paginate($this->perPage);
+
 		return $users;
 	}
 
