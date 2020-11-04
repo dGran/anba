@@ -1,6 +1,6 @@
 <div class="pt-2 pb-3 {{-- overflow-x-auto --}}">
 	<div class="flex items-center">
-		<button class="inline-flex items-center justify-center px-4 h-8 sm:h-9 bg-indigo-600 border border-transparent rounded font-semibold text-xxs sm:text-xs leading-3 sm:leading-4 text-white uppercase tracking-widest hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-600 transition ease-in-out duration-150"
+		<button class="inline-flex items-center justify-center px-4 h-8 sm:h-9 bg-green-500 rounded font-semibold text-xxs sm:text-xs leading-3 sm:leading-4 text-white uppercase tracking-widest hover:bg-green-600 focus:outline-none focus:shadow-outline-green active:bg-green-600 transition ease-in-out duration-150"
 		wire:click="add" wire:loading.attr="disabled" type="button">
 		    Nuevo
 		</button>

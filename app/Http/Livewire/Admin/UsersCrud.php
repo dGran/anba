@@ -276,7 +276,7 @@ class UsersCrud extends Component
         return view('livewire.admin.users.index', [
         			'regs' => $this->getData(),
         			'regsSelected' => $this->getDataSelected()
-        		])->layout('layouts.app');
+        		])->layout('layouts.admin');
     }
 
 	private function getData()

@@ -23,10 +23,25 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
+Route::middleware(['auth:sanctum', 'verified'])->get('/equipos', function () {
+    return view('teams');
+})->name('teams');
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/jugadores', function () {
+    return view('players');
+})->name('players');
+
+
+
+
+
+
+// admin routes
+
 // Route::middleware(['auth:sanctum', 'verified'])
 // 	->get('/equipos', UsersCrud::class)
 // 	->name('teams');
 
-Route::middleware(['auth:sanctum', 'verified'])
-	->get('/admin', UsersCrud::class)
-	->name('admin');
+Route::middleware(['auth:sanctum', 'verified'])->prefix('admin')->group(function() {
+	Route::get('usuarios', UsersCrud::class)->name('admin.users');
+});
