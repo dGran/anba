@@ -1,6 +1,10 @@
 <thead>
 	<tr class="bg-gray-50">
-		<th colspan="2" class="px-3 sm:px-6 py-2 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+		<th class="px-3 sm:px-6 py-3 text-left text-xs sm:text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
+			<input id="check_all" type="checkbox" class="mousetrap form-checkbox h-4 w-4 sm:h-5 sm:w-5 text-indigo-400"
+			wire:model="" value="">
+		</th>
+		<th class="pl-2 sm:pl-3 pr-3 sm:pr-6 text-left text-xs sm:text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
 			@if ($order == 'name' && $orderDirection == 'asc')
 				<p class="inline-block hover:underline focus:underline cursor-pointer" wire:click="order('name', 'desc')">
 					Nombre
@@ -17,7 +21,7 @@
 				</p>
 			@endif
 		</th>
-		<th class="hidden md:table-cell px-3 sm:px-6 py-2 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider text-center">
+		<th class="hidden md:table-cell px-3 sm:px-6 py-3 text-left text-xs sm:text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider text-center">
 			@if ($order == 'created_at' && $orderDirection == 'asc')
 				<p class="inline-block hover:underline focus:underline cursor-pointer" wire:click="order('created_at', 'desc')">
 					Fecha registro
@@ -34,7 +38,7 @@
 				</p>
 			@endif
 		</th>
-		<th class="hidden md:table-cell px-3 sm:px-6 py-2 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider text-center">
+		<th class="hidden md:table-cell px-3 sm:px-6 py-3 text-left text-xs sm:text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider text-center">
 			Estado
 		</th>
 	</tr>

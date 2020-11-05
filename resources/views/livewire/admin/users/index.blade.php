@@ -14,10 +14,10 @@
 
             <div class="flex flex-col">
 
-                    <div class="leading-10">
+                    <div class="leading-10 text-sm md:text-base">
                         <ul>
                             <li class="inline-block">
-                                <a href="#" class="text-blue-500 hover:text-blue-700">Dashboard</a>
+                                <a href="{{ route('admin') }}" class="text-blue-500 hover:text-blue-700">Dashboard</a>
                             </li>
                             <li class="inline-block">
                                 <span class="text-gray-500 px-1">/</span>
@@ -28,7 +28,7 @@
                         </ul>
                     </div>
                 <div class="flex">
-                    <h1 class="flex-auto text-3xl mb-4">Usuarios</h1>
+                    <h1 class="flex-auto text-2xl sm:text-3xl mb-4">Usuarios</h1>
                 </div>
 
                 @include('livewire.admin.users.filters')

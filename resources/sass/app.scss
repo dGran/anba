@@ -2,6 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+	.filter-none {
+		filter: none;
+	}
+	.filter-grayscale {
+		filter: grayscale(100%);
+	}
+	@variants hover, focus, group-hover {
+		.filter-none {
+			filter: none;
+		}
+		.filter-grayscale {
+			filter: grayscale(100%);
+		}
+	}
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap');
 
 @import "styles/typography.scss";

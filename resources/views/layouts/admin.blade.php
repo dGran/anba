@@ -202,7 +202,7 @@
 		<input type="checkbox" id="check">
 		<!--header area start-->
 		<header class="px-6 fixed top-0 bg-white w-full text-gray-500" style="z-index: 1; border-bottom: 1px solid #dee2e6">
-			<div class="ml-64  flex items-center h-14">
+			<div class="md:ml-64 flex items-center h-14">
 
 				<label for="check">
 					<i class="fas fa-bars" id="sidebar_btn"></i>
@@ -235,14 +235,17 @@
 		<!--mobile navigation bar end-->
 
 		<!--sidebar start-->
-		<div class="sidebar w-64 fixed top-0 left-0 h-screen flex flex-col" style="z-index: 1; background: #343a40; transition: 0.5s; transition-property: left; overflow-y: auto; box-shadow: 0 14px 28px rgba(0,0,0,.25),0 10px 10px rgba(0,0,0,.22)!important;">
+		<div class="sidebar w-64 hidden md:block fixed top-0 left-0 h-screen flex flex-col" style="z-index: 1; background: #343a40; transition: 0.5s; transition-property: left; overflow-y: auto; box-shadow: 0 14px 28px rgba(0,0,0,.25),0 10px 10px rgba(0,0,0,.22)!important;">
 			<a href="#" class="flex items-center px-4 h-14 border-b border-gray-600">
-				<img src="{{ asset('img/logo.png') }}" alt="Admin Logo" class="rounded-full object-cover h-10 w-10 opacity-75">
-				<span class="brand-text font-light text-gray-300 text-xl ml-2">Admin ANBA</span>
+				<figure class="h-9 w-9">
+					<img src="{{ asset('img/logo.png') }}" alt="Admin Logo" class="rounded-full object-cover opacity-75">
+				</figure>
+				<span class="flex-auto brand-text font-light text-gray-300 text-xl ml-2">Admin ANBA</span>
+				<span class="text-xxs px-2 py-1 bg-teal-500 rounded-md text-white text-right">beta v 0.15</span>
 			</a>
-			<a href="{{ asset('user/profile') }}" class="flex items-center px-4 py-2 border-b border-gray-600 text-gray-300 hover:text-white">
-				<figure class="h-10 w-10">
-					<img src="{{ asset(auth()->user()->profile_photo_url) }}" alt="Avatar" class="rounded-full object-cover opacity-75" style="box-shadow: 0 3px 6px rgba(0,0,0,.16),0 3px 6px rgba(0,0,0,.23)!important; filter: grayscale(100%);">
+			<a href="{{ asset('user/profile') }}" class="group flex items-center px-4 py-3 border-b border-gray-600 text-gray-300 hover:text-white">
+				<figure class="h-9 w-9">
+					<img src="{{ asset(auth()->user()->profile_photo_url) }}" alt="Avatar" class="rounded-full object-cover opacity-75 filter-grayscale group-hover:filter-none" style="box-shadow: 0 3px 6px rgba(0,0,0,.16),0 3px 6px rgba(0,0,0,.23)!important;">
 				</figure>
 				<span class="font-medium ml-2">
 					{{ auth()->user()->name }}
@@ -250,7 +253,8 @@
 			</a>
 			<ul class="py-4">
 				<li class="mb-1">
-					<a href="#" class="flex items-center mx-2 px-4 py-2 hover:bg-gray-600 text-gray-300 hover:text-white rounded">
+					<a href="{{ route('admin') }}" class="flex items-center mx-2 px-4 py-2 hover:bg-gray-600 text-gray-300 hover:text-white rounded
+					{{ (\Route::current()->getName() == 'admin') ? 'bg-gray-100 text-gray-800 pointer-events-none' : 'hover:bg-gray-600 hover:text-white' }}">
 						<i class="fas fa-desktop text-xl w-10 text-center pr-1 -ml-2"></i>
 						<span class="flex-auto">Dashboard</span>
 						{{-- <span class="text-xxs px-2 py-1 bg-green-500 rounded-md text-white text-right">New</span> --}}
@@ -305,7 +309,7 @@
 				</li>
 				<li class="mb-1">
 					<a href="{{ route('admin.users') }}" class="flex items-center mx-2 px-4 py-2 hover:bg-gray-600 text-gray-300 hover:text-white rounded
-					{{ (strpos(Route::currentRouteName(), 'admin.users') == 0) ? 'bg-gray-100 text-gray-800 pointer-events-none' : 'hover:bg-gray-600 hover:text-white' }}">
+					{{ (\Route::current()->getName() == 'admin.users') ? 'bg-gray-100 text-gray-800 pointer-events-none' : 'hover:bg-gray-600 hover:text-white' }}">
 						<i class="fas fa-table text-xl w-10 text-center pr-1 -ml-2"></i>
 						<span class="flex-auto">Usuarios</span>
 						{{-- <span class="text-xxs px-2 py-1 bg-green-500 rounded-md text-white text-right">New</span> --}}
@@ -332,7 +336,7 @@
 		</div>
 		<!--sidebar end-->
 
-		<div class="content bg-gray-50 ml-64 px-6">
+		<div class="content bg-gray-50 md:ml-64 px-3 md:px-6">
 			{{ $slot }}
 		</div>
 

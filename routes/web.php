@@ -1,8 +1,12 @@
 <?php
 
-use App\Http\Controllers\TeamController;
-use App\Http\Livewire\Admin\UsersCrud;
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\TeamController;
+
+
+use App\Http\Livewire\Admin\Dashboard;
+use App\Http\Livewire\Admin\UsersCrud;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,8 +38,6 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/jugadores', function () {
 
 
 
-
-
 // admin routes
 
 // Route::middleware(['auth:sanctum', 'verified'])
@@ -43,5 +45,6 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/jugadores', function () {
 // 	->name('teams');
 
 Route::middleware(['auth:sanctum', 'verified'])->prefix('admin')->group(function() {
+	Route::get('/', Dashboard::class)->name('admin');
 	Route::get('usuarios', UsersCrud::class)->name('admin.users');
 });

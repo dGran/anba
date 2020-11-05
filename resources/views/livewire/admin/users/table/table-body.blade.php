@@ -11,18 +11,18 @@
 					<figure class="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10">
 						<img class="h-8 w-8 sm:h-10 sm:w-10 rounded-full" src="{{ $user->profile_photo_url }}" alt="{{ $user->name }}">
 					</figure>
-					<div class="pl-2 sm:pl-3 truncate w-40 sm:w-auto" wire:click.stop="edit({{ $user->id }})">
-						<div class="text-xs sm:text-sm font-medium text-gray-900 truncate group-hover:text-indigo-600 cursor-pointer">
+					<div class="pl-2 sm:pl-3 truncate w-40 sm:w-auto">
+						<div class="text-sm sm:text-base font-medium text-gray-900 truncate group-hover:text-indigo-600 cursor-pointer" wire:click.stop="edit({{ $user->id }})">
 							{{ $user->name }}
 						</div>
-						<div class="text-xxs sm:text-xs text-gray-500 truncate">
+						<div class="text-xs sm:text-sm truncate opacity-50">
 							{{ $user->email }}
 						</div>
 					</div>
 				</div>
 			</td>
 			<td class="hidden md:table-cell w-48 px-3 sm:px-6 py-2 whitespace-no-wrap text-center">
-				<div class="text-xxs leading-5 font-medium flex flex-col uppercase">
+				<div class="text-xs leading-5 font-medium flex flex-col uppercase">
 					<span>{{ $user->getCreatedAtDate() }}</span>
 					<span class="text-gray-500">
 						<i class="far fa-clock mr-1"></i>

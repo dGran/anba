@@ -1,23 +1,26 @@
 <div class="pt-2 pb-3 {{-- overflow-x-auto --}}">
 	<div class="flex items-center">
-		<button class="inline-flex items-center justify-center px-4 h-8 sm:h-9 bg-green-500 rounded font-semibold text-xxs sm:text-xs leading-3 sm:leading-4 text-white uppercase tracking-widest hover:bg-green-600 focus:outline-none focus:shadow-outline-green active:bg-green-600 transition ease-in-out duration-150"
+		<button class="inline-flex items-center justify-center px-4 h-8 sm:h-10 bg-green-500 rounded font-semibold text-xs sm:text-sm leading-3 sm:leading-4 text-white uppercase tracking-widest hover:bg-green-600 focus:outline-none focus:shadow-outline-green active:bg-green-600 transition ease-in-out duration-150"
 		wire:click="add" wire:loading.attr="disabled" type="button">
 		    Nuevo
 		</button>
 
-		<input
-			class="search-input ml-2 outline-none border rounded px-3 sm:px-3 h-8 sm:h-9 text-xs sm:text-sm rounded border-gray-200 block w-full focus:border-gray-300 hover:border-gray-300 text-gray-500"
-			wire:model="search"
-			type="text"
-			placeholder='Buscar...("/")'
-			autofocus>
+		<div class="relative w-full flex items-center">
+			<input
+				class="search-input ml-2 outline-none border rounded pl-3 pr-8 h-8 sm:h-10 text-sm sm:text-base rounded border-gray-200 block w-full focus:border-gray-300 hover:border-gray-300 text-gray-500"
+				wire:model="search"
+				type="text"
+				placeholder='Buscar...("/")'
+				autofocus>
+				<i class="fas fa-search absolute right-0 mr-2 text-gray-500"></i>
+		</div>
 
 		<div class="inline-flex ml-2">
 
 			@if ($regsSelected->count() > 0)
 				<x-dropdown>
 					<x-slot name="trigger">
-						<button class="bg-white border border-r-0 border-gray-200 px-3 h-8 sm:h-9 text-xs sm:text-sm rounded-l transition ease-in-out duration-150 focus:outline-none text-gray-500 cursor-pointer hover:text-indigo-500 focus:text-indigo-500 rounded-l"
+						<button class="bg-white border border-r-0 border-gray-200 px-3 h-8 sm:h-10 text-sm sm:text-base rounded-l transition ease-in-out duration-150 focus:outline-none text-gray-500 cursor-pointer hover:text-indigo-500 focus:text-indigo-500 rounded-l"
 						wire:loading.attr="disabled">
 							<i class="fas fa-tasks"></i>
 						</button>
@@ -44,7 +47,7 @@
 			        </x-slot>
 				</x-dropdown>
 			@else
-				<button class="bg-white border border-r-0 rounded-l border-gray-200 px-3 h-8 sm:h-9 text-xs sm:text-sm transition ease-in-out duration-150 focus:outline-none text-gray-300 cursor-not-allowed" disabled
+				<button class="bg-white border border-r-0 rounded-l border-gray-200 px-3 h-8 sm:h-10 text-sm sm:text-base transition ease-in-out duration-150 focus:outline-none text-gray-300 cursor-not-allowed" disabled
 				wire:loading.attr="disabled">
 					<i class="fas fa-tasks"></i>
 				</button>
@@ -53,7 +56,7 @@
 			@if ($regs->count() > 0)
 				<x-dropdown>
 					<x-slot name="trigger">
-						<button class="bg-white border border-r-0 border-gray-200 px-3 h-8 sm:h-9 text-xs sm:text-sm transition ease-in-out duration-150 focus:outline-none text-gray-500 cursor-pointer hover:text-indigo-500 focus:text-indigo-500"
+						<button class="bg-white border border-r-0 border-gray-200 px-3 h-8 sm:h-10 text-sm sm:text-base transition ease-in-out duration-150 focus:outline-none text-gray-500 cursor-pointer hover:text-indigo-500 focus:text-indigo-500"
 						wire:loading.attr="disabled">
 							<i class="fas fa-table"></i>
 						</button>
@@ -81,19 +84,19 @@
 			        </x-slot>
 				</x-dropdown>
 			@else
-				<button class="bg-white border border-r-0 border-gray-200 px-3 h-8 sm:h-9 text-xs sm:text-sm transition ease-in-out duration-150 focus:outline-none text-gray-300 cursor-not-allowed" disabled
+				<button class="bg-white border border-r-0 border-gray-200 px-3 h-8 sm:h-10 text-sm sm:text-base transition ease-in-out duration-150 focus:outline-none text-gray-300 cursor-not-allowed" disabled
 				wire:loading.attr="disabled">
 					<i class="fas fa-table"></i>
 				</button>
 			@endif
 
-			<button type="button" class="bg-white border border-r-0 border-gray-200 px-3 h-8 sm:h-9 text-xs sm:text-sm transition ease-in-out duration-150 text-gray-500 cursor-pointer hover:text-indigo-500 focus:text-indigo-500 focus:outline-none"
+			<button type="button" class="bg-white border border-r-0 border-gray-200 px-3 h-8 sm:h-10 text-sm sm:text-base transition ease-in-out duration-150 text-gray-500 cursor-pointer hover:text-indigo-500 focus:text-indigo-500 focus:outline-none"
 			wire:click="viewFilters(true)"
 			wire:loading.attr="disabled">
 				<i class="fas fa-filter"></i>
 			</button>
 
-			<button type="button" class="bg-white border border-gray-200 px-3 h-8 sm:h-9 text-xs sm:text-sm rounded-r transition ease-in-out duration-150 focus:outline-none {{ ($search == '' && $perPage == '10' && $state == 'all') ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 cursor-pointer hover:text-indigo-500 focus:text-indigo-500' }}"
+			<button type="button" class="bg-white border border-gray-200 px-3 h-8 sm:h-10 text-sm sm:text-base rounded-r transition ease-in-out duration-150 focus:outline-none {{ ($search == '' && $perPage == '10' && $state == 'all') ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 cursor-pointer hover:text-indigo-500 focus:text-indigo-500' }}"
 			wire:loading.attr="disabled"
 			wire:click="clearAllFilters"
 			{{ ($search == '' && $perPage == '10' && $state == 'all') ? 'disabled' : '' }}>
