@@ -1,45 +1,36 @@
 <thead>
-	<tr class="bg-gray-50">
-		<th class="px-3 sm:px-6 py-3 text-left text-xs sm:text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
-			<input id="check_all" type="checkbox" class="mousetrap form-checkbox h-4 w-4 sm:h-5 sm:w-5 text-indigo-400"
-			wire:model="" value="">
+	<tr class="admin-crud-table">
+		<th class="check">
+		    <div class="pretty p-svg p-curve m-0 p-jelly p-has-focus">
+		        <input type="checkbox" />
+		        <div class="state p-primary">
+		            <svg class="svg svg-icon" viewBox="0 0 20 20">
+		                <path d="M7.629,14.566c0.125,0.125,0.291,0.188,0.456,0.188c0.164,0,0.329-0.062,0.456-0.188l8.219-8.221c0.252-0.252,0.252-0.659,0-0.911c-0.252-0.252-0.659-0.252-0.911,0l-7.764,7.763L4.152,9.267c-0.252-0.251-0.66-0.251-0.911,0c-0.252,0.252-0.252,0.66,0,0.911L7.629,14.566z" style="stroke: white;fill:white;"></path>
+		            </svg>
+		            <label></label>
+		        </div>
+		    </div>
 		</th>
-		<th class="pl-2 sm:pl-3 pr-3 sm:pr-6 text-left text-xs sm:text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
+		<th>
 			@if ($order == 'name' && $orderDirection == 'asc')
-				<p class="inline-block hover:underline focus:underline cursor-pointer" wire:click="order('name', 'desc')">
-					Nombre
-				</p>
-				<i class="fas fa-sort-alpha-up pl-1"></i>
+				<span class="d-inline-block cursor-pointer" wire:click="order('name', 'desc')">Nombre<i class="fas fa-sort-alpha-up pl-1"></i></span>
 			@elseif ($order == 'name' && $orderDirection == 'desc')
-				<p class="inline-block hover:underline focus:underline cursor-pointer" wire:click="order('name', 'asc')">
-					Nombre
-				</p>
-				<i class="fas fa-sort-alpha-down pl-1"></i>
+				<span class="d-inline-block cursor-pointer" wire:click="order('name', 'asc')">Nombre<i class="fas fa-sort-alpha-down pl-1"></i></span>
 			@else
-				<p class="inline-block hover:underline focus:underline cursor-pointer" wire:click="order('name', 'asc')">
-					Nombre
-				</p>
+				<span class="d-inline-block cursor-pointer" wire:click="order('name', 'asc')">Nombre</span>
 			@endif
 		</th>
-		<th class="hidden md:table-cell px-3 sm:px-6 py-3 text-left text-xs sm:text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider text-center">
+		<th class="d-none d-md-table-cell text-center">
 			@if ($order == 'created_at' && $orderDirection == 'asc')
-				<p class="inline-block hover:underline focus:underline cursor-pointer" wire:click="order('created_at', 'desc')">
-					Fecha registro
-				</p>
-				<i class="fas fa-sort-numeric-up pl-1"></i>
+				<span class="d-inline-block cursor-pointer" wire:click="order('created_at', 'desc')">Fecha registro<i class="fas fa-sort-numeric-up pl-1"></i></span>
 			@elseif ($order == 'created_at' && $orderDirection == 'desc')
-				<p class="inline-block hover:underline focus:underline cursor-pointer" wire:click="order('created_at', 'asc')">
-					Fecha registro
-				</p>
-				<i class="fas fa-sort-numeric-down pl-1"></i>
+				<span class="d-inline-block cursor-pointer" wire:click="order('created_at', 'asc')">Fecha registro<i class="fas fa-sort-numeric-down pl-1"></i></span>
 			@else
-				<p class="inline-block hover:underline focus:underline cursor-pointer" wire:click="order('created_at', 'asc')">
-					Fecha registro
-				</p>
+				<span class="d-inline-block cursor-pointer" wire:click="order('created_at', 'asc')">Fecha registro</span>
 			@endif
 		</th>
-		<th class="hidden md:table-cell px-3 sm:px-6 py-3 text-left text-xs sm:text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider text-center">
-			Estado
+		<th class="d-none d-md-table-cell text-center" style="width: 5em">
+			<span>Estado</span>
 		</th>
 	</tr>
 </thead>

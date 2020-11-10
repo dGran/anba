@@ -1,10 +1,12 @@
-@if ($regs->count()>0)
-	<table class="min-w-full divide-y divide-gray-200">
-		@include('livewire.admin.users.table.table-head')
-		@include('livewire.admin.users.table.table-body')
-	</table>
-@else
-	<div class="bg-white px-4 py-3 sm:px-6 text-gray-500 text-sm">
-		No hay resultados para la búsqueda "{{ $search }}"
-	</div>
-@endif
+<div class="admin-crud-table-wrapper shadow-sm">
+	@if ($regs->count()>0)
+		<table class="admin-crud-table">
+			@include('livewire.admin.users.table.table-head')
+			@include('livewire.admin.users.table.table-body')
+		</table>
+	@else
+		<div class="p-3">
+			No hay resultados para la búsqueda <span class="text-primary">"{{ $search }}"</span>
+		</div>
+	@endif
+</div>

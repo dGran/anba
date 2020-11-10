@@ -45,11 +45,14 @@
             {{-- Main Content --}}
             <div class="content">
                 <div class="{{ config('adminlte.classes_content') ?: $def_container_class }}">
-                    @yield('content')
+                    {{ $slot }}
                 </div>
             </div>
 
         </div>
+
+        @stack('modals')
+        {{-- @yield('modals') --}}
 
         {{-- Footer --}}
         @hasSection('footer')

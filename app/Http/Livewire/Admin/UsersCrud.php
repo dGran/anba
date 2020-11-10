@@ -25,12 +25,8 @@ class UsersCrud extends Component
 	public $order = 'id';
 	public $orderDirection = 'desc';
 
-	// modals
-	public $addModal = false;
-	public $editModal = false;
-	public $confirmDestroyModal = false;
-	public $selectedModal = false;
-	public $filtersModal = false;
+	// general vars
+	public $updateMode = false;
 
 	//selected regs
 	public $regsSelectedArray = [];
@@ -65,7 +61,7 @@ class UsersCrud extends Component
 		$array_id = array_search($id, $this->regsSelectedArray);
 		unset($this->regsSelectedArray[$array_id]);
 		if (empty($this->regsSelectedArray)) {
-			$this->selectedModal = false;
+			$this->emit('closeSelected');
 		}
 	}
 
@@ -77,7 +73,11 @@ class UsersCrud extends Component
 	public function viewSelected($view)
 	{
 		if (count($this->regsSelectedArray) > 0) {
-			$this->selectedModal = $view;
+			if ($view) {
+				$this->emit('openSelected');
+			} else {
+				$this->emit('closeSelected');
+			}
 		}
 	}
 	// END::Selected
@@ -85,7 +85,11 @@ class UsersCrud extends Component
 	// Filters
 	public function viewFilters($view)
 	{
-		$this->filtersModal = $view;
+		if ($view) {
+			$this->emit('openFilters');
+		} else {
+			$this->emit('closeFilters');
+		}
 	}
 
     public function order($field, $direction)
@@ -148,12 +152,9 @@ class UsersCrud extends Component
 		$this->password = '';
 
 		$this->resetValidation();
-    	$this->addModal = true;
-    }
 
-    public function cancelAdd()
-    {
-    	$this->addModal = false;
+		$this->updateMode = false;
+    	$this->emit('addMode');
     }
 
     public function store()
@@ -173,9 +174,9 @@ class UsersCrud extends Component
 		]);
 
 		if ($user->save()) {
-    		session()->flash('message', 'Registro agregado correctamente.');
+			$this->emit('alert', ['type' => 'success', 'message' => 'Registro agregado correctamente.']);
 		} else {
-			session()->flash('error', 'Se ha producido un error y no se han podido actualizar los datos.');
+			$this->emit('alert', ['type' => 'error', 'message' => 'Se ha producido un error y no se han podido actualizar los datos.']);
 		}
 
 		if ($this->continuousInsert) {
@@ -183,7 +184,7 @@ class UsersCrud extends Component
 			$this->email = '';
 			$this->password = '';
 		} else {
-			$this->addModal = false;
+			$this->emit('regStore');
 		}
     }
     // END::Add & Store
@@ -198,12 +199,9 @@ class UsersCrud extends Component
     	$this->password = $user->password;
 
 		$this->resetValidation();
-    	$this->editModal = true;
-    }
 
-    public function cancelEdit()
-    {
-    	$this->editModal = false;
+		$this->updateMode = true;
+    	$this->emit('editMode');
     }
 
     public function update()
@@ -220,27 +218,22 @@ class UsersCrud extends Component
 
         if ($user->isDirty()) {
             if ($user->update()) {
-            	session()->flash('message', 'Registro actualizado correctamente.');
+            	$this->emit('alert', ['type' => 'success', 'message' => 'Registro actualizado correctamente.']);
             } else {
-            	session()->flash('error', 'Se ha producido un error y no se han podido actualizar los datos.');
+            	$this->emit('alert', ['type' => 'error', 'message' => 'Se ha producido un error y no se han podido actualizar los datos.']);
             }
         } else {
-        	session()->flash('info', 'No se han detectado cambios en el registro.');
+        	$this->emit('alert', ['type' => 'info', 'message' => 'No se han detectado cambios en el registro.']);
         }
 
-    	$this->editModal = false;
         $this->cancelSelection();
+        $this->emit('regUpdate');
     }
     // END::Edit & Update
 
     public function confirmDestroy()
     {
-		$this->confirmDestroyModal = true;
-    }
-
-    public function cancelDestroy()
-    {
-    	$this->confirmDestroyModal = false;
+		$this->emit('destroyMode');
     }
 
     public function nextPage()
@@ -255,9 +248,9 @@ class UsersCrud extends Component
 
     public function destroy($id)
     {
-		$this->confirmDestroyModal = false;
 		User::destroy($id);
-		session()->flash('message','Usuario eliminado correctamente!.');
+		$this->emit('regDestroy');
+		$this->emit('alert', ['type' => 'success', 'message' => 'Registro eliminado correctamente!.']);
     }
 
 	public function destroySelected()
@@ -265,8 +258,8 @@ class UsersCrud extends Component
 		foreach ($this->regsSelectedArray as $reg) {
 			User::destroy($reg);
 		}
-		$this->confirmDestroyModal = false;
-		session()->flash('message','Usuarios seleccionados eliminados correctamente!.');
+		$this->emit('regDestroy');
+		$this->emit('alert', ['type' => 'success', 'message' => 'Registros seleccionados eliminados correctamente!.']);
 		$this->regsSelectedArray = [];
 	}
 
@@ -276,7 +269,7 @@ class UsersCrud extends Component
         return view('livewire.admin.users.index', [
         			'regs' => $this->getData(),
         			'regsSelected' => $this->getDataSelected()
-        		])->layout('layouts.admin');
+        		])->layout('adminlte::page');
     }
 
 	private function getData()
@@ -285,7 +278,7 @@ class UsersCrud extends Component
 	        		->orEmail($this->search)
 	    			->state($this->state)
 	        		->orderBy($this->order, $this->orderDirection)
-	        		->paginate($this->perPage);
+	        		->paginate($this->perPage)->onEachSide(2);
 	    if (($users->total() > 0 && $users->count() == 0)) {
 			$this->page = 1;
 		}
@@ -296,7 +289,7 @@ class UsersCrud extends Component
         			->orEmail($this->search)
     				->state($this->state)
         			->orderBy($this->order, $this->orderDirection)
-        			->paginate($this->perPage);
+        			->paginate($this->perPage)->onEachSide(2);
 
 		return $users;
 	}

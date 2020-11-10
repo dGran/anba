@@ -1,5 +1,5 @@
 @if ($regs->total() > $perPage)
-	<div class="pt-3">
-		{{ $regs->links() }}
+	<div class="pagination-wrapper">
+		{{ $regs->links('vendor.pagination.custom') }}
 	</div>
 @endif

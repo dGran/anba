@@ -110,4 +110,19 @@ class User extends Authenticatable
         $date = Carbon::parse($this->created_at)->locale(app()->getLocale());
         return $date->isoFormat("kk[:]mm");
     }
+
+    public function adminlte_image()
+    {
+        return $this->profile_photo_url;
+    }
+
+    public function adminlte_desc()
+    {
+        return 'Administrador';
+    }
+
+    public function adminlte_profile_url()
+    {
+        return "user/profile";
+    }
 }

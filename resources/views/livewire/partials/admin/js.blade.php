@@ -1,4 +1,61 @@
 <script>
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": true,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "300",
+        "timeOut": "3000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+    window.livewire.on('alert', param => {
+        toastr[param['type']](param['message']);
+    });
+
+    window.livewire.on('addMode', () => {
+        $('#addModal').modal('show');
+    });
+    window.livewire.on('regStore', () => {
+        $('#addModal').modal('hide');
+    });
+
+    window.livewire.on('editMode', () => {
+        $('#editModal').modal('show');
+    });
+    window.livewire.on('regUpdate', () => {
+        $('#editModal').modal('hide');
+    });
+
+    window.livewire.on('destroyMode', () => {
+        $('#confirmDestroyModal').modal('show');
+    });
+    window.livewire.on('regDestroy', () => {
+        $('#confirmDestroyModal').modal('hide');
+    });
+
+    window.livewire.on('openSelected', () => {
+        $('#selectedModal').modal('show');
+    });
+    window.livewire.on('closeSelected', () => {
+        $('#selectedModal').modal('hide');
+    });
+
+    window.livewire.on('openFilters', () => {
+        $('#filterModal').modal('show');
+    });
+    window.livewire.on('closeFilters', () => {
+        $('#filterModal').modal('hide');
+    });
+
+
     Mousetrap.bind('/', function() {
         $('.search-input').focus();
         $('.search-input').select();

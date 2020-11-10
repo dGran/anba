@@ -1,13 +1,102 @@
-<div class="pt-2 pb-3 {{-- overflow-x-auto --}}">
-	<div class="flex items-center">
-		<button class="inline-flex items-center justify-center px-4 h-8 sm:h-10 bg-green-500 rounded font-semibold text-xs sm:text-sm leading-3 sm:leading-4 text-white uppercase tracking-widest hover:bg-green-600 focus:outline-none focus:shadow-outline-green active:bg-green-600 transition ease-in-out duration-150"
+<div class="filters">
+
+	<button type="button" class="btn btn-new" wire:click="add" wire:loading.attr="disabled">
+		Nuevo
+	</button>
+
+	<div class="input-group ml-2">
+		<input type="search" class="search-input form-control" placeholder='Buscar...("/")' wire:model="search" autofocus>
+		<div class="input-group-append">
+			<span class="input-group-text"><i class="fas fa-search"></i></span>
+		</div>
+    </div>
+
+	<div class="ml-2 d-inline-flex" role="group" aria-label="First group">
+
+		<div class="dropdown mr-1">
+			<button type="button" class="btn btn-white {{ $regsSelected->count() == 0 ? 'disabled' : '' }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<i class="fas fa-tasks"></i>
+			</button>
+			<div class="dropdown-menu dropdown-menu-right">
+	            <h6 class="dropdown-header">Registros seleccionados</h6>
+	            <div class="dropdown-divider"></div>
+	{{--             @if ($regsSelected->count() != 1)
+		            <a class="dropdown-item disabled">
+		            	<i class="fas fa-edit mr-2"></i>Editar
+		            </a>
+	            @endif --}}
+	            @if ($regsSelected->count() == 1)
+		            <a class="dropdown-item" wire:click="edit({{ $regsSelected->first()->id }})">
+		            	<i class="fas fa-edit mr-2"></i>Editar
+		            </a>
+	            @endif
+	            <a class="dropdown-item red" wire:click="confirmDestroy"><i class="fas fa-trash mr-2"></i>Eliminar</a>
+	            <div class="dropdown-divider"></div>
+	            <a class="dropdown-item" wire:click="viewSelected(true)"><i class="fas fa-check-square mr-2"></i>Ver selección ({{ $regsSelected->count() }})</a>
+	            <a class="dropdown-item" wire:click="cancelSelection"><i class="fas fa-ban mr-2"></i>Cancelar selección</a>
+			</div>
+		</div>
+
+
+		<div class="dropdown mr-1">
+			<button type="button" class="btn btn-white {{ $regs->count() == 0 ? 'disabled' : '' }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<i class="fas fa-table"></i>
+			</button>
+			<div class="dropdown-menu dropdown-menu-right">
+	            <h6 class="dropdown-header">Opciones de tabla</h6>
+	            <div class="dropdown-divider"></div>
+	            <a class="dropdown-item"><i class="fas fa-file-excel mr-2"></i></i>Importar</a>
+	            <a class="dropdown-item"><i class="fas fa-file-excel mr-2"></i></i>Exportar (.xls)</a>
+	            <a class="dropdown-item"><i class="fas fa-file-excel mr-2"></i></i>Exportar (.xlsx)</a>
+	            <a class="dropdown-item"><i class="fas fa-file-excel mr-2"></i></i>Exportar (.csv)</a>
+			</div>
+		</div>
+
+		<button type="button" class="btn btn-white mr-1" wire:click="viewFilters(true)">
+			<i class="fas fa-filter"></i>
+		</button>
+		<button type="button" class="btn btn-white {{ ($search == '' && $perPage == '10' && $state == 'all') ? 'disabled' : '' }}" wire:click="clearAllFilters">
+			<i class="fas fa-eraser"></i>
+		</button>
+	</div>
+</div>
+
+
+{{-- Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse ipsum ea vel hic dolorem! Id, modi ex alias dicta maxime perspiciatis numquam, libero hic, nemo explicabo ullam molestias tenetur, et. --}}
+@if ($search || $perPage !== "10" || $state !== 'all')
+	<ul class="list-inline" style="margin: -.5em 0 .5em 0;">
+		@if ($search)
+			<li class="list-inline-item">
+				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterSearch()">
+					{{ $search }}<i class="fas fa-times ml-2"></i>
+				<a>
+			</li>
+		@endif
+		@if ($state !== 'all')
+			<li class="list-inline-item">
+				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterState()">
+					{{ $state_es }}<i class="fas fa-times ml-2"></i>
+				<a>
+			</li>
+		@endif
+		@if ($perPage !== "10")
+			<li class="list-inline-item">
+				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterPerPage()">
+					{{ $perPage }} / página<i class="fas fa-times ml-2"></i>
+				<a>
+			</li>
+		@endif
+	</ul>
+@endif
+
+	{{-- <div class="flex items-center">
+		<button class="btn btn-primary"
 		wire:click="add" wire:loading.attr="disabled" type="button">
 		    Nuevo
 		</button>
 
 		<div class="relative w-full flex items-center">
-			<input
-				class="search-input ml-2 outline-none border rounded pl-3 pr-8 h-8 sm:h-10 text-sm sm:text-base rounded border-gray-200 block w-full focus:border-gray-300 hover:border-gray-300 text-gray-500"
+			<input type="text" class=" form-control ml-2"
 				wire:model="search"
 				type="text"
 				placeholder='Buscar...("/")'
@@ -15,9 +104,9 @@
 				<i class="fas fa-search absolute right-0 mr-2 text-gray-500"></i>
 		</div>
 
-		<div class="inline-flex ml-2">
+		<div class="inline-flex ml-2"> --}}
 
-			@if ($regsSelected->count() > 0)
+	{{-- 		@if ($regsSelected->count() > 0)
 				<x-dropdown>
 					<x-slot name="trigger">
 						<button class="bg-white border border-r-0 border-gray-200 px-3 h-8 sm:h-10 text-sm sm:text-base rounded-l transition ease-in-out duration-150 focus:outline-none text-gray-500 cursor-pointer hover:text-indigo-500 focus:text-indigo-500 rounded-l"
@@ -51,8 +140,8 @@
 				wire:loading.attr="disabled">
 					<i class="fas fa-tasks"></i>
 				</button>
-			@endif
-
+			@endif --}}
+{{--
 			@if ($regs->count() > 0)
 				<x-dropdown>
 					<x-slot name="trigger">
@@ -78,7 +167,7 @@
 			            	<i class="fas fa-edit w-5 sm:w-6"></i>Exportar ('xlsx')
 			            </a>
 			            <div class="text-xxs sm:text-xs leading-4 font-semibold text-gray-500 tracking-wide px-3 pt-2 pb-1 clearfix">
-			            	{{-- <p class="float-left">Total registros<p> --}}
+
 			            	<p class="float-right">{{ $regs->total() }} registros</p>
 			            </div>
 			        </x-slot>
@@ -105,29 +194,5 @@
 		</div>
 	</div>
 
-	@if ($search || $perPage !== "10" || $state !== 'all')
-		<div class="flex items-center py-2 px-4 sm:px-0 gap-2">
-			@if ($search)
-				<div class="text-xxs inline-flex items-center font-bold leading-3 sm:leading-4 uppercase px-2 sm:px-3 py-1 bg-indigo-100 border border-indigo-200 text-indigo-500 rounded cursor-pointer"
-				wire:click="cancelFilterSearch()">
-					{{ $search }}
-					<i class="fas fa-times ml-2 text-xs"></i>
-				</div>
-			@endif
-			@if ($state !== 'all')
-				<div class="text-xxs inline-flex items-center font-bold leading-3 sm:leading-4 uppercase px-2 sm:px-3 py-1 bg-indigo-100 border border-indigo-200 text-indigo-500 rounded cursor-pointer"
-				wire:click="cancelFilterState()">
-					{{ $state_es }}
-					<i class="fas fa-times ml-2 text-xs"></i>
-				</div>
-			@endif
-			@if ($perPage !== "10")
-				<div class="text-xxs inline-flex items-center font-bold leading-3 sm:leading-4 uppercase px-2 sm:px-3 py-1 bg-indigo-100 border border-indigo-200 text-indigo-500 rounded cursor-pointer"
-				wire:click="cancelFilterPerPage()">
-					{{ $perPage }} / página
-					<i class="fas fa-times ml-2 text-xs"></i>
-				</div>
-			@endif
-		</div>
-	@endif
-</div>
+
+</div> --}}

@@ -1,30 +1,40 @@
-<x-modals.dialog wire:model="addModal">
-    <x-slot name="title">
-        <div class="px-6 py-3 bg-gray-50 text-sm uppercase font-medium tracking-wide flex items-center">
-            <span>{{ $modelGender == 'male' ? 'Nuevo' : 'Nueva' }} {{ $modelSingular }}</span>
-        </div>
-    </x-slot>
-
-    <x-slot name="content">
-        <div class="px-6 py-2 w-full">
-            @include('livewire.admin.users.forms.form')
-        </div>
-    </x-slot>
-
-    <x-slot name="footer">
-        <div class="px-6 py-4 w-full bg-gray-50">
-            <div class="float-left text-sm flex items-center">
-                <label class="inline-flex items-center">
-                    <input type="checkbox" class="form-checkbox h-5 w-5 text-indigo-400" wire:model="continuousInsert">
-                    <span class="ml-2 text-gray-700">Inserción contínua</span>
-                </label>
+<div wire:ignore.self class="modal fade" tabindex="-1" role="dialog" id="addModal" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-base text-uppercase font-medium tracking-wide">
+                    <span>{{ $modelGender == 'male' ? 'Nuevo' : 'Nueva' }} {{ $modelSingular }}</span>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <x-buttons.cancel wire:click="cancelAdd" wire:loading.attr="disabled">
-                Cancelar
-            </x-buttons.cancel>
-            <x-buttons.success class="ml-2" wire:click="store" wire:loading.attr="disabled">
-                Guardar
-            </x-buttons.success>
+            <div class="modal-body">
+                @include('livewire.admin.users.forms.form')
+            </div>
+            <div class="modal-footer" style="background: #F9FAFB">
+                <div class="d-flex align-items-center w-100">
+                    <div class="text-xs mr-auto">
+                        <div class="pretty p-svg p-curve m-0 p-jelly p-has-focus">
+                            <input type="checkbox" class="" wire:model="continuousInsert">
+                            <div class="state p-primary d-flex align-items-center">
+                                <svg class="svg svg-icon" viewBox="0 0 20 20">
+                                    <path d="M7.629,14.566c0.125,0.125,0.291,0.188,0.456,0.188c0.164,0,0.329-0.062,0.456-0.188l8.219-8.221c0.252-0.252,0.252-0.659,0-0.911c-0.252-0.252-0.659-0.252-0.911,0l-7.764,7.763L4.152,9.267c-0.252-0.251-0.66-0.251-0.911,0c-0.252,0.252-0.252,0.66,0,0.911L7.629,14.566z" style="stroke: white;fill:white;"></path>
+                                </svg>
+                                <label class="text-xs text-uppercase tracking-widest ml-1" style="">Inserción contínua</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <button type="button" class="btn btn-borderless ml-2 text-xs text-uppercase tracking-widest" data-dismiss="modal" wire:loading.attr="disabled">
+                            Cancelar
+                        </button>
+                        <button type="button" class="btn btn-primary ml-2 text-xs text-uppercase tracking-widest" wire:click.prevent="store" wire:loading.attr="disabled">
+                            Guardar
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-    </x-slot>
-</x-modals.dialog>
+    </div>
+</div>

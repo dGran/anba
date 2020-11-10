@@ -1,0 +1,45 @@
+// buttons
+.close:focus {
+    outline: none;
+}
+.btn-borderless {
+    background: none;
+    border: none;
+    color: #495057;
+    &:hover, &:focus {
+        color: lighten(#495057, 20%);
+    }
+}
+.btn-white {
+    background-color: #fff;
+    border-color: #ced4da;
+    color: #666;
+    &:focus {
+    	color: #007bff;
+    }
+    &:hover {
+    	color: #007bff;
+    }
+    &.disabled {
+	    background-color: #F4F4F4;
+	    border-color: #ced4da;
+	    outline: 0;
+	    color: #B5B1B8;
+	    opacity: 1;
+    }
+}
+
+.form-group {
+    &.error {
+        label {
+            color: #fc8181;
+        }
+        input {
+            // background-color: #fff5f5;
+            border-color: #fc8181;
+        }
+        p {
+            color: #fc8181;
+        }
+    }
+}
