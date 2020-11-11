@@ -236,6 +236,11 @@ class UsersCrud extends Component
 		$this->emit('destroyMode');
     }
 
+    public function confirmDuplicate()
+    {
+		$this->emit('duplicateMode');
+    }
+
     public function nextPage()
     {
     	$this->page++;
@@ -246,22 +251,70 @@ class UsersCrud extends Component
 		$this->page--;
     }
 
-    public function destroy($id)
+    public function destroy()
     {
-		User::destroy($id);
-		$this->emit('regDestroy');
-		$this->emit('alert', ['type' => 'success', 'message' => 'Registro eliminado correctamente!.']);
+    	if (count($this->regsSelectedArray) > 1) {
+    		$counter = 0;
+			foreach ($this->regsSelectedArray as $reg) {
+				if (User::destroy($reg)) {
+					$counter++;
+				}
+			}
+			if ($counter > 0) {
+				$this->emit('alert', ['type' => 'success', 'message' => 'Registros seleccionados eliminados correctamente!.']);
+			} else {
+				$this->emit('alert', ['type' => 'error', 'message' => 'Los registros que querías eliminar ya no existen.']);
+			}
+			$this->emit('regDestroy');
+			$this->regsSelectedArray = [];
+		} else {
+			if (User::destroy(reset($this->regsSelectedArray))) {
+				$this->emit('alert', ['type' => 'success', 'message' => 'Registro eliminado correctamente!.']);
+			} else {
+				$this->emit('alert', ['type' => 'error', 'message' => 'El registro que querías eliminar ya no existe.']);
+			}
+			$this->emit('regDestroy');
+		}
     }
 
-	public function destroySelected()
-	{
-		foreach ($this->regsSelectedArray as $reg) {
-			User::destroy($reg);
+    public function duplicate()
+    {
+    	if (count($this->regsSelectedArray) > 1) {
+    		$counter = 0;
+			foreach ($this->regsSelectedArray as $reg) {
+	            $original = User::find($reg);
+	            if ($original) {
+	            	$counter++;
+	                $user = $original->replicate();
+                	$random_numer = rand(100,999);
+                	$user->name .= " (copia_" . $random_numer . ")";
+                	$user->email .= " (copia_" . $random_numer . ")";
+	                $user->save();
+	            }
+			}
+			if ($counter > 0) {
+				$this->emit('alert', ['type' => 'success', 'message' => 'Registros seleccionados duplicados correctamente!.']);
+			} else {
+				$this->emit('alert', ['type' => 'error', 'message' => 'Los registros que querías duplicar ya no existen.']);
+			}
+			$this->emit('regDuplicate');
+			$this->regsSelectedArray = [];
+		} else {
+            $original = User::find(reset($this->regsSelectedArray));
+            if ($original) {
+                $user = $original->replicate();
+            	$random_numer = rand(100,999);
+            	$user->name .= " (copia_" . $random_numer . ")";
+            	$user->email .= " (copia_" . $random_numer . ")";
+                $user->save();
+				$this->emit('alert', ['type' => 'success', 'message' => 'Registro duplicado correctamente!.']);
+            } else {
+            	$this->emit('alert', ['type' => 'error', 'message' => 'El registro que querías duplicar ya no existe.']);
+            }
+			$this->emit('regDuplicate');
+			$this->regsSelectedArray = [];
 		}
-		$this->emit('regDestroy');
-		$this->emit('alert', ['type' => 'success', 'message' => 'Registros seleccionados eliminados correctamente!.']);
-		$this->regsSelectedArray = [];
-	}
+    }
 
     public function render()
     {

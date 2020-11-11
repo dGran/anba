@@ -41,6 +41,13 @@
         $('#confirmDestroyModal').modal('hide');
     });
 
+    window.livewire.on('duplicateMode', () => {
+        $('#confirmDuplicateModal').modal('show');
+    });
+    window.livewire.on('regDuplicate', () => {
+        $('#confirmDuplicateModal').modal('hide');
+    });
+
     window.livewire.on('openSelected', () => {
         $('#selectedModal').modal('show');
     });

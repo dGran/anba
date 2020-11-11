@@ -30,6 +30,7 @@
 		            	<i class="fas fa-edit mr-2"></i>Editar
 		            </a>
 	            @endif
+	            <a class="dropdown-item" wire:click="confirmDuplicate"><i class='bx bxs-copy mr-2'></i>Duplicar</a>
 	            <a class="dropdown-item red" wire:click="confirmDestroy"><i class="fas fa-trash mr-2"></i>Eliminar</a>
 	            <div class="dropdown-divider"></div>
 	            <a class="dropdown-item" wire:click="viewSelected(true)"><i class="fas fa-check-square mr-2"></i>Ver selección ({{ $regsSelected->count() }})</a>

@@ -49,6 +49,7 @@ $(function () {
     @include('livewire.admin.users.modals.edit')
     @include('livewire.admin.users.modals.filters')
     @include('livewire.partials.admin.modals.destroy')
+    @include('livewire.partials.admin.modals.duplicate')
     @include('livewire.partials.admin.modals.selected')
 </div> {{-- end-slot --}}
 
