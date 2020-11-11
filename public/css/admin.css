@@ -142,6 +142,14 @@
   color: #1a202c;
 }
 
+.modal-open {
+  padding-right: 0 !important;
+}
+
+html {
+  overflow-y: scroll !important;
+}
+
 .close:focus {
   outline: none;
 }
@@ -188,6 +196,45 @@
 
 .form-group.error p {
   color: #fc8181;
+}
+
+.bootstrap-select .btn-light {
+  background-color: #fff;
+  border-color: #ced4da;
+}
+
+.bootstrap-select .dropdown-menu {
+  padding: 0;
+}
+
+.bootstrap-select .dropdown-toggle:focus, .bootstrap-select .dropdown-toggle:active {
+  border-color: #80bdff;
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  text-decoration: none;
+}
+
+.btn-light:not(:disabled):not(.disabled).active, .btn-light:not(:disabled):not(.disabled):active, .show > .btn-light.dropdown-toggle {
+  color: #495057;
+  background-color: #fff;
+  border-color: #80bdff;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+  color: #495057;
+  text-decoration: none;
+  background-color: #F2F2F2;
+}
+
+.bs-searchbox .form-control {
+  font-size: 1em;
+  height: auto;
+}
+
+.bootstrap-select .no-results {
+  padding: 0.5em;
+  margin: 0;
 }
 
 .truncate {

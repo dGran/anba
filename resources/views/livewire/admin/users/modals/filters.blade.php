@@ -11,32 +11,35 @@
             </div>
             <div class="modal-body">
 
-
             	<div class="row">
             		<div class="col-md-6">
+
             			<div class="form-group">
-            				<label>Estado</label>
-            				<select class="form-control select2bs4 select2-hidden-accessible" style="width: 100%;" data-select2-id="17" tabindex="-1" aria-hidden="true" wire:model="state" wire:change="getStateEs">
-								<option value="all">Todos</option>
-								<option value="active">Activos</option>
-								<option value="inactive">Inactivos</option>
-            				</select>
+            				<label class="text-sm text-uppercase tracking-wide">Estado</label>
+							<div wire:ignore>
+								<select class="selectpicker show-tick text-sm" wire:model="state" wire:change="getStateEs">
+									<option value="all">Todos</option>
+									<option value="active">Activos</option>
+									<option value="inactive">Inactivos</option>
+								</select>
+							</div>
             			</div>
             			<!-- /.form-group -->
             		</div>
             		<!-- /.col -->
 	    			<div class="col-md-6">
             			<div class="form-group">
-            				<label>Paginación</label>
-            				<select class="form-control select2bs4 select2-hidden-accessible" style="width: 100%;" data-select2-id="17" tabindex="-1" aria-hidden="true" wire:model="perPage">
-								<option value="5">5 por página</option>
-								<option value="10">10 por página</option>
-								<option value="15">15 por página</option>
-								<option value="25">25 por página</option>
-								<option value="50">50 por página</option>
-								<option value="100">100 por página</option>
-								<option value="1000">1000 por página</option>
-            				</select>
+            				<label class="text-sm text-uppercase tracking-wide">Paginación</label>
+							<div wire:ignore>
+								<select class="selectpicker show-tick text-sm" wire:model="perPage">
+									<option value="5">5 por página</option>
+									<option value="10">10 por página</option>
+									<option value="15">15 por página</option>
+									<option value="25">25 por página</option>
+									<option value="50">50 por página</option>
+									<option value="100">100 por página</option>
+								</select>
+							</div>
             			</div>
             			<!-- /.form-group -->
             		</div>
@@ -45,11 +48,11 @@
             </div>
 
             <div class="modal-footer" style="background: #F9FAFB">
-                <button type="button" class="btn btn-primary ml-2 text-xs text-uppercase tracking-widest" wire:click="clearAllFilters" wire:loading.attr="disabled">
-                    Cancelar todos los filtros
+                <button type="button" class="btn btn-danger ml-2 text-xs text-uppercase tracking-widest" wire:click="clearAllFilters" wire:loading.attr="disabled">
+                    Reset
                 </button>
                 <button type="button" class="btn btn-borderless ml-2 text-xs text-uppercase tracking-widest" data-dismiss="modal" wire:loading.attr="disabled">
-                    Cerrar
+                    cerrar
                 </button>
             </div>
         </div>

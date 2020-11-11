@@ -8,7 +8,7 @@
         @enderror
     </div>
     <div class="form-group col-md-6 @error('email') error @enderror">
-        <label class=" text-sm text-uppercase tracking-wide">E-Mail</label>
+        <label class="text-sm text-uppercase tracking-wide">E-Mail</label>
         <input type="email" class="form-control text-sm" placeholder="Dirección e-mail..." wire:model="email">
         @error('email')
             <p class="text-xs pt-1 m-0">{{ $message }}</p>
