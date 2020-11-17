@@ -10,7 +10,7 @@
                 </li>
             @else
                 <li class="page-item">
-                    <a class="page-link" tabindex="0" rel="prev" aria-label="@lang('pagination.previous')" wire:click="previousPage()">
+                    <a class="page-link" rel="prev" aria-label="@lang('pagination.previous')" tabindex="0" wire:click="previousPage()">
                         <i class='bx bx-chevron-left text-lg'></i>
                     </a>
                 </li>

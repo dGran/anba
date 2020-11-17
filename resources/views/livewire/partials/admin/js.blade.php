@@ -48,6 +48,20 @@
         $('#confirmDuplicateModal').modal('hide');
     });
 
+    window.livewire.on('exportTableMode', () => {
+        $('#confirmExportTableModal').modal('show');
+    });
+    window.livewire.on('regExportTable', () => {
+        $('#confirmExportTableModal').modal('hide');
+    });
+
+    window.livewire.on('exportSelectedMode', () => {
+        $('#confirmExportSelectedModal').modal('show');
+    });
+    window.livewire.on('regExportSelected', () => {
+        $('#confirmExportSelectedModal').modal('hide');
+    });
+
     window.livewire.on('openSelected', () => {
         $('#selectedModal').modal('show');
     });

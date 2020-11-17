@@ -4,7 +4,7 @@
             <div class="modal-header">
                 <h5 class="modal-title text-base text-uppercase font-medium tracking-wide">
                     @if ($regsSelected->count() == 1)
-                        <span>Eliminar {{ $modelSingular }}</span>
+                        <span>Eliminar {{ $modelSingular }} seleccionado</span>
                     @else
                         <span>Eliminar {{ $modelPlural }} seleccionados</span>
                     @endif
@@ -19,7 +19,7 @@
                 @else
                     <p>¿Estás seguro que deseas eliminar {{ $modelGender = 'male' ? 'los' : 'las' }} {{ $regsSelected->count() }} {{ $modelPlural }} seleccionados?</p>
                 @endif
-                <p class="font-weight-bold text-danger m-0 mb-1">Esta acción será irreversible.</p>
+                <p class="font-weight-bold text-danger m-0 mb-1">Esta acción será irreversible</p>
             </div>
             <div class="modal-footer" style="background: #F9FAFB">
                 <button type="button" class="btn btn-borderless ml-2 text-xs text-uppercase tracking-widest" data-dismiss="modal" wire:loading.attr="disabled">

@@ -4,7 +4,7 @@
             <div class="modal-header">
                 <h5 class="modal-title text-base text-uppercase font-medium tracking-wide">
                     @if ($regsSelected->count() == 1)
-                        <span>Duplicar {{ $modelSingular }}</span>
+                        <span>Duplicar {{ $modelSingular }} seleccionado</span>
                     @else
                         <span>Duplicar {{ $modelPlural }} seleccionados</span>
                     @endif

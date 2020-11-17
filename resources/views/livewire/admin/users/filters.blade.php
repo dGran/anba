@@ -31,6 +31,11 @@
 		            </a>
 	            @endif
 	            <a class="dropdown-item" wire:click="confirmDuplicate"><i class='bx bxs-copy mr-2'></i>Duplicar</a>
+	            <div class="dropdown-divider"></div>
+	            <a class="dropdown-item" wire:click="confirmExportSelected('xls')"><i class="bx bxs-file-export mr-2"></i></i>Exportar (.xls)</a>
+	            <a class="dropdown-item" wire:click="confirmExportSelected('xlsx')"><i class="bx bxs-file-export mr-2"></i></i>Exportar (.xlsx)</a>
+	            <a class="dropdown-item" wire:click="confirmExportSelected('csv')"><i class="bx bxs-file-export mr-2"></i></i>Exportar (.csv)</a>
+	            <div class="dropdown-divider"></div>
 	            <a class="dropdown-item red" wire:click="confirmDestroy"><i class="fas fa-trash mr-2"></i>Eliminar</a>
 	            <div class="dropdown-divider"></div>
 	            <a class="dropdown-item" wire:click="viewSelected(true)"><i class="fas fa-check-square mr-2"></i>Ver selección ({{ $regsSelected->count() }})</a>
@@ -46,10 +51,11 @@
 			<div class="dropdown-menu dropdown-menu-right">
 	            <h6 class="dropdown-header">Opciones de tabla</h6>
 	            <div class="dropdown-divider"></div>
-	            <a class="dropdown-item"><i class="fas fa-file-excel mr-2"></i></i>Importar</a>
-	            <a class="dropdown-item"><i class="fas fa-file-excel mr-2"></i></i>Exportar (.xls)</a>
-	            <a class="dropdown-item"><i class="fas fa-file-excel mr-2"></i></i>Exportar (.xlsx)</a>
-	            <a class="dropdown-item"><i class="fas fa-file-excel mr-2"></i></i>Exportar (.csv)</a>
+	            <a class="dropdown-item"><i class="bx bxs-file-import mr-2"></i></i></i>Importar</a>
+	            <div class="dropdown-divider"></div>
+	            <a class="dropdown-item" wire:click="confirmExportTable('xls')"><i class="bx bxs-file-export mr-2"></i></i></i>Exportar (.xls)</a>
+	            <a class="dropdown-item" wire:click="confirmExportTable('xlsx')"><i class="bx bxs-file-export mr-2"></i></i>Exportar (.xlsx)</a>
+	            <a class="dropdown-item" wire:click="confirmExportTable('csv')"><i class="bx bxs-file-export mr-2"></i></i>Exportar (.csv)</a>
 			</div>
 		</div>
 

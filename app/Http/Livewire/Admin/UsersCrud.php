@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\withPagination;
+use App\Exports\UsersExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UsersCrud extends Component
 {
@@ -36,6 +38,11 @@ class UsersCrud extends Component
 
 	//continuous insertion
 	public $continuousInsert = false;
+
+	//export
+	public $formatExport = '';
+	public $filenameExportTable = '';
+	public $filenameExportSelected = '';
 
 	//queryString
 	protected $queryString = [
@@ -241,6 +248,18 @@ class UsersCrud extends Component
 		$this->emit('duplicateMode');
     }
 
+    public function confirmExportTable($format)
+    {
+    	$this->formatExport = $format;
+		$this->emit('exportTableMode');
+    }
+
+    public function confirmExportSelected($format)
+    {
+    	$this->formatExport = $format;
+		$this->emit('exportSelectedMode');
+    }
+
     public function nextPage()
     {
     	$this->page++;
@@ -314,6 +333,58 @@ class UsersCrud extends Component
 			$this->emit('regDuplicate');
 			$this->regsSelectedArray = [];
 		}
+    }
+
+    public function tableExport()
+    {
+    	$this->emit('regExportTable');
+    	$filename = $this->filenameExportTable ?: 'usuarios';
+		$users = User::name($this->search)
+	        		->orEmail($this->search)
+	    			->state($this->state)
+	        		->orderBy($this->order, $this->orderDirection)
+	        		->get();
+    	return Excel::download(new UsersExport($users), $filename . '.' . $this->formatExport);
+    }
+
+    public function selectedExport()
+    {
+    	$this->emit('regExportSelected');
+    	$filename = $this->filenameExportSelected ?: 'usuarios_seleccionados';
+
+        $users = User::whereIn('id', $this->regsSelectedArray)->orderBy($this->order, $this->orderDirection)->get();
+		return Excel::download(new UsersExport($users), $filename . '.' . $this->formatExport);
+
+        // switch ($this->formatExport) {
+        //     case 'xls':
+        //         return (new UsersExport($users))->download($filename . '.' . $this->formatExport, \Maatwebsite\Excel\Excel::XLS);
+        //         break;
+        //     case 'xlsx':
+        //         return (new UsersExport($users))->download($filename . '.' . $format, \Maatwebsite\Excel\Excel::XLSX);
+        //         break;
+        //     case 'csv':
+        //         return (new UsersExport($users))->download($filename . '.' . $format, \Maatwebsite\Excel\Excel::CSV);
+        //         break;
+        //     default:
+        //         flash()->error('Formato de archivo no válido.');
+        //         return back();
+        //         break;
+
+
+    // 	switch ($ext) {
+    // 		case 'xlsx':
+				// return Excel::download(new UsersExport, 'users.xlsx');
+    // 			break;
+    // 		case 'xls':
+				// return Excel::download(new UsersExport, 'users.xls');
+    // 			break;
+    // 		case 'csv':
+				// return Excel::download(new UsersExport, 'users.csv');
+    // 			break;
+    // 		default:
+				// return Excel::download(new UsersExport, 'users.csv');
+    // 			break;
+    	// }
     }
 
     public function render()

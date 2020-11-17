@@ -10,7 +10,7 @@
 	<div>
 
 	    <div class="py-6">
-	        @include('livewire.partials.flash-messages')
+	        {{-- @include('livewire.partials.flash-messages') --}}
 	        <div class="flex flex-col">
 	            <div class="leading-10">
 	                <ul>
