@@ -1,7 +1,7 @@
-@section('title', 'Usuarios')
+@section('title', 'Equipos')
 
 @section('content_header')
-    <h1>Usuarios</h1>
+    <h1>Equipos</h1>
 @stop
 
 @section('css')
@@ -27,9 +27,9 @@
     @include('livewire.partials.admin.js')
 
     <script>
-$(function () {
-    $('select').selectpicker();
-});
+        $(function () {
+            $('select').selectpicker();
+        });
     </script>
 @stop
 
@@ -37,19 +37,20 @@ $(function () {
 
 <div class="py-2"> {{-- slot --}}
 
-    @include('livewire.admin.users.filters')
+    @include('livewire.admin.teams.filters')
 
-    @include('livewire.admin.users.table')
+    @include('livewire.admin.teams.table')
 
     @include('livewire.partials.admin.table.table-footer')
 
-    {{-- @include('livewire.admin.users.table.selected-options') --}}
+    {{-- @include('livewire.admin.teams.table.selected-options') --}}
 
-    @include('livewire.admin.users.modals.add')
-    @include('livewire.admin.users.modals.edit')
-    @include('livewire.admin.users.modals.filters')
+    @include('livewire.admin.teams.modals.add')
+    @include('livewire.admin.teams.modals.edit')
+    @include('livewire.admin.teams.modals.filters')
     @include('livewire.partials.admin.modals.destroy')
     @include('livewire.partials.admin.modals.duplicate')
+    @include('livewire.partials.admin.modals.import_table')
     @include('livewire.partials.admin.modals.export_table')
     @include('livewire.partials.admin.modals.export_selected')
     @include('livewire.partials.admin.modals.selected')

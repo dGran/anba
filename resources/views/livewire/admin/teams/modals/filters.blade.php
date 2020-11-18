@@ -25,23 +25,6 @@
             </div>
             <div class="modal-body">
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="text-sm text-uppercase tracking-wide">Estado</label>
-                            {{-- <div wire:ignore> --}}
-                                <select class="form-control custom-select text-sm" wire:model="state">
-                                    <option value="all">Todos</option>
-                                    <option value="active">Activos</option>
-                                    <option value="inactive">Inactivos</option>
-                                </select>
-                            {{-- </div> --}}
-                        </div>
-                        <!-- /.form-group -->
-                    </div>
-                    <!-- /.col -->
-                </div>
-
             	<div class="row">
             		<div class="col-md-6">
             			<div class="form-group">

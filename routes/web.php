@@ -7,6 +7,7 @@ use App\Http\Controllers\TeamController;
 
 use App\Http\Livewire\Admin\Dashboard;
 use App\Http\Livewire\Admin\UsersCrud;
+use App\Http\Livewire\Admin\TeamsCrud;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,8 +37,6 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/jugadores', function () {
 })->name('players');
 
 
-
-
 // admin routes
 
 // Route::middleware(['auth:sanctum', 'verified'])
@@ -47,4 +46,5 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/jugadores', function () {
 Route::middleware(['auth:sanctum', 'verified'])->prefix('admin')->group(function() {
 	Route::get('/', Dashboard::class)->name('admin');
 	Route::get('usuarios', UsersCrud::class)->name('admin.users');
+	Route::get('equipos', TeamsCrud::class)->name('admin.teams');
 });

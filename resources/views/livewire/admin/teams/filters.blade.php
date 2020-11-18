@@ -62,7 +62,7 @@
 		<button type="button" class="btn btn-white mr-1" wire:click="viewFilters(true)">
 			<i class="fas fa-filter"></i>
 		</button>
-		<button type="button" class="btn btn-white {{ ($search == '' && $perPage == '10' && $state == 'all') ? 'disabled' : '' }}" wire:click="clearAllFilters">
+		<button type="button" class="btn btn-white {{ ($search == '' && $perPage == '10') ? 'disabled' : '' }}" wire:click="clearAllFilters">
 			<i class="fas fa-eraser"></i>
 		</button>
 	</div>
@@ -70,22 +70,12 @@
 
 
 {{-- Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse ipsum ea vel hic dolorem! Id, modi ex alias dicta maxime perspiciatis numquam, libero hic, nemo explicabo ullam molestias tenetur, et. --}}
-@if ($search || $perPage !== "10" || $state !== 'all')
+@if ($search || $perPage !== "10")
 	<ul class="list-inline" style="margin: -.5em 0 .5em 0;">
 		@if ($search)
 			<li class="list-inline-item">
 				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterSearch()">
 					{{ $search }}<i class="fas fa-times ml-2"></i>
-				<a>
-			</li>
-		@endif
-		@if ($state !== 'all')
-			<li class="list-inline-item">
-				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterState()">
-					{{ $state == 'all' ? 'todos' : '' }}
-					{{ $state == 'active' ? 'activos' : '' }}
-					{{ $state == 'inactive' ? 'inactivos' : '' }}
-					<i class="fas fa-times ml-2"></i>
 				<a>
 			</li>
 		@endif

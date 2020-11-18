@@ -48,6 +48,13 @@
         $('#confirmDuplicateModal').modal('hide');
     });
 
+    window.livewire.on('importMode', () => {
+        $('#confirmImportModal').modal('show');
+    });
+    window.livewire.on('regImport', () => {
+        $('#confirmImportModal').modal('hide');
+    });
+
     window.livewire.on('exportTableMode', () => {
         $('#confirmExportTableModal').modal('show');
     });
@@ -75,7 +82,6 @@
     window.livewire.on('closeFilters', () => {
         $('#filterModal').modal('hide');
     });
-
 
     Mousetrap.bind('/', function() {
         $('.search-input').focus();

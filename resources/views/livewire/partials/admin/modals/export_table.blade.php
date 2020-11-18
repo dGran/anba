@@ -13,9 +13,9 @@
                 <p>Se van a exportar todos los registros de la tabla de {{ $modelPlural }} en formato <strong>".{{ $formatExport }}"</strong></p>
                 <p class="font-weight-bold m-0 mb-1">Se aplicarán los filtros y el orden actual</p>
 
-                <p class="pt-4">
-                    <label class="text-uppercase tracking-wide">Nombre del archivo</label><span style="margin-left: .5rem; text-transform: uppercase; font-size: 10px">(opcional)</span>
-                    <input type="text" class="form-control" wire:model="filenameExportTable" placeholder="Nombre del archivo .{{ $formatExport }}">
+                <p class="mt-4 pt-4" style="text-align: left">
+                    <label class="text-uppercase tracking-wide text-xs" style="font-weight: normal;">Nombre del archivo</label><span style="margin-left: .5rem; text-transform: uppercase; font-size: 10px">(opcional)</span>
+                    <input type="text" class="form-control text-xs" wire:model="filenameExportTable" placeholder="Nombre del archivo .{{ $formatExport }}">
                 </p>
             </div>
             <div class="modal-footer" style="background: #F9FAFB">

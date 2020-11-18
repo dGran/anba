@@ -2,41 +2,38 @@
 
 namespace App\Http\Livewire\Admin;
 
-use App\Models\User;
+use App\Models\Team;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\withPagination;
 use Livewire\WithFileUploads;
-use App\Exports\UsersExport;
-use App\Imports\UsersImport;
+use App\Exports\TeamsExport;
+use App\Imports\TeamsImport;
 use Maatwebsite\Excel\Facades\Excel;
 
-class UsersCrud extends Component
+class TeamsCrud extends Component
 {
 	use WithPagination;
 	use WithFileUploads;
 
 	//model info
-	public $modelSingular = "usuario";
-	public $modelPlural = "usuarios";
+	public $modelSingular = "equipo";
+	public $modelPlural = "equipos";
 	public $modelGender = "male";
 	public $modelHasImg = true;
 
 	//filters
 	public $search = "";
 	public $perPage = '10';
-	public $state = 'all';
 	public $order = 'id';
 	public $orderDirection = 'desc';
 
-	// general vars
-	public $updateMode = false;
 
 	//selected regs
 	public $regsSelectedArray = [];
 
 	//fields
-	public $user_id, $name, $email, $password;
+	public $team_id, $name, $img, $stadium;
 
 	//continuous insertion
 	public $continuousInsert = false;
@@ -51,8 +48,7 @@ class UsersCrud extends Component
 	protected $queryString = [
 		'search' => ['except' => ''],
 		'perPage' => ['except' => '10'],
-		'order' => ['except' => 'id'],
-		'state' => ['except' => 'all']
+		'order' => ['except' => 'id']
 	];
 
 	// Selected
@@ -114,11 +110,6 @@ class UsersCrud extends Component
     	$this->search = '';
     }
 
-    public function cancelFilterState()
-    {
-    	$this->state = 'all';
-    }
-
     public function setFilterPerPage($number)
     {
     	$this->perPage = $number;
@@ -136,19 +127,17 @@ class UsersCrud extends Component
     	$this->perPage = '10';
 		$this->order = 'id';
 		$this->orderDirection = 'desc';
-		$this->state = 'all';
     }
 
     // Add & Store
     public function add()
     {
 		$this->name = '';
-		$this->email = '';
-		$this->password = '';
+		$this->img = '';
+		$this->stadium = '';
 
 		$this->resetValidation();
 
-		$this->updateMode = false;
     	$this->emit('addMode');
     }
 
@@ -156,19 +145,16 @@ class UsersCrud extends Component
     {
 		$this->validate([
 			'name' => 'required',
-			'email' => 'required',
-			'password' => 'required',
 		]);
 
-		$user = User::create([
+		$team = Team::create([
 			'name' => $this->name,
-			'email' => $this->email,
-            // 'email_verified_at' => now(),
-            'password' => bcrypt($this->password),
-            'remember_token' => Str::random(10),
+			// 'img' => $this->img,
+			'stadium' => $this->stadium,
+			'slug' => Str::slug($this->name, '-')
 		]);
 
-		if ($user->save()) {
+		if ($team->save()) {
 			$this->emit('alert', ['type' => 'success', 'message' => 'Registro agregado correctamente.']);
 		} else {
 			$this->emit('alert', ['type' => 'error', 'message' => 'Se ha producido un error y no se han podido actualizar los datos.']);
@@ -176,8 +162,8 @@ class UsersCrud extends Component
 
 		if ($this->continuousInsert) {
 			$this->name = '';
-			$this->email = '';
-			$this->password = '';
+			$this->img = '';
+			$this->stadium = '';
 		} else {
 			$this->emit('regStore');
 		}
@@ -187,15 +173,14 @@ class UsersCrud extends Component
 	// Edit & Update
     public function edit($id)
     {
-    	$user = User::find($id);
-		$this->user_id = $user->id;
-    	$this->name = $user->name;
-    	$this->email = $user->email;
-    	$this->password = $user->password;
+    	$team = Team::find($id);
+		$this->team_id = $team->id;
+    	$this->name = $team->name;
+    	$this->img = $team->img;
+    	$this->stadium = $team->stadium;
 
 		$this->resetValidation();
 
-		$this->updateMode = true;
     	$this->emit('editMode');
     }
 
@@ -203,16 +188,17 @@ class UsersCrud extends Component
     {
 		$this->validate([
 			'name' => 'required',
-			'email' => 'required',
 		]);
 
-    	$user = User::find($this->user_id);
+    	$team = Team::find($this->team_id);
 
-		$user->name = $this->name;
-		$user->email = $this->email;
+		$team->name = $this->name;
+		$team->img = $this->img;
+		$team->stadium = $this->stadium;
+		$team->slug = Str::slug($this->name, '-');
 
-        if ($user->isDirty()) {
-            if ($user->update()) {
+        if ($team->isDirty()) {
+            if ($team->update()) {
             	$this->emit('alert', ['type' => 'success', 'message' => 'Registro actualizado correctamente.']);
             } else {
             	$this->emit('alert', ['type' => 'error', 'message' => 'Se ha producido un error y no se han podido actualizar los datos.']);
@@ -268,7 +254,7 @@ class UsersCrud extends Component
     	if (count($this->regsSelectedArray) > 1) {
     		$counter = 0;
 			foreach ($this->regsSelectedArray as $reg) {
-				if (User::destroy($reg)) {
+				if (Team::destroy($reg)) {
 					$counter++;
 				}
 			}
@@ -280,7 +266,7 @@ class UsersCrud extends Component
 			$this->emit('regDestroy');
 			$this->regsSelectedArray = [];
 		} else {
-			if (User::destroy(reset($this->regsSelectedArray))) {
+			if (Team::destroy(reset($this->regsSelectedArray))) {
 				$this->emit('alert', ['type' => 'success', 'message' => 'Registro eliminado correctamente!.']);
 			} else {
 				$this->emit('alert', ['type' => 'error', 'message' => 'El registro que querías eliminar ya no existe.']);
@@ -294,14 +280,13 @@ class UsersCrud extends Component
     	if (count($this->regsSelectedArray) > 1) {
     		$counter = 0;
 			foreach ($this->regsSelectedArray as $reg) {
-	            $original = User::find($reg);
+	            $original = Team::find($reg);
 	            if ($original) {
 	            	$counter++;
-	                $user = $original->replicate();
+	                $team = $original->replicate();
                 	$random_numer = rand(100,999);
-                	$user->name .= " (copia_" . $random_numer . ")";
-                	$user->email .= " (copia_" . $random_numer . ")";
-	                $user->save();
+                	$team->name .= " (copia_" . $random_numer . ")";
+	                $team->save();
 	            }
 			}
 			if ($counter > 0) {
@@ -312,13 +297,12 @@ class UsersCrud extends Component
 			$this->emit('regDuplicate');
 			$this->regsSelectedArray = [];
 		} else {
-            $original = User::find(reset($this->regsSelectedArray));
+            $original = Team::find(reset($this->regsSelectedArray));
             if ($original) {
-                $user = $original->replicate();
+                $team = $original->replicate();
             	$random_numer = rand(100,999);
-            	$user->name .= " (copia_" . $random_numer . ")";
-            	$user->email .= " (copia_" . $random_numer . ")";
-                $user->save();
+            	$team->name .= " (copia_" . $random_numer . ")";
+                $team->save();
 				$this->emit('alert', ['type' => 'success', 'message' => 'Registro duplicado correctamente!.']);
             } else {
             	$this->emit('alert', ['type' => 'error', 'message' => 'El registro que querías duplicar ya no existe.']);
@@ -331,27 +315,25 @@ class UsersCrud extends Component
     public function tableExport()
     {
     	$this->emit('regExportTable');
-    	$filename = $this->filenameExportTable ?: 'usuarios';
+    	$filename = $this->filenameExportTable ?: 'equipos';
 
-		$users = User::name($this->search)
-	        		->orEmail($this->search)
-	    			->state($this->state)
+		$teams = Team::name($this->search)
 	        		->orderBy($this->order, $this->orderDirection)
 	        		->get();
 
 		$this->emit('alert', ['type' => 'success', 'message' => 'Registros exportados correctamente!.']);
-    	return Excel::download(new UsersExport($users), $filename . '.' . $this->formatExport);
+    	return Excel::download(new TeamsExport($teams), $filename . '.' . $this->formatExport);
     }
 
     public function selectedExport()
     {
     	$this->emit('regExportSelected');
-    	$filename = $this->filenameExportSelected ?: 'usuarios_seleccionados';
+    	$filename = $this->filenameExportSelected ?: 'equipos_seleccionados';
 
-        $users = User::whereIn('id', $this->regsSelectedArray)->orderBy($this->order, $this->orderDirection)->get();
+        $teams = Team::whereIn('id', $this->regsSelectedArray)->orderBy($this->order, $this->orderDirection)->get();
 
         $this->emit('alert', ['type' => 'success', 'message' => 'Registros exportados correctamente!.']);
-		return Excel::download(new UsersExport($users), $filename . '.' . $this->formatExport);
+		return Excel::download(new TeamsExport($teams), $filename . '.' . $this->formatExport);
 
         // switch ($this->formatExport) {
         //     case 'xls':
@@ -389,7 +371,7 @@ class UsersCrud extends Component
     public function import()
     {
         if ($this->fileImport != null) {
-        	Excel::import(new UsersImport, $this->fileImport);
+        	Excel::import(new TeamsImport, $this->fileImport);
         	// (new UsersImport)->queue($this->fileImport);
     		$this->emit('alert', ['type' => 'success', 'message' => 'Registros importados correctamente!.']);
         } else {
@@ -400,8 +382,8 @@ class UsersCrud extends Component
 
     public function render()
     {
-    	// $users = User::factory()->count(20)->create();
-        return view('livewire.admin.users', [
+    	// $teams = Team::factory()->count(20)->create();
+        return view('livewire.admin.teams', [
         			'regs' => $this->getData(),
         			'regsSelected' => $this->getDataSelected()
         		])->layout('adminlte::page');
@@ -409,28 +391,24 @@ class UsersCrud extends Component
 
 	private function getData()
 	{
-		$users = User::name($this->search)
-	        		->orEmail($this->search)
-	    			->state($this->state)
+		$teams = Team::name($this->search)
 	        		->orderBy($this->order, $this->orderDirection)
 	        		->paginate($this->perPage)->onEachSide(2);
-	    if (($users->total() > 0 && $users->count() == 0)) {
+	    if (($teams->total() > 0 && $teams->count() == 0)) {
 			$this->page = 1;
 		}
 		if ($this->page == 0) {
-			$this->page = $users->lastPage();
+			$this->page = $teams->lastPage();
 		}
-    	$users = User::name($this->search)
-        			->orEmail($this->search)
-    				->state($this->state)
+    	$teams = Team::name($this->search)
         			->orderBy($this->order, $this->orderDirection)
         			->paginate($this->perPage)->onEachSide(2);
 
-		return $users;
+		return $teams;
 	}
 
 	private function getDataSelected()
 	{
-		return User::whereIn('id', $this->regsSelectedArray)->orderBy($this->order, $this->orderDirection)->get();
+		return Team::whereIn('id', $this->regsSelectedArray)->orderBy($this->order, $this->orderDirection)->get();
 	}
 }

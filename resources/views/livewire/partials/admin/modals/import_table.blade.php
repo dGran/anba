@@ -1,0 +1,37 @@
+<div wire:ignore.self class="modal fade" tabindex="-1" role="dialog" id="confirmImportModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-base text-uppercase font-medium tracking-wide">
+                    <span>Importar {{ $modelPlural }}</span>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form wire:submit.prevent="import" enctype="multipart/form-data">
+                <div class="modal-body text-center">
+                    <p>Selecciona el archivo que contiene los datos (.xls, .xlsx, .csv)</p>
+                    <p class="font-weight-bold m-0 mb-1">Los {{ $modelPlural }} ya existentes serán omitidos</p>
+                    <div class="form-group">
+
+                        <div class="custom-file" style="text-align: left; margin-top: 1.5rem">
+                          <input type="file" class="custom-file-input" id="fileImport" name="fileImport" wire:model="fileImport" accept=".xls, .xlsx, .csv">
+                          <label class="custom-file-label" for="fileImport">Choose file</label>
+                            @error('name') <span class="text-danger">{{ $message }}</span> @enderror
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="background: #F9FAFB">
+                    <button type="button" class="btn btn-borderless ml-2 text-xs text-uppercase tracking-widest" data-dismiss="modal" wire:loading.attr="disabled">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary ml-2 text-xs text-uppercase tracking-widest" wire:loading.attr="disabled">
+                        <span wire:loading.class="d-none">Importar</span>
+                        <span class="d-none" wire:loading.class.remove="d-none">Importando...</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
