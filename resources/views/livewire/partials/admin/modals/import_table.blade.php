@@ -26,9 +26,8 @@
                     <button type="button" class="btn btn-borderless ml-2 text-xs text-uppercase tracking-widest" data-dismiss="modal" wire:loading.attr="disabled">
                         Cancelar
                     </button>
-                    <button type="submit" class="btn btn-primary ml-2 text-xs text-uppercase tracking-widest" wire:loading.attr="disabled">
-                        <span wire:loading.class="d-none">Importar</span>
-                        <span class="d-none" wire:loading.class.remove="d-none">Importando...</span>
+                    <button type="submit" class="btn btn-primary ml-2 text-xs text-uppercase tracking-widest" wire:loading.attr="disabled" id="importButton" onclick="$('#importButton').text('Importando...');">
+                        Importar
                     </button>
                 </div>
             </form>

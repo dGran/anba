@@ -31,6 +31,7 @@ class TeamsCrud extends Component
 
 	//selected regs
 	public $regsSelectedArray = [];
+	public $checkAllSelector = 0;
 
 	//fields
 	public $team_id, $name, $img, $stadium;
@@ -59,6 +60,21 @@ class TeamsCrud extends Component
 			$this->regsSelectedArray[$id] = $id;
 		} else {
 			unset($this->regsSelectedArray[$array_id]);
+		}
+	}
+
+	public function checkAll()
+	{
+		$teams = Team::name($this->search)
+	        		->orderBy($this->order, $this->orderDirection)
+	        		->paginate($this->perPage, ['*'], 'page', $this->page);
+		foreach ($teams as $team) {
+			if ($this->checkAllSelector == 1) {
+				$this->regsSelectedArray[$team->id] = $team->id;
+			} else {
+				$array_id = array_search($team->id, $this->regsSelectedArray);
+				unset($this->regsSelectedArray[$array_id]);
+			}
 		}
 	}
 
@@ -320,6 +336,7 @@ class TeamsCrud extends Component
 		$teams = Team::name($this->search)
 	        		->orderBy($this->order, $this->orderDirection)
 	        		->get();
+		$teams->makeHidden(['slug']);
 
 		$this->emit('alert', ['type' => 'success', 'message' => 'Registros exportados correctamente!.']);
     	return Excel::download(new TeamsExport($teams), $filename . '.' . $this->formatExport);
@@ -331,6 +348,7 @@ class TeamsCrud extends Component
     	$filename = $this->filenameExportSelected ?: 'equipos_seleccionados';
 
         $teams = Team::whereIn('id', $this->regsSelectedArray)->orderBy($this->order, $this->orderDirection)->get();
+        $teams->makeHidden(['slug']);
 
         $this->emit('alert', ['type' => 'success', 'message' => 'Registros exportados correctamente!.']);
 		return Excel::download(new TeamsExport($teams), $filename . '.' . $this->formatExport);
@@ -372,7 +390,7 @@ class TeamsCrud extends Component
     {
         if ($this->fileImport != null) {
         	Excel::import(new TeamsImport, $this->fileImport);
-        	// (new UsersImport)->queue($this->fileImport);
+        	// (new TeamsImport)->queue($this->fileImport);
     		$this->emit('alert', ['type' => 'success', 'message' => 'Registros importados correctamente!.']);
         } else {
         	$this->emit('alert', ['type' => 'error', 'message' => 'Ningún archivo seleccionado.']);
@@ -404,11 +422,27 @@ class TeamsCrud extends Component
         			->orderBy($this->order, $this->orderDirection)
         			->paginate($this->perPage)->onEachSide(2);
 
+        $this->setCheckAllSelector();
 		return $teams;
+	}
+
+	public function setCheckAllSelector()
+	{
+		$teams = Team::name($this->search)
+	        		->orderBy($this->order, $this->orderDirection)
+	        		->paginate($this->perPage, ['*'], 'page', $this->page);
+		foreach ($teams as $team) {
+			$array_id = array_search($team->id, $this->regsSelectedArray);
+			$this->checkAllSelector = 1;
+			if (!$array_id) {
+				$this->checkAllSelector = 0;
+			}
+		}
 	}
 
 	private function getDataSelected()
 	{
 		return Team::whereIn('id', $this->regsSelectedArray)->orderBy($this->order, $this->orderDirection)->get();
 	}
+
 }

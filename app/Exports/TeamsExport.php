@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\Teams;
+use App\Models\Team;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -23,7 +23,7 @@ class TeamsExport implements FromCollection, WithHeadings
     */
     public function collection()
     {
-        return $this->teams ?: User::all();
+        return $this->teams ?: Team::all();
     }
 
     public function headings(): array

@@ -34,6 +34,7 @@ class UsersCrud extends Component
 
 	//selected regs
 	public $regsSelectedArray = [];
+	public $checkAllSelector = 0;
 
 	//fields
 	public $user_id, $name, $email, $password;
@@ -63,6 +64,23 @@ class UsersCrud extends Component
 			$this->regsSelectedArray[$id] = $id;
 		} else {
 			unset($this->regsSelectedArray[$array_id]);
+		}
+	}
+
+	public function checkAll()
+	{
+		$users = User::name($this->search)
+	        		->orEmail($this->search)
+	    			->state($this->state)
+	        		->orderBy($this->order, $this->orderDirection)
+	        		->paginate($this->perPage, ['*'], 'page', $this->page);
+		foreach ($users as $user) {
+			if ($this->checkAllSelector == 1) {
+				$this->regsSelectedArray[$user->id] = $user->id;
+			} else {
+				$array_id = array_search($user->id, $this->regsSelectedArray);
+				unset($this->regsSelectedArray[$array_id]);
+			}
 		}
 	}
 
@@ -426,7 +444,24 @@ class UsersCrud extends Component
         			->orderBy($this->order, $this->orderDirection)
         			->paginate($this->perPage)->onEachSide(2);
 
+		$this->setCheckAllSelector();
 		return $users;
+	}
+
+	public function setCheckAllSelector()
+	{
+		$users = User::name($this->search)
+        			->orEmail($this->search)
+    				->state($this->state)
+	        		->orderBy($this->order, $this->orderDirection)
+	        		->paginate($this->perPage, ['*'], 'page', $this->page);
+		foreach ($users as $user) {
+			$array_id = array_search($user->id, $this->regsSelectedArray);
+			$this->checkAllSelector = 1;
+			if (!$array_id) {
+				$this->checkAllSelector = 0;
+			}
+		}
 	}
 
 	private function getDataSelected()

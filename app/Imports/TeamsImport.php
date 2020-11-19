@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\Team;
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\Importable;
@@ -15,13 +16,14 @@ class TeamsImport implements ToModel, WithHeadingRow
 
     public function model(array $row)
     {
-        $Team = Team::create([
-           'name'     => $row['name'],
-           'img'      => $row['img'],
-           'stadium'  => $row['stadium'],
+        $team = Team::create([
+           'name'       => $row['name'],
+           'img'        => $row['img'],
+           'stadium'    => $row['stadium'],
            'created_at' => $row['created_at'],
            'updated_at' => $row['updated_at'],
+           'slug'       => Str::slug($row['name'], '-')
         ]);
-        return $user;
+        return $team;
     }
 }
