@@ -1,17 +1,3 @@
-{{-- <style>
-    select {
-        background-image:
-        linear-gradient(45deg, transparent 50%, #B8BEC5 60%),
-        linear-gradient(135deg, #B8BEC5 40%, transparent 50%) !important;
-        background-position: calc(100% - 10px) 14px, calc(100% - 20px) 14px, 100% 0;
-        background-size: 5px 5px, 5px 5px;
-        background-repeat: no-repeat;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-    }
-</style> --}}
-
-
 <div wire:ignore.self class="modal fade" tabindex="-1" role="dialog" id="filterModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

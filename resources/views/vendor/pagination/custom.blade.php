@@ -9,8 +9,15 @@
                     </a>
                 </li>
             @else
+                {{-- fix for previuos --}}
+                <li class="page-item d-none">
+                    <a class="page-link" rel="prev" aria-label="@lang('pagination.previous')" tabindex="0" wire:click="setPreviousPage">
+                        <i class='bx bx-chevron-left text-lg'></i>
+                    </a>
+                </li>
+                {{-- end-fix --}}
                 <li class="page-item">
-                    <a class="page-link" rel="prev" aria-label="@lang('pagination.previous')" tabindex="0" wire:click="previousPage">
+                    <a class="page-link" rel="prev" aria-label="@lang('pagination.previous')" tabindex="0" wire:click="setPreviousPage">
                         <i class='bx bx-chevron-left text-lg'></i>
                     </a>
                 </li>
@@ -38,7 +45,7 @@
             {{-- Next Page Link --}}
             @if ($paginator->hasMorePages())
                 <li class="page-item">
-                    <a class="page-link" rel="next" aria-label="@lang('pagination.next')" tabindex="0" wire:click="nextPage">
+                    <a class="page-link" rel="next" aria-label="@lang('pagination.next')" tabindex="0" wire:click="setNextPage">
                         <i class='bx bx-chevron-right text-lg'></i>
                     </a>
                 </li>

@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Team extends Model
 {
@@ -22,9 +23,33 @@ class Team extends Model
         return $query->where('name', 'LIKE', "%{$name}%");
     }
 
+    public function storageImg()
+    {
+        if (substr($this->img, 0, 5) == "teams") {
+            return true;
+        }
+        return false;
+    }
+
     public function getImg()
     {
-        return $this->img;
+        $default = asset('storage/teams/default.png');
+        $local = asset('storage/' . $this->img);
+        $broken = asset('img/broken.png');
+
+        if ($this->img) {
+            if ($this->storageImg()) {
+                if (Storage::disk('public')->exists($this->img)) {
+                    return $local;
+                } else {
+                    return $broken;
+                }
+            } else {
+                return $this->img;
+            }
+        } else {
+            return $default;
+        }
     }
 
     public function getName()
@@ -42,5 +67,12 @@ class Team extends Model
     {
         $date = Carbon::parse($this->created_at)->locale(app()->getLocale());
         return $date->isoFormat("kk[:]mm");
+    }
+
+    public function canDestroy()
+    {
+        // apply logic
+        // ....
+        return true;
     }
 }

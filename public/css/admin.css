@@ -237,6 +237,10 @@ html {
   margin: 0;
 }
 
+.custom-file-label::after {
+  content: "Seleccionar";
+}
+
 .truncate {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -268,8 +272,9 @@ html {
 
 .filters .btn-new:hover, .filters .btn-new:focus {
   background-image: none;
-  border: 1px solid #ced4da;
-  color: #666;
+  background-color: #ebf4ff;
+  border-color: #a3bffa;
+  color: #667eea;
 }
 
 .filters .dropdown-menu {

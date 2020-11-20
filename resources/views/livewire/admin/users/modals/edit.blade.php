@@ -9,17 +9,19 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                @include('livewire.admin.users.forms.form')
-            </div>
-            <div class="modal-footer" style="background: #F9FAFB">
-                <button type="button" class="btn btn-borderless ml-2 text-xs text-uppercase tracking-widest" data-dismiss="modal" wire:loading.attr="disabled">
-                    Cancelar
-                </button>
-                <button type="button" class="btn btn-primary ml-2 text-xs text-uppercase tracking-widest" wire:click.prevent="update" wire:loading.attr="disabled">
-                    Guardar
-                </button>
-            </div>
+            <form wire:submit.prevent="update">
+                <div class="modal-body">
+                    @include('livewire.admin.users.forms.form')
+                </div>
+                <div class="modal-footer" style="background: #F9FAFB">
+                    <button type="button" class="btn btn-borderless ml-2 text-xs text-uppercase tracking-widest" data-dismiss="modal">
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-primary ml-2 text-xs text-uppercase tracking-widest">
+                        Guardar
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

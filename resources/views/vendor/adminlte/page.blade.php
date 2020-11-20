@@ -51,8 +51,7 @@
 
         </div>
 
-        @stack('modals')
-        {{-- @yield('modals') --}}
+        {{-- @stack('modals') --}}
 
         {{-- Footer --}}
         @hasSection('footer')

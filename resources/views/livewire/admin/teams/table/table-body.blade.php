@@ -16,7 +16,7 @@
 			</td>
 			<td>
 				<div class="d-flex align-items-center">
-					<img class="image rounded-circle" src="{{ $reg->img }}" alt="{{ $reg->name }}" style="height: 40px">
+					<img class="image rounded" src="{{ $reg->getImg() }}" alt="{{ $reg->name }}" style="height: 40px; width: auto; padding: 1px">
 					<div class="pl-2">
 						<span class="name truncate" wire:click.stop="edit({{ $reg->id }})">
 							{{ $reg->name }}

@@ -36,18 +36,15 @@
 {{-- @section('plugins.Sweetalert2', true) --}}
 
 <div class="py-2"> {{-- slot --}}
-
     @include('livewire.admin.teams.filters')
-
     @include('livewire.admin.teams.table')
-
     @include('livewire.partials.admin.table.table-footer')
 
-    {{-- @include('livewire.admin.teams.table.selected-options') --}}
-
+    {{-- modals --}}
     @include('livewire.admin.teams.modals.add')
     @include('livewire.admin.teams.modals.edit')
     @include('livewire.admin.teams.modals.filters')
+
     @include('livewire.partials.admin.modals.destroy')
     @include('livewire.partials.admin.modals.duplicate')
     @include('livewire.partials.admin.modals.import_table')
@@ -55,6 +52,3 @@
     @include('livewire.partials.admin.modals.export_selected')
     @include('livewire.partials.admin.modals.selected')
 </div> {{-- end-slot --}}
-
-{{-- @section('modals') --}}
-{{-- @endsection --}}

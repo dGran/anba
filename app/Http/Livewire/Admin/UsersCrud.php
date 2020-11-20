@@ -271,12 +271,12 @@ class UsersCrud extends Component
 		$this->emit('exportSelectedMode');
     }
 
-    public function nextPage()
+    public function setNextPage()
     {
     	$this->page++;
     }
 
-    public function previuosPage()
+    public function setPreviousPage()
     {
 		$this->page--;
     }
@@ -455,9 +455,10 @@ class UsersCrud extends Component
     				->state($this->state)
 	        		->orderBy($this->order, $this->orderDirection)
 	        		->paginate($this->perPage, ['*'], 'page', $this->page);
+
+		$this->checkAllSelector = 1;
 		foreach ($users as $user) {
 			$array_id = array_search($user->id, $this->regsSelectedArray);
-			$this->checkAllSelector = 1;
 			if (!$array_id) {
 				$this->checkAllSelector = 0;
 			}

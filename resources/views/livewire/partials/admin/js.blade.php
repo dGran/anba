@@ -91,11 +91,11 @@
 
     document.addEventListener('livewire:load', function () {
         Mousetrap.bind("right", function() {
-            @this.nextPage();
+            @this.setNextPage();
             return false;
         });
         Mousetrap.bind("left", function() {
-            @this.previousPage();
+            @this.setPreviousPage();
             return false;
         });
         Mousetrap.bind(['command+shift+a', 'ctrl+shift+a'], function() {

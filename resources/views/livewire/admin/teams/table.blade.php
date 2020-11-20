@@ -6,7 +6,10 @@
 		</table>
 	@else
 		<div class="p-3">
-			No hay resultados para la búsqueda <span class="text-primary">"{{ $search }}"</span>
+			No existen resultados
+			@if ($search)
+				para la búsqueda <span class="text-primary">"{{ $search }}"</span>
+			 @endif
 		</div>
 	@endif
 </div>

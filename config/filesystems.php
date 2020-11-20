@@ -43,6 +43,12 @@ return [
 
     'disks' => [
 
+        'teams' => [
+            'driver' => 'local',
+            'root' => public_path('img/teams'),
+            'visibility' => 'public',
+        ],
+
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app'),

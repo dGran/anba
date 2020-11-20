@@ -1,4 +1,3 @@
-<form>
 <div class="form-row">
     <div class="form-group col-md-6 @error('name') error @enderror">
         <label class=" text-sm text-uppercase tracking-wide">Nombre</label>
@@ -28,5 +27,3 @@
         </div>
     </div>
 @endif
-
-</form>

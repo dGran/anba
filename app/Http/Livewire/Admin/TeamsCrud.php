@@ -10,6 +10,7 @@ use Livewire\WithFileUploads;
 use App\Exports\TeamsExport;
 use App\Imports\TeamsImport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
 
 class TeamsCrud extends Component
 {
@@ -146,40 +147,87 @@ class TeamsCrud extends Component
     }
 
     // Add & Store
+    public function reset_fields()
+    {
+		$this->name = null;
+		$this->img = null;
+		$this->stadium = null;
+    }
+
     public function add()
     {
-		$this->name = '';
-		$this->img = '';
-		$this->stadium = '';
-
+    	$this->reset_fields();
 		$this->resetValidation();
-
     	$this->emit('addMode');
     }
 
     public function store()
     {
-		$this->validate([
-			'name' => 'required',
-		]);
+        if ($this->img) {
+	       $validatedData = $this->validate([
+	       		'name' => 'required',
+	            'img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+	        ],
+		    [
+		    	'name.required' => 'El nombre es obligatorio',
+	            'img.image' => 'El logo debe ser una imagen',
+	            'img.mimes' => 'El logo debe ser un archivo .jpeg, .png, .jpg, .gif o .svg',
+	            'img.max' => 'El tamaño del logo no puede ser mayor a 2048 bytes'
+	        ]);
+	        $fileName = time() . '.' . $this->img->extension();
+	        $validatedData['img'] = $this->img->storeAs('teams', $fileName, 'public');
+	    } else {
+	        $validatedData = $this->validate([
+	            'name' => 'required'
+	        ],
+		    [
+		    	'name.required' => 'El nombre es obligatorio'
+	        ]);
+	    }
+        $validatedData['slug'] = Str::slug($this->name, '-');
+        Team::create($validatedData);
 
-		$team = Team::create([
-			'name' => $this->name,
-			// 'img' => $this->img,
-			'stadium' => $this->stadium,
-			'slug' => Str::slug($this->name, '-')
-		]);
+        $this->emit('alert', ['type' => 'success', 'message' => 'Registro agregado correctamente.']);
 
-		if ($team->save()) {
-			$this->emit('alert', ['type' => 'success', 'message' => 'Registro agregado correctamente.']);
-		} else {
-			$this->emit('alert', ['type' => 'error', 'message' => 'Se ha producido un error y no se han podido actualizar los datos.']);
-		}
+
+
+		// $this->validate([
+		// 	'name' => 'required',
+		// ],
+  //       [
+  //           'name.required' => 'El nombre es obligatorio'
+  //       ]);
+
+	 //    $img = null;
+		// if ($this->img) {
+  //           $this->validate([
+  //               'img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+  //           ],
+  //           [
+  //               'img.image' => 'El logo debe ser una imagen',
+  //               'img.mimes' => 'El logo debe ser un archivo .jpeg, .png, .jpg, .gif o .svg',
+  //               'img.max' => 'El tamaño del logo no puede ser mayor a 2048 bytes'
+  //           ]);
+
+	 //        $fileName = time() . '.' . $this->img->extension();
+	 //        $img = $this->img->storeAs('teams', $fileName, 'public');
+  //       }
+
+		// $team = Team::create([
+		// 	'name' => $this->name,
+		// 	'img' => $img,
+		// 	'stadium' => $this->stadium,
+		// 	'slug' => Str::slug($this->name, '-')
+		// ]);
+
+		// if ($team->save()) {
+		// 	$this->emit('alert', ['type' => 'success', 'message' => 'Registro agregado correctamente.']);
+		// } else {
+		// 	$this->emit('alert', ['type' => 'error', 'message' => 'Se ha producido un error y no se han podido actualizar los datos.']);
+		// }
 
 		if ($this->continuousInsert) {
-			$this->name = '';
-			$this->img = '';
-			$this->stadium = '';
+			$this->reset_fields();
 		} else {
 			$this->emit('regStore');
 		}
@@ -255,40 +303,45 @@ class TeamsCrud extends Component
 		$this->emit('exportSelectedMode');
     }
 
-    public function nextPage()
+    public function setNextPage()
     {
     	$this->page++;
     }
 
-    public function previuosPage()
+    public function setPreviousPage()
     {
 		$this->page--;
     }
 
     public function destroy()
     {
-    	if (count($this->regsSelectedArray) > 1) {
-    		$counter = 0;
-			foreach ($this->regsSelectedArray as $reg) {
-				if (Team::destroy($reg)) {
-					$counter++;
+    	$regs_to_delete = count($this->regsSelectedArray);
+		$regs_deleted = 0;
+		foreach ($this->regsSelectedArray as $reg) {
+			if ($reg = Team::find($reg)) {
+				$storageImg = $reg->img;
+				if ($reg->canDestroy()) {
+					if ($reg->delete()) {
+						$regs_deleted++;
+	                	// remove image from Storage
+						Storage::disk('public')->delete($storageImg);
+					}
 				}
 			}
-			if ($counter > 0) {
-				$this->emit('alert', ['type' => 'success', 'message' => 'Registros seleccionados eliminados correctamente!.']);
-			} else {
-				$this->emit('alert', ['type' => 'error', 'message' => 'Los registros que querías eliminar ya no existen.']);
-			}
-			$this->emit('regDestroy');
-			$this->regsSelectedArray = [];
-		} else {
-			if (Team::destroy(reset($this->regsSelectedArray))) {
-				$this->emit('alert', ['type' => 'success', 'message' => 'Registro eliminado correctamente!.']);
-			} else {
-				$this->emit('alert', ['type' => 'error', 'message' => 'El registro que querías eliminar ya no existe.']);
-			}
-			$this->emit('regDestroy');
 		}
+		if ($regs_deleted > 0) {
+			$this->emit('alert', [
+				'type' => 'success',
+				'message' => $regs_to_delete == 1 ? 'Registro eliminado correctamente!.' : 'Registros eliminados correctamente!.'
+			]);
+		} else {
+			$this->emit('alert', [
+				'type' => 'error',
+				'message' => $regs_to_delete == 1 ? 'El registro no puede ser eliminado o ya no existe.' : 'No se ha eliminado ningún registro, no pueden ser eliminados o ya no existen.'
+			]);
+		}
+		$this->regsSelectedArray = [];
+		$this->emit('regDestroy');
     }
 
     public function duplicate()
@@ -431,9 +484,10 @@ class TeamsCrud extends Component
 		$teams = Team::name($this->search)
 	        		->orderBy($this->order, $this->orderDirection)
 	        		->paginate($this->perPage, ['*'], 'page', $this->page);
+
+		$this->checkAllSelector = 1;
 		foreach ($teams as $team) {
 			$array_id = array_search($team->id, $this->regsSelectedArray);
-			$this->checkAllSelector = 1;
 			if (!$array_id) {
 				$this->checkAllSelector = 0;
 			}
