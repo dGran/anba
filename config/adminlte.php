@@ -261,6 +261,11 @@ return [
             'route'       => 'admin.teams',
             'icon'        => 'bx bx-table',
         ],
+        [
+            'text'        => 'Jugadores',
+            'route'       => 'admin.players',
+            'icon'        => 'bx bx-table',
+        ],
 
         // [
         //     'text'        => 'pages',

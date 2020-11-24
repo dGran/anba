@@ -14,12 +14,12 @@
                     <p>Selecciona el archivo que contiene los datos (.xls, .xlsx, .csv)</p>
                     <p class="font-weight-bold m-0 mb-1">Los {{ $modelPlural }} ya existentes serán omitidos</p>
                     <div class="form-group">
-
                         <div class="custom-file" style="text-align: left; margin-top: 1.5rem">
-                          <input type="file" class="custom-file-input" id="fileImport" name="fileImport" wire:model="fileImport" accept=".xls, .xlsx, .csv">
-                          <label class="custom-file-label" for="fileImport">Seleccionar archivo...</label>
+                            <input type="file" class="custom-file-input" id="fileImport" name="fileImport" wire:model="fileImport" accept=".xls, .xlsx, .csv">
+                            <label class="custom-file-label" for="fileImport">Seleccionar archivo...</label>
                             @error('name') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
+                        <label style="font-weight: 400; padding-top: .5em; font-size: 14px">{{ $fileImport ? 'Archivo cargado' : 'Ningún archivo seleccionado' }}</label>
                     </div>
                 </div>
                 <div class="modal-footer" style="background: #F9FAFB">

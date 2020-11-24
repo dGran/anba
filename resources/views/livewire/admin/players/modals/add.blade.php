@@ -11,7 +11,7 @@
             </div>
             <form wire:submit.prevent="store" enctype="multipart/form-data">
                 <div class="modal-body">
-                    @include('livewire.admin.teams.forms.form')
+                    @include('livewire.admin.players.forms.form')
                 </div>
                 <div class="modal-footer" style="background: #F9FAFB">
                     <div class="d-sm-flex align-items-center w-100">

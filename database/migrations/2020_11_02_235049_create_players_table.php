@@ -16,14 +16,16 @@ class CreatePlayersTable extends Migration
         Schema::create('players', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('position');
-            $table->integer('height');
-            $table->integer('weight');
-            $table->string('college');
-            $table->date('birthdate');
-            $table->string('country_id');
-            $table->date('draft_year');
+            $table->text('img')->nullable();
+            $table->enum('position', ['base', 'escolta', 'alero', 'ala-pivot', 'pivot'])->nullable();
+            $table->integer('height')->nullable();;
+            $table->integer('weight')->nullable();;
+            $table->string('college')->nullable();;
+            $table->date('birthdate')->nullable();;
+            $table->string('nation_name')->nullable();;
+            $table->string('draft_year')->nullable();;
             $table->integer('average')->nullable();
+            $table->string('slug');
             $table->timestamps();
         });
     }

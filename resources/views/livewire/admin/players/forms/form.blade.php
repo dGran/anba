@@ -7,8 +7,47 @@
         @enderror
     </div>
     <div class="form-group col-md-6">
-        <label class="text-sm text-uppercase tracking-wide">Estadio</label>
-        <input type="text" class="form-control text-sm" placeholder="Estadio" wire:model="stadium">
+        <label class="text-sm text-uppercase tracking-wide">Posición</label>
+        <select class="form-control custom-select text-sm" wire:model="position">
+            <option value="base">Base</option>
+            <option value="escolta">Escolta</option>
+            <option value="alero">Alero</option>
+            <option value="ala-pivot">Ala-Pivot</option>
+            <option value="pivot">Pivot</option>
+        </select>
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="form-group col-md-6">
+        <label class="text-sm text-uppercase tracking-wide">Altura</label>
+        <input type="number" class="form-control text-sm" min="150" max="250" placeholder="Altura (cm)" wire:model="height">
+    </div>
+    <div class="form-group col-md-6">
+        <label class="text-sm text-uppercase tracking-wide">Peso</label>
+        <input type="number" class="form-control text-sm" min="50" max="150" placeholder="Peso (kg)" wire:model="weight">
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="form-group col-md-6">
+        <label class="text-sm text-uppercase tracking-wide">Nacionalidad</label>
+        <input type="text" class="form-control text-sm" placeholder="Nacionalidad" wire:model="nation_name">
+    </div>
+    <div class="form-group col-md-6">
+        <label class="text-sm text-uppercase tracking-wide">Universidad</label>
+        <input type="text" class="form-control text-sm" placeholder="Universidad" wire:model="college">
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="form-group col-md-6">
+        <label class="text-sm text-uppercase tracking-wide">Fecha de nacimiento</label>
+        <input type="date" class="form-control text-sm" placeholder="Fecha de nacimiento" wire:model="birthdate">
+    </div>
+    <div class="form-group col-md-6">
+        <label class="text-sm text-uppercase tracking-wide">Año draft</label>
+        <input type="number" class="form-control text-sm" min="1995" max="2020" placeholder="Año draft" wire:model="draft_year">
     </div>
 </div>
 
@@ -21,7 +60,7 @@
         x-on:livewire-upload-progress="progress = $event.detail.progress"
     >
         <label class="d-sm-flex align-items-center">
-            <span class="text-sm text-uppercase tracking-wide">Logo</span>
+            <span class="text-sm text-uppercase tracking-wide">Imagen</span>
             <span class="d-block d-sm-inline-flex ml-auto font-normal text-xs text-muted text-right">.jpeg, .png, .jpg, .gif, .svg / Max: 2048 bytes / Ratio: 1/1</span>
         </label>
         <input type="file" class="form-control-file d-none" id="inputFile" accept=".jpeg, .png, .jpg, .gif, .svg" wire:model="img">

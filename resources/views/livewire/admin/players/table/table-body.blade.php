@@ -24,14 +24,20 @@
 					</div>
 				</div>
 			</td>
-			<td class="d-none d-md-table-cell text-center" style="width: 12rem;">
-				<div class="text-xs text-uppercase">
-					<span class="d-block">{{ $reg->getCreatedAtDate() }}</span>
-					<span class="text-secondary">
-						<i class="far fa-clock mr-1"></i>
-						{{ $reg->getCreatedAtTime() }}
-					</span>
-				</div>
+			<td style="width: 90px; min-width: 90px">
+				<span class="truncate" wire:click.stop="edit({{ $reg->id }})">
+					{{ $reg->getPosition() }}
+				</span>
+			</td>
+			<td style="width: 100px; min-width: 100px">
+				<span class="truncate" wire:click.stop="edit({{ $reg->id }})">
+					{{ $reg->height }} cm.
+				</span>
+			</td>
+			<td style="width: 90px; min-width: 90px">
+				<span class="truncate" wire:click.stop="edit({{ $reg->id }})">
+					{{ $reg->weight }} kg.
+				</span>
 			</td>
 		</tr>
 	@endforeach

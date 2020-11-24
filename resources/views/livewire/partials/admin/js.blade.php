@@ -16,6 +16,7 @@
         "showMethod": "fadeIn",
         "hideMethod": "fadeOut"
     }
+
     window.livewire.on('alert', param => {
         toastr[param['type']](param['message']);
     });

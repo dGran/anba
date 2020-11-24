@@ -18,7 +18,6 @@ class TeamsImport implements ToModel, WithHeadingRow
     {
         $team = Team::create([
            'name'       => $row['name'],
-           'img'        => $row['img'],
            'stadium'    => $row['stadium'],
            'created_at' => $row['created_at'],
            'updated_at' => $row['updated_at'],

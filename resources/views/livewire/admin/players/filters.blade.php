@@ -1,7 +1,7 @@
 <div class="filters d-flex align-items-center">
 
-	<button type="button" class="btn btn-new mr-2" wire:click="add" wire:loading.attr="disabled">
-		<i class="bx bxs-add-to-queue"></i>
+	<button type="button" class="btn btn-new d-md-flex align-items-center mr-2" wire:click="add" wire:loading.attr="disabled">
+		<i class="bx bxs-add-to-queue"></i><span class="ml-2 d-none d-md-inline-flex">Nuevo</span>
 	</button>
 
 	<input type="search" class="search-input form-control mr-2" placeholder='Buscar...("/")' wire:model="search" autofocus>
@@ -61,12 +61,33 @@
 </div> {{-- filters --}}
 
 
-@if ($search || $perPage !== "10")
+@if ($search || $perPage != "10" || $filterPosition != "all" || $filterHeight != ['from' => 150, 'to' => 250] || $filterWeight != ['from' => 50, 'to' => 150])
 	<ul class="list-inline my-2">
 		@if ($search)
 			<li class="list-inline-item mr-1">
 				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterSearch">
 					{{ $search }}<i class="fas fa-times ml-2"></i>
+				<a>
+			</li>
+		@endif
+		@if ($filterPosition != "all")
+			<li class="list-inline-item mr-1">
+				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterPosition">
+					{{ $filterPosition }}<i class="fas fa-times ml-2"></i>
+				<a>
+			</li>
+		@endif
+		@if ($filterHeight != ['from' => 150, 'to' => 250])
+			<li class="list-inline-item mr-1">
+				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterHeight">
+					{{ $filterHeight['from'] }}-{{ $filterHeight['to'] }} cm<i class="fas fa-times ml-2"></i>
+				<a>
+			</li>
+		@endif
+		@if ($filterWeight != ['from' => 50, 'to' => 150])
+			<li class="list-inline-item mr-1">
+				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterWeight">
+					{{ $filterWeight['from'] }}-{{ $filterWeight['to'] }} kg<i class="fas fa-times ml-2"></i>
 				<a>
 			</li>
 		@endif

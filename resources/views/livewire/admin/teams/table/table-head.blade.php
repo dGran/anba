@@ -1,4 +1,4 @@
-<thead>
+<thead class="">
 	<tr class="admin-crud-table">
 		<th class="check" wire:click.stop="checkAll">
 		    <div class="pretty p-svg p-curve m-0 p-jelly p-has-focus">

@@ -87,11 +87,6 @@ html {
     background-color: #F2F2F2;
 }
 
-.bs-searchbox .form-control {
-    font-size: 1em;
-    height: auto;
-}
-
 .bootstrap-select .no-results {
     padding: .5em;
     margin: 0;
@@ -100,6 +95,33 @@ html {
 
 
 /// file-label
-.custom-file-label::after {
-    content: "Seleccionar";
+.custom-file-label, .custom-file-input {
+    font-size: .9em;
+    line-height: 1.75;
+    &:after {
+        content: "\f07c";
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        line-height: 1.75;
+    }
+}
+
+.custom-select {
+    box-shadow: none !important;
+}
+
+.irs--flat .irs-bar {
+    background-color: rgba(59, 130, 246) !important;
+}
+
+.irs--flat .irs-from, .irs--flat .irs-to, .irs--flat .irs-single {
+    background-color: rgba(59, 130, 246) !important;
+}
+
+.irs--flat .irs-handle>i:first-child {
+    background-color: rgba(29, 78, 216) !important;
+}
+
+.irs--flat .irs-from:before, .irs--flat .irs-to:before, .irs--flat .irs-single:before {
+    border-top-color: rgba(29, 78, 216) !important;;
 }

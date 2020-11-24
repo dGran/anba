@@ -1,4 +1,6 @@
-@import url(https://cdnjs.cloudflare.com/ajax/libs/pretty-checkbox/3.0.3/pretty-checkbox.min.css);.text-6xl {
+@import url(https://cdnjs.cloudflare.com/ajax/libs/pretty-checkbox/3.0.3/pretty-checkbox.min.css);@charset "UTF-8";
+
+.text-6xl {
   font-size: 4rem;
 }
 
@@ -227,18 +229,41 @@ html {
   background-color: #F2F2F2;
 }
 
-.bs-searchbox .form-control {
-  font-size: 1em;
-  height: auto;
-}
-
 .bootstrap-select .no-results {
   padding: 0.5em;
   margin: 0;
 }
 
-.custom-file-label::after {
-  content: "Seleccionar";
+.custom-file-label, .custom-file-input {
+  font-size: 0.9em;
+  line-height: 1.75;
+}
+
+.custom-file-label:after, .custom-file-input:after {
+  content: "\F07C";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  line-height: 1.75;
+}
+
+.custom-select {
+  box-shadow: none !important;
+}
+
+.irs--flat .irs-bar {
+  background-color: #3b82f6 !important;
+}
+
+.irs--flat .irs-from, .irs--flat .irs-to, .irs--flat .irs-single {
+  background-color: #3b82f6 !important;
+}
+
+.irs--flat .irs-handle > i:first-child {
+  background-color: #1d4ed8 !important;
+}
+
+.irs--flat .irs-from:before, .irs--flat .irs-to:before, .irs--flat .irs-single:before {
+  border-top-color: #1d4ed8 !important;
 }
 
 .truncate {
@@ -251,23 +276,23 @@ html {
   cursor: pointer;
 }
 
-.filters {
-  align-items: center;
-  display: flex;
-  padding-bottom: 1rem;
+.content-header-name {
+  font-size: 1.875rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 2.25rem;
+}
+
+.filters .form-control, .filters .btn {
+  font-size: 0.9em !important;
+  height: auto;
 }
 
 .filters .btn-new {
   background-image: linear-gradient(70deg, #21c8f6 21%, #637bff 117%);
   background-color: #fff;
-  border-radius: 0.25rem;
   border: 1px solid #7f9cf5;
   color: #fff;
-  font-size: 0.75em;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  padding: 0.75em 1.5em;
-  text-transform: uppercase;
 }
 
 .filters .btn-new:hover, .filters .btn-new:focus {
@@ -337,9 +362,9 @@ html {
 }
 
 .admin-crud-table-wrapper .admin-crud-table thead th {
+  font-size: 0.9em;
   border: none;
   color: #718096;
-  font-size: 0.9em;
   font-weight: 500;
   letter-spacing: 0.05em;
   padding: 0.75em 1em;
@@ -348,10 +373,12 @@ html {
 }
 
 .admin-crud-table-wrapper .admin-crud-table thead .check {
-  font-size: 16px;
   padding-right: 0;
-  text-align: center;
   width: 1px;
+}
+
+.admin-crud-table-wrapper .admin-crud-table tbody tr {
+  font-size: 0.9em;
 }
 
 .admin-crud-table-wrapper .admin-crud-table tbody tr.selected {
@@ -371,7 +398,9 @@ html {
 }
 
 .admin-crud-table-wrapper .admin-crud-table tbody tr:hover td .image {
-  border: 1px solid #a3bffa;
+  opacity: 1;
+  border: 1px solid #e2e8f0;
+  background-color: #fff;
 }
 
 .admin-crud-table-wrapper .admin-crud-table tbody tr:hover td .name {
@@ -391,9 +420,13 @@ html {
 }
 
 .admin-crud-table-wrapper .admin-crud-table tbody tr td .image {
+  height: 40px;
+  width: auto;
+  padding: 3px;
   border: 1px solid transparent;
   -o-object-fit: cover;
      object-fit: cover;
+  opacity: 0.75;
 }
 
 .pagination-wrapper {
@@ -510,12 +543,21 @@ html {
   width: 2.5rem;
 }
 
-body {
-  color: #495057;
+@media (min-width: 768px) {
+  .filters .btn, .filters .form-control {
+    font-size: 1em !important;
+    height: auto !important;
+  }
+
+  .admin-crud-table-wrapper .admin-crud-table .check {
+    font-size: 1em;
+  }
+
+  .admin-crud-table-wrapper .admin-crud-table tbody tr {
+    font-size: 1em;
+  }
 }
 
-@media (max-width: 575.98px) {
-  body {
-    font-size: 14px;
-  }
+body {
+  color: #495057;
 }

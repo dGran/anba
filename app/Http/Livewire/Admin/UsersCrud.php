@@ -10,6 +10,7 @@ use Livewire\WithFileUploads;
 use App\Exports\UsersExport;
 use App\Imports\UsersImport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
 
 class UsersCrud extends Component
 {

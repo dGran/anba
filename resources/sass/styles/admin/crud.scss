@@ -1,20 +1,23 @@
+.content-header-name {
+	font-size: 1.875rem;
+	font-weight: 600;
+	letter-spacing: -.025em;
+	line-height: 2.25rem;
+}
+
 //filters
 .filters {
-	align-items: center;
-	display: flex;
-	padding-bottom: 1rem;
+
+	.form-control, .btn {
+		font-size: .9em!important;
+		height: auto;
+	}
 
 	.btn-new {
 		background-image: linear-gradient(70deg, rgb(33, 200, 246) 21%, rgb(99, 123, 255) 117%);
 	    background-color: #fff;
-		border-radius: .25rem;
 		border: 1px solid #7f9cf5;
 		color: #fff;
-		font-size: .75em;
-		font-weight: 700;
-		letter-spacing: 0.1em;
-		padding: .75em 1.5em;
-		text-transform: uppercase;
 		&:hover, &:focus {
 			background-image: none;
 			background-color: #ebf4ff;
@@ -72,9 +75,9 @@
 		thead {
 			background-color: #F9FAFB;
 			th {
+				font-size: .9em;
 				border: none;
 				color: #718096;
-				font-size: .9em;
 				font-weight: 500;
 				letter-spacing: 0.05em;
 				padding: .75em 1em;
@@ -82,14 +85,13 @@
 				vertical-align: middle;
 			}
 			.check {
-				font-size: 16px;
 				padding-right: 0;
-				text-align: center;
 				width: 1px;
 			}
 		}
 		tbody {
 			tr {
+				font-size: .9em;
 				&.selected {
 					background-color: #ebf4ff;
 					&:hover {
@@ -103,7 +105,9 @@
 					background-color: #F9FAFB;
 					td {
 						.image {
-							border: 1px solid #a3bffa;
+							opacity: 1;
+							border: 1px solid #e2e8f0;
+							background-color: #fff;
 						}
 						.name {
 							color: #667eea;
@@ -120,8 +124,12 @@
 						padding-right: 0;
 					}
 					.image {
+						height: 40px;
+						width: auto;
+						padding: 3px;
 						border: 1px solid transparent;
 						object-fit: cover;
+						opacity: .75;
 					}
 				}
 			}
@@ -247,4 +255,43 @@
 			}
 		}
 	}
+}
+
+
+// Extra small devices (portrait phones, less than 576px)
+@media (max-width: 575.98px) {
+}
+
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) {
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+	.filters {
+		.btn, .form-control {
+			font-size: 1em!important;
+			height: auto!important;
+		}
+	}
+	.admin-crud-table-wrapper {
+		.admin-crud-table {
+			.check {
+				font-size: 1em;
+			}
+			tbody {
+				tr {
+					font-size: 1em;
+				}
+			}
+		}
+	}
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
 }

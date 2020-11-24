@@ -2,20 +2,20 @@
 
 namespace App\Exports;
 
-use App\Models\Team;
+use App\Models\Player;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class TeamsExport implements FromCollection, WithHeadings
+class PlayersExport implements FromCollection, WithHeadings
 {
     use Exportable;
 
-    protected $teams;
+    protected $players;
 
-    public function __construct($teams = null)
+    public function __construct($players = null)
     {
-        $this->teams = $teams;
+        $this->players = $players;
     }
 
     /**
@@ -23,13 +23,13 @@ class TeamsExport implements FromCollection, WithHeadings
     */
     public function collection()
     {
-        return $this->teams ?: Team::all();
+        return $this->players ?: Player::all();
     }
 
     public function headings(): array
     {
         return [
-            'id', 'name', 'stadium', 'created_at', 'updated_at'
+            'id', 'name', 'position', 'height', 'weight', 'college', 'birthdate', 'nation_name', 'draft_year', 'average'
         ];
     }
 }

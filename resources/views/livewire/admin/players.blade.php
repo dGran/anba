@@ -1,8 +1,8 @@
-@section('title', 'Equipos')
+@section('title', 'Jugadores')
 
 @section('content_header')
     <h5 class="content-header-name">
-        Equipos
+        Jugadores
     </h5>
 @stop
 
@@ -18,6 +18,10 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css" integrity="sha512-ARJR74swou2y0Q2V9k0GbzQ/5vJ2RBSoCWokg4zkfM29Fb3vZEQyv0iWBMW/yvKgyHSR/7D64pFMmU8nYmbRkg==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" />
+    <!--Plugin CSS file with desired skin-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css"/>
+
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
 @stop
@@ -26,25 +30,22 @@
     {{-- Toastr --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js" integrity="sha512-yDlE7vpGDP7o2eftkCiPZ+yuUyEcaBwoJoIhdXv71KZWugFqEphIS3PU60lEkFaz8RxaVsMpSvQxMBaKVwA5xg==" crossorigin="anonymous"></script>
+    <!--Plugin JavaScript file-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
+    @include('livewire.admin.players.js')
     @include('livewire.partials.admin.js')
-
-    <script>
-        $(function () {
-            $('select').selectpicker();
-        });
-    </script>
 @stop
 
 <div class="py-2"> {{-- slot --}}
     @include('livewire.partials.admin.session_messages')
-    @include('livewire.admin.teams.filters')
-    @include('livewire.admin.teams.table')
+    @include('livewire.admin.players.filters')
+    @include('livewire.admin.players.table')
     @include('livewire.partials.admin.table.table-footer')
 
     {{-- modals --}}
-    @include('livewire.admin.teams.modals.add')
-    @include('livewire.admin.teams.modals.edit')
-    @include('livewire.admin.teams.modals.filters')
+    @include('livewire.admin.players.modals.add')
+    @include('livewire.admin.players.modals.edit')
+    @include('livewire.admin.players.modals.filters')
 
     @include('livewire.partials.admin.modals.destroy')
     @include('livewire.partials.admin.modals.duplicate')
