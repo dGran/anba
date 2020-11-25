@@ -67,6 +67,25 @@ class Player extends Model
         }
     }
 
+    public function scopeAge($query, $value)
+    {
+        if ($value['from'] > 15 || $value['to'] < 45) {
+            $date = Carbon::now();
+            $fromDate = $date->subYears($value['from'])->toDateString();
+            $date = Carbon::now();
+            $toDate = $date->subYears($value['to'])->toDateString();
+
+            return $query->where('birthdate', '>=', $toDate)->where('birthdate', '<=', $fromDate);
+        }
+    }
+
+    public function scopeYearDraft($query, $value)
+    {
+        if ($value['from'] > 1995 || $value['to'] < 2020) {
+            return $query->whereBetween('draft_year', array($value['from'], $value['to']));
+        }
+    }
+
     public function storageImg()
     {
         if (substr($this->img, 0, 7) == "players") {

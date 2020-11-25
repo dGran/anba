@@ -61,7 +61,7 @@
 </div> {{-- filters --}}
 
 
-@if ($search || $filterPosition != "all" || $filterNation || $filterHeight != ['from' => 150, 'to' => 250] || $filterWeight != ['from' => 50, 'to' => 150] || $filterCollege || $perPage != "10")
+@if ($search || $filterPosition != "all" || $filterNation || $filterAge != ['from' => 15, 'to' => 45] || $filterHeight != ['from' => 150, 'to' => 250] || $filterWeight != ['from' => 50, 'to' => 150] || $filterYearDraft != ['from' => 1995, 'to' => 2020] || $filterCollege || $perPage != "10")
 	<ul class="list-inline my-2">
 		@if ($search)
 			<li class="list-inline-item mr-1">
@@ -84,6 +84,13 @@
 				<a>
 			</li>
 		@endif
+		@if ($filterAge != ['from' => 15, 'to' => 45])
+			<li class="list-inline-item mr-1">
+				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterAge">
+					{{ $filterAge['from'] }}-{{ $filterAge['to'] }} años<i class="fas fa-times ml-2"></i>
+				<a>
+			</li>
+		@endif
 		@if ($filterHeight != ['from' => 150, 'to' => 250])
 			<li class="list-inline-item mr-1">
 				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterHeight">
@@ -95,6 +102,13 @@
 			<li class="list-inline-item mr-1">
 				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterWeight">
 					{{ $filterWeight['from'] }}-{{ $filterWeight['to'] }} kg<i class="fas fa-times ml-2"></i>
+				<a>
+			</li>
+		@endif
+		@if ($filterYearDraft != ['from' => 1995, 'to' => 2020])
+			<li class="list-inline-item mr-1">
+				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterYearDraft">
+					<span class="text-muted font-weight-bold mr-1">Año draft</span>{{ $filterYearDraft['from'] }}-{{ $filterYearDraft['to'] }}<i class="fas fa-times ml-2"></i>
 				<a>
 			</li>
 		@endif

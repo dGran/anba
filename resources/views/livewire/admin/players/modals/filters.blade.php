@@ -27,6 +27,57 @@
 
                 <div class="row">
                     <div class="form-group col-md-6">
+                        <label class="text-sm text-uppercase tracking-wide">Edad</label>
+                        <div wire:ignore x-data x-init="
+                            $('#filterAge').ionRangeSlider({
+                                type: 'double',
+                                grid: true,
+                                grid_num: 3,
+                                min: 15,
+                                max: 45,
+                                keyboard: true,
+                                onFinish: function(data) {
+                                    @this.set('filterAge', { 'from': data.from, 'to': data.to })
+                                }
+                            });
+                        ">
+                            <input type="text" id="filterAge" wire:model="filterAge"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label class="text-sm text-uppercase tracking-wide">Año de draft</label>
+                        <div wire:ignore x-data x-init="
+                            $('#filterYearDraft').ionRangeSlider({
+                                type: 'double',
+                                grid: true,
+                                grid_num: 5,
+                                min: 1995,
+                                max: 2020,
+                                keyboard: true,
+                                onFinish: function(data) {
+                                    @this.set('filterYearDraft', { 'from': data.from, 'to': data.to })
+                                }
+                            });
+                        ">
+                            <input type="text" id="filterYearDraft" wire:model="filterYearDraft"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label class="text-sm text-uppercase tracking-wide">Nacionalidad</label>
+                        <input type="text" class="form-control" placeholder="Nacionalidad" wire:model="filterNation">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="text-sm text-uppercase tracking-wide">Universidad</label>
+                        <input type="text" class="form-control" placeholder="Universidad" wire:model="filterCollege">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-md-6">
                         <label class="text-sm text-uppercase tracking-wide">Altura (cm)</label>
                         <div wire:ignore x-data x-init="
                             $('#filterHeight').ionRangeSlider({
@@ -63,22 +114,6 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label class="text-sm text-uppercase tracking-wide">Universidad</label>
-                        <input type="text" class="form-control" placeholder="Universidad" wire:model="filterCollege">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label class="text-sm text-uppercase tracking-wide">Nacionalidad</label>
-                        <input type="text" class="form-control" placeholder="Nacionalidad" wire:model="filterNation">
-                    </div>
-                </div>
-
-                <h5>
-                    agregar edad_range, draft_year_range y average_range
-                </h5>
-                <p>Posibilidad de elegir mas de una posicion</p>
 
             	<div class="row">
             		<div class="col-md-6">

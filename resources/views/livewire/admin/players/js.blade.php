@@ -10,6 +10,16 @@
 	        from: @this.filterWeight['from'],
 	        to: @this.filterWeight['to']
 	    });
+
+	    $('#filterAge').data('ionRangeSlider').update({
+	        from: @this.filterAge['from'],
+	        to: @this.filterAge['to']
+	    });
+
+	    $('#filterYearDraft').data('ionRangeSlider').update({
+	        from: @this.filterYearDraft['from'],
+	        to: @this.filterYearDraft['to']
+	    });
 	}
 
     window.livewire.on('resetFiltersMode', () => {
