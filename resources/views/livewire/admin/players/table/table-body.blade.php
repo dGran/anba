@@ -16,27 +16,47 @@
 			</td>
 			<td>
 				<div class="d-flex align-items-center">
-					<img class="image rounded" src="{{ $reg->getImg() }}" alt="{{ $reg->name }}">
+					<img class="image rounded-circle" src="{{ $reg->getImg() }}" alt="{{ $reg->name }}" style="width: 40px">
 					<div class="pl-2">
-						<span class="name truncate" wire:click.stop="edit({{ $reg->id }})">
+						<span class="name" wire:click.stop="edit({{ $reg->id }})">
 							{{ $reg->name }}
 						</span>
 					</div>
 				</div>
 			</td>
 			<td style="width: 90px; min-width: 90px">
-				<span class="truncate" wire:click.stop="edit({{ $reg->id }})">
+				<span>
 					{{ $reg->getPosition() }}
 				</span>
 			</td>
-			<td style="width: 100px; min-width: 100px">
-				<span class="truncate" wire:click.stop="edit({{ $reg->id }})">
-					{{ $reg->height }} cm.
+			<td style="width: 150px">
+				<span>
+					{{ $reg->nation_name }}
 				</span>
 			</td>
 			<td style="width: 90px; min-width: 90px">
-				<span class="truncate" wire:click.stop="edit({{ $reg->id }})">
-					{{ $reg->weight }} kg.
+				<span>
+					{{ $reg->age() }}
+				</span>
+			</td>
+			<td style="width: 100px; min-width: 100px">
+				<span>
+					{{ $reg->height ? $reg->height . ' cm' : '' }}
+				</span>
+			</td>
+			<td style="width: 90px; min-width: 90px">
+				<span>
+					{{ $reg->weight ? $reg->weight . ' kg' : '' }}
+				</span>
+			</td>
+			<td style="width: 150px">
+				<span>
+					{{ $reg->draft_year }}
+				</span>
+			</td>
+			<td style="width: 150px">
+				<span >
+					{{ $reg->college }}
 				</span>
 			</td>
 		</tr>

@@ -25,9 +25,11 @@ class Player extends Model
         'slug'
     ];
 
-    public function scopeName($query, $name)
+    public function scopeName($query, $value)
     {
-        return $query->where('name', 'LIKE', "%{$name}%");
+        if (trim($value) != "") {
+            return $query->where('value', 'LIKE', "%{$value}%");
+        }
     }
 
     public function scopePosition($query, $value)
@@ -39,12 +41,30 @@ class Player extends Model
 
     public function scopeHeight($query, $value)
     {
-        return $query->whereBetween('height', array($value['from'], $value['to']));
+        if ($value['from'] > 150 || $value['to'] < 250) {
+            return $query->whereBetween('height', array($value['from'], $value['to']));
+        }
     }
 
     public function scopeWeight($query, $value)
     {
-        return $query->whereBetween('weight', array($value['from'], $value['to']));
+        if ($value['from'] > 50 || $value['to'] < 150) {
+            return $query->whereBetween('weight', array($value['from'], $value['to']));
+        }
+    }
+
+    public function scopeCollege($query, $value)
+    {
+        if (trim($value) != "") {
+            return $query->where('college', 'LIKE', "%{$value}%");
+        }
+    }
+
+    public function scopeNation($query, $value)
+    {
+        if (trim($value) != "") {
+            return $query->where('nation_name', 'LIKE', "%{$value}%");
+        }
     }
 
     public function storageImg()
@@ -120,6 +140,13 @@ class Player extends Model
             case 'pivot':
                 return "P";
                 break;
+        }
+    }
+
+    public function age()
+    {
+        if ($this->birthdate) {
+            return Carbon::parse($this->birthdate)->age;
         }
     }
 

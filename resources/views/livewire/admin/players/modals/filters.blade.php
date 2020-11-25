@@ -64,8 +64,19 @@
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label class="text-sm text-uppercase tracking-wide">Universidad</label>
+                        <input type="text" class="form-control" placeholder="Universidad" wire:model="filterCollege">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="text-sm text-uppercase tracking-wide">Nacionalidad</label>
+                        <input type="text" class="form-control" placeholder="Nacionalidad" wire:model="filterNation">
+                    </div>
+                </div>
+
                 <h5>
-                    agregar college, nation_name, edad_range, draft_year_range y average_range
+                    agregar edad_range, draft_year_range y average_range
                 </h5>
                 <p>Posibilidad de elegir mas de una posicion</p>
 
@@ -77,7 +88,13 @@
 								<select class="form-control custom-select text-sm" wire:model="order">
 									<option value="id">ID</option>
 									<option value="name">Nombre</option>
-									<option value="created_at">Fecha registro</option>
+									<option value="position">Posición</option>
+                                    <option value="nation_name">Pais</option>
+                                    <option value="birthdate">Edad</option>
+                                    <option value="height">Altura</option>
+                                    <option value="weight">Peso</option>
+                                    <option value="draft_year">Año Draft</option>
+                                    <option value="college">Universidad</option>
 								</select>
 							{{-- </div> --}}
             			</div>

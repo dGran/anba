@@ -29,6 +29,8 @@ class PlayersCrud extends Component
 	public $filterPosition = "all";
 	public $filterHeight = ['from' => 150, 'to' => 250];
 	public $filterWeight = ['from' => 50, 'to' => 150];
+	public $filterCollege = "";
+	public $filterNation = "";
 	public $order = 'id';
 	public $orderDirection = 'desc';
 
@@ -54,9 +56,11 @@ class PlayersCrud extends Component
 	//queryString
 	protected $queryString = [
 		'search' => ['except' => ''],
-		'filterPosition' => ['except' => null],
+		'filterPosition' => ['except' => "all"],
 		'filterHeight' => ['except' => 	['from' => 150, 'to' => 250]],
 		'filterWeight' => ['except' => 	['from' => 50, 'to' => 150]],
+		'filterCollege' => ['except' => ''],
+		'filterNation' => ['except' => ''],
 		'perPage' => ['except' => '10'],
 		'order' => ['except' => 'id']
 	];
@@ -78,6 +82,8 @@ class PlayersCrud extends Component
 			->position($this->filterPosition)
 			->height($this->filterHeight)
 			->weight($this->filterWeight)
+			->college($this->filterCollege)
+			->nation($this->filterNation)
 			->orderBy($this->order, $this->orderDirection)
     		->paginate($this->perPage, ['*'], 'page', $this->page);
 		foreach ($players as $player) {
@@ -153,6 +159,16 @@ class PlayersCrud extends Component
     	$this->filterWeight = ['from' => 50, 'to' => 150];
     }
 
+    public function cancelFilterCollege()
+    {
+    	$this->filterCollege = '';
+    }
+
+    public function cancelFilterNation()
+    {
+    	$this->filterNation = '';
+    }
+
     public function setFilterPerPage($number)
     {
     	$this->perPage = $number;
@@ -173,6 +189,8 @@ class PlayersCrud extends Component
 		$this->filterPosition = "all";
 		$this->filterHeight = ['from' => 150, 'to' => 250];
 		$this->filterWeight = ['from' => 50, 'to' => 150];
+		$this->filterCollege = '';
+		$this->filterNation = '';
 
 		$this->emit('resetFiltersMode');
     }
@@ -450,6 +468,8 @@ class PlayersCrud extends Component
 			->position($this->filterPosition)
 			->height($this->filterHeight)
 			->weight($this->filterWeight)
+			->college($this->filterCollege)
+			->nation($this->filterNation)
 			->orderBy($this->order, $this->orderDirection)
     		->orderBy($this->order, $this->orderDirection)
     		->get();
@@ -499,6 +519,8 @@ class PlayersCrud extends Component
 			->position($this->filterPosition)
 			->height($this->filterHeight)
 			->weight($this->filterWeight)
+			->college($this->filterCollege)
+			->nation($this->filterNation)
 			->orderBy($this->order, $this->orderDirection)
 			->paginate($this->perPage)->onEachSide(2);
 	    if (($players->total() > 0 && $players->count() == 0)) {
@@ -511,6 +533,8 @@ class PlayersCrud extends Component
 			->position($this->filterPosition)
 			->height($this->filterHeight)
 			->weight($this->filterWeight)
+			->college($this->filterCollege)
+			->nation($this->filterNation)
 			->orderBy($this->order, $this->orderDirection)
 			->paginate($this->perPage)->onEachSide(2);
 
@@ -524,6 +548,8 @@ class PlayersCrud extends Component
 			->position($this->filterPosition)
 			->height($this->filterHeight)
 			->weight($this->filterWeight)
+			->college($this->filterCollege)
+			->nation($this->filterNation)
 			->orderBy($this->order, $this->orderDirection)
 			->paginate($this->perPage, ['*'], 'page', $this->page);
 

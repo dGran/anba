@@ -61,7 +61,7 @@
 </div> {{-- filters --}}
 
 
-@if ($search || $perPage != "10" || $filterPosition != "all" || $filterHeight != ['from' => 150, 'to' => 250] || $filterWeight != ['from' => 50, 'to' => 150])
+@if ($search || $filterPosition != "all" || $filterNation || $filterHeight != ['from' => 150, 'to' => 250] || $filterWeight != ['from' => 50, 'to' => 150] || $filterCollege || $perPage != "10")
 	<ul class="list-inline my-2">
 		@if ($search)
 			<li class="list-inline-item mr-1">
@@ -77,6 +77,13 @@
 				<a>
 			</li>
 		@endif
+		@if ($filterNation)
+			<li class="list-inline-item mr-1">
+				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterNation">
+					<span class="text-muted font-weight-bold mr-1">Pais</span>{{ $filterNation }}<i class="fas fa-times ml-2"></i>
+				<a>
+			</li>
+		@endif
 		@if ($filterHeight != ['from' => 150, 'to' => 250])
 			<li class="list-inline-item mr-1">
 				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterHeight">
@@ -88,6 +95,13 @@
 			<li class="list-inline-item mr-1">
 				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterWeight">
 					{{ $filterWeight['from'] }}-{{ $filterWeight['to'] }} kg<i class="fas fa-times ml-2"></i>
+				<a>
+			</li>
+		@endif
+		@if ($filterCollege)
+			<li class="list-inline-item mr-1">
+				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterCollege">
+					<span class="text-muted font-weight-bold mr-1">Univ.</span>{{ $filterCollege }}<i class="fas fa-times ml-2"></i>
 				<a>
 			</li>
 		@endif
