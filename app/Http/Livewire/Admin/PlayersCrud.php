@@ -27,8 +27,8 @@ class PlayersCrud extends Component
 	public $search = "";
 	public $perPage = '10';
 	public $filterPosition = "all";
-	public $filterHeight = ['from' => 150, 'to' => 250];
-	public $filterWeight = ['from' => 50, 'to' => 150];
+	public $filterHeight = "";
+	public $filterWeight = ['from' => 125, 'to' => 500];
 	public $filterCollege = "";
 	public $filterNation = "";
 	public $filterAge = ['from' => 15, 'to' => 45];
@@ -59,8 +59,8 @@ class PlayersCrud extends Component
 	protected $queryString = [
 		'search' => ['except' => ''],
 		'filterPosition' => ['except' => "all"],
-		'filterHeight' => ['except' => 	['from' => 150, 'to' => 250]],
-		'filterWeight' => ['except' => 	['from' => 50, 'to' => 150]],
+		'filterHeight' => ['except' => ''],
+		'filterWeight' => ['except' => 	['from' => 125, 'to' => 500]],
 		'filterCollege' => ['except' => ''],
 		'filterNation' => ['except' => ''],
 		'filterAge' => ['except' => ['from' => 15, 'to' => 45]],
@@ -114,6 +114,7 @@ class PlayersCrud extends Component
 	public function cancelSelection()
 	{
 		$this->regsSelectedArray = [];
+		$this->emit('closeSelected');
 	}
 
 	public function viewSelected($view)
@@ -157,12 +158,12 @@ class PlayersCrud extends Component
 
     public function cancelFilterHeight()
     {
-    	$this->filterHeight = ['from' => 150, 'to' => 250];
+    	$this->filterHeight = '';
     }
 
     public function cancelFilterWeight()
     {
-    	$this->filterWeight = ['from' => 50, 'to' => 150];
+    	$this->filterWeight = ['from' => 125, 'to' => 500];
     }
 
     public function cancelFilterCollege()
@@ -203,8 +204,8 @@ class PlayersCrud extends Component
 		$this->order = 'id';
 		$this->orderDirection = 'desc';
 		$this->filterPosition = "all";
-		$this->filterHeight = ['from' => 150, 'to' => 250];
-		$this->filterWeight = ['from' => 50, 'to' => 150];
+		$this->filterHeight = '';
+		$this->filterWeight = ['from' => 125, 'to' => 500];
 		$this->filterAge = ['from' => 15, 'to' => 45];
 		$this->filterYearDraft = ['from' => 1995, 'to' => 2020];
 		$this->filterCollege = '';
@@ -493,7 +494,7 @@ class PlayersCrud extends Component
 			->orderBy($this->order, $this->orderDirection)
     		->orderBy($this->order, $this->orderDirection)
     		->get();
-		$players->makeHidden(['img', 'slug']);
+		$players->makeHidden(['slug', 'created_at', 'updated_at']);
 
 		session()->flash('success', 'Registros exportados correctamente!.');
     	return Excel::download(new PlayersExport($players), $filename . '.' . $this->formatExport);
@@ -505,7 +506,7 @@ class PlayersCrud extends Component
     	$filename = $this->filenameExportSelected ?: 'jugadores_seleccionados';
 
         $players = Player::whereIn('id', $this->regsSelectedArray)->orderBy($this->order, $this->orderDirection)->get();
-        $players->makeHidden(['img', 'slug']);
+        $players->makeHidden(['slug']);
 
         session()->flash('success', 'Registros exportados correctamente!.');
 		return Excel::download(new PlayersExport($players), $filename . '.' . $this->formatExport);

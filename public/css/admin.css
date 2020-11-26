@@ -276,6 +276,13 @@ html {
   cursor: pointer;
 }
 
+.non-selectable {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 .content-header-name {
   font-size: 1.875rem;
   font-weight: 600;
@@ -370,6 +377,10 @@ html {
   padding: 0.75em 1em;
   text-transform: uppercase;
   vertical-align: middle;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .admin-crud-table-wrapper .admin-crud-table thead .check {

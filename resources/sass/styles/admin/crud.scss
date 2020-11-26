@@ -83,6 +83,11 @@
 				padding: .75em 1em;
 				text-transform: uppercase;
 				vertical-align: middle;
+				//text non selectable
+				-moz-user-select: none;
+				-webkit-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
 			}
 			.check {
 				padding-right: 0;

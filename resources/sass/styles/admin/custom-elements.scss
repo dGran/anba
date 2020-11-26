@@ -7,3 +7,10 @@
 .cursor-pointer{
 	cursor: pointer;
 }
+
+.non-selectable {
+   -moz-user-select: none;
+   -webkit-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+}

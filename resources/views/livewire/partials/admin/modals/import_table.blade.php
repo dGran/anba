@@ -1,4 +1,4 @@
-<div wire:ignore.self class="modal fade" tabindex="-1" role="dialog" id="confirmImportModal">
+<div wire:ignore.self class="modal fade" tabindex="-1" role="dialog" id="confirmImportModal" data-keyboard="true" data-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">

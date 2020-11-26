@@ -33,7 +33,7 @@
 		</div>
 
 		<div class="btn-group" role="group">
-			<button type="button" class="btn btn-white {{ $regs->count() == 0 ? 'disabled' : '' }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<button type="button" class="btn btn-white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				<i class="fas fa-table"></i>
 			</button>
 			<div class="dropdown">
@@ -42,9 +42,9 @@
 		            <div class="dropdown-divider"></div>
 		            <a class="dropdown-item" wire:click="confirmImport"><i class="bx bxs-file-import mr-2"></i>Importar</a>
 		            <div class="dropdown-divider"></div>
-		            <a class="dropdown-item" wire:click="confirmExportTable('xls')"><i class="bx bxs-file-export mr-2"></i></i></i>Exportar (.xls)</a>
-		            <a class="dropdown-item" wire:click="confirmExportTable('xlsx')"><i class="bx bxs-file-export mr-2"></i></i>Exportar (.xlsx)</a>
-		            <a class="dropdown-item" wire:click="confirmExportTable('csv')"><i class="bx bxs-file-export mr-2"></i></i>Exportar (.csv)</a>
+		            <a class="dropdown-item {{ $regs->count() == 0 ? 'disabled' : '' }}" wire:click="confirmExportTable('xls')"><i class="bx bxs-file-export mr-2"></i></i></i>Exportar (.xls)</a>
+		            <a class="dropdown-item {{ $regs->count() == 0 ? 'disabled' : '' }}" wire:click="confirmExportTable('xlsx')"><i class="bx bxs-file-export mr-2"></i></i>Exportar (.xlsx)</a>
+		            <a class="dropdown-item {{ $regs->count() == 0 ? 'disabled' : '' }}" wire:click="confirmExportTable('csv')"><i class="bx bxs-file-export mr-2"></i></i>Exportar (.csv)</a>
 				</div>
 			</div>
 		</div>
@@ -61,7 +61,7 @@
 </div> {{-- filters --}}
 
 
-@if ($search || $filterPosition != "all" || $filterNation || $filterAge != ['from' => 15, 'to' => 45] || $filterHeight != ['from' => 150, 'to' => 250] || $filterWeight != ['from' => 50, 'to' => 150] || $filterYearDraft != ['from' => 1995, 'to' => 2020] || $filterCollege || $perPage != "10")
+@if ($search || $filterPosition != "all" || $filterNation || $filterAge != ['from' => 15, 'to' => 45] || $filterHeight || $filterWeight != ['from' => 125, 'to' => 500] || $filterYearDraft != ['from' => 1995, 'to' => 2020] || $filterCollege || $perPage != "10")
 	<ul class="list-inline my-2">
 		@if ($search)
 			<li class="list-inline-item mr-1">
@@ -91,17 +91,17 @@
 				<a>
 			</li>
 		@endif
-		@if ($filterHeight != ['from' => 150, 'to' => 250])
+		@if ($filterHeight)
 			<li class="list-inline-item mr-1">
 				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterHeight">
-					{{ $filterHeight['from'] }}-{{ $filterHeight['to'] }} cm<i class="fas fa-times ml-2"></i>
+					{{ $filterHeight }} ft<i class="fas fa-times ml-2"></i>
 				<a>
 			</li>
 		@endif
-		@if ($filterWeight != ['from' => 50, 'to' => 150])
+		@if ($filterWeight != ['from' => 125, 'to' => 500])
 			<li class="list-inline-item mr-1">
 				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterWeight">
-					{{ $filterWeight['from'] }}-{{ $filterWeight['to'] }} kg<i class="fas fa-times ml-2"></i>
+					{{ $filterWeight['from'] }}-{{ $filterWeight['to'] }} lbs<i class="fas fa-times ml-2"></i>
 				<a>
 			</li>
 		@endif

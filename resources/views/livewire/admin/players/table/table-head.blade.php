@@ -22,11 +22,11 @@
 		</th>
 		<th>
 			@if ($order == 'position' && $orderDirection == 'asc')
-				<span class="d-inline-block cursor-pointer" wire:click="order('position', 'desc')">Pos.<i class="fas fa-sort-alpha-up pl-1"></i></span>
+				<span class="d-inline-block cursor-pointer" wire:click="order('position', 'desc')">Posición<i class="fas fa-sort-alpha-up pl-1"></i></span>
 			@elseif ($order == 'position' && $orderDirection == 'desc')
-				<span class="d-inline-block cursor-pointer" wire:click="order('position', 'asc')">Pos.<i class="fas fa-sort-alpha-down pl-1"></i></span>
+				<span class="d-inline-block cursor-pointer" wire:click="order('position', 'asc')">Posición<i class="fas fa-sort-alpha-down pl-1"></i></span>
 			@else
-				<span class="d-inline-block cursor-pointer" wire:click="order('position', 'asc')">Pos.</span>
+				<span class="d-inline-block cursor-pointer" wire:click="order('position', 'asc')">Posición</span>
 			@endif
 		</th>
 		<th class="pl-3">

@@ -28,7 +28,7 @@ class Player extends Model
     public function scopeName($query, $value)
     {
         if (trim($value) != "") {
-            return $query->where('value', 'LIKE', "%{$value}%");
+            return $query->where('name', 'LIKE', "%{$value}%");
         }
     }
 
@@ -41,14 +41,17 @@ class Player extends Model
 
     public function scopeHeight($query, $value)
     {
-        if ($value['from'] > 150 || $value['to'] < 250) {
-            return $query->whereBetween('height', array($value['from'], $value['to']));
+        if (trim($value) != "") {
+            return $query->where('height', 'LIKE', "%{$value}%");
         }
+        // if ($value['from'] > 150 || $value['to'] < 250) {
+        //     return $query->whereBetween('height', array($value['from'], $value['to']));
+        // }
     }
 
     public function scopeWeight($query, $value)
     {
-        if ($value['from'] > 50 || $value['to'] < 150) {
+        if ($value['from'] > 125 || $value['to'] < 500) {
             return $query->whereBetween('weight', array($value['from'], $value['to']));
         }
     }
@@ -124,19 +127,19 @@ class Player extends Model
     {
         switch ($this->position) {
             case 'base':
-                return "Base";
+                return "Point guard";
                 break;
             case 'escolta':
-                return "Escolta";
+                return "Shooting guard";
                 break;
             case 'alero':
-                return "Alero";
+                return "Small forward";
                 break;
             case 'ala-pivot':
-                return "Ala-Pivot";
+                return "Power forward";
                 break;
             case 'pivot':
-                return "Pivot";
+                return "Center";
                 break;
         }
     }
@@ -145,19 +148,19 @@ class Player extends Model
     {
         switch ($this->position) {
             case 'base':
-                return "B";
+                return "PG";
                 break;
             case 'escolta':
-                return "E";
+                return "SG";
                 break;
             case 'alero':
-                return "A";
+                return "SF";
                 break;
             case 'ala-pivot':
-                return "AP";
+                return "PF";
                 break;
             case 'pivot':
-                return "P";
+                return "C";
                 break;
         }
     }

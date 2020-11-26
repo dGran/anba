@@ -18,7 +18,7 @@ class CreatePlayersTable extends Migration
             $table->string('name');
             $table->text('img')->nullable();
             $table->enum('position', ['base', 'escolta', 'alero', 'ala-pivot', 'pivot'])->nullable();
-            $table->integer('height')->nullable();;
+            $table->string('height')->nullable();;
             $table->integer('weight')->nullable();;
             $table->string('college')->nullable();;
             $table->date('birthdate')->nullable();;

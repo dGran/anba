@@ -1,5 +1,5 @@
-<div wire:ignore.self class="modal fade" tabindex="-1" role="dialog" id="filterModal">
-    <div class="modal-dialog" role="document">
+<div wire:ignore.self class="modal fade" tabindex="-1" role="dialog" id="filterModal" data-keyboard="true" data-backdrop="static">
+    <div class="modal-dialog non-selectable" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title text-base text-uppercase font-medium tracking-wide">
@@ -78,8 +78,9 @@
 
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label class="text-sm text-uppercase tracking-wide">Altura (cm)</label>
-                        <div wire:ignore x-data x-init="
+                    <label class="text-sm text-uppercase tracking-wide">Altura (ft)</label>
+                    <input type="text" class="form-control" placeholder="Altura" wire:model="filterHeight">
+{{--                         <div wire:ignore x-data x-init="
                             $('#filterHeight').ionRangeSlider({
                                 type: 'double',
                                 grid: true,
@@ -93,17 +94,17 @@
                             });
                         ">
                             <input type="text" id="filterHeight" wire:model="filterHeight"/>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="form-group col-md-6">
-                        <label class="text-sm text-uppercase tracking-wide">Peso (kg)</label>
+                        <label class="text-sm text-uppercase tracking-wide">Peso (lbs)</label>
                         <div wire:ignore x-data x-init="
                             $('#filterWeight').ionRangeSlider({
                                 type: 'double',
                                 grid: true,
                                 grid_num: 5,
-                                min: 50,
-                                max: 150,
+                                min: 125,
+                                max: 500,
                                 keyboard: true,
                                 onFinish: function(data) {
                                     @this.set('filterWeight', { 'from': data.from, 'to': data.to })

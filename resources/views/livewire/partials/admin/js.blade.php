@@ -110,6 +110,9 @@
         Mousetrap.bind(['command+shift+o', 'ctrl+shift+o'], function() {
             @this.viewSelected(true);
         });
+        Mousetrap.bind(['command+shift+f', 'ctrl+shift+f'], function() {
+            @this.viewFilters(true);
+        });
         Mousetrap.bind('c s', function() {
             @this.cancelSelection();
         });
@@ -135,10 +138,15 @@
             @this.setFilterPerPage("100");
         });
 
-
         $(".search-input").keydown(function(event) {
             if (event.key == "Escape") {
                @this.cancelFilterSearch();
+            }
+        });
+
+        $(".modal").keydown(function(event) {
+            if (event.key == "Escape") {
+               $(".modal").modal('hide');
             }
         });
     });

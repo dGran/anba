@@ -9,6 +9,7 @@
     <div class="form-group col-md-6">
         <label class="text-sm text-uppercase tracking-wide">Posición</label>
         <select class="form-control custom-select text-sm" wire:model="position">
+            <option value="">N/A</option>
             <option value="base">Base</option>
             <option value="escolta">Escolta</option>
             <option value="alero">Alero</option>
@@ -21,11 +22,11 @@
 <div class="form-row">
     <div class="form-group col-md-6">
         <label class="text-sm text-uppercase tracking-wide">Altura</label>
-        <input type="number" class="form-control text-sm" min="150" max="250" placeholder="Altura (cm)" wire:model="height">
+        <input type="text" class="form-control text-sm" placeholder="Altura (ft)" wire:model="height">
     </div>
     <div class="form-group col-md-6">
         <label class="text-sm text-uppercase tracking-wide">Peso</label>
-        <input type="number" class="form-control text-sm" min="50" max="150" placeholder="Peso (kg)" wire:model="weight">
+        <input type="number" class="form-control text-sm" min="125" max="500" placeholder="Peso (lbs)" wire:model="weight">
     </div>
 </div>
 
