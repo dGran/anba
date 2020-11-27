@@ -61,7 +61,7 @@
 </div> {{-- filters --}}
 
 
-@if ($search || $filterPosition != "all" || $filterNation || $filterAge != ['from' => 15, 'to' => 45] || $filterHeight || $filterWeight != ['from' => 125, 'to' => 500] || $filterYearDraft != ['from' => 1995, 'to' => 2020] || $filterCollege || $perPage != "10")
+@if ($search || $filterPosition != "all" || $filterNation || $filterAge != ['from' => 15, 'to' => 45] || $filterHeight != ['from' => 5, 'to' => 8] || $filterWeight != ['from' => 125, 'to' => 500] || $filterYearDraft != ['from' => 1995, 'to' => 2020] || $filterCollege || $perPage != "10")
 	<ul class="list-inline my-2">
 		@if ($search)
 			<li class="list-inline-item mr-1">
@@ -91,10 +91,10 @@
 				<a>
 			</li>
 		@endif
-		@if ($filterHeight)
+		@if ($filterHeight != ['from' => 5, 'to' => 8])
 			<li class="list-inline-item mr-1">
 				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterHeight">
-					{{ $filterHeight }} ft<i class="fas fa-times ml-2"></i>
+					{{ $filterHeight['from'] }}-{{ $filterHeight['to'] }} ft<i class="fas fa-times ml-2"></i>
 				<a>
 			</li>
 		@endif

@@ -1,10 +1,10 @@
 <script>
 	function set_ranges()
 	{
-	    // $('#filterHeight').data('ionRangeSlider').update({
-	    //     from: @this.filterHeight['from'],
-	    //     to: @this.filterHeight['to']
-	    // });
+	    $('#filterHeight').data('ionRangeSlider').update({
+	        from: @this.filterHeight['from'],
+	        to: @this.filterHeight['to']
+	    });
 
 	    $('#filterWeight').data('ionRangeSlider').update({
 	        from: @this.filterWeight['from'],
@@ -30,9 +30,4 @@
 		set_ranges();
 	});
 
-    window.addEventListener('livewire:load', () => {
-		$('input.item:last').live('focus', function(){
-		    $(this).focus();
-		});
-    });
 </script>

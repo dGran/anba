@@ -10,11 +10,11 @@
         <label class="text-sm text-uppercase tracking-wide">Posición</label>
         <select class="form-control custom-select text-sm" wire:model="position">
             <option value="">N/A</option>
-            <option value="base">Base</option>
-            <option value="escolta">Escolta</option>
-            <option value="alero">Alero</option>
-            <option value="ala-pivot">Ala-Pivot</option>
-            <option value="pivot">Pivot</option>
+            <option value="pg">Point guard</option>
+            <option value="sg">Shooting guard</option>
+            <option value="sf">Small forward</option>
+            <option value="pf">Power forward</option>
+            <option value="c">Center</option>
         </select>
     </div>
 </div>
@@ -22,7 +22,7 @@
 <div class="form-row">
     <div class="form-group col-md-6">
         <label class="text-sm text-uppercase tracking-wide">Altura</label>
-        <input type="text" class="form-control text-sm" placeholder="Altura (ft)" wire:model="height">
+        <input type="number" class="form-control text-sm" min="5" max="8" step="0.1" placeholder="Altura (ft)" wire:model="height">
     </div>
     <div class="form-group col-md-6">
         <label class="text-sm text-uppercase tracking-wide">Peso</label>

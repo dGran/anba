@@ -18,6 +18,11 @@ class Team extends Model
         'slug',
     ];
 
+    public function players()
+    {
+        return $this->hasMany('App\Models\Player');
+    }
+
     public function scopeName($query, $name)
     {
         return $query->where('name', 'LIKE', "%{$name}%");

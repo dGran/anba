@@ -16,11 +16,11 @@
                         <label class="text-sm text-uppercase tracking-wide">Posición</label>
                         <select class="form-control custom-select text-sm" wire:model="filterPosition">
                             <option value="all">Todas las posiciones</option>
-                            <option value="base">Base</option>
-                            <option value="escolta">Escolta</option>
-                            <option value="alero">Alero</option>
-                            <option value="ala-pivot">Ala-Pivot</option>
-                            <option value="pivot">Pivot</option>
+                            <option value="pg">Point guard</option>
+                            <option value="sg">Shooting guard</option>
+                            <option value="sf">Small forward</option>
+                            <option value="pf">Power forward</option>
+                            <option value="c">Center</option>
                         </select>
                     </div>
                 </div>
@@ -79,14 +79,15 @@
                 <div class="row">
                     <div class="form-group col-md-6">
                     <label class="text-sm text-uppercase tracking-wide">Altura (ft)</label>
-                    <input type="text" class="form-control" placeholder="Altura" wire:model="filterHeight">
-{{--                         <div wire:ignore x-data x-init="
+                    {{-- <input type="text" class="form-control" placeholder="Altura" wire:model="filterHeight"> --}}
+                        <div wire:ignore x-data x-init="
                             $('#filterHeight').ionRangeSlider({
                                 type: 'double',
                                 grid: true,
                                 grid_num: 5,
-                                min: 150,
-                                max: 250,
+                                min: 5,
+                                max: 8,
+                                step: 0.1,
                                 keyboard: true,
                                 onFinish: function(data) {
                                     @this.set('filterHeight', { 'from': data.from, 'to': data.to })
@@ -94,7 +95,7 @@
                             });
                         ">
                             <input type="text" id="filterHeight" wire:model="filterHeight"/>
-                        </div> --}}
+                        </div>
                     </div>
                     <div class="form-group col-md-6">
                         <label class="text-sm text-uppercase tracking-wide">Peso (lbs)</label>

@@ -19,6 +19,7 @@ class PlayersImport implements ToModel, WithHeadingRow
         if (!Player::where('name', $row['name'])->exists()) {
             $player = Player::create([
                 'name'         => $row['name'],
+                'team_id'      => $row['team_id'],
                 'position'     => $row['position'],
                 'img'          => $row['img'],
                 'height'       => $row['height'],
@@ -28,6 +29,7 @@ class PlayersImport implements ToModel, WithHeadingRow
                 'nation_name'  => $row['nation_name'],
                 'draft_year'   => $row['draft_year'],
                 'average'      => $row['average'],
+                'retired'      => $row['retired'],
                 'slug'         => Str::slug($row['name'], '-')
             ]);
             return $player;

@@ -20,6 +20,15 @@
 				<span class="d-inline-block cursor-pointer" wire:click="order('name', 'asc')">Nombre</span>
 			@endif
 		</th>
+		<th class="pl-3">
+			@if ($order == 'team_id' && $orderDirection == 'asc')
+				<span class="d-inline-block cursor-pointer" wire:click="order('team_id', 'desc')">Equipo<i class="fas fa-sort-alpha-up pl-1"></i></span>
+			@elseif ($order == 'team_id' && $orderDirection == 'desc')
+				<span class="d-inline-block cursor-pointer" wire:click="order('team_id', 'asc')">Equipo<i class="fas fa-sort-alpha-down pl-1"></i></span>
+			@else
+				<span class="d-inline-block cursor-pointer" wire:click="order('team_id', 'asc')">Equipo</span>
+			@endif
+		</th>
 		<th>
 			@if ($order == 'position' && $orderDirection == 'asc')
 				<span class="d-inline-block cursor-pointer" wire:click="order('position', 'desc')">Posición<i class="fas fa-sort-alpha-up pl-1"></i></span>

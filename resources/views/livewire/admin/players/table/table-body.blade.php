@@ -28,9 +28,25 @@
 					</div>
 				</div>
 			</td>
+			<td style="width: 300px; min-width: 300px; min-width: 300px">
+				<div class="d-flex align-items-center">
+					@if (!$reg->retired)
+						<img class="image rounded-circle" src="{{ $reg->team ? $reg->team->getImg() : 'https://icon-library.com/images/free-tag-icon/free-tag-icon-20.jpg' }}" alt="{{ $reg->team ? $reg->team->name : 'Free Agent' }}" style="width: 40px">
+						<div class="pl-2">
+							<span>
+								{{ $reg->team ? $reg->team->name : 'Free Agent' }}
+							</span>
+						</div>
+					@else
+						<span class="font-weight-bold font-italic">
+							**Jugador retirado
+						</span>
+					@endif
+				</div>
+			</td>
 			<td style="width: 175px; min-width: 175px; min-width: 175px">
 				<div class="d-flex align-items-center">
-					<div class="mr-2 d-inline-block text-xs font-weight-bold" style="width: 20px">{{ $reg->getPositionShort() }}</div>{{ $reg->getPosition() }}
+					<div class="mr-2 d-inline-block text-xs font-weight-bold text-uppercase" style="width: 20px">{{ $reg->position }}</div>{{ $reg->getPosition() }}
 				</div>
 			</td>
 			<td style="width: 150px; min-width: 150px; max-width: 150px">
@@ -45,7 +61,7 @@
 			</td>
 			<td style="width: 100px; min-width: 100px">
 				<span>
-					{{ $reg->height ? $reg->height . ' ft' : '' }}
+					{{ $reg->height ? $reg->getHeight() . ' ft' : '' }}
 				</span>
 			</td>
 			<td style="width: 90px; min-width: 90px; min-width: 90px">

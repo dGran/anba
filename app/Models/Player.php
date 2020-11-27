@@ -13,6 +13,7 @@ class Player extends Model
 
     protected $fillable = [
         'name',
+        'team_id',
         'img',
         'position',
         'height',
@@ -22,8 +23,14 @@ class Player extends Model
         'nation_name',
         'draft_year',
         'average',
+        'retired',
         'slug'
     ];
+
+    public function team()
+    {
+        return $this->belongsTo('App\Models\Team');
+    }
 
     public function scopeName($query, $value)
     {
@@ -41,12 +48,12 @@ class Player extends Model
 
     public function scopeHeight($query, $value)
     {
-        if (trim($value) != "") {
-            return $query->where('height', 'LIKE', "%{$value}%");
-        }
-        // if ($value['from'] > 150 || $value['to'] < 250) {
-        //     return $query->whereBetween('height', array($value['from'], $value['to']));
+        // if (trim($value) != "") {
+        //     return $query->where('height', 'LIKE', "%{$value}%");
         // }
+        if ($value['from'] > 5 || $value['to'] < 8) {
+            return $query->whereBetween('height', array($value['from'], $value['to']));
+        }
     }
 
     public function scopeWeight($query, $value)
@@ -126,43 +133,27 @@ class Player extends Model
     public function getPosition()
     {
         switch ($this->position) {
-            case 'base':
+            case 'pg':
                 return "Point guard";
                 break;
-            case 'escolta':
+            case 'sg':
                 return "Shooting guard";
                 break;
-            case 'alero':
+            case 'sf':
                 return "Small forward";
                 break;
-            case 'ala-pivot':
+            case 'pf':
                 return "Power forward";
                 break;
-            case 'pivot':
+            case 'c':
                 return "Center";
                 break;
         }
     }
 
-    public function getPositionShort()
+    public function getHeight()
     {
-        switch ($this->position) {
-            case 'base':
-                return "PG";
-                break;
-            case 'escolta':
-                return "SG";
-                break;
-            case 'alero':
-                return "SF";
-                break;
-            case 'ala-pivot':
-                return "PF";
-                break;
-            case 'pivot':
-                return "C";
-                break;
-        }
+        return strtr($this->height, ".", "-");
     }
 
     public function age()

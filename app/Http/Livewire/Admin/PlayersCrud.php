@@ -27,7 +27,7 @@ class PlayersCrud extends Component
 	public $search = "";
 	public $perPage = '10';
 	public $filterPosition = "all";
-	public $filterHeight = "";
+	public $filterHeight = ['from' => 5, 'to' => 8];
 	public $filterWeight = ['from' => 125, 'to' => 500];
 	public $filterCollege = "";
 	public $filterNation = "";
@@ -59,7 +59,7 @@ class PlayersCrud extends Component
 	protected $queryString = [
 		'search' => ['except' => ''],
 		'filterPosition' => ['except' => "all"],
-		'filterHeight' => ['except' => ''],
+		'filterHeight' => ['except' => 	['from' => 5, 'to' => 8]],
 		'filterWeight' => ['except' => 	['from' => 125, 'to' => 500]],
 		'filterCollege' => ['except' => ''],
 		'filterNation' => ['except' => ''],
@@ -158,7 +158,7 @@ class PlayersCrud extends Component
 
     public function cancelFilterHeight()
     {
-    	$this->filterHeight = '';
+    	$this->filterHeight = ['from' => 5, 'to' => 8];
     }
 
     public function cancelFilterWeight()
@@ -204,7 +204,7 @@ class PlayersCrud extends Component
 		$this->order = 'id';
 		$this->orderDirection = 'desc';
 		$this->filterPosition = "all";
-		$this->filterHeight = '';
+		$this->filterHeight = ['from' => 5, 'to' => 8];
 		$this->filterWeight = ['from' => 125, 'to' => 500];
 		$this->filterAge = ['from' => 15, 'to' => 45];
 		$this->filterYearDraft = ['from' => 1995, 'to' => 2020];
