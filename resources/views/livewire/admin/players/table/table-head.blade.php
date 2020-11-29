@@ -1,6 +1,6 @@
 <thead class="">
 	<tr class="admin-crud-table">
-		<th class="check" wire:click.stop="checkAll">
+		<th wire:click.stop="checkAll">
 		    <div class="pretty p-svg p-curve m-0 p-jelly p-has-focus">
 		        <input type="checkbox" wire:model="checkAllSelector" />
 		        <div class="state p-primary">
@@ -10,17 +10,17 @@
 		            <label></label>
 		        </div>
 		    </div>
+		    <div class="pl-2 d-inline-block">
+				@if ($order == 'name' && $orderDirection == 'asc')
+					<span class="d-inline-block cursor-pointer" wire:click="order('name', 'desc')">Nombre<i class="fas fa-sort-alpha-up pl-1"></i></span>
+				@elseif ($order == 'name' && $orderDirection == 'desc')
+					<span class="d-inline-block cursor-pointer" wire:click="order('name', 'asc')">Nombre<i class="fas fa-sort-alpha-down pl-1"></i></span>
+				@else
+					<span class="d-inline-block cursor-pointer" wire:click="order('name', 'asc')">Nombre</span>
+				@endif
+		    </div>
 		</th>
-		<th class="pl-3">
-			@if ($order == 'name' && $orderDirection == 'asc')
-				<span class="d-inline-block cursor-pointer" wire:click="order('name', 'desc')">Nombre<i class="fas fa-sort-alpha-up pl-1"></i></span>
-			@elseif ($order == 'name' && $orderDirection == 'desc')
-				<span class="d-inline-block cursor-pointer" wire:click="order('name', 'asc')">Nombre<i class="fas fa-sort-alpha-down pl-1"></i></span>
-			@else
-				<span class="d-inline-block cursor-pointer" wire:click="order('name', 'asc')">Nombre</span>
-			@endif
-		</th>
-		<th class="pl-3">
+		<th class="">
 			@if ($order == 'team_id' && $orderDirection == 'asc')
 				<span class="d-inline-block cursor-pointer" wire:click="order('team_id', 'desc')">Equipo<i class="fas fa-sort-alpha-up pl-1"></i></span>
 			@elseif ($order == 'team_id' && $orderDirection == 'desc')
@@ -38,7 +38,7 @@
 				<span class="d-inline-block cursor-pointer" wire:click="order('position', 'asc')">Posición</span>
 			@endif
 		</th>
-		<th class="pl-3">
+		<th class="">
 			@if ($order == 'nation_name' && $orderDirection == 'asc')
 				<span class="d-inline-block cursor-pointer" wire:click="order('nation_name', 'desc')">Pais<i class="fas fa-sort-alpha-up pl-1"></i></span>
 			@elseif ($order == 'nation_name' && $orderDirection == 'desc')
@@ -47,7 +47,7 @@
 				<span class="d-inline-block cursor-pointer" wire:click="order('nation_name', 'asc')">Pais</span>
 			@endif
 		</th>
-		<th class="pl-3">
+		<th class="text-center">
 			@if ($order == 'birthdate' && $orderDirection == 'asc')
 				<span class="d-inline-block cursor-pointer" wire:click="order('birthdate', 'desc')">Edad<i class="fas fa-sort-alpha-up pl-1"></i></span>
 			@elseif ($order == 'birthdate' && $orderDirection == 'desc')
@@ -56,7 +56,7 @@
 				<span class="d-inline-block cursor-pointer" wire:click="order('birthdate', 'asc')">Edad</span>
 			@endif
 		</th>
-		<th>
+		<th class="text-center">
 			@if ($order == 'height' && $orderDirection == 'asc')
 				<span class="d-inline-block cursor-pointer" wire:click="order('height', 'desc')">Altura<i class="fas fa-sort-alpha-up pl-1"></i></span>
 			@elseif ($order == 'height' && $orderDirection == 'desc')
@@ -65,7 +65,7 @@
 				<span class="d-inline-block cursor-pointer" wire:click="order('height', 'asc')">Altura</span>
 			@endif
 		</th>
-		<th>
+		<th class="text-center">
 			@if ($order == 'weight' && $orderDirection == 'asc')
 				<span class="d-inline-block cursor-pointer" wire:click="order('weight', 'desc')">Peso<i class="fas fa-sort-alpha-up pl-1"></i></span>
 			@elseif ($order == 'weight' && $orderDirection == 'desc')
@@ -74,7 +74,7 @@
 				<span class="d-inline-block cursor-pointer" wire:click="order('weight', 'asc')">Peso</span>
 			@endif
 		</th>
-		<th class="pl-3">
+		<th class="text-center">
 			@if ($order == 'draft_year' && $orderDirection == 'asc')
 				<span class="d-inline-block cursor-pointer" wire:click="order('draft_year', 'desc')">Año Draft<i class="fas fa-sort-alpha-up pl-1"></i></span>
 			@elseif ($order == 'draft_year' && $orderDirection == 'desc')
@@ -83,7 +83,7 @@
 				<span class="d-inline-block cursor-pointer" wire:click="order('draft_year', 'asc')">Año Draft</span>
 			@endif
 		</th>
-		<th class="pl-3">
+		<th class="">
 			@if ($order == 'college' && $orderDirection == 'asc')
 				<span class="d-inline-block cursor-pointer" wire:click="order('college', 'desc')">Universidad<i class="fas fa-sort-alpha-up pl-1"></i></span>
 			@elseif ($order == 'college' && $orderDirection == 'desc')

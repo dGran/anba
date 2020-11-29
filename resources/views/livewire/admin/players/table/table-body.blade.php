@@ -1,26 +1,28 @@
 <tbody>
 	@foreach ($regs as $reg)
 		<tr class="{{ $regsSelected->find($reg->id) ? 'selected' : '' }}" wire:click.stop="checkSelected({{ $reg->id }})">
-			<td class="check">
-			    <div class="pretty p-svg p-curve m-0 p-jelly p-has-focus">
-			        <input type="checkbox" id="check{{ $reg->id }}" class="mousetrap"
-					wire:model="regsSelectedArray.{{ $reg->id }}" value="{{ $reg->id }}"
-					wire:change="checkSelected({{ $reg->id }})">
-			        <div class="state p-primary">
-			            <svg class="svg svg-icon" viewBox="0 0 20 20">
-			                <path d="M7.629,14.566c0.125,0.125,0.291,0.188,0.456,0.188c0.164,0,0.329-0.062,0.456-0.188l8.219-8.221c0.252-0.252,0.252-0.659,0-0.911c-0.252-0.252-0.659-0.252-0.911,0l-7.764,7.763L4.152,9.267c-0.252-0.251-0.66-0.251-0.911,0c-0.252,0.252-0.252,0.66,0,0.911L7.629,14.566z" style="stroke: white;fill:white;"></path>
-			            </svg>
-			            <label></label>
-			        </div>
-			    </div>
-			</td>
-			<td style="min-width: 250px">
-				<div class="d-flex align-items-center">
-					<img class="image rounded-circle" src="{{ $reg->getImg() }}" alt="{{ $reg->name }}" style="width: 40px">
+			<td style="min-width: 200px; padding: 0">
+				<div class="d-flex align-items-center" style="border-right: 1px solid #e2e8f0; padding: .5em 1em;">
+				    <div class="pretty p-svg p-curve m-0 p-jelly p-has-focus">
+				        <input type="checkbox" id="check{{ $reg->id }}" class="mousetrap"
+						wire:model="regsSelectedArray.{{ $reg->id }}" value="{{ $reg->id }}"
+						wire:change="checkSelected({{ $reg->id }})">
+				        <div class="state p-primary">
+				            <svg class="svg svg-icon" viewBox="0 0 20 20">
+				                <path d="M7.629,14.566c0.125,0.125,0.291,0.188,0.456,0.188c0.164,0,0.329-0.062,0.456-0.188l8.219-8.221c0.252-0.252,0.252-0.659,0-0.911c-0.252-0.252-0.659-0.252-0.911,0l-7.764,7.763L4.152,9.267c-0.252-0.251-0.66-0.251-0.911,0c-0.252,0.252-0.252,0.66,0,0.911L7.629,14.566z" style="stroke: white;fill:white;"></path>
+				            </svg>
+				            <label></label>
+				        </div>
+				    </div>
+				    <div class="pl-2">
+						<img class="image rounded-circle" src="{{ $reg->getImg() }}" alt="{{ $reg->name }}" style="width: 40px; {{ $reg->retired ? '-webkit-filter: grayscale(100%); filter: grayscale(100%);' : '' }}">
+				    </div>
 					<div class="pl-2">
-						<span class="name" wire:click.stop="edit({{ $reg->id }})">
+						<div class="name d-flex align-items-center" wire:click.stop="view({{ $reg->id }})">
+							<span class="text-xxs text-uppercase mr-2 mt-1 {{ $reg->retired ?: 'd-none' }}" style="color: rgba(239, 68, 68, 1)">Retirado</span>
 							{{ $reg->name }}
-						</span>
+							<span class="text-xxs text-muted ml-2 mt-1 {{ $reg->nickname ?: 'd-none' }}">"{{ $reg->nickname }}"</span>
+						</div>
 						<p class="text-muted text-xxs m-0">
 							<strong class="mr-1">ID:</strong>
 							{{ $reg->id }}
@@ -31,16 +33,12 @@
 			<td style="width: 300px; min-width: 300px; min-width: 300px">
 				<div class="d-flex align-items-center">
 					@if (!$reg->retired)
-						<img class="image rounded-circle" src="{{ $reg->team ? $reg->team->getImg() : 'https://icon-library.com/images/free-tag-icon/free-tag-icon-20.jpg' }}" alt="{{ $reg->team ? $reg->team->name : 'Free Agent' }}" style="width: 40px">
+						<img class="image rounded-circle" src="{{ $reg->getTeamImg() }}" alt="{{ $reg->team ? $reg->team->name : 'Free Agent' }}" style="width: 40px;">
 						<div class="pl-2">
-							<span>
+							<span class="{{ !$reg->team ? 'text-muted' : '' }}">
 								{{ $reg->team ? $reg->team->name : 'Free Agent' }}
 							</span>
 						</div>
-					@else
-						<span class="font-weight-bold font-italic">
-							**Jugador retirado
-						</span>
 					@endif
 				</div>
 			</td>
@@ -49,36 +47,37 @@
 					<div class="mr-2 d-inline-block text-xs font-weight-bold text-uppercase" style="width: 20px">{{ $reg->position }}</div>{{ $reg->getPosition() }}
 				</div>
 			</td>
-			<td style="width: 150px; min-width: 150px; max-width: 150px">
+			<td class="truncate" style="width: 200px; min-width: 200px; max-width: 200px">
 				<span>
 					{{ $reg->nation_name }}
 				</span>
 			</td>
-			<td style="width: 90px; min-width: 90px; min-width: 90px">
+			<td class="text-center" style="width: 90px; min-width: 90px; min-width: 90px">
 				<span>
 					{{ $reg->age() }}
 				</span>
 			</td>
-			<td style="width: 100px; min-width: 100px">
+			<td class="text-center" style="width: 100px; min-width: 100px">
 				<span>
 					{{ $reg->height ? $reg->getHeight() . ' ft' : '' }}
 				</span>
 			</td>
-			<td style="width: 90px; min-width: 90px; min-width: 90px">
+			<td class="text-center" style="width: 90px; min-width: 90px; min-width: 90px">
 				<span>
 					{{ $reg->weight ? $reg->weight . ' lbs' : '' }}
 				</span>
 			</td>
-			<td style="width: 150px; min-width: 150px; max-width: 150px">
+			<td class="text-center" style="width: 130px; min-width: 130px; max-width: 130px">
 				<span>
 					{{ $reg->draft_year }}
 				</span>
 			</td>
-			<td style="width: 200px; min-width: 200px; max-width: 200px">
-				<span >
+			<td class="truncate" style="width: 300px; min-width: 300px; max-width: 300px">
+				<span>
 					{{ $reg->college }}
 				</span>
 			</td>
 		</tr>
 	@endforeach
 </tbody>
+

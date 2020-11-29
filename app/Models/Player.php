@@ -13,6 +13,7 @@ class Player extends Model
 
     protected $fillable = [
         'name',
+        'nickname',
         'team_id',
         'img',
         'position',
@@ -46,11 +47,19 @@ class Player extends Model
         }
     }
 
+    public function scopeTeam($query, $value)
+    {
+        if ($value != 'all') {
+            if ($value =! 'free agents') {
+                return $query->where('team_id', '=', $value);
+            } else {
+                return $query->whereNull('team_id')->where('retired', 0);
+            }
+        }
+    }
+
     public function scopeHeight($query, $value)
     {
-        // if (trim($value) != "") {
-        //     return $query->where('height', 'LIKE', "%{$value}%");
-        // }
         if ($value['from'] > 5 || $value['to'] < 8) {
             return $query->whereBetween('height', array($value['from'], $value['to']));
         }
@@ -65,14 +74,14 @@ class Player extends Model
 
     public function scopeCollege($query, $value)
     {
-        if (trim($value) != "") {
+        if ($value != 'all') {
             return $query->where('college', 'LIKE', "%{$value}%");
         }
     }
 
     public function scopeNation($query, $value)
     {
-        if (trim($value) != "") {
+        if ($value != 'all') {
             return $query->where('nation_name', 'LIKE', "%{$value}%");
         }
     }
@@ -89,10 +98,18 @@ class Player extends Model
         }
     }
 
+
     public function scopeYearDraft($query, $value)
     {
         if ($value['from'] > 1995 || $value['to'] < 2020) {
             return $query->whereBetween('draft_year', array($value['from'], $value['to']));
+        }
+    }
+
+    public function scopeRetired($query, $value)
+    {
+        if ($value >= 0) {
+            return $query->where('retired', $value);
         }
     }
 
@@ -122,6 +139,16 @@ class Player extends Model
             }
         } else {
             return $default;
+        }
+    }
+
+    public function getTeamImg()
+    {
+        $free = asset('img/free.png');
+        if ($this->team) {
+            return $this->team->getImg();
+        } else {
+            return $free;
         }
     }
 

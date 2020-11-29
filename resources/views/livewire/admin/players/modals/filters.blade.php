@@ -23,6 +23,17 @@
                             <option value="c">Center</option>
                         </select>
                     </div>
+
+                    <div class="form-group col-md-6">
+                        <label class="text-sm text-uppercase tracking-wide">Equipo</label>
+                        <select class="form-control custom-select text-sm" wire:model="filterTeam">
+                            <option value="all">Todos los equipos</option>
+                            <option value="free agents">Free Agents</option>
+                            @foreach ($teams as $team)
+                                <option value="{{ $team->id }}">{{ $team->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
 
                 <div class="row">
@@ -67,17 +78,6 @@
 
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label class="text-sm text-uppercase tracking-wide">Nacionalidad</label>
-                        <input type="text" class="form-control" placeholder="Nacionalidad" wire:model="filterNation">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label class="text-sm text-uppercase tracking-wide">Universidad</label>
-                        <input type="text" class="form-control" placeholder="Universidad" wire:model="filterCollege">
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="form-group col-md-6">
                     <label class="text-sm text-uppercase tracking-wide">Altura (ft)</label>
                     {{-- <input type="text" class="form-control" placeholder="Altura" wire:model="filterHeight"> --}}
                         <div wire:ignore x-data x-init="
@@ -114,6 +114,38 @@
                         ">
                             <input type="text" id="filterWeight" />
                         </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label class="text-sm text-uppercase tracking-wide">Nacionalidad</label>
+                        <select class="form-control custom-select text-sm" wire:model="filterNation">
+                            <option value="all">Todas las nacionalidades</option>
+                            @foreach ($nations as $nation)
+                                <option value="{{ $nation->nation_name }}">{{ $nation->nation_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="text-sm text-uppercase tracking-wide">Universidad</label>
+                        <select class="form-control custom-select text-sm" wire:model="filterCollege">
+                            <option value="all">Todas las universidades</option>
+                            @foreach ($colleges as $college)
+                                <option value="{{ $college->college }}">{{ $college->college }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label class="text-sm text-uppercase tracking-wide">Estado</label>
+                        <select class="form-control custom-select text-sm" wire:model="filterRetired">
+                            <option value="-1">Todas los estados</option>
+                            <option value="0">En activo</option>
+                            <option value="1">Retirados</option>
+                        </select>
                     </div>
                 </div>
 

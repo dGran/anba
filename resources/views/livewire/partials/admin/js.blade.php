@@ -5,7 +5,7 @@
         "newestOnTop": false,
         "progressBar": true,
         "positionClass": "toast-top-right",
-        "preventDuplicates": true,
+        "preventDuplicates": false,
         "onclick": null,
         "showDuration": "300",
         "hideDuration": "300",
@@ -38,13 +38,16 @@
 
     window.livewire.on('addMode', () => {
         $('#addModal').modal('show');
+        $('.inputFile').val(null);
     });
     window.livewire.on('regStore', () => {
         $('#addModal').modal('hide');
     });
 
     window.livewire.on('editMode', () => {
+        $('#viewModal').modal('hide');
         $('#editModal').modal('show');
+        $('.inputFile').val(null);
     });
     window.livewire.on('regUpdate', () => {
         $('#editModal').modal('hide');
@@ -57,6 +60,10 @@
         $('#confirmDestroyModal').modal('hide');
     });
 
+    window.livewire.on('viewMode', () => {
+        $('#viewModal').modal('show');
+    });
+
     window.livewire.on('duplicateMode', () => {
         $('#confirmDuplicateModal').modal('show');
     });
@@ -66,6 +73,7 @@
 
     window.livewire.on('importMode', () => {
         $('#confirmImportModal').modal('show');
+        $('.fileImport').val(null);
     });
     window.livewire.on('regImport', () => {
         $('#confirmImportModal').modal('hide');
@@ -163,6 +171,9 @@
             if (event.key == "Escape") {
                $(".modal").modal('hide');
             }
+        });
+        $('.modal').on('shown.bs.modal', function() {
+            $(this).find('[autofocus]').focus();
         });
     });
 </script>

@@ -16,10 +16,14 @@ class CreateTeamsTable extends Migration
         Schema::create('teams', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('medium_name');
+            $table->string('short_name');
+            // $table->enum('conference', ['eastern', 'western']);
+            // $table->enum('division', ['atlantic', 'central', 'southeast', 'northwest ', 'pacific', 'southwest']);
             $table->text('img')->nullable();
             $table->string('stadium')->nullable();
+            $table->string('color')->nullable();
             $table->string('slug');
-            // $table->foreignId('current_team_id')->nullable();
             $table->timestamps();
         });
     }

@@ -89,10 +89,6 @@
 				-ms-user-select: none;
 				user-select: none;
 			}
-			.check {
-				padding-right: 0;
-				width: 1px;
-			}
 		}
 		tbody {
 			tr {
@@ -110,7 +106,7 @@
 					background-color: #F9FAFB;
 					td {
 						.image {
-							opacity: 1;
+							// opacity: 1;
 							border: 1px solid #e2e8f0;
 							background-color: #fff;
 						}
@@ -125,21 +121,58 @@
 					padding: .5em 1em;
 					vertical-align: middle;
 					white-space: nowrap;
-					&.check {
-						padding-right: 0;
-					}
 					.image {
 						height: 40px;
 						width: auto;
 						padding: 3px;
 						border: 1px solid transparent;
 						object-fit: cover;
-						opacity: .75;
+						// opacity: .6;
 					}
 				}
 			}
 		}
-
+		&.fixed-first {
+			th {
+				&:first-child {
+					background-color: #F9FAFB;
+					left: 0px;
+					position: sticky;
+				}
+			}
+			tbody {
+				tr {
+					&.selected {
+						&:hover {
+							td {
+								&:first-child {
+									background-color: #ebf4ff;
+								}
+							}
+						}
+						td {
+							&:first-child {
+								background-color: #ebf4ff;
+							}
+						}
+					}
+					&:hover {
+						td {
+							&:first-child {
+								background-color: #F9FAFB;
+							}
+						}
+					}
+					td {
+						&:first-child {
+							background-color: #fff;
+							left: 0px;
+							position: sticky;
+						}
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -181,6 +214,11 @@
 			    -webkit-box-align: center;
 			    align-items: center;
 				justify-content: center;
+				//text non selectable
+				-moz-user-select: none;
+				-webkit-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
 				&:focus, &:hover {
 					background-color: #ebf4ff;
 					border-color: #a3bffa;

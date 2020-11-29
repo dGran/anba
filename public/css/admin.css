@@ -383,11 +383,6 @@ html {
   user-select: none;
 }
 
-.admin-crud-table-wrapper .admin-crud-table thead .check {
-  padding-right: 0;
-  width: 1px;
-}
-
 .admin-crud-table-wrapper .admin-crud-table tbody tr {
   font-size: 0.9em;
 }
@@ -409,7 +404,6 @@ html {
 }
 
 .admin-crud-table-wrapper .admin-crud-table tbody tr:hover td .image {
-  opacity: 1;
   border: 1px solid #e2e8f0;
   background-color: #fff;
 }
@@ -426,10 +420,6 @@ html {
   white-space: nowrap;
 }
 
-.admin-crud-table-wrapper .admin-crud-table tbody tr td.check {
-  padding-right: 0;
-}
-
 .admin-crud-table-wrapper .admin-crud-table tbody tr td .image {
   height: 40px;
   width: auto;
@@ -437,7 +427,32 @@ html {
   border: 1px solid transparent;
   -o-object-fit: cover;
      object-fit: cover;
-  opacity: 0.75;
+}
+
+.admin-crud-table-wrapper .admin-crud-table.fixed-first th:first-child {
+  background-color: #F9FAFB;
+  left: 0px;
+  position: -webkit-sticky;
+  position: sticky;
+}
+
+.admin-crud-table-wrapper .admin-crud-table.fixed-first tbody tr.selected:hover td:first-child {
+  background-color: #ebf4ff;
+}
+
+.admin-crud-table-wrapper .admin-crud-table.fixed-first tbody tr.selected td:first-child {
+  background-color: #ebf4ff;
+}
+
+.admin-crud-table-wrapper .admin-crud-table.fixed-first tbody tr:hover td:first-child {
+  background-color: #F9FAFB;
+}
+
+.admin-crud-table-wrapper .admin-crud-table.fixed-first tbody tr td:first-child {
+  background-color: #fff;
+  left: 0px;
+  position: -webkit-sticky;
+  position: sticky;
 }
 
 .pagination-wrapper {
@@ -473,6 +488,10 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .pagination-wrapper .pagination .page-item .page-link:focus, .pagination-wrapper .pagination .page-item .page-link:hover {
