@@ -42,6 +42,10 @@ class PlayersCrud extends Component
 	// general vars
 	public $editMode = false;
 
+	// config vars
+	public $fixedFirstColumn = true;
+	public $showTableImages = true;
+
 	//selected regs
 	public $regsSelectedArray = [];
 	public $checkAllSelector = 0;

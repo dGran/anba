@@ -2,8 +2,8 @@
 	@foreach ($regs as $reg)
 		<tr class="{{ $regsSelected->find($reg->id) ? 'selected' : '' }}" wire:click.stop="checkSelected({{ $reg->id }})">
 			<td style="min-width: 200px; padding: 0">
-				<div class="d-flex align-items-center" style="border-right: 1px solid #e2e8f0; padding: .5em 1em;">
-				    <div class="pretty p-svg p-curve m-0 p-jelly p-has-focus">
+				<div class="d-flex align-items-center" style="padding: .5em 1em; {{ $fixedFirstColumn ? 'border-right: 1px solid #e2e8f0;' : 'border-right: 1px solid transparent;' }}">
+				    <div class="pretty p-svg p-curve p-jelly p-has-focus mr-2">
 				        <input type="checkbox" id="check{{ $reg->id }}" class="mousetrap"
 						wire:model="regsSelectedArray.{{ $reg->id }}" value="{{ $reg->id }}"
 						wire:change="checkSelected({{ $reg->id }})">
@@ -14,9 +14,9 @@
 				            <label></label>
 				        </div>
 				    </div>
-				    <div class="pl-2">
+				    @if ($showTableImages)
 						<img class="image rounded-circle" src="{{ $reg->getImg() }}" alt="{{ $reg->name }}" style="width: 40px; {{ $reg->retired ? '-webkit-filter: grayscale(100%); filter: grayscale(100%);' : '' }}">
-				    </div>
+				    @endif
 					<div class="pl-2">
 						<div class="name d-flex align-items-center" wire:click.stop="view({{ $reg->id }})">
 							<span class="text-xxs text-uppercase mr-2 mt-1 {{ $reg->retired ?: 'd-none' }}" style="color: rgba(239, 68, 68, 1)">Retirado</span>
@@ -33,12 +33,12 @@
 			<td style="width: 300px; min-width: 300px; min-width: 300px">
 				<div class="d-flex align-items-center">
 					@if (!$reg->retired)
-						<img class="image rounded-circle" src="{{ $reg->getTeamImg() }}" alt="{{ $reg->team ? $reg->team->name : 'Free Agent' }}" style="width: 40px;">
-						<div class="pl-2">
-							<span class="{{ !$reg->team ? 'text-muted' : '' }}">
-								{{ $reg->team ? $reg->team->name : 'Free Agent' }}
-							</span>
-						</div>
+						@if ($showTableImages)
+							<img class="image rounded-circle pr-2" src="{{ $reg->getTeamImg() }}" alt="{{ $reg->team ? $reg->team->name : 'Free Agent' }}" style="width: 40px;">
+						@endif
+						<span class="{{ !$reg->team ? 'text-muted' : '' }}">
+							{{ $reg->team ? $reg->team->name : 'Free Agent' }}
+						</span>
 					@endif
 				</div>
 			</td>

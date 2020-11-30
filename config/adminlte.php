@@ -168,7 +168,7 @@ return [
 
     'right_sidebar' => true,
     'right_sidebar_icon' => 'fas fa-cogs',
-    'right_sidebar_theme' => 'dark',
+    'right_sidebar_theme' => 'light',
     'right_sidebar_slide' => true,
     'right_sidebar_push' => false,
     'right_sidebar_scrollbar_theme' => 'os-theme-light',
@@ -252,19 +252,19 @@ return [
         [
             'text'        => 'Usuarios',
             'route'       => 'admin.users',
-            'icon'        => 'bx bx-table',
+            'icon'        => 'bx bxs-data',
             // 'label'       => 4,
             // 'label_color' => 'success',
         ],
         [
             'text'        => 'Equipos',
             'route'       => 'admin.teams',
-            'icon'        => 'bx bx-table',
+            'icon'        => 'bx bxs-data',
         ],
         [
             'text'        => 'Jugadores',
             'route'       => 'admin.players',
-            'icon'        => 'bx bx-table',
+            'icon'        => 'bx bxs-data',
         ],
 
         // [

@@ -35,12 +35,11 @@
 @stop
 
 <div class="py-2"> {{-- slot --}}
+
     @include('livewire.partials.admin.session_messages')
     @include('livewire.admin.players.filters')
     @include('livewire.admin.players.table')
     @include('livewire.partials.admin.table.table-footer')
-    <i class='bx bx-command' ></i>
-
 
     {{-- modals --}}
     @include('livewire.admin.players.modals.add')
@@ -55,4 +54,12 @@
     @include('livewire.partials.admin.modals.export_table')
     @include('livewire.partials.admin.modals.export_selected')
     @include('livewire.partials.admin.modals.selected')
+
+    {{-- right-sidebar --}}
+    @if (config('adminlte.right_sidebar'))
+        <aside class="control-sidebar control-sidebar-{{ config('adminlte.right_sidebar_theme') }} shadow overflow-auto">
+            @include('livewire.admin.players.right-sidebar')
+        </aside>
+    @endif
+
 </div> {{-- end-slot --}}

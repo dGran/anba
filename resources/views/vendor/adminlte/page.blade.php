@@ -59,9 +59,9 @@
         @endif
 
         {{-- Right Control Sidebar --}}
-        @if(config('adminlte.right_sidebar'))
+{{--         @if(config('adminlte.right_sidebar'))
             @include('adminlte::partials.sidebar.right-sidebar')
-        @endif
+        @endif --}}
 
     </div>
 @stop

@@ -1,6 +1,6 @@
 <div class="admin-crud-table-wrapper shadow-sm mt-2">
 	@if ($regs->count()>0)
-		<table class="admin-crud-table fixed-first">
+		<table class="admin-crud-table {{ !$fixedFirstColumn ?: 'fixed-first' }}">
 			@include('livewire.admin.players.table.table-head')
 			@include('livewire.admin.players.table.table-body')
 		</table>

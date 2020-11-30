@@ -1,7 +1,7 @@
 <thead class="">
 	<tr class="admin-crud-table">
-		<th wire:click.stop="checkAll">
-		    <div class="pretty p-svg p-curve m-0 p-jelly p-has-focus">
+		<th wire:click.stop="checkAll" class="d-flex align-items-center">
+		    <div class="pretty p-svg p-curve m-0 p-jelly p-has-focus text-base">
 		        <input type="checkbox" wire:model="checkAllSelector" />
 		        <div class="state p-primary">
 		            <svg class="svg svg-icon" viewBox="0 0 20 20">
@@ -10,7 +10,7 @@
 		            <label></label>
 		        </div>
 		    </div>
-		    <div class="pl-2 d-inline-block">
+		    <div class="pl-3 d-inline-block">
 				@if ($order == 'name' && $orderDirection == 'asc')
 					<span class="d-inline-block cursor-pointer" wire:click="order('name', 'desc')">Nombre<i class="fas fa-sort-alpha-up pl-1"></i></span>
 				@elseif ($order == 'name' && $orderDirection == 'desc')

@@ -176,4 +176,9 @@
             $(this).find('[autofocus]').focus();
         });
     });
+
+    // fix padding-right on open modal
+    // $('.modal').on('show.bs.modal', function (e) {
+    //     $('body').addClass('test');
+    // });
 </script>

@@ -4,7 +4,7 @@
 		<i class="bx bxs-add-to-queue"></i><span class="ml-2 d-none d-md-inline-flex">Nuevo</span>
 	</button>
 
-	<input type="search" class="search-input form-control mr-2" placeholder='Buscar...("/")' wire:model="search" autofocus>
+	<input type="search" class="search-input form-control mr-2" placeholder='Buscar...' wire:model="search" autofocus>
 
 	<div class="btn-group" role="group">
 		<div class="btn-group" role="group">

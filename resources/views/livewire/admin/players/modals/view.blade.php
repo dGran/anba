@@ -21,58 +21,64 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
+                    <button type="button" class="btn btn-primary mr-3 mb-2 text-uppercase tracking-widest text-xxs py-1 px-2" wire:click="edit({{ $playerView->id }})" style="position: absolute; bottom: 0; right: 0">
+                        Editar
+                    </button>
                 </div>
-                <div class="modal-body p-0 text-sm">
-                    <div class="d-flex align-items-start px-2 px-md-3 py-2 mt-2" style="border-bottom: 1px solid #e9ecef">
-                        <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold">ID</div>
-                        <div class="col-7 text-right">{{ $playerView->id }}</div>
-                    </div>
-                    <div class="d-flex align-items-start px-2 px-md-3 py-2" style="border-bottom: 1px solid #e9ecef">
-                        <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold">Nombre</div>
-                        <div class="col-7 text-right">{{ $playerView->name ?: 'N/D' }}</div>
-                    </div>
-                    <div class="d-flex align-items-start px-2 px-md-3 py-2" style="border-bottom: 1px solid #e9ecef">
-                        <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold">Apodo</div>
-                        <div class="col-7 text-right">{{ $playerView->nickname ?: 'N/D' }}</div>
-                    </div>
-                    @if (!$playerView->retired)
-                        <div class="d-flex align-items-start px-2 px-md-3 py-2" style="border-bottom: 1px solid #e9ecef">
-                            <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold">Equipo</div>
-                            <div class="col-7 text-right {{ $playerView->team ? '' : 'text-danger' }}">{{ $playerView->team ? $playerView->team->name : 'Free Agent'}}</div>
-                        </div>
-                    @endif
-                    <div class="d-flex align-items-start px-2 px-md-3 py-2" style="border-bottom: 1px solid #e9ecef">
-                        <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold">Posición</div>
-                        <div class="col-7 text-right">{{ $playerView->position ? $playerView->getPosition() : 'N/D' }}</div>
-                    </div>
-                    <div class="d-flex align-items-start px-2 px-md-3 py-2" style="border-bottom: 1px solid #e9ecef">
-                        <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold">Altura</div>
-                        <div class="col-7 text-right">{{ $playerView->height ? $playerView->getHeight() . ' ft' : 'N/D' }}</div>
-                    </div>
-                    <div class="d-flex align-items-start px-2 px-md-3 py-2" style="border-bottom: 1px solid #e9ecef">
-                        <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold">Peso</div>
-                        <div class="col-7 text-right">{{ $playerView->weight ? $playerView->weight . ' lbs' : 'N/D' }}</div>
-                    </div>
-                    <div class="d-flex align-items-start px-2 px-md-3 py-2" style="border-bottom: 1px solid #e9ecef">
-                        <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold">Nacionalidad</div>
-                        <div class="col-7 text-right">{{ $playerView->nation_name ?: 'N/D' }}</div>
-                    </div>
-                    <div class="d-flex align-items-start px-2 px-md-3 py-2" style="border-bottom: 1px solid #e9ecef">
-                        <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold">Universidad</div>
-                        <div class="col-7 text-right">{{ $playerView->college ?: 'N/D' }}</div>
-                    </div>
-                    <div class="d-flex align-items-start px-2 px-md-3 py-2" style="border-bottom: 1px solid #e9ecef">
-                        <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold">Edad</div>
-                        <div class="col-7 text-right">{{ $playerView->birthdate ? $playerView->age() . ' años' : 'N/D' }}</div>
-                    </div>
-                    <div class="d-flex align-items-start px-2 px-md-3 py-2" style="border-bottom: 1px solid #e9ecef">
-                        <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold">Año draft</div>
-                        <div class="col-7 text-right">{{ $playerView->draft_year ?: 'N/D' }}</div>
-                    </div>
-                    <div class="d-flex align-items-start px-2 px-md-3 py-2 mb-3">
-                        <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold">Estado</div>
-                        <div class="col-7 text-right {{ $playerView->retired ? 'text-danger' : 'text-success' }}">{{ $playerView->retired ? 'Retirado' : 'En activo' }}</div>
-                    </div>
+                <div class="modal-body p-3">
+                    <ul class="border rounded list-inline mb-0">
+
+                        <li class="d-flex align-items-center p-2 rounded-top" style="border-bottom: 1px solid #e9ecef" onmouseover="this.style.background='#F9FAFB';" onmouseout="this.style.background='';">
+                            <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold text-xs">ID</div>
+                            <div class="col-7 text-right text-sm">{{ $playerView->id }}</div>
+                        </li>
+                        <li class="d-flex align-items-center p-2" style="border-bottom: 1px solid #e9ecef" onmouseover="this.style.background='#F9FAFB';" onmouseout="this.style.background='';">
+                            <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold text-xs">Nombre</div>
+                            <div class="col-7 text-right text-sm">{{ $playerView->name ?: 'N/D' }}</div>
+                        </li>
+                        <li class="d-flex align-items-center p-2" style="border-bottom: 1px solid #e9ecef" onmouseover="this.style.background='#F9FAFB';" onmouseout="this.style.background='';">
+                            <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold text-xs">Apodo</div>
+                            <div class="col-7 text-right text-sm {{ $playerView->nickname ?: 'text-muted' }}">{{ $playerView->nickname ?: 'N/D' }}</div>
+                        </li>
+                        @if (!$playerView->retired)
+                            <li class="d-flex align-items-center p-2" style="border-bottom: 1px solid #e9ecef" onmouseover="this.style.background='#F9FAFB';" onmouseout="this.style.background='';">
+                                <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold text-xs">Equipo</div>
+                                <div class="col-7 text-right text-sm {{ $playerView->team ? '' : 'text-danger' }}">{{ $playerView->team ? $playerView->team->name : 'Free Agent'}}</div>
+                            </li>
+                        @endif
+                        <li class="d-flex align-items-center p-2" style="border-bottom: 1px solid #e9ecef" onmouseover="this.style.background='#F9FAFB';" onmouseout="this.style.background='';">
+                            <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold text-xs">Posición</div>
+                            <div class="col-7 text-right text-sm {{ $playerView->position ?: 'text-muted' }}">{{ $playerView->position ? $playerView->getPosition() : 'N/D' }}</div>
+                        </li>
+                        <li class="d-flex align-items-center p-2" style="border-bottom: 1px solid #e9ecef" onmouseover="this.style.background='#F9FAFB';" onmouseout="this.style.background='';">
+                            <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold text-xs">Altura</div>
+                            <div class="col-7 text-right text-sm {{ $playerView->height ?: 'text-muted' }}">{{ $playerView->height ? $playerView->getHeight() . ' ft' : 'N/D' }}</div>
+                        </li>
+                        <li class="d-flex align-items-center p-2" style="border-bottom: 1px solid #e9ecef" onmouseover="this.style.background='#F9FAFB';" onmouseout="this.style.background='';">
+                            <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold text-xs">Peso</div>
+                            <div class="col-7 text-right text-sm {{ $playerView->weight ?: 'text-muted' }}">{{ $playerView->weight ? $playerView->weight . ' lbs' : 'N/D' }}</div>
+                        </li>
+                        <li class="d-flex align-items-center p-2" style="border-bottom: 1px solid #e9ecef" onmouseover="this.style.background='#F9FAFB';" onmouseout="this.style.background='';">
+                            <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold text-xs">Nacionalidad</div>
+                            <div class="col-7 text-right text-sm {{ $playerView->nation_name ?: 'text-muted' }}">{{ $playerView->nation_name ?: 'N/D' }}</div>
+                        </li>
+                        <li class="d-flex align-items-center p-2" style="border-bottom: 1px solid #e9ecef" onmouseover="this.style.background='#F9FAFB';" onmouseout="this.style.background='';">
+                            <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold text-xs">Universidad</div>
+                            <div class="col-7 text-right text-sm {{ $playerView->college ?: 'text-muted' }}">{{ $playerView->college ?: 'N/D' }}</div>
+                        </li>
+                        <li class="d-flex align-items-center p-2" style="border-bottom: 1px solid #e9ecef" onmouseover="this.style.background='#F9FAFB';" onmouseout="this.style.background='';">
+                            <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold text-xs">Edad</div>
+                            <div class="col-7 text-right text-sm {{ $playerView->birthdate ?: 'text-muted' }}">{{ $playerView->birthdate ? $playerView->age() . ' años' : 'N/D' }}</div>
+                        </li>
+                        <li class="d-flex align-items-center p-2" style="border-bottom: 1px solid #e9ecef" onmouseover="this.style.background='#F9FAFB';" onmouseout="this.style.background='';">
+                            <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold text-xs">Año draft</div>
+                            <div class="col-7 text-right text-sm {{ $playerView->draft_year ?: 'text-muted' }}">{{ $playerView->draft_year ?: 'N/D' }}</div>
+                        </li>
+                        <li class="d-flex align-items-center p-2 rounded-bottom" onmouseover="this.style.background='#F9FAFB';" onmouseout="this.style.background='';">
+                            <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold text-xs">Estado</div>
+                            <div class="col-7 text-right text-sm {{ $playerView->retired ? 'text-danger' : 'text-success' }}">{{ $playerView->retired ? 'Retirado' : 'En activo' }}</div>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
