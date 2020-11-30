@@ -448,10 +448,14 @@ class PlayersCrud extends Component
 		if ($regs_deleted > 0) {
 			session()->flash('success', $regs_to_delete == 1 ? 'Registro eliminado correctamente!.' : 'Registros eliminados correctamente!.');
 		} else {
-			session()->flash('error', $regs_to_delete == 1 ? 'El registro no puede ser eliminado o ya no existe.' : 'No se ha eliminado ningún registro, no pueden ser eliminados o ya no existen.');
+			if ($regs_to_delete == 1) {
+				session()->flash('error', 'El registro no puede ser eliminado o ya no existe.');
+			} elseif ($regs_to_delete > 1) {
+				session()->flash('error', 'No se ha eliminado ningún registro, no pueden ser eliminados o ya no existen.');
+			}
 		}
-		$this->regsSelectedArray = [];
 		$this->emit('regDestroy');
+		$this->regsSelectedArray = [];
     }
 
     public function view($id)
@@ -470,8 +474,7 @@ class PlayersCrud extends Component
     	if (count($this->regsSelectedArray) > 1) {
     		$counter = 0;
 			foreach ($this->regsSelectedArray as $reg) {
-	            $original = Player::find($reg);
-	            if ($original) {
+	            if ($original = Player::find($reg)) {
 	            	$counter++;
 	                $team = $original->replicate();
                 	$random_numer = rand(100,999);
@@ -485,10 +488,8 @@ class PlayersCrud extends Component
 				session()->flash('error', 'Los registros que querías duplicar ya no existen.');
 			}
 			$this->emit('regDuplicate');
-			$this->regsSelectedArray = [];
-		} else {
-            $original = Player::find(reset($this->regsSelectedArray));
-            if ($original) {
+		} elseif (count($this->regsSelectedArray) == 1) {
+            if ($original = Player::find(reset($this->regsSelectedArray))) {
                 $team = $original->replicate();
             	$random_numer = rand(100,999);
             	$team->name .= " (copia_" . $random_numer . ")";
@@ -498,8 +499,9 @@ class PlayersCrud extends Component
             	session()->flash('error', 'El registro que querías duplicar ya no existe.');
             }
 			$this->emit('regDuplicate');
-			$this->regsSelectedArray = [];
 		}
+
+		$this->regsSelectedArray = [];
     }
 
     public function confirmExportTable($format)
