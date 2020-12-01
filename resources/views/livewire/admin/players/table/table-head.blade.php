@@ -20,7 +20,7 @@
 				@endif
 		    </div>
 		</th>
-		<th class="">
+		<th class="{{ $colTeam ?: 'd-none' }}">
 			@if ($order == 'team_id' && $orderDirection == 'asc')
 				<span class="d-inline-block cursor-pointer" wire:click="order('team_id', 'desc')">Equipo<i class="fas fa-sort-alpha-up pl-1"></i></span>
 			@elseif ($order == 'team_id' && $orderDirection == 'desc')
@@ -29,7 +29,7 @@
 				<span class="d-inline-block cursor-pointer" wire:click="order('team_id', 'asc')">Equipo</span>
 			@endif
 		</th>
-		<th>
+		<th class="{{ $colPosition ?: 'd-none' }}">
 			@if ($order == 'position' && $orderDirection == 'asc')
 				<span class="d-inline-block cursor-pointer" wire:click="order('position', 'desc')">Posición<i class="fas fa-sort-alpha-up pl-1"></i></span>
 			@elseif ($order == 'position' && $orderDirection == 'desc')
@@ -38,7 +38,7 @@
 				<span class="d-inline-block cursor-pointer" wire:click="order('position', 'asc')">Posición</span>
 			@endif
 		</th>
-		<th class="">
+		<th class="{{ $colNation ?: 'd-none' }}">
 			@if ($order == 'nation_name' && $orderDirection == 'asc')
 				<span class="d-inline-block cursor-pointer" wire:click="order('nation_name', 'desc')">Pais<i class="fas fa-sort-alpha-up pl-1"></i></span>
 			@elseif ($order == 'nation_name' && $orderDirection == 'desc')
@@ -47,7 +47,7 @@
 				<span class="d-inline-block cursor-pointer" wire:click="order('nation_name', 'asc')">Pais</span>
 			@endif
 		</th>
-		<th class="text-center">
+		<th class="text-center {{ $colAge ?: 'd-none' }}">
 			@if ($order == 'birthdate' && $orderDirection == 'asc')
 				<span class="d-inline-block cursor-pointer" wire:click="order('birthdate', 'desc')">Edad<i class="fas fa-sort-alpha-up pl-1"></i></span>
 			@elseif ($order == 'birthdate' && $orderDirection == 'desc')
@@ -56,7 +56,7 @@
 				<span class="d-inline-block cursor-pointer" wire:click="order('birthdate', 'asc')">Edad</span>
 			@endif
 		</th>
-		<th class="text-center">
+		<th class="text-center {{ $colHeight ?: 'd-none' }}">
 			@if ($order == 'height' && $orderDirection == 'asc')
 				<span class="d-inline-block cursor-pointer" wire:click="order('height', 'desc')">Altura<i class="fas fa-sort-alpha-up pl-1"></i></span>
 			@elseif ($order == 'height' && $orderDirection == 'desc')
@@ -65,7 +65,7 @@
 				<span class="d-inline-block cursor-pointer" wire:click="order('height', 'asc')">Altura</span>
 			@endif
 		</th>
-		<th class="text-center">
+		<th class="text-center {{ $colWeight ?: 'd-none' }}">
 			@if ($order == 'weight' && $orderDirection == 'asc')
 				<span class="d-inline-block cursor-pointer" wire:click="order('weight', 'desc')">Peso<i class="fas fa-sort-alpha-up pl-1"></i></span>
 			@elseif ($order == 'weight' && $orderDirection == 'desc')
@@ -74,7 +74,7 @@
 				<span class="d-inline-block cursor-pointer" wire:click="order('weight', 'asc')">Peso</span>
 			@endif
 		</th>
-		<th class="text-center">
+		<th class="text-center {{ $colDraftYear ?: 'd-none' }}">
 			@if ($order == 'draft_year' && $orderDirection == 'asc')
 				<span class="d-inline-block cursor-pointer" wire:click="order('draft_year', 'desc')">Año Draft<i class="fas fa-sort-alpha-up pl-1"></i></span>
 			@elseif ($order == 'draft_year' && $orderDirection == 'desc')
@@ -83,7 +83,7 @@
 				<span class="d-inline-block cursor-pointer" wire:click="order('draft_year', 'asc')">Año Draft</span>
 			@endif
 		</th>
-		<th class="">
+		<th class="{{ $colCollege ?: 'd-none' }}">
 			@if ($order == 'college' && $orderDirection == 'asc')
 				<span class="d-inline-block cursor-pointer" wire:click="order('college', 'desc')">Universidad<i class="fas fa-sort-alpha-up pl-1"></i></span>
 			@elseif ($order == 'college' && $orderDirection == 'desc')

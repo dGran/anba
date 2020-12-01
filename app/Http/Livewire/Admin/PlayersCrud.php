@@ -42,9 +42,18 @@ class PlayersCrud extends Component
 	// general vars
 	public $editMode = false;
 
-	// config vars
-	public $fixedFirstColumn = true;
-	public $showTableImages = true;
+	// preferences vars
+	public $fixedFirstColumn;
+	public $showTableImages;
+	public $showNicknames;
+	public $colTeam;
+	public $colPosition;
+	public $colNation;
+	public $colAge;
+	public $colHeight;
+	public $colWeight;
+	public $colDraftYear;
+	public $colCollege;
 
 	//selected regs
 	public $regsSelectedArray = [];
@@ -82,6 +91,87 @@ class PlayersCrud extends Component
 		'perPage' => ['except' => '10'],
 		'order' => ['except' => 'id']
 	];
+
+	// Session Preferences
+	public function setSessionPreferences()
+	{
+		session([
+			'players.showTableImages' => $this->showTableImages ? 'on' : 'off',
+			'players.fixedFirstColumn' => $this->fixedFirstColumn ? 'on' : 'off',
+			'players.showNicknames' => $this->showNicknames ? 'on' : 'off',
+			'players.colTeam' => $this->colTeam ? 'on' : 'off',
+			'players.colPosition' => $this->colPosition ? 'on' : 'off',
+			'players.colNation' => $this->colNation ? 'on' : 'off',
+			'players.colAge' => $this->colAge ? 'on' : 'off',
+			'players.colHeight' => $this->colHeight ? 'on' : 'off',
+			'players.colWeight' => $this->colWeight ? 'on' : 'off',
+			'players.colDraftYear' => $this->colDraftYear ? 'on' : 'off',
+			'players.colCollege' => $this->colCollege ? 'on' : 'off'
+		]);
+
+		if (!$this->colTeam && !$this->colPosition && !$this->colNation && !$this->colAge && !$this->colHeight && !$this->colWeight && !$this->colDraftYear && !$this->colCollege) {
+			session(['players.fixedFirstColumn' => 'off']);
+		}
+	}
+
+	public function getSessionPreferences()
+	{
+		if (session()->get('players.showTableImages')) {
+			$this->showTableImages = session()->get('players.showTableImages') == 'on' ? true : false;
+		} else {
+			$this->showTableImages = true;
+		}
+		if (session()->get('players.fixedFirstColumn')) {
+			$this->fixedFirstColumn = session()->get('players.fixedFirstColumn') == 'on' ? true : false;
+		} else {
+			$this->fixedFirstColumn = true;
+		}
+		if (session()->get('players.showNicknames')) {
+			$this->showNicknames = session()->get('players.showNicknames') == 'on' ? true : false;
+		} else {
+			$this->showNicknames = true;
+		}
+		if (session()->get('players.colTeam')) {
+			$this->colTeam = session()->get('players.colTeam') == 'on' ? true : false;
+		} else {
+			$this->colTeam = true;
+		}
+		if (session()->get('players.colPosition')) {
+			$this->colPosition = session()->get('players.colPosition') == 'on' ? true : false;
+		} else {
+			$this->colPosition = true;
+		}
+		if (session()->get('players.colNation')) {
+			$this->colNation = session()->get('players.colNation') == 'on' ? true : false;
+		} else {
+			$this->colNation = true;
+		}
+		if (session()->get('players.colAge')) {
+			$this->colAge = session()->get('players.colAge') == 'on' ? true : false;
+		} else {
+			$this->colAge = true;
+		}
+		if (session()->get('players.colHeight')) {
+			$this->colHeight = session()->get('players.colHeight') == 'on' ? true : false;
+		} else {
+			$this->colHeight = true;
+		}
+		if (session()->get('players.colWeight')) {
+			$this->colWeight = session()->get('players.colWeight') == 'on' ? true : false;
+		} else {
+			$this->colWeight = true;
+		}
+		if (session()->get('players.colDraftYear')) {
+			$this->colDraftYear = session()->get('players.colDraftYear') == 'on' ? true : false;
+		} else {
+			$this->colDraftYear = true;
+		}
+		if (session()->get('players.colCollege')) {
+			$this->colCollege = session()->get('players.colCollege') == 'on' ? true : false;
+		} else {
+			$this->colCollege = true;
+		}
+	}
 
 	// Selected
 	public function checkSelected($id)
@@ -142,6 +232,11 @@ class PlayersCrud extends Component
 				$this->emit('closeSelected');
 			}
 		}
+	}
+
+	public function regsSelectedCount()
+	{
+		return count($this->regsSelectedArray);
 	}
 	// END::Selected
 
@@ -640,6 +735,10 @@ class PlayersCrud extends Component
     public function render()
     {
     	// $teams = Team::factory()->count(20)->create();
+
+    	// Load Session Preferences
+    	$this->getSessionPreferences();
+
     	$teams = Team::orderBy('name', 'asc')->get();
     	$nations = Player::select('nation_name')->distinct()->whereNotNull('nation_name')->orderBy('nation_name', 'asc')->get();
     	$colleges = Player::select('college')->distinct()->whereNotNull('college')->orderBy('college', 'asc')->get();

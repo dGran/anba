@@ -383,6 +383,10 @@
   font-size: 0.9em;
 }
 
+.admin-crud-table-wrapper .admin-crud-table tbody tr:nth-child(even) {
+  background-color: #F9FBFF;
+}
+
 .admin-crud-table-wrapper .admin-crud-table tbody tr.selected {
   background-color: #ebf4ff;
 }

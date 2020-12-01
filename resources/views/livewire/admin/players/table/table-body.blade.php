@@ -2,7 +2,7 @@
 	@foreach ($regs as $reg)
 		<tr class="{{ $regsSelected->find($reg->id) ? 'selected' : '' }}" wire:click.stop="checkSelected({{ $reg->id }})">
 			<td style="min-width: 200px; padding: 0">
-				<div class="d-flex align-items-center" style="padding: .5em 1em; {{ $fixedFirstColumn ? 'border-right: 1px solid #e2e8f0;' : 'border-right: 1px solid transparent;' }}">
+				<div class="d-flex align-items-center" style="height: inherit; padding: .5em 1em; {{ $fixedFirstColumn ? 'border-right: 1px solid #e2e8f0;' : 'border-right: 1px solid transparent;' }}">
 				    <div class="pretty p-svg p-curve p-jelly p-has-focus mr-2">
 				        <input type="checkbox" id="check{{ $reg->id }}" class="mousetrap"
 						wire:model="regsSelectedArray.{{ $reg->id }}" value="{{ $reg->id }}"
@@ -19,9 +19,11 @@
 				    @endif
 					<div class="pl-2">
 						<div class="name d-flex align-items-center" wire:click.stop="view({{ $reg->id }})">
-							<span class="text-xxs text-uppercase mr-2 mt-1 {{ $reg->retired ?: 'd-none' }}" style="color: rgba(239, 68, 68, 1)">Retirado</span>
-							{{ $reg->name }}
-							<span class="text-xxs text-muted ml-2 mt-1 {{ $reg->nickname ?: 'd-none' }}">"{{ $reg->nickname }}"</span>
+							{{-- <span class="text-xxs text-uppercase mr-2 {{ $reg->retired ?: 'd-none' }}" style="color: rgba(239, 68, 68, 1)">Retirado</span> --}}
+							<span class="{{ !$reg->retired ?: 'text-gray-500' }}">{{ $reg->name }}</span>
+							@if ($showNicknames)
+								<span class="text-xxs ml-2 {{ $reg->nickname ?: 'd-none' }} {{ !$reg->retired ?: 'text-gray-500' }}">"{{ $reg->nickname }}"</span>
+							@endif
 						</div>
 						<p class="text-muted text-xxs m-0">
 							<strong class="mr-1">ID:</strong>
@@ -30,7 +32,7 @@
 					</div>
 				</div>
 			</td>
-			<td style="width: 300px; min-width: 300px; min-width: 300px">
+			<td class="{{ $colTeam ?: 'd-none' }}" style="width: 300px; min-width: 300px; min-width: 300px">
 				<div class="d-flex align-items-center">
 					@if (!$reg->retired)
 						@if ($showTableImages)
@@ -39,40 +41,44 @@
 						<span class="{{ !$reg->team ? 'text-muted' : '' }}">
 							{{ $reg->team ? $reg->team->name : 'Free Agent' }}
 						</span>
+					@else
+						<span class="text-gray-500 text-uppercase text-sm">
+							***Jugador retirado
+						</span>
 					@endif
 				</div>
 			</td>
-			<td style="width: 175px; min-width: 175px; min-width: 175px">
+			<td class="{{ $colPosition ?: 'd-none' }}" style="width: 175px; min-width: 175px; min-width: 175px">
 				<div class="d-flex align-items-center">
 					<div class="mr-2 d-inline-block text-xs font-weight-bold text-uppercase" style="width: 20px">{{ $reg->position }}</div>{{ $reg->getPosition() }}
 				</div>
 			</td>
-			<td class="truncate" style="width: 200px; min-width: 200px; max-width: 200px">
+			<td class="truncate {{ $colNation ?: 'd-none' }}" style="width: 200px; min-width: 200px; max-width: 200px">
 				<span>
 					{{ $reg->nation_name }}
 				</span>
 			</td>
-			<td class="text-center" style="width: 90px; min-width: 90px; min-width: 90px">
+			<td class="text-center {{ $colAge ?: 'd-none' }}" style="width: 90px; min-width: 90px; min-width: 90px">
 				<span>
 					{{ $reg->age() }}
 				</span>
 			</td>
-			<td class="text-center" style="width: 100px; min-width: 100px">
+			<td class="text-center {{ $colHeight ?: 'd-none' }}" style="width: 100px; min-width: 100px">
 				<span>
 					{{ $reg->height ? $reg->getHeight() . ' ft' : '' }}
 				</span>
 			</td>
-			<td class="text-center" style="width: 90px; min-width: 90px; min-width: 90px">
+			<td class="text-center {{ $colWeight ?: 'd-none' }}" style="width: 90px; min-width: 90px; min-width: 90px">
 				<span>
 					{{ $reg->weight ? $reg->weight . ' lbs' : '' }}
 				</span>
 			</td>
-			<td class="text-center" style="width: 130px; min-width: 130px; max-width: 130px">
+			<td class="text-center {{ $colDraftYear ?: 'd-none' }}" style="width: 130px; min-width: 130px; max-width: 130px">
 				<span>
 					{{ $reg->draft_year }}
 				</span>
 			</td>
-			<td class="truncate" style="width: 300px; min-width: 300px; max-width: 300px">
+			<td class="truncate {{ $colCollege ?: 'd-none' }}" style="width: 300px; min-width: 300px; max-width: 300px">
 				<span>
 					{{ $reg->college }}
 				</span>

@@ -130,7 +130,7 @@
             @this.confirmDestroy();
             return false;
         });
-        Mousetrap.bind(['command+shift+o', 'ctrl+shift+o'], function() {
+        Mousetrap.bind(['command+shift+s', 'ctrl+shift+s'], function() {
             @this.viewSelected(true);
         });
         Mousetrap.bind(['command+shift+f', 'ctrl+shift+f'], function() {

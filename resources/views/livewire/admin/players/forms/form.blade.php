@@ -21,9 +21,9 @@
             </label>
             <figure class="pt-4 pb-3 m-0">
                 @if ($reg_img)
-                    <img src="{{ $img ? $img->temporaryUrl() : $reg_img_formated }}" class="object-cover rounded d-block m-auto" alt="Imagen de equipo" style="width: auto; height: 120px;">
+                    <img src="{{ $img ? $img->temporaryUrl() : $reg_img_formated }}" class="object-cover rounded d-block m-auto" alt="Imagen de equipo" style="width: auto; height: 120px; cursor: pointer" onclick="$('#inputFile').trigger('click');">
                 @else
-                    <img src="{{ $img ? $img->temporaryUrl() : 'http://placehold.it/120x120' }}" class="object-cover rounded d-block m-auto" alt="Imagen de equipo" style="width: auto; height: 120px;">
+                    <img src="{{ $img ? $img->temporaryUrl() : 'http://placehold.it/120x120' }}" class="object-cover rounded d-block m-auto" alt="Imagen de equipo" style="width: auto; height: 120px; cursor: pointer" onclick="$('#inputFile').trigger('click');">
                 @endif
             </figure>
             <div x-show="isUploading" style="position: absolute; bottom: -6px; left: 2px;">

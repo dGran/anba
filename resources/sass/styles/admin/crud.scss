@@ -93,6 +93,9 @@
 		tbody {
 			tr {
 				font-size: .9em;
+				&:nth-child(even) {
+					background-color: #F9FBFF;
+				}
 				&.selected {
 					background-color: #ebf4ff;
 					&:hover {
