@@ -601,8 +601,17 @@ class PlayersCrud extends Component
 	            if ($original = Player::find($reg)) {
 	            	$counter++;
 	                $reg = $original->replicate();
-                	$random_numer = rand(100,999);
-                	$reg->name .= " (copia_" . $random_numer . ")";
+	            	$random_number = rand(100,999);
+	            	$random_text = "_copia_" . $random_number;
+	            	$reg->name .= $random_text;
+	            	if ($reg->storageImg()) {
+	            		$pos = strpos($reg->img, '.');
+	            		$original_img_name = substr($reg->img, 0, $pos);
+	            		$original_img_ext = substr($reg->img, $pos, strlen($reg->img) - $pos);
+	            		$img_name = $original_img_name . $random_text . $original_img_ext;
+						Storage::disk('public')->copy($reg->img, $img_name);
+						$reg->img = $img_name;
+	            	}
 	                $reg->save();
 	            }
 			}
@@ -615,8 +624,17 @@ class PlayersCrud extends Component
 		} elseif (count($this->regsSelectedArray) == 1) {
             if ($original = Player::find(reset($this->regsSelectedArray))) {
                 $reg = $original->replicate();
-            	$random_numer = rand(100,999);
-            	$reg->name .= " (copia_" . $random_numer . ")";
+            	$random_number = rand(100,999);
+            	$random_text = "_copia_" . $random_number;
+            	$reg->name .= $random_text;
+            	if ($reg->storageImg()) {
+            		$pos = strpos($reg->img, '.');
+            		$original_img_name = substr($reg->img, 0, $pos);
+            		$original_img_ext = substr($reg->img, $pos, strlen($reg->img) - $pos);
+            		$img_name = $original_img_name . $random_text . $original_img_ext;
+					Storage::disk('public')->copy($reg->img, $img_name);
+					$reg->img = $img_name;
+            	}
                 $reg->save();
                 session()->flash('success', 'Registro duplicado correctamente!.');
             } else {
