@@ -36,75 +36,75 @@
         toastr[param['type']](param['message']);
     });
 
-    window.livewire.on('addMode', () => {
+    window.livewire.on('openAddModal', () => {
         $('#addModal').modal('show');
         $('.inputFile').val(null);
     });
-    window.livewire.on('regStore', () => {
+    window.livewire.on('closeAddModal', () => {
         $('#addModal').modal('hide');
     });
 
-    window.livewire.on('editMode', () => {
+    window.livewire.on('openEditModal', () => {
         $('#viewModal').modal('hide');
         $('#editModal').modal('show');
         $('.inputFile').val(null);
     });
-    window.livewire.on('regUpdate', () => {
+    window.livewire.on('closeEditModal', () => {
         $('#editModal').modal('hide');
     });
 
-    window.livewire.on('destroyMode', () => {
-        $('#confirmDestroyModal').modal('show');
+    window.livewire.on('openDestroyModal', () => {
+        $('#destroyModal').modal('show');
     });
-    window.livewire.on('regDestroy', () => {
-        $('#confirmDestroyModal').modal('hide');
+    window.livewire.on('closeDestroyModal', () => {
+        $('#destroyModal').modal('hide');
     });
 
-    window.livewire.on('viewMode', () => {
+    window.livewire.on('openViewModal', () => {
         $('#viewModal').modal('show');
     });
 
-    window.livewire.on('duplicateMode', () => {
-        $('#confirmDuplicateModal').modal('show');
+    window.livewire.on('openDuplicateModal', () => {
+        $('#duplicateModal').modal('show');
     });
-    window.livewire.on('regDuplicate', () => {
-        $('#confirmDuplicateModal').modal('hide');
+    window.livewire.on('closeDuplicateModal', () => {
+        $('#duplicateModal').modal('hide');
     });
 
-    window.livewire.on('importMode', () => {
-        $('#confirmImportModal').modal('show');
+    window.livewire.on('openImportModal', () => {
+        $('#importModal').modal('show');
         $('.fileImport').val(null);
     });
-    window.livewire.on('regImport', () => {
-        $('#confirmImportModal').modal('hide');
+    window.livewire.on('closeImportModal', () => {
+        $('#importModal').modal('hide');
     });
 
-    window.livewire.on('exportTableMode', () => {
-        $('#confirmExportTableModal').modal('show');
+    window.livewire.on('openExportTableModal', () => {
+        $('#exportTableModal').modal('show');
     });
-    window.livewire.on('regExportTable', () => {
-        $('#confirmExportTableModal').modal('hide');
-    });
-
-    window.livewire.on('exportSelectedMode', () => {
-        $('#confirmExportSelectedModal').modal('show');
-    });
-    window.livewire.on('regExportSelected', () => {
-        $('#confirmExportSelectedModal').modal('hide');
+    window.livewire.on('closeExportTableModal', () => {
+        $('#exportTableModal').modal('hide');
     });
 
-    window.livewire.on('openSelected', () => {
+    window.livewire.on('openExportSelectedModal', () => {
+        $('#exportSelectedModal').modal('show');
+    });
+    window.livewire.on('closeExportSelectedModal', () => {
+        $('#exportSelectedModal').modal('hide');
+    });
+
+    window.livewire.on('openSelectedModal', () => {
         $('#selectedModal').modal('show');
     });
-    window.livewire.on('closeSelected', () => {
+    window.livewire.on('closeSelectedModal', () => {
         $('#selectedModal').modal('hide');
     });
 
-    window.livewire.on('openFilters', () => {
-        $('#filterModal').modal('show');
+    window.livewire.on('openFiltersModal', () => {
+        $('#filtersModal').modal('show');
     });
-    window.livewire.on('closeFilters', () => {
-        $('#filterModal').modal('hide');
+    window.livewire.on('closeFiltersModal', () => {
+        $('#filtersModal').modal('hide');
     });
 
     Mousetrap.bind('/', function() {

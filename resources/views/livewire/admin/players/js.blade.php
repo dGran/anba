@@ -30,11 +30,11 @@
 		set_ranges();
 	});
 
-    window.livewire.on('transferMode', () => {
-        $('#confirmTransferModal').modal('show');
+    window.livewire.on('openTransfersModal', () => {
+        $('#transferModal').modal('show');
     });
-    window.livewire.on('regTransfer', () => {
-        $('#confirmTransferModal').modal('hide');
+    window.livewire.on('closeTransfersModal', () => {
+        $('#transferModal').modal('hide');
     });
 
 </script>

@@ -39,7 +39,7 @@
     @include('livewire.partials.admin.session_messages')
     @include('livewire.admin.teams.filters')
     @include('livewire.admin.teams.table')
-    @include('livewire.partials.admin.table.table-footer')
+    @include('livewire.partials.admin.table.table_footer')
 
     {{-- modals --}}
     @include('livewire.admin.teams.modals.add')

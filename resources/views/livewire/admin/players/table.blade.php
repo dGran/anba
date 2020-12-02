@@ -1,8 +1,8 @@
 <div class="admin-crud-table-wrapper shadow-sm mt-2">
 	@if ($regs->count()>0)
 		<table class="admin-crud-table {{ !$fixedFirstColumn ?: 'fixed-first' }}">
-			@include('livewire.admin.players.table.table-head')
-			@include('livewire.admin.players.table.table-body')
+			@include('livewire.admin.players.table.table_head')
+			@include('livewire.admin.players.table.table_body')
 		</table>
 	@else
 		<div class="p-3">
@@ -13,3 +13,5 @@
 		</div>
 	@endif
 </div>
+
+@include('livewire.partials.admin.table.table_footer')

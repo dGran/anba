@@ -50,7 +50,7 @@ class Player extends Model
     public function scopeTeam($query, $value)
     {
         if ($value != 'all') {
-            if ($value =! 'free agents') {
+            if ($value != 'free_agents') {
                 return $query->where('team_id', '=', $value);
             } else {
                 return $query->whereNull('team_id')->where('retired', 0);

@@ -18,11 +18,16 @@ class PlayersCrud extends Component
 	use WithPagination;
 	use WithFileUploads;
 
+	public $firstRender = true;
+
 	//model info
 	public $modelSingular = "jugador";
 	public $modelPlural = "jugadores";
 	public $modelGender = "male";
 	public $modelHasImg = true;
+
+	//fields
+	public $reg_id, $name, $nickname, $team_id, $img, $reg_img, $reg_img_formated, $position, $height, $weight, $college, $birthdate, $nation_name, $draft_year, $average, $retired;
 
 	//filters
 	public $search = "";
@@ -36,11 +41,7 @@ class PlayersCrud extends Component
 	public $filterAge = ['from' => 15, 'to' => 45];
 	public $filterYearDraft = ['from' => 1995, 'to' => 2020];
 	public $filterRetired = -1;
-	public $order = 'id';
-	public $orderDirection = 'desc';
-
-	// general vars
-	public $editMode = false;
+	public $order = 'id_desc';
 
 	// preferences vars
 	public $fixedFirstColumn;
@@ -55,26 +56,19 @@ class PlayersCrud extends Component
 	public $colDraftYear;
 	public $colCollege;
 
+	// general vars
+	public $editMode = false;
+	public $continuousInsert = false;
+	public $regView;
+	public $teamTransfer;
 	//selected regs
 	public $regsSelectedArray = [];
 	public $checkAllSelector = 0;
-
-	//fields
-	public $reg_id, $name, $nickname, $team_id, $img, $reg_img, $reg_img_formated, $position, $height, $weight, $college, $birthdate, $nation_name, $draft_year, $average, $retired;
-
-	//continuous insertion
-	public $continuousInsert = false;
-
-	public $playerView;
-
 	//import & export
 	public $fileImport;
 	public $formatExport = '';
 	public $filenameExportTable = '';
 	public $filenameExportSelected = '';
-
-	//transfer
-	public $teamTransfer;
 
 	//queryString
 	protected $queryString = [
@@ -89,7 +83,7 @@ class PlayersCrud extends Component
 		'filterYearDraft' => ['except' => ['from' => 1995, 'to' => 2020]],
 		'filterRetired' => ['except' => -1],
 		'perPage' => ['except' => '10'],
-		'order' => ['except' => 'id']
+		'order' => ['except' => 'id_desc'],
 	];
 
 	// Session Preferences
@@ -114,7 +108,7 @@ class PlayersCrud extends Component
 		}
 	}
 
-	public function getSessionPreferences()
+	protected function getSessionPreferences()
 	{
 		if (session()->get('players.showTableImages')) {
 			$this->showTableImages = session()->get('players.showTableImages') == 'on' ? true : false;
@@ -173,6 +167,44 @@ class PlayersCrud extends Component
 		}
 	}
 
+	protected function setSessionFilters()
+	{
+		session([
+			'players.search' => $this->search,
+			'players.perPage' => $this->perPage,
+			'players.filterPosition' => $this->filterPosition,
+			'players.filterTeam' => $this->filterTeam,
+			'players.filterHeight' => $this->filterHeight,
+			'players.filterWeight' => $this->filterWeight,
+			'players.filterCollege' => $this->filterCollege,
+			'players.filterNation' => $this->filterNation,
+			'players.filterAge' => $this->filterAge,
+			'players.filterYearDraft' => $this->filterYearDraft,
+			'players.filterRetired' => $this->filterRetired,
+			'players.order' => $this->order,
+			'players.page' => $this->page,
+			'players.regsSelectedArray' => $this->regsSelectedArray,
+		]);
+	}
+
+	protected function getSessionFilters()
+	{
+		if (session()->get('players.search')) { $this->search = session()->get('players.search'); }
+		if (session()->get('players.perPage')) { $this->perPage = session()->get('players.perPage'); }
+		if (session()->get('players.filterPosition')) { $this->filterPosition = session()->get('players.filterPosition'); }
+		if (session()->get('players.filterTeam')) { $this->filterTeam = session()->get('players.filterTeam'); }
+		if (session()->get('players.filterHeight')) { $this->filterHeight = session()->get('players.filterHeight'); }
+		if (session()->get('players.filterWeight')) { $this->filterWeight = session()->get('players.filterWeight'); }
+		if (session()->get('players.filterCollege')) { $this->filterCollege = session()->get('players.filterCollege'); }
+		if (session()->get('players.filterNation')) { $this->filterNation = session()->get('players.filterNation'); }
+		if (session()->get('players.filterAge')) { $this->filterAge = session()->get('players.filterAge'); }
+		if (session()->get('players.filterYearDraft')) { $this->filterYearDraft = session()->get('players.filterYearDraft'); }
+		if (session()->get('players.filterRetired')) { $this->filterRetired = session()->get('players.filterRetired'); }
+		if (session()->get('players.order')) { $this->order = session()->get('players.order'); }
+		if (session()->get('players.page')) { $this->page = session()->get('players.page'); }
+		if (session()->get('players.regsSelectedArray')) { $this->regsSelectedArray = session()->get('players.regsSelectedArray'); }
+	}
+
 	// Selected
 	public function checkSelected($id)
 	{
@@ -186,9 +218,9 @@ class PlayersCrud extends Component
 
 	public function checkAll()
 	{
-		$players = Player::name($this->search)
-			->position($this->filterPosition)
+    	$regs = Player::name($this->search)
 			->team($this->filterTeam)
+			->position($this->filterPosition)
 			->height($this->filterHeight)
 			->weight($this->filterWeight)
 			->college($this->filterCollege)
@@ -196,13 +228,14 @@ class PlayersCrud extends Component
 			->age($this->filterAge)
 			->yearDraft($this->filterYearDraft)
 			->retired($this->filterRetired)
-			->orderBy($this->order, $this->orderDirection)
+			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
+			->orderBy('name', 'asc')
     		->paginate($this->perPage, ['*'], 'page', $this->page);
-		foreach ($players as $player) {
+		foreach ($regs as $reg) {
 			if ($this->checkAllSelector == 1) {
-				$this->regsSelectedArray[$player->id] = $player->id;
+				$this->regsSelectedArray[$reg->id] = $reg->id;
 			} else {
-				$array_id = array_search($player->id, $this->regsSelectedArray);
+				$array_id = array_search($reg->id, $this->regsSelectedArray);
 				unset($this->regsSelectedArray[$array_id]);
 			}
 		}
@@ -213,30 +246,25 @@ class PlayersCrud extends Component
 		$array_id = array_search($id, $this->regsSelectedArray);
 		unset($this->regsSelectedArray[$array_id]);
 		if (empty($this->regsSelectedArray)) {
-			$this->emit('closeSelected');
+			$this->emit('closeSelectedModal');
 		}
 	}
 
 	public function cancelSelection()
 	{
 		$this->regsSelectedArray = [];
-		$this->emit('closeSelected');
+		$this->emit('closeSelectedModal');
 	}
 
 	public function viewSelected($view)
 	{
 		if (count($this->regsSelectedArray) > 0) {
 			if ($view) {
-				$this->emit('openSelected');
+				$this->emit('openSelectedModal');
 			} else {
-				$this->emit('closeSelected');
+				$this->emit('closeSelectedModal');
 			}
 		}
-	}
-
-	public function regsSelectedCount()
-	{
-		return count($this->regsSelectedArray);
 	}
 	// END::Selected
 
@@ -244,16 +272,15 @@ class PlayersCrud extends Component
 	public function viewFilters($view)
 	{
 		if ($view) {
-			$this->emit('openFilters');
+			$this->emit('openFiltersModal');
 		} else {
-			$this->emit('closeFilters');
+			$this->emit('closeFiltersModal');
 		}
 	}
 
-    public function order($field, $direction)
+    public function order($name)
     {
-    	$this->order = $field;
-    	$this->orderDirection = $direction;
+    	$this->order = $name;
     	$this->page = 1;
     }
 
@@ -322,8 +349,7 @@ class PlayersCrud extends Component
     	$this->search = '';
     	$this->page = 1;
     	$this->perPage = '10';
-		$this->order = 'id';
-		$this->orderDirection = 'desc';
+		$this->order = 'id_desc';
 		$this->filterPosition = "all";
 		$this->filterTeam = "all";
 		$this->filterHeight = ['from' => 5, 'to' => 8];
@@ -338,7 +364,7 @@ class PlayersCrud extends Component
     }
 
     // Add & Store
-    public function resetFields()
+    protected function resetFields()
     {
 		$this->name = null;
 		$this->nickname = null;
@@ -368,7 +394,7 @@ class PlayersCrud extends Component
     {
     	$this->resetFields();
 		$this->resetValidation();
-    	$this->emit('addMode');
+    	$this->emit('openAddModal');
 
     	$this->editMode = false;
     }
@@ -420,7 +446,7 @@ class PlayersCrud extends Component
 			$this->resetFields();
 		} else {
 			$this->resetFields();
-			$this->emit('regStore');
+			$this->emit('closeAddModal');
 		}
     }
     // END::Add & Store
@@ -431,30 +457,31 @@ class PlayersCrud extends Component
     	$this->resetFields();
 		$this->resetValidation();
 
-    	$player = Player::find($id);
-		$this->reg_id = $player->id;
-    	$this->name = $player->name;
-    	$this->nickname = $player->nickname;
-    	$this->team_id = $player->team_id;
-    	$this->reg_img = $player->img;
-		$this->reg_img_formated = $player->getImg();
-		$this->position = $player->position;
-		$this->height = $player->height;
-		$this->weight = $player->weight;
-		$this->college = $player->college;
-		$this->birthdate = $player->birthdate;
-		$this->nation_name = $player->nation_name;
-		$this->draft_year = $player->draft_year;
-		$this->average = $player->average;
-		$this->retired = $player->retired;
+    	$reg = Player::find($id);
+		$this->reg_id = $reg->id;
+    	$this->name = $reg->name;
+    	$this->nickname = $reg->nickname;
+    	$this->team_id = $reg->team_id;
+    	$this->reg_img = $reg->img;
+		$this->reg_img_formated = $reg->getImg();
+		$this->position = $reg->position;
+		$this->height = $reg->height;
+		$this->weight = $reg->weight;
+		$this->college = $reg->college;
+		$this->birthdate = $reg->birthdate;
+		$this->nation_name = $reg->nation_name;
+		$this->draft_year = $reg->draft_year;
+		$this->average = $reg->average;
+		$this->retired = $reg->retired;
 
-    	$this->emit('editMode');
+    	$this->emit('openEditModal');
+
     	$this->editMode = true;
     }
 
     public function update()
     {
-    	$player = Player::find($this->reg_id);
+    	$reg = Player::find($this->reg_id);
 
         if ($this->img) {
 	        $validatedData = $this->validate([
@@ -468,7 +495,7 @@ class PlayersCrud extends Component
 	            'img.max' => 'El tamaño de la imagen no puede ser mayor a 2048 bytes',
 	            // 'img.dimensions' => 'La imagen debe ser proporcinal, ratio 1:1'
 	        ]);
-	        Storage::disk('public')->delete($player->img);
+	        Storage::disk('public')->delete($reg->img);
 	        $fileName = time() . '.' . $this->img->extension();
 	        $validatedData['img'] = $this->img->storeAs('players', $fileName, 'public');
 	    } else {
@@ -480,7 +507,7 @@ class PlayersCrud extends Component
 	        ]);
 
 	        if (is_null($this->reg_img)) {
-				Storage::disk('public')->delete($player->img);
+				Storage::disk('public')->delete($reg->img);
 	        	$validatedData['img'] = null;
 	        }
 	    }
@@ -500,10 +527,10 @@ class PlayersCrud extends Component
 		}
         $validatedData['slug'] = Str::slug($this->name, '-');
 
-		$player->fill($validatedData);
+		$reg->fill($validatedData);
 
-        if ($player->isDirty()) {
-            if ($player->update()) {
+        if ($reg->isDirty()) {
+            if ($reg->update()) {
             	session()->flash('success', 'Registro actualizado correctamente.');
             } else {
             	session()->flash('error', 'Se ha producido un error y no se han podido actualizar los datos.');
@@ -512,7 +539,8 @@ class PlayersCrud extends Component
         	session()->flash('info', 'No se han detectado cambios en el registro.');
         }
 
-        $this->emit('regUpdate');
+        $this->emit('closeEditModal');
+
         $this->cancelSelection();
 		$this->resetFields();
     }
@@ -521,7 +549,7 @@ class PlayersCrud extends Component
 
     public function confirmDestroy()
     {
-		$this->emit('destroyMode');
+		$this->emit('openDestroyModal');
     }
 
     public function destroy()
@@ -549,19 +577,20 @@ class PlayersCrud extends Component
 				session()->flash('error', 'No se ha eliminado ningún registro, no pueden ser eliminados o ya no existen.');
 			}
 		}
-		$this->emit('regDestroy');
+		$this->emit('closeDestroyModal');
+
 		$this->regsSelectedArray = [];
     }
 
     public function view($id)
     {
-    	$this->playerView = Player::find($id);
-    	$this->emit('viewMode');
+    	$this->regView = Player::find($id);
+    	$this->emit('openViewModal');
     }
 
     public function confirmDuplicate()
     {
-		$this->emit('duplicateMode');
+		$this->emit('openDuplicateModal');
     }
 
     public function duplicate()
@@ -571,10 +600,10 @@ class PlayersCrud extends Component
 			foreach ($this->regsSelectedArray as $reg) {
 	            if ($original = Player::find($reg)) {
 	            	$counter++;
-	                $team = $original->replicate();
+	                $reg = $original->replicate();
                 	$random_numer = rand(100,999);
-                	$team->name .= " (copia_" . $random_numer . ")";
-	                $team->save();
+                	$reg->name .= " (copia_" . $random_numer . ")";
+	                $reg->save();
 	            }
 			}
 			if ($counter > 0) {
@@ -582,18 +611,18 @@ class PlayersCrud extends Component
 			} else {
 				session()->flash('error', 'Los registros que querías duplicar ya no existen.');
 			}
-			$this->emit('regDuplicate');
+			$this->emit('closeDuplicateModal');
 		} elseif (count($this->regsSelectedArray) == 1) {
             if ($original = Player::find(reset($this->regsSelectedArray))) {
-                $team = $original->replicate();
+                $reg = $original->replicate();
             	$random_numer = rand(100,999);
-            	$team->name .= " (copia_" . $random_numer . ")";
-                $team->save();
+            	$reg->name .= " (copia_" . $random_numer . ")";
+                $reg->save();
                 session()->flash('success', 'Registro duplicado correctamente!.');
             } else {
             	session()->flash('error', 'El registro que querías duplicar ya no existe.');
             }
-			$this->emit('regDuplicate');
+			$this->emit('closeDuplicateModal');
 		}
 
 		$this->regsSelectedArray = [];
@@ -602,17 +631,18 @@ class PlayersCrud extends Component
     public function confirmExportTable($format)
     {
     	$this->formatExport = $format;
-		$this->emit('exportTableMode');
+		$this->emit('openExportTableModal');
     }
 
     public function tableExport()
     {
-    	$this->emit('regExportTable');
+    	$this->emit('closeExportTableModal');
+
     	$filename = $this->filenameExportTable ?: 'jugadores';
 
-		$players = Player::name($this->search)
-			->position($this->filterPosition)
+    	$regs = Player::name($this->search)
 			->team($this->filterTeam)
+			->position($this->filterPosition)
 			->height($this->filterHeight)
 			->weight($this->filterWeight)
 			->college($this->filterCollege)
@@ -620,37 +650,42 @@ class PlayersCrud extends Component
 			->age($this->filterAge)
 			->yearDraft($this->filterYearDraft)
 			->retired($this->filterRetired)
-			->orderBy($this->order, $this->orderDirection)
-    		->orderBy($this->order, $this->orderDirection)
+			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
+			->orderBy('name', 'asc')
     		->get();
-		$players->makeHidden(['slug', 'created_at', 'updated_at']);
+
+		$regs->makeHidden(['slug', 'created_at', 'updated_at']);
 
 		session()->flash('success', 'Registros exportados correctamente!.');
-    	return Excel::download(new PlayersExport($players), $filename . '.' . $this->formatExport);
+    	return Excel::download(new PlayersExport($regs), $filename . '.' . $this->formatExport);
     }
 
     public function confirmExportSelected($format)
     {
     	$this->formatExport = $format;
-		$this->emit('exportSelectedMode');
+		$this->emit('openExportSelectedModal');
     }
 
     public function selectedExport()
     {
-    	$this->emit('regExportSelected');
+    	$this->emit('closeExportSelectedModal');
+
     	$filename = $this->filenameExportSelected ?: 'jugadores_seleccionados';
 
-        $players = Player::whereIn('id', $this->regsSelectedArray)->orderBy($this->order, $this->orderDirection)->get();
-        $players->makeHidden(['slug']);
+    	$regs = Player::whereIn('id', $this->regsSelectedArray)
+        	->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
+        	->orderBy('name', 'asc')
+        	->get();
+        $regs->makeHidden(['slug']);
 
         session()->flash('success', 'Registros exportados correctamente!.');
-		return Excel::download(new PlayersExport($players), $filename . '.' . $this->formatExport);
+		return Excel::download(new PlayersExport($regs), $filename . '.' . $this->formatExport);
     }
 
     public function confirmImport()
     {
     	$this->fileImport = null;
-		$this->emit('importMode');
+		$this->emit('openImportModal');
     }
 
     public function import()
@@ -662,12 +697,12 @@ class PlayersCrud extends Component
         } else {
         	session()->flash('error', 'Ningún archivo seleccionado.');
         }
-    	$this->emit('regImport');
+    	$this->emit('closeImportModal');
     }
 
     public function confirmTransfer()
     {
-		$this->emit('transferMode');
+		$this->emit('openTransfersModal');
     }
 
     public function transfer()
@@ -691,7 +726,8 @@ class PlayersCrud extends Component
 			} else {
 				session()->flash('error', 'Los registros que querías transferir son jugadores retirados.');
 			}
-			$this->emit('regTransfer');
+			$this->emit('closeTransferModal');
+
 			$this->teamTransfer = null;
 		} else {
             $reg = Player::find(reset($this->regsSelectedArray));
@@ -703,21 +739,22 @@ class PlayersCrud extends Component
             	session()->flash('success', $reg->name . ' convertido en Free Agent correctamente!.');
             }
 
-			$this->emit('regTransfer');
+			$this->emit('closeTransferModal');
+
 			$this->teamTransfer = null;
 		}
     }
 
     public function retire($id, $retired)
     {
-    	$player = Player::find($id);
+    	$reg = Player::find($id);
     	if ($retired) {
-    		$player->retired = 1;
-    		$player->team_id = null;
+    		$reg->retired = 1;
+    		$reg->team_id = null;
     	} else {
-    		$player->retired = 0;
+    		$reg->retired = 0;
     	}
-    	$player->save();
+    	$reg->save();
 
     	session()->flash('success', 'Registro actualizado correctamente.');
     }
@@ -734,14 +771,20 @@ class PlayersCrud extends Component
 
     public function render()
     {
-    	// $teams = Team::factory()->count(20)->create();
-
     	// Load Session Preferences
     	$this->getSessionPreferences();
+
+    	// Load Session Filters
+    	if ($this->firstRender) {
+    		$this->getSessionFilters();
+    		$this->firstRender = false;
+    	}
+    	$this->setSessionFilters();
 
     	$teams = Team::orderBy('name', 'asc')->get();
     	$nations = Player::select('nation_name')->distinct()->whereNotNull('nation_name')->orderBy('nation_name', 'asc')->get();
     	$colleges = Player::select('college')->distinct()->whereNotNull('college')->orderBy('college', 'asc')->get();
+
         return view('livewire.admin.players', [
         			'regs' => $this->getData(),
         			'regsSelected' => $this->getDataSelected(),
@@ -753,11 +796,13 @@ class PlayersCrud extends Component
         		])->layout('adminlte::page');
     }
 
-	private function getData()
+	protected function getData()
 	{
-		$players = Player::name($this->search)
-			->position($this->filterPosition)
+		\DB::enableQueryLog();
+
+    	$regs = Player::name($this->search)
 			->team($this->filterTeam)
+			->position($this->filterPosition)
 			->height($this->filterHeight)
 			->weight($this->filterWeight)
 			->college($this->filterCollege)
@@ -765,18 +810,22 @@ class PlayersCrud extends Component
 			->age($this->filterAge)
 			->yearDraft($this->filterYearDraft)
 			->retired($this->filterRetired)
-			->orderBy($this->order, $this->orderDirection)
-			// ->orderByRaw($this->order, $this->orderDirection . ' NULLS LAST')
+			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
+			->orderBy('name', 'asc')
 			->paginate($this->perPage)->onEachSide(2);
-	    if (($players->total() > 0 && $players->count() == 0)) {
+
+		// dd(\DB::getQueryLog());
+
+	    if (($regs->total() > 0 && $regs->count() == 0)) {
 			$this->page = 1;
 		}
 		if ($this->page == 0) {
-			$this->page = $players->lastPage();
+			$this->page = $regs->lastPage();
 		}
-    	$players = Player::name($this->search)
-			->position($this->filterPosition)
+
+    	$regs = Player::name($this->search)
 			->team($this->filterTeam)
+			->position($this->filterPosition)
 			->height($this->filterHeight)
 			->weight($this->filterWeight)
 			->college($this->filterCollege)
@@ -784,17 +833,18 @@ class PlayersCrud extends Component
 			->age($this->filterAge)
 			->yearDraft($this->filterYearDraft)
 			->retired($this->filterRetired)
-			->orderBy($this->order, $this->orderDirection)
-			// ->orderByRaw($this->order, $this->orderDirection . ' NULLS LAST')
+			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
+			->orderBy('name', 'asc')
 			->paginate($this->perPage)->onEachSide(2);
 
         $this->setCheckAllSelector();
-		return $players;
+		return $regs;
 	}
 
-	public function setCheckAllSelector()
+	protected function setCheckAllSelector()
 	{
-		$players = Player::name($this->search)
+    	$regs = Player::name($this->search)
+			->team($this->filterTeam)
 			->position($this->filterPosition)
 			->height($this->filterHeight)
 			->weight($this->filterWeight)
@@ -803,11 +853,12 @@ class PlayersCrud extends Component
 			->age($this->filterAge)
 			->yearDraft($this->filterYearDraft)
 			->retired($this->filterRetired)
-			->orderBy($this->order, $this->orderDirection)
+			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
+			->orderBy('name', 'asc')
 			->paginate($this->perPage, ['*'], 'page', $this->page);
 
 		$this->checkAllSelector = 1;
-		foreach ($players as $player) {
+		foreach ($regs as $player) {
 			$array_id = array_search($player->id, $this->regsSelectedArray);
 			if (!$array_id) {
 				$this->checkAllSelector = 0;
@@ -815,25 +866,114 @@ class PlayersCrud extends Component
 		}
 	}
 
-	private function getDataSelected()
+	protected function getDataSelected()
 	{
-		return Player::whereIn('id', $this->regsSelectedArray)->orderBy($this->order, $this->orderDirection)->get();
+		return Player::whereIn('id', $this->regsSelectedArray)
+			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
+			->orderBy('name', 'asc')
+			->get();
 	}
 
-	public function filterTeamName()
+	protected function filterTeamName()
 	{
 		if ($this->filterTeam != "all") {
-			if ($this->filterTeam != "free agents") {
+			if ($this->filterTeam != "free_agents") {
 				return Team::find($this->filterTeam)->name;
 			} else {
 				return "Free Agents";
 			}
 		}
 	}
-	public function filterRetiredName()
+	protected function filterRetiredName()
 	{
 		if ($this->filterRetired != null) {
 			return $this->filterRetired == 1 ? 'retirados' : 'en activo';
 		}
 	}
+
+    protected function getOrder($order) {
+        $order_ext = [
+            'id' => [
+                'field'     => 'id',
+                'direction' => 'asc'
+            ],
+            'id_desc' => [
+                'field'     => 'id',
+                'direction' => 'desc'
+            ],
+            'name' => [
+                'field'     => 'name',
+                'direction' => 'asc'
+            ],
+            'name_desc' => [
+                'field'     => 'name',
+                'direction' => 'desc'
+            ],
+            'team' => [
+                'field'     => 'team_id',
+                'direction' => 'asc'
+            ],
+            'team_desc' => [
+                'field'     => 'team_id',
+                'direction' => 'desc'
+            ],
+            'position' => [
+                'field'     => 'position',
+                'direction' => 'asc'
+            ],
+            'position_desc' => [
+                'field'     => 'position',
+                'direction' => 'desc'
+            ],
+            'nation_name' => [
+                'field'     => 'nation_name',
+                'direction' => 'asc'
+            ],
+            'nation_name_desc' => [
+                'field'     => 'nation_name',
+                'direction' => 'desc'
+            ],
+            'birthdate' => [
+                'field'     => 'birthdate',
+                'direction' => 'asc'
+            ],
+            'birthdate_desc' => [
+                'field'     => 'birthdate',
+                'direction' => 'desc'
+            ],
+            'height' => [
+                'field'     => 'height',
+                'direction' => 'asc'
+            ],
+            'height_desc' => [
+                'field'     => 'height',
+                'direction' => 'desc'
+            ],
+            'weight' => [
+                'field'     => 'weight',
+                'direction' => 'asc'
+            ],
+            'weight_desc' => [
+                'field'     => 'weight',
+                'direction' => 'desc'
+            ],
+            'draft_year' => [
+                'field'     => 'draft_year',
+                'direction' => 'asc'
+            ],
+            'draft_year_desc' => [
+                'field'     => 'draft_year',
+                'direction' => 'desc'
+            ],
+            'college' => [
+                'field'     => 'college',
+                'direction' => 'asc'
+            ],
+            'college_desc' => [
+                'field'     => 'college',
+                'direction' => 'desc'
+            ]
+        ];
+        return $order_ext[$order];
+    }
 }

@@ -1,4 +1,4 @@
-<div wire:ignore.self class="modal fade" tabindex="-1" role="dialog" id="filterModal" data-keyboard="true" data-backdrop="static">
+<div wire:ignore.self class="modal fade" tabindex="-1" role="dialog" id="filtersModal" data-keyboard="true" data-backdrop="static">
     <div class="modal-dialog non-selectable" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -28,7 +28,7 @@
                         <label class="text-sm text-uppercase tracking-wide">Equipo</label>
                         <select class="form-control custom-select text-sm" wire:model="filterTeam">
                             <option value="all">Todos los equipos</option>
-                            <option value="free agents">Free Agents</option>
+                            <option value="free_agents">Free Agents</option>
                             @foreach ($teams as $team)
                                 <option value="{{ $team->id }}">{{ $team->name }}</option>
                             @endforeach
@@ -156,14 +156,25 @@
 							{{-- <div wire:ignore> --}}
 								<select class="form-control custom-select text-sm" wire:model="order">
 									<option value="id">ID</option>
+                                    <option value="id_desc">ID (desc)</option>
 									<option value="name">Nombre</option>
+                                    <option value="name_desc">Nombre (desc)</option>
+                                    <option value="team">Equipo</option>
+                                    <option value="team_desc">Equipo (desc)</option>
 									<option value="position">Posición</option>
+                                    <option value="position_desc">Posición (desc)</option>
                                     <option value="nation_name">Pais</option>
+                                    <option value="nation_name_desc">Pais (desc)</option>
                                     <option value="birthdate">Edad</option>
+                                    <option value="birthdate_desc">Edad (desc)</option>
                                     <option value="height">Altura</option>
+                                    <option value="height_desc">Altura (desc)</option>
                                     <option value="weight">Peso</option>
+                                    <option value="weight_desc">Peso (desc)</option>
                                     <option value="draft_year">Año Draft</option>
+                                    <option value="draft_year_desc">Año Draft (desc)</option>
                                     <option value="college">Universidad</option>
+                                    <option value="college_desc">Universidad (desc)</option>
 								</select>
 							{{-- </div> --}}
             			</div>
