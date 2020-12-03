@@ -2,13 +2,13 @@
 
 namespace App\Listeners;
 
-use App\Events\RegWasSaved;
+use App\Events\RegWasDeleted;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
 use App\Models\AdminLog;
 
-class InsertAdminLog
+class DeleteAdminLog
 {
     /**
      * Create the event listener.
@@ -23,10 +23,10 @@ class InsertAdminLog
     /**
      * Handle the event.
      *
-     * @param  TableWasSaved  $event
+     * @param  RegWasDeleted  $event
      * @return void
      */
-    public function handle(RegWasSaved $event)
+    public function handle(RegWasDeleted $event)
     {
         $table = $event->reg->getTable();
 
@@ -34,8 +34,8 @@ class InsertAdminLog
         $log->user_id = auth()->id();
         $log->table = $table;
         $log->reg_id = $event->reg->id;
-        $log->type = "INSERT";
-        $log->description = 'Registro insertado "' . $event->title . '"';
+        $log->type = "DELETE";
+        $log->description = 'Registro "' . $event->title . '" eliminado';
         if ($event->description) {
             $log->description .= " - " . $event->description;
         }

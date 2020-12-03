@@ -13,7 +13,8 @@ use App\Imports\PlayersImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 
-use App\Events\TableWasSaved;
+use App\Events\RegWasSaved;
+use App\Events\RegWasDeleted;
 
 class PlayersCrud extends Component
 {
@@ -451,9 +452,9 @@ class PlayersCrud extends Component
 		}
         $validatedData['slug'] = Str::slug($this->name, '-');
 
-        $player = Player::create($validatedData);
+        $reg = Player::create($validatedData);
 
-        event(new TableWasSaved($player, $player->name));
+        event(new RegWasSaved($reg, $reg->name));
         session()->flash('success', 'Registro agregado correctamente.');
 
 		if ($this->continuousInsert) {
@@ -574,6 +575,7 @@ class PlayersCrud extends Component
 			if ($reg = Player::find($reg)) {
 				$storageImg = $reg->img;
 				if ($reg->canDestroy()) {
+					event(new RegWasDeleted($reg, $reg->name));
 					if ($reg->delete()) {
 						$regs_deleted++;
 	                	// remove image from Storage
