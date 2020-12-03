@@ -396,7 +396,7 @@
 }
 
 .admin-crud-table-wrapper .admin-crud-table tbody tr:hover {
-  background-color: #F9FAFB;
+  background-color: #FEFBF6;
 }
 
 .admin-crud-table-wrapper .admin-crud-table tbody tr:hover td .image {
@@ -428,11 +428,11 @@
 }
 
 .admin-crud-table-wrapper .admin-crud-table.striped tbody tr:nth-child(even) {
-  background-color: #F9FBFF;
+  background-color: #F9FAFB;
 }
 
 .admin-crud-table-wrapper .admin-crud-table.striped tbody tr:nth-child(even) td:first-child {
-  background-color: #F9FBFF;
+  background-color: #F9FAFB;
 }
 
 .admin-crud-table-wrapper .admin-crud-table.striped tbody tr:nth-child(even).selected:hover td {
@@ -444,7 +444,7 @@
 }
 
 .admin-crud-table-wrapper .admin-crud-table.striped tbody tr:nth-child(even):hover td {
-  background-color: #F9FAFB;
+  background-color: #FEFBF6;
 }
 
 .admin-crud-table-wrapper .admin-crud-table.fixed-first th:first-child {
@@ -470,7 +470,7 @@
 }
 
 .admin-crud-table-wrapper .admin-crud-table.fixed-first tbody tr:hover td:first-child {
-  background-color: #F9FAFB;
+  background-color: #FEFBF6;
 }
 
 .pagination-wrapper {

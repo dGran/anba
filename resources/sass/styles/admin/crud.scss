@@ -103,7 +103,7 @@
 					}
 				}
 				&:hover {
-					background-color: #F9FAFB;
+					background-color: #FEFBF6;
 					td {
 						.image {
 							// opacity: 1;
@@ -138,10 +138,10 @@
 			tbody {
 				tr {
 					&:nth-child(even) {
-						background-color: #F9FBFF;
+						background-color: #F9FAFB;
 						td {
 							&:first-child {
-								background-color: #F9FBFF;
+								background-color: #F9FAFB;
 							}
 						}
 						&.selected {
@@ -156,7 +156,7 @@
 						}
 						&:hover {
 							td {
-								background-color: #F9FAFB;
+								background-color: #FEFBF6;
 							}
 						}
 					}
@@ -197,7 +197,7 @@
 					&:hover {
 						td {
 							&:first-child {
-								background-color: #F9FAFB;
+								background-color: #FEFBF6;
 							}
 						}
 					}
