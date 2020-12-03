@@ -36,7 +36,7 @@ class Player extends Model
     public function scopeName($query, $value)
     {
         if (trim($value) != "") {
-            return $query->where('name', 'LIKE', "%{$value}%");
+            return $query->where('players.name', 'LIKE', "%{$value}%");
         }
     }
 

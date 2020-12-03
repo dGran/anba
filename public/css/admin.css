@@ -383,10 +383,6 @@
   font-size: 0.9em;
 }
 
-.admin-crud-table-wrapper .admin-crud-table tbody tr:nth-child(even) {
-  background-color: #F9FBFF;
-}
-
 .admin-crud-table-wrapper .admin-crud-table tbody tr.selected {
   background-color: #ebf4ff;
 }
@@ -431,8 +427,35 @@
      object-fit: cover;
 }
 
+.admin-crud-table-wrapper .admin-crud-table.striped tbody tr:nth-child(even) {
+  background-color: #F9FBFF;
+}
+
+.admin-crud-table-wrapper .admin-crud-table.striped tbody tr:nth-child(even) td:first-child {
+  background-color: #F9FBFF;
+}
+
+.admin-crud-table-wrapper .admin-crud-table.striped tbody tr:nth-child(even).selected:hover td {
+  background-color: #ebf4ff;
+}
+
+.admin-crud-table-wrapper .admin-crud-table.striped tbody tr:nth-child(even).selected td {
+  background-color: #ebf4ff;
+}
+
+.admin-crud-table-wrapper .admin-crud-table.striped tbody tr:nth-child(even):hover td {
+  background-color: #F9FAFB;
+}
+
 .admin-crud-table-wrapper .admin-crud-table.fixed-first th:first-child {
   background-color: #F9FAFB;
+  left: 0px;
+  position: -webkit-sticky;
+  position: sticky;
+}
+
+.admin-crud-table-wrapper .admin-crud-table.fixed-first tbody tr td:first-child {
+  background-color: #fff;
   left: 0px;
   position: -webkit-sticky;
   position: sticky;
@@ -448,13 +471,6 @@
 
 .admin-crud-table-wrapper .admin-crud-table.fixed-first tbody tr:hover td:first-child {
   background-color: #F9FAFB;
-}
-
-.admin-crud-table-wrapper .admin-crud-table.fixed-first tbody tr td:first-child {
-  background-color: #fff;
-  left: 0px;
-  position: -webkit-sticky;
-  position: sticky;
 }
 
 .pagination-wrapper {

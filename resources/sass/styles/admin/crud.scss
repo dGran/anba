@@ -93,9 +93,6 @@
 		tbody {
 			tr {
 				font-size: .9em;
-				&:nth-child(even) {
-					background-color: #F9FBFF;
-				}
 				&.selected {
 					background-color: #ebf4ff;
 					&:hover {
@@ -137,6 +134,35 @@
 				}
 			}
 		}
+		&.striped{
+			tbody {
+				tr {
+					&:nth-child(even) {
+						background-color: #F9FBFF;
+						td {
+							&:first-child {
+								background-color: #F9FBFF;
+							}
+						}
+						&.selected {
+							&:hover {
+								td {
+									background-color: #ebf4ff;
+								}
+							}
+							td {
+								background-color: #ebf4ff;
+							}
+						}
+						&:hover {
+							td {
+								background-color: #F9FAFB;
+							}
+						}
+					}
+				}
+			}
+		}
 		&.fixed-first {
 			th {
 				&:first-child {
@@ -147,6 +173,13 @@
 			}
 			tbody {
 				tr {
+					td {
+						&:first-child {
+							background-color: #fff;
+							left: 0px;
+							position: sticky;
+						}
+					}
 					&.selected {
 						&:hover {
 							td {
@@ -166,13 +199,6 @@
 							&:first-child {
 								background-color: #F9FAFB;
 							}
-						}
-					}
-					td {
-						&:first-child {
-							background-color: #fff;
-							left: 0px;
-							position: sticky;
 						}
 					}
 				}

@@ -44,7 +44,8 @@ class PlayersCrud extends Component
 	public $order = 'id_desc';
 
 	// preferences vars
-	public $fixedFirstColumn;
+	public $striped;
+	public $fixedFirstColumn = false;
 	public $showTableImages;
 	public $showNicknames;
 	public $colTeam;
@@ -92,6 +93,7 @@ class PlayersCrud extends Component
 		session([
 			'players.showTableImages' => $this->showTableImages ? 'on' : 'off',
 			'players.fixedFirstColumn' => $this->fixedFirstColumn ? 'on' : 'off',
+			'players.striped' => $this->striped ? 'on' : 'off',
 			'players.showNicknames' => $this->showNicknames ? 'on' : 'off',
 			'players.colTeam' => $this->colTeam ? 'on' : 'off',
 			'players.colPosition' => $this->colPosition ? 'on' : 'off',
@@ -119,6 +121,11 @@ class PlayersCrud extends Component
 			$this->fixedFirstColumn = session()->get('players.fixedFirstColumn') == 'on' ? true : false;
 		} else {
 			$this->fixedFirstColumn = true;
+		}
+		if (session()->get('players.striped')) {
+			$this->striped = session()->get('players.striped') == 'on' ? true : false;
+		} else {
+			$this->striped = true;
 		}
 		if (session()->get('players.showNicknames')) {
 			$this->showNicknames = session()->get('players.showNicknames') == 'on' ? true : false;
@@ -218,8 +225,11 @@ class PlayersCrud extends Component
 
 	public function checkAll()
 	{
-    	$regs = Player::name($this->search)
-			->team($this->filterTeam)
+    	$regs = Player::
+    		leftJoin('teams', 'teams.id', 'players.team_id')
+    		->select('players.*', 'teams.name as team_name')
+    		->name($this->search)
+    		->team($this->filterTeam)
 			->position($this->filterPosition)
 			->height($this->filterHeight)
 			->weight($this->filterWeight)
@@ -229,7 +239,7 @@ class PlayersCrud extends Component
 			->yearDraft($this->filterYearDraft)
 			->retired($this->filterRetired)
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
-			->orderBy('name', 'asc')
+			->orderBy('players.name', 'asc')
     		->paginate($this->perPage, ['*'], 'page', $this->page);
 		foreach ($regs as $reg) {
 			if ($this->checkAllSelector == 1) {
@@ -658,8 +668,11 @@ class PlayersCrud extends Component
 
     	$filename = $this->filenameExportTable ?: 'jugadores';
 
-    	$regs = Player::name($this->search)
-			->team($this->filterTeam)
+    	$regs = Player::
+    		leftJoin('teams', 'teams.id', 'players.team_id')
+    		->select('players.*', 'teams.name as team_name')
+    		->name($this->search)
+    		->team($this->filterTeam)
 			->position($this->filterPosition)
 			->height($this->filterHeight)
 			->weight($this->filterWeight)
@@ -669,7 +682,7 @@ class PlayersCrud extends Component
 			->yearDraft($this->filterYearDraft)
 			->retired($this->filterRetired)
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
-			->orderBy('name', 'asc')
+			->orderBy('players.name', 'asc')
     		->get();
 
 		$regs->makeHidden(['slug', 'created_at', 'updated_at']);
@@ -690,9 +703,12 @@ class PlayersCrud extends Component
 
     	$filename = $this->filenameExportSelected ?: 'jugadores_seleccionados';
 
-    	$regs = Player::whereIn('id', $this->regsSelectedArray)
+    	$regs = Player::
+    		leftJoin('teams', 'teams.id', 'players.team_id')
+    		->select('players.*', 'teams.name as team_name')
+    		->whereIn('players.id', $this->regsSelectedArray)
         	->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
-        	->orderBy('name', 'asc')
+        	->orderBy('players.name', 'asc')
         	->get();
         $regs->makeHidden(['slug']);
 
@@ -818,7 +834,10 @@ class PlayersCrud extends Component
 	{
 		\DB::enableQueryLog();
 
-    	$regs = Player::name($this->search)
+    	$regs = Player::
+    		leftJoin('teams', 'teams.id', 'players.team_id')
+    		->select('players.*', 'teams.name as team_name')
+    		->name($this->search)
 			->team($this->filterTeam)
 			->position($this->filterPosition)
 			->height($this->filterHeight)
@@ -829,7 +848,7 @@ class PlayersCrud extends Component
 			->yearDraft($this->filterYearDraft)
 			->retired($this->filterRetired)
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
-			->orderBy('name', 'asc')
+			->orderBy('players.name', 'asc')
 			->paginate($this->perPage)->onEachSide(2);
 
 		// dd(\DB::getQueryLog());
@@ -841,8 +860,11 @@ class PlayersCrud extends Component
 			$this->page = $regs->lastPage();
 		}
 
-    	$regs = Player::name($this->search)
-			->team($this->filterTeam)
+    	$regs = Player::
+    		leftJoin('teams', 'teams.id', 'players.team_id')
+    		->select('players.*', 'teams.name as team_name')
+    		->name($this->search)
+    		->team($this->filterTeam)
 			->position($this->filterPosition)
 			->height($this->filterHeight)
 			->weight($this->filterWeight)
@@ -852,8 +874,10 @@ class PlayersCrud extends Component
 			->yearDraft($this->filterYearDraft)
 			->retired($this->filterRetired)
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
-			->orderBy('name', 'asc')
+			->orderBy('players.name', 'asc')
 			->paginate($this->perPage)->onEachSide(2);
+
+			// dd($regs);
 
         $this->setCheckAllSelector();
 		return $regs;
@@ -861,8 +885,11 @@ class PlayersCrud extends Component
 
 	protected function setCheckAllSelector()
 	{
-    	$regs = Player::name($this->search)
-			->team($this->filterTeam)
+    	$regs = Player::
+    		leftJoin('teams', 'teams.id', 'players.team_id')
+    		->select('players.*', 'teams.name as team_name')
+    		->name($this->search)
+    		->team($this->filterTeam)
 			->position($this->filterPosition)
 			->height($this->filterHeight)
 			->weight($this->filterWeight)
@@ -872,7 +899,7 @@ class PlayersCrud extends Component
 			->yearDraft($this->filterYearDraft)
 			->retired($this->filterRetired)
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
-			->orderBy('name', 'asc')
+			->orderBy('players.name', 'asc')
 			->paginate($this->perPage, ['*'], 'page', $this->page);
 
 		$this->checkAllSelector = 1;
@@ -886,9 +913,12 @@ class PlayersCrud extends Component
 
 	protected function getDataSelected()
 	{
-		return Player::whereIn('id', $this->regsSelectedArray)
+		return Player::
+    		leftJoin('teams', 'teams.id', 'players.team_id')
+    		->select('players.*', 'teams.name as team_name')
+			->whereIn('players.id', $this->regsSelectedArray)
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
-			->orderBy('name', 'asc')
+			->orderBy('players.name', 'asc')
 			->get();
 	}
 
@@ -920,19 +950,19 @@ class PlayersCrud extends Component
                 'direction' => 'desc'
             ],
             'name' => [
-                'field'     => 'name',
+                'field'     => 'players.name',
                 'direction' => 'asc'
             ],
             'name_desc' => [
-                'field'     => 'name',
+                'field'     => 'players.name',
                 'direction' => 'desc'
             ],
             'team' => [
-                'field'     => 'team_id',
+                'field'     => 'teams.name',
                 'direction' => 'asc'
             ],
             'team_desc' => [
-                'field'     => 'team_id',
+                'field'     => 'teams.name',
                 'direction' => 'desc'
             ],
             'position' => [
