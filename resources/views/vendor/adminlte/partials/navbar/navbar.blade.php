@@ -3,7 +3,7 @@
     {{ config('adminlte.classes_topnav', 'navbar-white navbar-light') }}">
 
     {{-- Navbar left links --}}
-    <ul class="navbar-nav">
+    <ul class="navbar-nav d-flex align-items-center ">
         {{-- Left sidebar toggler link --}}
         @include('adminlte::partials.navbar.menu-item-left-sidebar-toggler')
 
@@ -15,7 +15,7 @@
     </ul>
 
     {{-- Navbar right links --}}
-    <ul class="navbar-nav ml-auto">
+    <ul class="navbar-nav ml-auto d-flex align-items-center">
         {{-- Custom right links --}}
         @yield('content_top_nav_right')
 

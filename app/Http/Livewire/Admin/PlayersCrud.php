@@ -13,6 +13,8 @@ use App\Imports\PlayersImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 
+use App\Events\TableWasSaved;
+
 class PlayersCrud extends Component
 {
 	use WithPagination;
@@ -45,7 +47,7 @@ class PlayersCrud extends Component
 
 	// preferences vars
 	public $striped;
-	public $fixedFirstColumn = false;
+	public $fixedFirstColumn;
 	public $showTableImages;
 	public $showNicknames;
 	public $colTeam;
@@ -449,7 +451,9 @@ class PlayersCrud extends Component
 		}
         $validatedData['slug'] = Str::slug($this->name, '-');
 
-        Player::create($validatedData);
+        $player = Player::create($validatedData);
+
+        event(new TableWasSaved($player, $player->name));
         session()->flash('success', 'Registro agregado correctamente.');
 
 		if ($this->continuousInsert) {

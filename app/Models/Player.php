@@ -36,7 +36,13 @@ class Player extends Model
     public function scopeName($query, $value)
     {
         if (trim($value) != "") {
-            return $query->where('players.name', 'LIKE', "%{$value}%");
+            return $query->where(function($q) use ($value) {
+                            $q->where('players.name', 'LIKE', "%{$value}%")
+                                ->orWhere('players.id', 'LIKE', "%{$value}%")
+                                ->orWhere('players.nation_name', 'LIKE', "%{$value}%")
+                                ->orWhere('players.college', 'LIKE', "%{$value}%")
+                                ->orWhere('teams.name', 'LIKE', "%{$value}%");
+                            });
         }
     }
 

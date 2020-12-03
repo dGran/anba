@@ -113,6 +113,17 @@
         return false;
     });
 
+    Mousetrap.bind(['shift+l', 'shift+l'], function() {
+        $('#left-sidebar').trigger('click');
+        return false;
+    });
+
+    Mousetrap.bind(['shift+r', 'shift+r'], function() {
+        $('#right-sidebar').trigger('click');
+        return false;
+    });
+
+
     document.addEventListener('livewire:load', function () {
         Mousetrap.bind("right", function() {
             @this.setNextPage();

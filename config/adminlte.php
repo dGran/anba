@@ -232,7 +232,7 @@ return [
 
     'menu' => [
         [
-            'text' => 'search',
+            'text' => 'Buscar...',
             'search' => true,
             'topnav' => true,
         ],

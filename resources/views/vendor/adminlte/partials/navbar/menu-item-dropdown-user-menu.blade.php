@@ -16,15 +16,15 @@
 <li class="nav-item dropdown user-menu">
 
     {{-- User menu toggler --}}
-    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+    <a href="#" class="nav-link dropdown-toggle d-flex align-items-center px-2" data-toggle="dropdown">
         @if(config('adminlte.usermenu_image'))
             <img src="{{ Auth::user()->adminlte_image() }}"
-                 class="user-image img-circle elevation-2"
+                 class="user-image m-0 img-circle elevation-2"
                  alt="{{ Auth::user()->name }}">
         @endif
-        <span @if(config('adminlte.usermenu_image')) class="d-none d-md-inline" @endif>
+{{--         <span @if(config('adminlte.usermenu_image')) class="d-none d-md-inline-block ml-2 text-sm" @endif>
             {{ Auth::user()->name }}
-        </span>
+        </span> --}}
     </a>
 
     {{-- User menu dropdown --}}

@@ -1,5 +1,5 @@
 <li class="nav-item">
-    <a class="nav-link" href="#" data-widget="control-sidebar"
+    <a class="nav-link px-2" href="#" data-widget="control-sidebar" id="right-sidebar"
         @if(!config('adminlte.right_sidebar_slide'))
             data-controlsidebar-slide="false"
         @endif
