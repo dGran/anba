@@ -1,7 +1,7 @@
 <thead class="">
 	<tr class="admin-crud-table">
-		<th wire:click.stop="checkAll" class="d-flex align-items-center">
-		    <div class="pretty p-svg p-curve m-0 p-jelly p-has-focus text-base">
+		<th wire:click.stop="checkAll" class="check d-flex align-items-center">
+		    <div class="pretty p-svg p-curve m-0 p-jelly p-has-focus">
 		        <input type="checkbox" wire:model="checkAllSelector" />
 		        <div class="state p-primary">
 		            <svg class="svg svg-icon" viewBox="0 0 20 20">

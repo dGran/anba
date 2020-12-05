@@ -10,23 +10,23 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class RegWasDeleted
+class TableWasUpdated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $reg;
-    public $title;
-
+    public $table;
+    public $type;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($reg, $title, $description = null)
+    public function __construct($table, $type, $detail = null, $detail_before = null)
     {
-        $this->reg = $reg;
-        $this->title = $title;
-        $this->description = $description;
+        $this->table = $table;
+        $this->type = $type;
+        $this->detail = $detail;
+        $this->detail_before = $detail_before;
     }
 
     /**

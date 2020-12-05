@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Admin;
 
 use App\Models\Player;
 use App\Models\Team;
+use App\Models\AdminLog;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\withPagination;
@@ -13,10 +14,9 @@ use App\Imports\PlayersImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 
-use App\Events\RegWasSaved;
-use App\Events\RegWasDeleted;
+use App\Events\TableWasUpdated;
 
-class PlayersCrud extends Component
+class PlayerCrud extends Component
 {
 	use WithPagination;
 	use WithFileUploads;
@@ -43,7 +43,7 @@ class PlayersCrud extends Component
 	public $filterNation = "all";
 	public $filterAge = ['from' => 15, 'to' => 45];
 	public $filterYearDraft = ['from' => 1995, 'to' => 2020];
-	public $filterRetired = -1;
+	public $filterRetired = "all";
 	public $order = 'id_desc';
 
 	// preferences vars
@@ -61,6 +61,7 @@ class PlayersCrud extends Component
 	public $colCollege;
 
 	// general vars
+	public $currentModal;
 	public $editMode = false;
 	public $continuousInsert = false;
 	public $regView;
@@ -74,7 +75,7 @@ class PlayersCrud extends Component
 	public $filenameExportTable = '';
 	public $filenameExportSelected = '';
 
-	//queryString
+	// queryString
 	protected $queryString = [
 		'search' => ['except' => ''],
 		'filterPosition' => ['except' => "all"],
@@ -85,7 +86,7 @@ class PlayersCrud extends Component
 		'filterNation' => ['except' => "all"],
 		'filterAge' => ['except' => ['from' => 15, 'to' => 45]],
 		'filterYearDraft' => ['except' => ['from' => 1995, 'to' => 2020]],
-		'filterRetired' => ['except' => -1],
+		'filterRetired' => ['except' => "all"],
 		'perPage' => ['except' => '10'],
 		'order' => ['except' => 'id_desc'],
 	];
@@ -177,9 +178,28 @@ class PlayersCrud extends Component
 		}
 	}
 
-	protected function setSessionFilters()
+	// Session State
+	protected function setSessionState()
 	{
 		session([
+			//fields
+			'players.reg_id' => $this->reg_id,
+			'players.name' => $this->name,
+			'players.nickname' => $this->nickname,
+			'players.team_id' => $this->team_id,
+			// 'players.img' => $this->img,
+			'players.reg_img' => $this->reg_img,
+			'players.reg_img_formated' => $this->reg_img_formated,
+			'players.position' => $this->position,
+			'players.height' => $this->height,
+			'players.weight' => $this->weight,
+			'players.college' => $this->college,
+			'players.birthdate' => $this->birthdate,
+			'players.nation_name' => $this->nation_name,
+			'players.draft_year' => $this->draft_year,
+			'players.average' => $this->average,
+			'players.retired' => $this->retired,
+			//filters
 			'players.search' => $this->search,
 			'players.perPage' => $this->perPage,
 			'players.filterPosition' => $this->filterPosition,
@@ -194,11 +214,37 @@ class PlayersCrud extends Component
 			'players.order' => $this->order,
 			'players.page' => $this->page,
 			'players.regsSelectedArray' => $this->regsSelectedArray,
+			// general vars
+			'players.currentModal' => $this->currentModal,
+			'players.editMode' => $this->editMode,
+			'players.continuousInsert' => $this->continuousInsert,
+			'players.teamTransfer' => Team::find($this->teamTransfer) ? $this->teamTransfer : null,
+			//selected regs
+			'players.regsSelectedArray' => $this->regsSelectedArray,
+			'players.checkAllSelector' => $this->checkAllSelector,
 		]);
 	}
 
-	protected function getSessionFilters()
+	protected function getSessionState()
 	{
+		//fields
+		if (session()->get('players.reg_id')) { $this->reg_id = session()->get('players.reg_id'); }
+		if (session()->get('players.name')) { $this->name = session()->get('players.name'); }
+		if (session()->get('players.nickname')) { $this->nickname = session()->get('players.nickname'); }
+		if (session()->get('players.team_id')) { $this->team_id = session()->get('players.team_id'); }
+		// if (session()->get('players.img')) { $this->img = session()->get('players.img'); }
+		if (session()->get('players.reg_img')) { $this->reg_img = session()->get('players.reg_img'); }
+		if (session()->get('players.reg_img_formated')) { $this->reg_img_formated = session()->get('players.reg_img_formated'); }
+		if (session()->get('players.position')) { $this->position = session()->get('players.position'); }
+		if (session()->get('players.height')) { $this->height = session()->get('players.height'); }
+		if (session()->get('players.weight')) { $this->weight = session()->get('players.weight'); }
+		if (session()->get('players.college')) { $this->college = session()->get('players.college'); }
+		if (session()->get('players.birthdate')) { $this->birthdate = session()->get('players.birthdate'); }
+		if (session()->get('players.nation_name')) { $this->nation_name = session()->get('players.nation_name'); }
+		if (session()->get('players.draft_year')) { $this->draft_year = session()->get('players.draft_year'); }
+		if (session()->get('players.average')) { $this->average = session()->get('players.average'); }
+		if (session()->get('players.retired')) { $this->retired = session()->get('players.retired'); }
+		//filters
 		if (session()->get('players.search')) { $this->search = session()->get('players.search'); }
 		if (session()->get('players.perPage')) { $this->perPage = session()->get('players.perPage'); }
 		if (session()->get('players.filterPosition')) { $this->filterPosition = session()->get('players.filterPosition'); }
@@ -213,6 +259,14 @@ class PlayersCrud extends Component
 		if (session()->get('players.order')) { $this->order = session()->get('players.order'); }
 		if (session()->get('players.page')) { $this->page = session()->get('players.page'); }
 		if (session()->get('players.regsSelectedArray')) { $this->regsSelectedArray = session()->get('players.regsSelectedArray'); }
+		// general vars
+		if (session()->get('players.currentModal')) { $this->currentModal = session()->get('players.currentModal'); }
+		if (session()->get('players.editMode')) { $this->editMode = session()->get('players.editMode'); }
+		if (session()->get('players.continuousInsert')) { $this->continuousInsert = session()->get('players.continuousInsert'); }
+		if (session()->get('players.teamTransfer')) { $this->teamTransfer = session()->get('players.teamTransfer'); }
+		//selected regs
+		if (session()->get('players.regsSelectedArray')) { $this->regsSelectedArray = session()->get('players.regsSelectedArray'); }
+		if (session()->get('players.checkAllSelector')) { $this->checkAllSelector = session()->get('players.checkAllSelector'); }
 	}
 
 	// Selected
@@ -279,9 +333,14 @@ class PlayersCrud extends Component
 			}
 		}
 	}
-	// END::Selected
 
 	// Filters
+    public function order($name)
+    {
+    	$this->order = $name;
+    	$this->page = 1;
+    }
+
 	public function viewFilters($view)
 	{
 		if ($view) {
@@ -290,12 +349,6 @@ class PlayersCrud extends Component
 			$this->emit('closeFiltersModal');
 		}
 	}
-
-    public function order($name)
-    {
-    	$this->order = $name;
-    	$this->page = 1;
-    }
 
     public function cancelFilterSearch()
     {
@@ -344,7 +397,7 @@ class PlayersCrud extends Component
 
     public function cancelFilterRetired()
     {
-		$this->filterRetired = -1;
+		$this->filterRetired = "all";
     }
 
     public function setFilterPerPage($number)
@@ -371,7 +424,7 @@ class PlayersCrud extends Component
 		$this->filterYearDraft = ['from' => 1995, 'to' => 2020];
 		$this->filterCollege = "all";
 		$this->filterNation = "all";
-		$this->filterRetired = -1;
+		$this->filterRetired = "all";
 
 		$this->emit('resetFiltersMode');
     }
@@ -408,6 +461,7 @@ class PlayersCrud extends Component
     	$this->resetFields();
 		$this->resetValidation();
     	$this->emit('openAddModal');
+    	$this->setCurrentModal('addModal');
 
     	$this->editMode = false;
     }
@@ -446,7 +500,7 @@ class PlayersCrud extends Component
 		$validatedData['nation_name'] = $this->nation_name ?: null;
 		$validatedData['draft_year'] = $this->draft_year;
 		$validatedData['average'] = $this->average;
-		$validatedData['retired'] = $this->retired;
+		$validatedData['retired'] = $this->retired ?: 0;
 		if ($this->retired) {
 			$validatedData['team_id'] = null;
 		}
@@ -454,7 +508,7 @@ class PlayersCrud extends Component
 
         $reg = Player::create($validatedData);
 
-        event(new RegWasSaved($reg, $reg->name));
+        event(new TableWasUpdated($reg, 'insert', $reg->toJson(JSON_PRETTY_PRINT)));
         session()->flash('success', 'Registro agregado correctamente.');
 
 		if ($this->continuousInsert) {
@@ -462,9 +516,9 @@ class PlayersCrud extends Component
 		} else {
 			$this->resetFields();
 			$this->emit('closeAddModal');
+			$this->closeAnyModal();
 		}
     }
-    // END::Add & Store
 
 	// Edit & Update
     public function edit($id)
@@ -490,6 +544,7 @@ class PlayersCrud extends Component
 		$this->retired = $reg->retired;
 
     	$this->emit('openEditModal');
+    	$this->setCurrentModal('editModal');
 
     	$this->editMode = true;
     }
@@ -497,6 +552,7 @@ class PlayersCrud extends Component
     public function update()
     {
     	$reg = Player::find($this->reg_id);
+    	$before = $reg->toJson(JSON_PRETTY_PRINT);
 
         if ($this->img) {
 	        $validatedData = $this->validate([
@@ -536,7 +592,7 @@ class PlayersCrud extends Component
 		$validatedData['nation_name'] = $this->nation_name ?: null;
 		$validatedData['draft_year'] = $this->draft_year;
 		$validatedData['average'] = $this->average;
-		$validatedData['retired'] = $this->retired;
+		$validatedData['retired'] = $this->retired ?: 0;
 		if ($this->retired) {
 			$validatedData['team_id'] = null;
 		}
@@ -546,6 +602,7 @@ class PlayersCrud extends Component
 
         if ($reg->isDirty()) {
             if ($reg->update()) {
+            	event(new TableWasUpdated($reg, 'update', $reg->toJson(JSON_PRETTY_PRINT), $before));
             	session()->flash('success', 'Registro actualizado correctamente.');
             } else {
             	session()->flash('error', 'Se ha producido un error y no se han podido actualizar los datos.');
@@ -555,16 +612,18 @@ class PlayersCrud extends Component
         }
 
         $this->emit('closeEditModal');
+        $this->closeAnyModal();
 
         $this->cancelSelection();
 		$this->resetFields();
     }
-    // END::Edit & Update
 
-
+    // Destroy
     public function confirmDestroy()
     {
-		$this->emit('openDestroyModal');
+		if (count($this->regsSelectedArray) > 0) {
+			$this->emit('openDestroyModal');
+		}
     }
 
     public function destroy()
@@ -575,7 +634,7 @@ class PlayersCrud extends Component
 			if ($reg = Player::find($reg)) {
 				$storageImg = $reg->img;
 				if ($reg->canDestroy()) {
-					event(new RegWasDeleted($reg, $reg->name));
+					event(new TableWasUpdated($reg, 'delete'));
 					if ($reg->delete()) {
 						$regs_deleted++;
 	                	// remove image from Storage
@@ -598,12 +657,14 @@ class PlayersCrud extends Component
 		$this->regsSelectedArray = [];
     }
 
+    // View
     public function view($id)
     {
     	$this->regView = Player::find($id);
     	$this->emit('openViewModal');
     }
 
+    // Duplicate
     public function confirmDuplicate()
     {
 		$this->emit('openDuplicateModal');
@@ -628,7 +689,9 @@ class PlayersCrud extends Component
 						Storage::disk('public')->copy($reg->img, $img_name);
 						$reg->img = $img_name;
 	            	}
+	            	$reg->slug = Str::slug($reg->name, '-');
 	                $reg->save();
+	            	event(new TableWasUpdated($reg, 'insert', $reg->toJson(JSON_PRETTY_PRINT)));
 	            }
 			}
 			if ($counter > 0) {
@@ -636,7 +699,6 @@ class PlayersCrud extends Component
 			} else {
 				session()->flash('error', 'Los registros que querías duplicar ya no existen.');
 			}
-			$this->emit('closeDuplicateModal');
 		} elseif (count($this->regsSelectedArray) == 1) {
             if ($original = Player::find(reset($this->regsSelectedArray))) {
                 $reg = $original->replicate();
@@ -651,17 +713,20 @@ class PlayersCrud extends Component
 					Storage::disk('public')->copy($reg->img, $img_name);
 					$reg->img = $img_name;
             	}
+            	$reg->slug = Str::slug($reg->name, '-');
                 $reg->save();
+            	event(new TableWasUpdated($reg, 'insert', $reg->toJson(JSON_PRETTY_PRINT)));
                 session()->flash('success', 'Registro duplicado correctamente!.');
             } else {
             	session()->flash('error', 'El registro que querías duplicar ya no existe.');
             }
-			$this->emit('closeDuplicateModal');
 		}
 
+		$this->emit('closeDuplicateModal');
 		$this->regsSelectedArray = [];
     }
 
+    //Export & Import
     public function confirmExportTable($format)
     {
     	$this->formatExport = $format;
@@ -691,7 +756,7 @@ class PlayersCrud extends Component
 			->orderBy('players.name', 'asc')
     		->get();
 
-		$regs->makeHidden(['slug', 'created_at', 'updated_at']);
+		$regs->makeHidden(['slug', 'team_name', 'created_at', 'updated_at']);
 
 		session()->flash('success', 'Registros exportados correctamente!.');
     	return Excel::download(new PlayersExport($regs), $filename . '.' . $this->formatExport);
@@ -716,7 +781,7 @@ class PlayersCrud extends Component
         	->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
         	->orderBy('players.name', 'asc')
         	->get();
-        $regs->makeHidden(['slug']);
+        $regs->makeHidden(['slug', 'team_name', 'created_at', 'updated_at']);
 
         session()->flash('success', 'Registros exportados correctamente!.');
 		return Excel::download(new PlayersExport($regs), $filename . '.' . $this->formatExport);
@@ -740,9 +805,11 @@ class PlayersCrud extends Component
     	$this->emit('closeImportModal');
     }
 
+    // Update fields
     public function confirmTransfer()
     {
 		$this->emit('openTransfersModal');
+		$this->setCurrentModal('transfersModal');
     }
 
     public function transfer()
@@ -751,10 +818,12 @@ class PlayersCrud extends Component
     		$counter = 0;
 			foreach ($this->regsSelectedArray as $reg) {
 	            $reg = Player::find($reg);
+	            $before = $reg->toJson(JSON_PRETTY_PRINT);
 	            if (!$reg->retired) {
 	            	$counter++;
 	                $reg->team_id = $this->teamTransfer;
 	                $reg->save();
+	                event(new TableWasUpdated($reg, 'update', $reg->toJson(JSON_PRETTY_PRINT), $before));
 	            }
 			}
 			if ($counter > 0) {
@@ -766,28 +835,30 @@ class PlayersCrud extends Component
 			} else {
 				session()->flash('error', 'Los registros que querías transferir son jugadores retirados.');
 			}
-			$this->emit('closeTransferModal');
-
-			$this->teamTransfer = null;
 		} else {
             $reg = Player::find(reset($this->regsSelectedArray));
+            $before = $reg->toJson(JSON_PRETTY_PRINT);
             $reg->team_id = $this->teamTransfer;
             $reg->save();
+            event(new TableWasUpdated($reg, 'update', $reg->toJson(JSON_PRETTY_PRINT), $before));
             if ($this->teamTransfer) {
             	session()->flash('success', $reg->name . ' transferido a ' .$reg->team->name . ' correctamente!.');
             } else {
             	session()->flash('success', $reg->name . ' convertido en Free Agent correctamente!.');
             }
 
-			$this->emit('closeTransferModal');
-
-			$this->teamTransfer = null;
 		}
+
+		$this->emit('closeTransfersModal');
+		$this->closeAnyModal();
+		$this->teamTransfer = null;
+		$this->regsSelectedArray = [];
     }
 
     public function retire($id, $retired)
     {
     	$reg = Player::find($id);
+    	$before = $reg->toJson(JSON_PRETTY_PRINT);
     	if ($retired) {
     		$reg->retired = 1;
     		$reg->team_id = null;
@@ -795,10 +866,12 @@ class PlayersCrud extends Component
     		$reg->retired = 0;
     	}
     	$reg->save();
+    	event(new TableWasUpdated($reg, 'update', $reg->toJson(JSON_PRETTY_PRINT), $before));
 
     	session()->flash('success', 'Registro actualizado correctamente.');
     }
 
+    // Pagination
     public function setNextPage()
     {
     	$this->page++;
@@ -809,6 +882,8 @@ class PlayersCrud extends Component
 		$this->page--;
     }
 
+
+    // Render
     public function render()
     {
     	// Load Session Preferences
@@ -816,10 +891,13 @@ class PlayersCrud extends Component
 
     	// Load Session Filters
     	if ($this->firstRender) {
-    		$this->getSessionFilters();
+    		$this->getSessionState();
+    		$firstRenderSaved = true;
     		$this->firstRender = false;
+    	} else {
+    		$firstRenderSaved = false;
     	}
-    	$this->setSessionFilters();
+    	$this->setSessionState();
 
     	$teams = Team::orderBy('name', 'asc')->get();
     	$nations = Player::select('nation_name')->distinct()->whereNotNull('nation_name')->orderBy('nation_name', 'asc')->get();
@@ -832,14 +910,15 @@ class PlayersCrud extends Component
         			'nations' => $nations,
         			'colleges' => $colleges,
         			'filterTeamName' => $this->filterTeamName(),
-        			'filterRetiredName' => $this->filterRetiredName()
+        			'filterRetiredName' => $this->filterRetiredName(),
+        			'firstRenderSaved' => $firstRenderSaved,
+        			'currentModal' => $this->currentModal,
         		])->layout('adminlte::page');
     }
 
+    // Helpers
 	protected function getData()
 	{
-		\DB::enableQueryLog();
-
     	$regs = Player::
     		leftJoin('teams', 'teams.id', 'players.team_id')
     		->select('players.*', 'teams.name as team_name')
@@ -856,8 +935,6 @@ class PlayersCrud extends Component
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
 			->orderBy('players.name', 'asc')
 			->paginate($this->perPage)->onEachSide(2);
-
-		// dd(\DB::getQueryLog());
 
 	    if (($regs->total() > 0 && $regs->count() == 0)) {
 			$this->page = 1;
@@ -940,8 +1017,8 @@ class PlayersCrud extends Component
 	}
 	protected function filterRetiredName()
 	{
-		if ($this->filterRetired != null) {
-			return $this->filterRetired == 1 ? 'retirados' : 'en activo';
+		if ($this->filterRetired != "all") {
+			return $this->filterRetired == "active" ? 'en activo' : 'retirados';
 		}
 	}
 
@@ -1030,4 +1107,17 @@ class PlayersCrud extends Component
         ];
         return $order_ext[$order];
     }
+
+	public function setCurrentModal($modal)
+	{
+		$this->currentModal = $modal;
+		session([
+			'players.currentModal' => $this->currentModal,
+		]);
+	}
+
+	public function closeAnyModal()
+	{
+		$this->currentModal = '';
+	}
 }

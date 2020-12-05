@@ -26,15 +26,15 @@
         set_ranges();
     });
 
-	$('#filterModal').on('show.bs.modal', function(e) {
+	$('#filtersModal').on('show.bs.modal', function(e) {
 		set_ranges();
 	});
 
     window.livewire.on('openTransfersModal', () => {
-        $('#transferModal').modal('show');
+        $('#transfersModal').modal('show');
     });
     window.livewire.on('closeTransfersModal', () => {
-        $('#transferModal').modal('hide');
+        $('#transfersModal').modal('hide');
     });
 
 </script>

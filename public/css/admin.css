@@ -262,6 +262,33 @@
   border-top-color: #1d4ed8 !important;
 }
 
+.main-sidebar .brand-link .brand-image {
+  opacity: 0.8;
+}
+
+.main-sidebar .brand-link:hover .brand-image, .main-sidebar .brand-link:focus .brand-image {
+  opacity: 1;
+}
+
+.main-sidebar .brand-link:hover span, .main-sidebar .brand-link:focus span {
+  color: white;
+}
+
+.main-sidebar .brand-link:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.nav-sidebar .nav-item:focus, .nav-sidebar .nav-link:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.main-header .nav-item:focus, .main-header .nav-link:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
 .truncate {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -377,6 +404,10 @@
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+.admin-crud-table-wrapper .admin-crud-table thead .check {
+  font-size: 0.9em;
 }
 
 .admin-crud-table-wrapper .admin-crud-table tbody tr {
@@ -597,7 +628,7 @@
     height: auto !important;
   }
 
-  .admin-crud-table-wrapper .admin-crud-table .check {
+  .admin-crud-table-wrapper .admin-crud-table thead .check {
     font-size: 1em;
   }
 

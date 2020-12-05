@@ -21,7 +21,9 @@ class CreateAdminLogsTable extends Migration
             $table->string('type');
             $table->string('table');
             $table->string('reg_id');
-            $table->text('description');
+            $table->string('reg_name');
+            $table->text('detail')->nullable();
+            $table->text('detail_before')->nullable();;
             $table->timestamps();
         });
     }

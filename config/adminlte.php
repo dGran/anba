@@ -266,6 +266,16 @@ return [
             'route'       => 'admin.players',
             'icon'        => 'bx bxs-data',
         ],
+        [
+            'text'        => 'Conferencias',
+            'route'       => 'admin.conferences',
+            'icon'        => 'bx bxs-data',
+        ],
+        [
+            'text'        => 'Divisiones',
+            // 'route'       => 'admin.divisions',
+            'icon'        => 'bx bxs-data',
+        ],
 
         // [
         //     'text'        => 'pages',

@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\RegWasSaved;
+use App\Events\TableWasUpdated;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -26,20 +26,16 @@ class InsertAdminLog
      * @param  TableWasSaved  $event
      * @return void
      */
-    public function handle(RegWasSaved $event)
+    public function handle(TableWasUpdated $event)
     {
-        $table = $event->reg->getTable();
-
-        $log = new AdminLog;
-        $log->user_id = auth()->id();
-        $log->table = $table;
-        $log->reg_id = $event->reg->id;
-        $log->type = "INSERT";
-        $log->description = 'Registro insertado "' . $event->title . '"';
-        if ($event->description) {
-            $log->description .= " - " . $event->description;
-        }
-
-        $log->save();
+        AdminLog::create([
+            'user_id' => auth()->id(),
+            'type' => strtoupper($event->type),
+            'table' => $event->table->getTable(),
+            'reg_id' => $event->table->id,
+            'reg_name' => $event->table->getName(),
+            'detail' => $event->detail,
+            'detail_before' => $event->detail_before
+        ]);
     }
 }

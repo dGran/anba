@@ -114,8 +114,12 @@ class Player extends Model
 
     public function scopeRetired($query, $value)
     {
-        if ($value >= 0) {
-            return $query->where('retired', $value);
+        if ($value != "all") {
+            if ($value == "active") {
+                return $query->where('retired', 0);
+            } else {
+                return $query->where('retired', 1);
+            }
         }
     }
 

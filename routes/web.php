@@ -4,11 +4,14 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\TeamController;
 
-
 use App\Http\Livewire\Admin\Dashboard;
-use App\Http\Livewire\Admin\UsersCrud;
+
+use App\Http\Livewire\Admin\ConferenceCrud;
+// use App\Http\Livewire\Admin\DivisionCrud;
 use App\Http\Livewire\Admin\TeamsCrud;
-use App\Http\Livewire\Admin\PlayersCrud;
+use App\Http\Livewire\Admin\PlayerCrud;
+
+use App\Http\Livewire\Admin\UsersCrud;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,5 +51,9 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('admin')->group(function
 	Route::get('/', Dashboard::class)->name('admin');
 	Route::get('usuarios', UsersCrud::class)->name('admin.users');
 	Route::get('equipos', TeamsCrud::class)->name('admin.teams');
-	Route::get('jugadores', PlayersCrud::class)->name('admin.players');
+
+	//good
+	Route::get('conferencias', ConferenceCrud::class)->name('admin.conferences');
+	// Route::get('divisiones', DivisionCrud::class)->name('admin.divisions');
+	Route::get('jugadores', PlayerCrud::class)->name('admin.players');
 });

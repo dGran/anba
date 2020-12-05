@@ -1,9 +1,9 @@
 <tbody>
 	@foreach ($regs as $reg)
 		<tr class="{{ $regsSelected->find($reg->id) ? 'selected' : '' }}" wire:click.stop="checkSelected({{ $reg->id }})">
-			<td style="min-width: 200px; padding: 0">
+			<td clas="check" style="min-width: 200px; padding: 0">
 				<div class="d-flex align-items-center" style="height: inherit; padding: .5em 1em; {{ $fixedFirstColumn ? 'border-right: 1px solid #e2e8f0;' : 'border-right: 1px solid transparent;' }}">
-				    <div class="pretty p-svg p-curve p-jelly p-has-focus mr-2">
+				    <div class="pretty p-svg p-curve p-jelly p-has-focus mr-2 non-selectable">
 				        <input type="checkbox" id="check{{ $reg->id }}" class="mousetrap"
 						wire:model="regsSelectedArray.{{ $reg->id }}" value="{{ $reg->id }}"
 						wire:change="checkSelected({{ $reg->id }})">
@@ -15,7 +15,7 @@
 				        </div>
 				    </div>
 				    @if ($showTableImages)
-						<img class="image rounded-circle" src="{{ $reg->getImg() }}" alt="{{ $reg->name }}" style="width: 40px; {{ $reg->retired ? '-webkit-filter: grayscale(100%); filter: grayscale(100%);' : '' }}">
+						<img class="image rounded-circle non-selectable" src="{{ $reg->getImg() }}" alt="{{ $reg->name }}" style="width: 40px; {{ $reg->retired ? '-webkit-filter: grayscale(100%); filter: grayscale(100%);' : '' }}">
 				    @endif
 					<div class="pl-2">
 						<div class="name d-flex align-items-center" wire:click.stop="view({{ $reg->id }})">
@@ -36,14 +36,14 @@
 				<div class="d-flex align-items-center">
 					@if (!$reg->retired)
 						@if ($showTableImages)
-							<img class="image rounded-circle pr-2" src="{{ $reg->getTeamImg() }}" alt="{{ $reg->team ? $reg->team->name : 'Free Agent' }}" style="width: 40px;">
+							<img class="image rounded-circle pr-2 non-selectable" src="{{ $reg->getTeamImg() }}" alt="{{ $reg->team ? $reg->team->name : 'Free Agent' }}" style="width: 40px;">
 						@endif
-						<span class="{{ !$reg->team ? 'text-muted' : '' }}">
+						<span class="{{ !$showTableImages ?: 'pl-2' }} {{ !$reg->team ? 'text-muted' : '' }}">
 							{{ $reg->team ? $reg->team->name : 'Free Agent' }}
 						</span>
 					@else
-						<span class="text-gray-500 text-uppercase text-sm">
-							***Jugador retirado
+						<span class="text-gray-500 text-uppercase text-xs border bg-light rounded px-2 py-1">
+							Jugador retirado
 						</span>
 					@endif
 				</div>

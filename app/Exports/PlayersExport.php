@@ -11,11 +11,11 @@ class PlayersExport implements FromCollection, WithHeadings
 {
     use Exportable;
 
-    protected $players;
+    protected $regs;
 
-    public function __construct($players = null)
+    public function __construct($regs = null)
     {
-        $this->players = $players;
+        $this->regs = $regs;
     }
 
     /**
@@ -23,13 +23,13 @@ class PlayersExport implements FromCollection, WithHeadings
     */
     public function collection()
     {
-        return $this->players ?: Player::all();
+        return $this->regs ?: Player::all();
     }
 
     public function headings(): array
     {
         return [
-            'id', 'name', 'team_id', 'img', 'position', 'height', 'weight', 'college', 'birthdate', 'nation_name', 'draft_year', 'average', 'retired'
+            'id', 'name', 'nickname', 'team_id', 'img', 'position', 'height', 'weight', 'college', 'birthdate', 'nation_name', 'draft_year', 'average', 'retired'
         ];
     }
 }

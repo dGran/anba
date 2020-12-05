@@ -5,7 +5,7 @@
                 <h5 class="modal-title text-base text-uppercase font-medium tracking-wide">
                     <span>Filtros</span>
                 </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="closeAnyModal">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -142,9 +142,9 @@
                     <div class="form-group col-md-6">
                         <label class="text-sm text-uppercase tracking-wide">Estado</label>
                         <select class="form-control custom-select text-sm" wire:model="filterRetired">
-                            <option value="-1">Todas los estados</option>
-                            <option value="0">En activo</option>
-                            <option value="1">Retirados</option>
+                            <option value="all">Todas los estados</option>
+                            <option value="active">En activo</option>
+                            <option value="retired">Retirados</option>
                         </select>
                     </div>
                 </div>
@@ -205,7 +205,7 @@
                 <button type="button" class="btn btn-danger ml-2 text-xs text-uppercase tracking-widest" wire:click="clearAllFilters" wire:loading.attr="disabled">
                     Reset
                 </button>
-                <button type="button" class="btn btn-borderless ml-2 text-xs text-uppercase tracking-widest" data-dismiss="modal" wire:loading.attr="disabled">
+                <button type="button" class="btn btn-borderless ml-2 text-xs text-uppercase tracking-widest" data-dismiss="modal" wire:loading.attr="disabled" wire:click="closeAnyModal">
                     cerrar
                 </button>
             </div>

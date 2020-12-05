@@ -37,6 +37,7 @@
     });
 
     window.livewire.on('openAddModal', () => {
+        $('.modal').modal('hide');
         $('#addModal').modal('show');
         $('.inputFile').val(null);
     });
@@ -45,7 +46,8 @@
     });
 
     window.livewire.on('openEditModal', () => {
-        $('#viewModal').modal('hide');
+        $('.modal').modal('hide');
+        // $('#viewModal').modal('hide');
         $('#editModal').modal('show');
         $('.inputFile').val(null);
     });
@@ -54,6 +56,7 @@
     });
 
     window.livewire.on('openDestroyModal', () => {
+        $('.modal').modal('hide');
         $('#destroyModal').modal('show');
     });
     window.livewire.on('closeDestroyModal', () => {
@@ -61,10 +64,12 @@
     });
 
     window.livewire.on('openViewModal', () => {
+        $('.modal').modal('hide');
         $('#viewModal').modal('show');
     });
 
     window.livewire.on('openDuplicateModal', () => {
+        $('.modal').modal('hide');
         $('#duplicateModal').modal('show');
     });
     window.livewire.on('closeDuplicateModal', () => {
@@ -72,6 +77,7 @@
     });
 
     window.livewire.on('openImportModal', () => {
+        $('.modal').modal('hide');
         $('#importModal').modal('show');
         $('.fileImport').val(null);
     });
@@ -80,6 +86,7 @@
     });
 
     window.livewire.on('openExportTableModal', () => {
+        $('.modal').modal('hide');
         $('#exportTableModal').modal('show');
     });
     window.livewire.on('closeExportTableModal', () => {
@@ -87,6 +94,7 @@
     });
 
     window.livewire.on('openExportSelectedModal', () => {
+        $('.modal').modal('hide');
         $('#exportSelectedModal').modal('show');
     });
     window.livewire.on('closeExportSelectedModal', () => {
@@ -94,6 +102,7 @@
     });
 
     window.livewire.on('openSelectedModal', () => {
+        $('.modal').modal('hide');
         $('#selectedModal').modal('show');
     });
     window.livewire.on('closeSelectedModal', () => {
@@ -101,6 +110,7 @@
     });
 
     window.livewire.on('openFiltersModal', () => {
+        $('.modal').modal('hide');
         $('#filtersModal').modal('show');
     });
     window.livewire.on('closeFiltersModal', () => {
@@ -183,10 +193,17 @@
                $(".modal").modal('hide');
             }
         });
-        $('.modal').on('shown.bs.modal', function() {
-            $(this).find('[autofocus]').focus();
+        $('.modal').on('hide.bs.modal', function() {
+            @this.closeAnyModal();
         });
     });
+
+    $('.modal').on('shown.bs.modal', function() {
+        $(this).find('[autofocus]').focus();
+    });
+    if ("{{ $firstRenderSaved }}" && "{{ $currentModal }}") {
+        $('#{{ $currentModal }}').modal('show');
+    }
 
     // fix padding-right on open modal
     // $('.modal').on('show.bs.modal', function (e) {

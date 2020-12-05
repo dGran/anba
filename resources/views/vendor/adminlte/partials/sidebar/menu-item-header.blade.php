@@ -1,4 +1,4 @@
-<li @if(isset($item['id'])) id="{{ $item['id'] }}" @endif class="nav-header {{ $item['class'] ?? '' }}">
+<li @if(isset($item['id'])) id="{{ $item['id'] }}" @endif class="nav-header {{ $item['class'] ?? '' }} text-muted">
 
     {{ is_string($item) ? $item : $item['header'] }}
 

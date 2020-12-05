@@ -5,7 +5,7 @@
                 <h5 class="modal-title text-base text-uppercase font-medium tracking-wide">
                     <span>Exportar tabla {{ $modelPlural }}</span>
                 </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="closeAnyModal">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -19,7 +19,7 @@
                 </p>
             </div>
             <div class="modal-footer" style="background: #F9FAFB">
-                <button type="button" class="btn btn-borderless ml-2 text-xs text-uppercase tracking-widest" data-dismiss="modal" wire:loading.attr="disabled">
+                <button type="button" class="btn btn-borderless ml-2 text-xs text-uppercase tracking-widest" data-dismiss="modal" wire:loading.attr="disabled" wire:click="closeAnyModal">
                     Cancelar
                 </button>
                 <button type="button" class="btn btn-primary ml-2 text-xs text-uppercase tracking-widest" wire:click="tableExport" wire:loading.attr="disabled">

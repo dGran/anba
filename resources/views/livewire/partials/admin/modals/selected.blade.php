@@ -4,8 +4,9 @@
             <div class="modal-header" style="border: none">
                 <h5 class="modal-title text-base text-uppercase font-medium tracking-wide">
                     <span>Registros seleccionados</span>
+                    <span class="d-block text-xs text-muted">{{ $regsSelected->count() }} registros</span>
                 </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="closeAnyModal">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>

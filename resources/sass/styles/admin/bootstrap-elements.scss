@@ -120,3 +120,41 @@
 .irs--flat .irs-from:before, .irs--flat .irs-to:before, .irs--flat .irs-single:before {
     border-top-color: rgba(29, 78, 216) !important;;
 }
+
+
+//admilte
+.main-sidebar {
+    .brand-link {
+        .brand-image {
+            opacity: .8;
+        }
+        &:hover, &:focus {
+            .brand-image {
+                opacity: 1;
+            }
+            span {
+                color: rgba(255,255,255,1);
+            }
+        }
+        &:focus {
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+        }
+    }
+}
+.nav-sidebar {
+    .nav-item, .nav-link {
+        &:focus {
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+        }
+    }
+}
+.main-header {
+    .nav-item, .nav-link {
+        &:focus {
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+        }
+    }
+}

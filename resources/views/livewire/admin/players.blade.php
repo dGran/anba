@@ -36,6 +36,9 @@
 
 <div class="py-2"> {{-- slot --}}
 
+    {{-- for admin log --}}
+    {{-- {!! nl2br($test->description) !!} --}}
+
     @include('livewire.partials.admin.session_messages')
     @include('livewire.admin.players.filters')
     @include('livewire.admin.players.table')

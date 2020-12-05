@@ -18,7 +18,7 @@
                             <span class="d-block text-xs text-muted">"{{ $regView->nickname }}"</span>
                         @endif
                     </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="closeAnyModal">
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <button type="button" class="btn btn-primary mr-3 mb-2 text-uppercase tracking-widest text-xxs py-1 px-2" wire:click="edit({{ $regView->id }})" style="position: absolute; bottom: 0; right: 0">
