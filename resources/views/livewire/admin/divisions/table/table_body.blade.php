@@ -2,7 +2,7 @@
 	@foreach ($regs as $reg)
 		<tr class="{{ $regsSelected->find($reg->id) ? 'selected' : '' }}" wire:click.stop="checkSelected({{ $reg->id }})">
 			<td clas="check" style="min-width: 200px; padding: 0">
-				<div class="d-flex align-items-center" style="height: inherit; padding: .5em 1em; }}">
+				<div class="d-flex align-items-center" style="height: inherit; padding: .5em 1em; {{ $fixedFirstColumn ? 'border-right: 1px solid #e2e8f0;' : 'border-right: 1px solid transparent;' }}">
 				    <div class="pretty p-svg p-curve p-jelly p-has-focus mr-2 non-selectable">
 				        <input type="checkbox" id="check{{ $reg->id }}" class="mousetrap"
 						wire:model="regsSelectedArray.{{ $reg->id }}" value="{{ $reg->id }}"

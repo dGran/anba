@@ -1,6 +1,6 @@
 <div class="admin-crud-table-wrapper shadow-sm mt-2">
 	@if ($regs->count()>0)
-		<table class="admin-crud-table {{ !$striped ?: 'striped' }}">
+		<table class="admin-crud-table {{ !$fixedFirstColumn ?: 'fixed-first' }} {{ !$striped ?: 'striped' }}">
 			@include('livewire.admin.divisions.table.table_head')
 			@include('livewire.admin.divisions.table.table_body')
 		</table>
