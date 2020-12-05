@@ -7,7 +7,7 @@ use App\Http\Controllers\TeamController;
 use App\Http\Livewire\Admin\Dashboard;
 
 use App\Http\Livewire\Admin\ConferenceCrud;
-// use App\Http\Livewire\Admin\DivisionCrud;
+use App\Http\Livewire\Admin\DivisionCrud;
 use App\Http\Livewire\Admin\TeamsCrud;
 use App\Http\Livewire\Admin\PlayerCrud;
 
@@ -54,6 +54,6 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('admin')->group(function
 
 	//good
 	Route::get('conferencias', ConferenceCrud::class)->name('admin.conferences');
-	// Route::get('divisiones', DivisionCrud::class)->name('admin.divisions');
+	Route::get('divisiones', DivisionCrud::class)->name('admin.divisions');
 	Route::get('jugadores', PlayerCrud::class)->name('admin.players');
 });

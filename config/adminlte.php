@@ -273,7 +273,7 @@ return [
         ],
         [
             'text'        => 'Divisiones',
-            // 'route'       => 'admin.divisions',
+            'route'       => 'admin.divisions',
             'icon'        => 'bx bxs-data',
         ],
 

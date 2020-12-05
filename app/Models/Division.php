@@ -13,6 +13,7 @@ class Division extends Model
 
     protected $fillable = [
         'name',
+        'conference_id',
         'active',
         'slug',
     ];
@@ -26,9 +27,17 @@ class Division extends Model
     {
         if (trim($value) != "") {
             return $query->where(function($q) use ($value) {
-                            $q->where('conferences.name', 'LIKE', "%{$value}%")
-                                ->orWhere('conferences.id', 'LIKE', "%{$value}%");
+                            $q->where('divisions.name', 'LIKE', "%{$value}%")
+                                ->orWhere('divisions.id', 'LIKE', "%{$value}%")
+                                ->orWhere('conferences.name', 'LIKE', "%{$value}%");
                             });
+        }
+    }
+
+    public function scopeConference($query, $value)
+    {
+        if ($value != 'all') {
+            return $query->where('conference_id', '=', $value);
         }
     }
 
@@ -36,9 +45,9 @@ class Division extends Model
     {
         if ($value != "all") {
             if ($value == "active") {
-                return $query->where('active', 1);
+                return $query->where('divisions.active', 1);
             } else {
-                return $query->where('active', 0);
+                return $query->where('divisions.active', 0);
             }
         }
     }

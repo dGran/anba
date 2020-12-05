@@ -17,6 +17,7 @@ class CreateDivisionsTable extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->foreignId('conference_id')
+                ->nullable()
                 ->constrained()
                 ->onDelete('cascade');
             $table->boolean('active')->default(1);

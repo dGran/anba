@@ -2,20 +2,21 @@
 
 namespace App\Http\Livewire\Admin;
 
+use App\Models\Division;
 use App\Models\Conference;
 use App\Models\AdminLog;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\withPagination;
 use Livewire\WithFileUploads;
-use App\Exports\ConferencesExport;
-use App\Imports\ConferencesImport;
+use App\Exports\DivisionsExport;
+use App\Imports\DivisionsImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 
 use App\Events\TableWasUpdated;
 
-class ConferenceCrud extends Component
+class DivisionCrud extends Component
 {
 	use WithPagination;
 	use WithFileUploads;
@@ -23,23 +24,25 @@ class ConferenceCrud extends Component
 	public $firstRender = true;
 
 	//model info
-	public $modelSingular = "conferencia";
-	public $modelPlural = "conferencias";
+	public $modelSingular = "división";
+	public $modelPlural = "divisiones";
 	public $modelGender = "female";
 	public $modelHasImg = true;
 
 	//fields
-	public $reg_id, $name, $img, $reg_img, $reg_img_formated, $active;
+	public $reg_id, $name, $conference_id, $active;
 
 	//filters
 	public $search = "";
 	public $perPage = '10';
+	public $filterConference = "all";
 	public $filterActive = "all";
 	public $order = 'id_desc';
 
 	// preferences vars
 	public $striped;
-	public $showTableImages;
+	public $fixedFirstColumn;
+	public $colConference;
 
 	// general vars
 	public $currentModal;
@@ -60,6 +63,7 @@ class ConferenceCrud extends Component
 	// queryString
 	protected $queryString = [
 		'search' => ['except' => ''],
+		'filterConference' => ['except' => "all"],
 		'filterActive' => ['except' => "all"],
 		'perPage' => ['except' => '10'],
 		'order' => ['except' => 'id_desc'],
@@ -69,22 +73,28 @@ class ConferenceCrud extends Component
 	public function setSessionPreferences()
 	{
 		session([
-			'conferences.showTableImages' => $this->showTableImages ? 'on' : 'off',
-			'conferences.striped' => $this->striped ? 'on' : 'off',
+			'divisions.fixedFirstColumn' => $this->fixedFirstColumn ? 'on' : 'off',
+			'divisions.striped' => $this->striped ? 'on' : 'off',
+			'divisions.colConference' => $this->colConference ? 'on' : 'off',
 		]);
 	}
 
 	protected function getSessionPreferences()
 	{
-		if (session()->get('conferences.showTableImages')) {
-			$this->showTableImages = session()->get('conferences.showTableImages') == 'on' ? true : false;
+		if (session()->get('divisions.fixedFirstColumn')) {
+			$this->fixedFirstColumn = session()->get('divisions.fixedFirstColumn') == 'on' ? true : false;
 		} else {
-			$this->showTableImages = true;
+			$this->fixedFirstColumn = true;
 		}
-		if (session()->get('conferences.striped')) {
-			$this->striped = session()->get('conferences.striped') == 'on' ? true : false;
+		if (session()->get('divisions.striped')) {
+			$this->striped = session()->get('divisions.striped') == 'on' ? true : false;
 		} else {
 			$this->striped = true;
+		}
+		if (session()->get('divisions.colConference')) {
+			$this->colConference = session()->get('divisions.colConference') == 'on' ? true : false;
+		} else {
+			$this->colConference = true;
 		}
 	}
 
@@ -93,50 +103,50 @@ class ConferenceCrud extends Component
 	{
 		session([
 			//fields
-			'conferences.reg_id' => $this->reg_id,
-			'conferences.name' => $this->name,
-			'conferences.reg_img' => $this->reg_img,
-			'conferences.reg_img_formated' => $this->reg_img_formated,
-			'conferences.active' => $this->active,
+			'divisions.reg_id' => $this->reg_id,
+			'divisions.name' => $this->name,
+			'divisions.conference_id' => $this->conference_id,
+			'divisions.active' => $this->active,
 			//filters
-			'conferences.search' => $this->search,
-			'conferences.perPage' => $this->perPage,
-			'conferences.filterActive' => $this->filterActive,
-			'conferences.order' => $this->order,
-			'conferences.page' => $this->page,
-			'conferences.regsSelectedArray' => $this->regsSelectedArray,
+			'divisions.search' => $this->search,
+			'divisions.perPage' => $this->perPage,
+			'divisions.filterConference' => $this->filterConference,
+			'divisions.filterActive' => $this->filterActive,
+			'divisions.order' => $this->order,
+			'divisions.page' => $this->page,
+			'divisions.regsSelectedArray' => $this->regsSelectedArray,
 			// general vars
-			'conferences.currentModal' => $this->currentModal,
-			'conferences.editMode' => $this->editMode,
-			'conferences.continuousInsert' => $this->continuousInsert,
+			'divisions.currentModal' => $this->currentModal,
+			'divisions.editMode' => $this->editMode,
+			'divisions.continuousInsert' => $this->continuousInsert,
 			//selected regs
-			'conferences.regsSelectedArray' => $this->regsSelectedArray,
-			'conferences.checkAllSelector' => $this->checkAllSelector,
+			'divisions.regsSelectedArray' => $this->regsSelectedArray,
+			'divisions.checkAllSelector' => $this->checkAllSelector,
 		]);
 	}
 
 	protected function getSessionState()
 	{
 		//fields
-		if (session()->get('conferences.reg_id')) { $this->reg_id = session()->get('conferences.reg_id'); }
-		if (session()->get('conferences.name')) { $this->name = session()->get('conferences.name'); }
-		if (session()->get('conferences.reg_img')) { $this->reg_img = session()->get('conferences.reg_img'); }
-		if (session()->get('conferences.reg_img_formated')) { $this->reg_img_formated = session()->get('conferences.reg_img_formated'); }
-		if (session()->get('conferences.active')) { $this->active = session()->get('conferences.active'); }
+		if (session()->get('divisions.reg_id')) { $this->reg_id = session()->get('divisions.reg_id'); }
+		if (session()->get('divisions.name')) { $this->name = session()->get('divisions.name'); }
+		if (session()->get('divisions.conference_id')) { $this->conference_id = session()->get('divisions.conference_id'); }
+		if (session()->get('divisions.active')) { $this->active = session()->get('divisions.active'); }
 		//filters
-		if (session()->get('conferences.search')) { $this->search = session()->get('conferences.search'); }
-		if (session()->get('conferences.perPage')) { $this->perPage = session()->get('conferences.perPage'); }
-		if (session()->get('conferences.filterActive')) { $this->filterActive = session()->get('conferences.filterActive'); }
-		if (session()->get('conferences.order')) { $this->order = session()->get('conferences.order'); }
-		if (session()->get('conferences.page')) { $this->page = session()->get('conferences.page'); }
-		if (session()->get('conferences.regsSelectedArray')) { $this->regsSelectedArray = session()->get('conferences.regsSelectedArray'); }
+		if (session()->get('divisions.search')) { $this->search = session()->get('divisions.search'); }
+		if (session()->get('divisions.perPage')) { $this->perPage = session()->get('divisions.perPage'); }
+		if (session()->get('divisions.filterConference')) { $this->filterConference = session()->get('divisions.filterConference'); }
+		if (session()->get('divisions.filterActive')) { $this->filterActive = session()->get('divisions.filterActive'); }
+		if (session()->get('divisions.order')) { $this->order = session()->get('divisions.order'); }
+		if (session()->get('divisions.page')) { $this->page = session()->get('divisions.page'); }
+		if (session()->get('divisions.regsSelectedArray')) { $this->regsSelectedArray = session()->get('divisions.regsSelectedArray'); }
 		// general vars
-		if (session()->get('conferences.currentModal')) { $this->currentModal = session()->get('conferences.currentModal'); }
-		if (session()->get('conferences.editMode')) { $this->editMode = session()->get('conferences.editMode'); }
-		if (session()->get('conferences.continuousInsert')) { $this->continuousInsert = session()->get('conferences.continuousInsert'); }
+		if (session()->get('divisions.currentModal')) { $this->currentModal = session()->get('divisions.currentModal'); }
+		if (session()->get('divisions.editMode')) { $this->editMode = session()->get('divisions.editMode'); }
+		if (session()->get('divisions.continuousInsert')) { $this->continuousInsert = session()->get('divisions.continuousInsert'); }
 		//selected regs
-		if (session()->get('conferences.regsSelectedArray')) { $this->regsSelectedArray = session()->get('conferences.regsSelectedArray'); }
-		if (session()->get('conferences.checkAllSelector')) { $this->checkAllSelector = session()->get('conferences.checkAllSelector'); }
+		if (session()->get('divisions.regsSelectedArray')) { $this->regsSelectedArray = session()->get('divisions.regsSelectedArray'); }
+		if (session()->get('divisions.checkAllSelector')) { $this->checkAllSelector = session()->get('divisions.checkAllSelector'); }
 	}
 
 	// Selected
@@ -152,12 +162,15 @@ class ConferenceCrud extends Component
 
 	public function checkAll()
 	{
-    	$regs = Conference::
-    		select('conferences.*')
+    	$regs = Division::
+    		leftJoin('conferences', 'conferences.id', 'divisions.conference_id')
+    		->select('divisions.*', 'conferences.name as conference_name')
     		->name($this->search)
+    		->conference($this->filterConference)
 			->active($this->filterActive)
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
-    		->paginate($this->perPage, ['*'], 'page', $this->page);
+			->orderBy('divisions.name', 'asc')
+			->paginate($this->perPage)->onEachSide(2);
 		foreach ($regs as $reg) {
 			if ($this->checkAllSelector == 1) {
 				$this->regsSelectedArray[$reg->id] = $reg->id;
@@ -215,6 +228,11 @@ class ConferenceCrud extends Component
     	$this->search = '';
     }
 
+    public function cancelfilterConference()
+    {
+		$this->filterConference = "all";
+    }
+
     public function cancelfilterActive()
     {
 		$this->filterActive = "all";
@@ -236,6 +254,7 @@ class ConferenceCrud extends Component
     	$this->page = 1;
     	$this->perPage = '10';
 		$this->order = 'id_desc';
+		$this->filterConference = "all";
 		$this->filterActive = "all";
 
 		$this->emit('resetFiltersMode');
@@ -246,16 +265,8 @@ class ConferenceCrud extends Component
     {
 		$this->name = null;
 		$this->img = null;
-		$this->reg_img = null;
-		$this->reg_img_formated = null;
+		$this->conference_id = null;
 		$this->active = 1;
-    }
-
-    public function resetImg()
-    {
-    	$this->img = null;
-    	$this->reg_img = null;
-    	$this->reg_img_formated = null;
     }
 
     public function add()
@@ -270,34 +281,19 @@ class ConferenceCrud extends Component
 
     public function store()
     {
-        if ($this->img) {
-	       $validatedData = $this->validate([
-	       		'name' => 'required|unique:conferences,name',
-	            'img' => 'mimes:jpeg,png,jpg,gif,svg|max:2048'
-	            // 'img' => 'mimes:jpeg,png,jpg,gif,svg|max:2048|dimensions:ratio=1/1'
-	        ],
-		    [
-		    	'name.required' => 'El nombre es obligatorio',
-		    	'name.unique' => 'El existe un registro con el mismo nombre',
-	            'img.mimes' => 'La imagen debe ser un archivo .jpeg, .png, .jpg, .gif o .svg',
-	            'img.max' => 'El tamaño de la imagen no puede ser mayor a 2048 bytes',
-	            // 'img.dimensions' => 'La imagen debe ser proporcinal, ratio 1:1'
-	        ]);
-	        $fileName = time() . '.' . $this->img->extension();
-	        $validatedData['img'] = $this->img->storeAs('conferences', $fileName, 'public');
-	    } else {
-	        $validatedData = $this->validate([
-	            'name' => 'required|unique:conferences,name',
-	        ],
-		    [
-		    	'name.required' => 'El nombre es obligatorio',
-		    	'name.unique' => 'El existe un registro con el mismo nombre',
-	        ]);
-	    }
+        $validatedData = $this->validate([
+            'name' => 'required|unique:divisions,name',
+        ],
+	    [
+	    	'name.required' => 'El nombre es obligatorio',
+	    	'name.unique' => 'El existe un registro con el mismo nombre',
+        ]);
+
+		$validatedData['conference_id'] = $this->conference_id ?: null;
 		$validatedData['active'] = $this->active ?: 0;
         $validatedData['slug'] = Str::slug($this->name, '-');
 
-        $reg = Conference::create($validatedData);
+        $reg = Division::create($validatedData);
 
         event(new TableWasUpdated($reg, 'insert', $reg->toJson(JSON_PRETTY_PRINT)));
         session()->flash('success', 'Registro agregado correctamente.');
@@ -317,11 +313,10 @@ class ConferenceCrud extends Component
     	$this->resetFields();
 		$this->resetValidation();
 
-    	$reg = Conference::find($id);
+    	$reg = Division::find($id);
 		$this->reg_id = $reg->id;
     	$this->name = $reg->name;
-    	$this->reg_img = $reg->img;
-		$this->reg_img_formated = $reg->getImg();
+    	$this->conference_id = $reg->conference_id;
 		$this->active = $reg->active;
 
     	$this->emit('openEditModal');
@@ -332,39 +327,18 @@ class ConferenceCrud extends Component
 
     public function update()
     {
-    	$reg = Conference::find($this->reg_id);
+    	$reg = Division::find($this->reg_id);
     	$before = $reg->toJson(JSON_PRETTY_PRINT);
 
-        if ($this->img) {
-	        $validatedData = $this->validate([
-	       		'name' => 'required|unique:conferences,name,' . $reg->id,
-	            'img' => 'mimes:jpeg,png,jpg,gif,svg|max:2048'
-	            // 'img' => 'mimes:jpeg,png,jpg,gif,svg|max:2048|dimensions:ratio=1/1'
-	        ],
-		    [
-		    	'name.required' => 'El nombre es obligatorio',
-		    	'name.unique' => 'El existe un registro con el mismo nombre',
-	            'img.mimes' => 'La imagen debe ser un archivo .jpeg, .png, .jpg, .gif o .svg',
-	            'img.max' => 'El tamaño de la imagen no puede ser mayor a 2048 bytes',
-	            // 'img.dimensions' => 'La imagen debe ser proporcinal, ratio 1:1'
-	        ]);
-	        Storage::disk('public')->delete($reg->img);
-	        $fileName = time() . '.' . $this->img->extension();
-	        $validatedData['img'] = $this->img->storeAs('conferences', $fileName, 'public');
-	    } else {
-	        $validatedData = $this->validate([
-	            'name' => 'required|unique:conferences,name,' . $reg->id,
-	        ],
-		    [
-		    	'name.required' => 'El nombre es obligatorio',
-		    	'name.unique' => 'El existe un registro con el mismo nombre',
-	        ]);
+        $validatedData = $this->validate([
+            'name' => 'required|unique:divisions,name,' . $reg->id,
+        ],
+	    [
+	    	'name.required' => 'El nombre es obligatorio',
+	    	'name.unique' => 'El existe un registro con el mismo nombre',
+        ]);
 
-	        if (is_null($this->reg_img)) {
-				Storage::disk('public')->delete($reg->img);
-	        	$validatedData['img'] = null;
-	        }
-	    }
+		$validatedData['conference_id'] = $this->conference_id ?: null;
 		$validatedData['active'] = $this->active ?: 0;
         $validatedData['slug'] = Str::slug($this->name, '-');
 
@@ -401,14 +375,12 @@ class ConferenceCrud extends Component
     	$regs_to_delete = count($this->regsSelectedArray);
 		$regs_deleted = 0;
 		foreach ($this->regsSelectedArray as $reg) {
-			if ($reg = Conference::find($reg)) {
+			if ($reg = Division::find($reg)) {
 				$storageImg = $reg->img;
 				if ($reg->canDestroy()) {
 					event(new TableWasUpdated($reg, 'delete'));
 					if ($reg->delete()) {
 						$regs_deleted++;
-	                	// remove image from Storage
-						Storage::disk('public')->delete($storageImg);
 					}
 				}
 			}
@@ -430,7 +402,7 @@ class ConferenceCrud extends Component
     // View
     public function view($id)
     {
-    	$this->regView = Conference::find($id);
+    	$this->regView = Division::find($id);
     	$this->emit('openViewModal');
     }
 
@@ -445,20 +417,12 @@ class ConferenceCrud extends Component
     	if (count($this->regsSelectedArray) > 1) {
     		$counter = 0;
 			foreach ($this->regsSelectedArray as $reg) {
-	            if ($original = Conference::find($reg)) {
+	            if ($original = Division::find($reg)) {
 	            	$counter++;
 	                $reg = $original->replicate();
 	            	$random_number = rand(100,999);
 	            	$random_text = "_copia_" . $random_number;
 	            	$reg->name .= $random_text;
-	            	if ($reg->storageImg()) {
-	            		$pos = strpos($reg->img, '.');
-	            		$original_img_name = substr($reg->img, 0, $pos);
-	            		$original_img_ext = substr($reg->img, $pos, strlen($reg->img) - $pos);
-	            		$img_name = $original_img_name . $random_text . $original_img_ext;
-						Storage::disk('public')->copy($reg->img, $img_name);
-						$reg->img = $img_name;
-	            	}
 	            	$reg->slug = Str::slug($reg->name, '-');
 	                $reg->save();
 	            	event(new TableWasUpdated($reg, 'insert', $reg->toJson(JSON_PRETTY_PRINT)));
@@ -470,19 +434,11 @@ class ConferenceCrud extends Component
 				session()->flash('error', 'Los registros que querías duplicar ya no existen.');
 			}
 		} elseif (count($this->regsSelectedArray) == 1) {
-            if ($original = Conference::find(reset($this->regsSelectedArray))) {
+            if ($original = Division::find(reset($this->regsSelectedArray))) {
                 $reg = $original->replicate();
             	$random_number = rand(100,999);
             	$random_text = "_copia_" . $random_number;
             	$reg->name .= $random_text;
-            	if ($reg->storageImg()) {
-            		$pos = strpos($reg->img, '.');
-            		$original_img_name = substr($reg->img, 0, $pos);
-            		$original_img_ext = substr($reg->img, $pos, strlen($reg->img) - $pos);
-            		$img_name = $original_img_name . $random_text . $original_img_ext;
-					Storage::disk('public')->copy($reg->img, $img_name);
-					$reg->img = $img_name;
-            	}
             	$reg->slug = Str::slug($reg->name, '-');
                 $reg->save();
             	event(new TableWasUpdated($reg, 'insert', $reg->toJson(JSON_PRETTY_PRINT)));
@@ -507,19 +463,22 @@ class ConferenceCrud extends Component
     {
     	$this->emit('closeExportTableModal');
 
-    	$filename = $this->filenameExportTable ?: 'conferencias';
+    	$filename = $this->filenameExportTable ?: 'divisiones';
 
-    	$regs = Conference::
-    		select('conferences.*')
+    	$regs = Division::
+    		leftJoin('conferences', 'conferences.id', 'divisions.conference_id')
+    		->select('divisions.*', 'conferences.name as conference_name')
     		->name($this->search)
+    		->conference($this->filterConference)
 			->active($this->filterActive)
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
+			->orderBy('divisions.name', 'asc')
     		->get();
 
 		$regs->makeHidden(['slug', 'created_at', 'updated_at']);
 
 		session()->flash('success', 'Registros exportados correctamente!.');
-    	return Excel::download(new ConferencesExport($regs), $filename . '.' . $this->formatExport);
+    	return Excel::download(new DivisionsExport($regs), $filename . '.' . $this->formatExport);
     }
 
     public function confirmExportSelected($format)
@@ -532,17 +491,19 @@ class ConferenceCrud extends Component
     {
     	$this->emit('closeExportSelectedModal');
 
-    	$filename = $this->filenameExportSelected ?: 'conferencias_seleccionadas';
+    	$filename = $this->filenameExportSelected ?: 'divisiones_seleccionadas';
 
-    	$regs = Conference::
-    		select('conferences.*')
-    		->whereIn('conferences.id', $this->regsSelectedArray)
+    	$regs = Division::
+    		leftJoin('conferences', 'conferences.id', 'divisions.conference_id')
+    		->select('divisions.*', 'conferences.name as conference_name')
+    		->whereIn('divisions.id', $this->regsSelectedArray)
         	->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
+			->orderBy('divisions.name', 'asc')
         	->get();
         $regs->makeHidden(['slug', 'created_at', 'updated_at']);
 
         session()->flash('success', 'Registros exportados correctamente!.');
-		return Excel::download(new ConferencesExport($regs), $filename . '.' . $this->formatExport);
+		return Excel::download(new DivisionsExport($regs), $filename . '.' . $this->formatExport);
     }
 
     public function confirmImport()
@@ -554,7 +515,7 @@ class ConferenceCrud extends Component
     public function import()
     {
         if ($this->fileImport != null) {
-        	Excel::import(new ConferencesImport, $this->fileImport);
+        	Excel::import(new DivisionsImport, $this->fileImport);
         	// (new TeamsImport)->queue($this->fileImport);
     		session()->flash('success', 'Registros importados correctamente!.');
         } else {
@@ -565,7 +526,7 @@ class ConferenceCrud extends Component
 
     public function active($id, $active)
     {
-    	$reg = Conference::find($id);
+    	$reg = Division::find($id);
     	$before = $reg->toJson(JSON_PRETTY_PRINT);
     	$reg->active = $active;
     	$reg->save();
@@ -602,9 +563,13 @@ class ConferenceCrud extends Component
     	}
     	$this->setSessionState();
 
-        return view('livewire.admin.conferences', [
+    	$conferences = Conference::orderBy('name', 'asc')->get();
+
+        return view('livewire.admin.divisions', [
         			'regs' => $this->getData(),
         			'regsSelected' => $this->getDataSelected(),
+        			'conferences' => $conferences,
+        			'filterConferenceName' => $this->filterConferenceName(),
         			'filterActiveName' => $this->filterActiveName(),
         			'firstRenderSaved' => $firstRenderSaved,
         			'currentModal' => $this->currentModal,
@@ -614,11 +579,14 @@ class ConferenceCrud extends Component
     // Helpers
 	protected function getData()
 	{
-    	$regs = Conference::
-    		select('conferences.*')
+    	$regs = Division::
+    		leftJoin('conferences', 'conferences.id', 'divisions.conference_id')
+    		->select('divisions.*', 'conferences.name as conference_name')
     		->name($this->search)
+    		->conference($this->filterConference)
 			->active($this->filterActive)
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
+			->orderBy('divisions.name', 'asc')
 			->paginate($this->perPage)->onEachSide(2);
 
 	    if (($regs->total() > 0 && $regs->count() == 0)) {
@@ -628,11 +596,14 @@ class ConferenceCrud extends Component
 			$this->page = $regs->lastPage();
 		}
 
-    	$regs = Conference::
-    		select('conferences.*')
+    	$regs = Division::
+    		leftJoin('conferences', 'conferences.id', 'divisions.conference_id')
+    		->select('divisions.*', 'conferences.name as conference_name')
     		->name($this->search)
+    		->conference($this->filterConference)
 			->active($this->filterActive)
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
+			->orderBy('divisions.name', 'asc')
 			->paginate($this->perPage)->onEachSide(2);
 
         $this->setCheckAllSelector();
@@ -641,11 +612,14 @@ class ConferenceCrud extends Component
 
 	protected function setCheckAllSelector()
 	{
-    	$regs = Conference::
-    		select('conferences.*')
+    	$regs = Division::
+    		leftJoin('conferences', 'conferences.id', 'divisions.conference_id')
+    		->select('divisions.*', 'conferences.name as conference_name')
     		->name($this->search)
+    		->conference($this->filterConference)
 			->active($this->filterActive)
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
+			->orderBy('divisions.name', 'asc')
 			->paginate($this->perPage, ['*'], 'page', $this->page);
 
 		$this->checkAllSelector = 1;
@@ -659,13 +633,21 @@ class ConferenceCrud extends Component
 
 	protected function getDataSelected()
 	{
-		return Conference::
-    		select('conferences.*')
-			->whereIn('conferences.id', $this->regsSelectedArray)
+		return Division::
+    		leftJoin('conferences', 'conferences.id', 'divisions.conference_id')
+    		->select('divisions.*', 'conferences.name as conference_name')
+			->whereIn('divisions.id', $this->regsSelectedArray)
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
+			->orderBy('divisions.name', 'asc')
 			->get();
 	}
 
+	protected function filterConferenceName()
+	{
+		if ($this->filterConference != "all") {
+			return Conference::find($this->filterConference)->name;
+		}
+	}
 	protected function filterActiveName()
 	{
 		if ($this->filterActive != "all") {
@@ -684,10 +666,18 @@ class ConferenceCrud extends Component
                 'direction' => 'desc'
             ],
             'name' => [
-                'field'     => 'conferences.name',
+                'field'     => 'divisions.name',
                 'direction' => 'asc'
             ],
             'name_desc' => [
+                'field'     => 'divisions.name',
+                'direction' => 'desc'
+            ],
+            'conference' => [
+                'field'     => 'conferences.name',
+                'direction' => 'asc'
+            ],
+            'conference_desc' => [
                 'field'     => 'conferences.name',
                 'direction' => 'desc'
             ],
@@ -699,7 +689,7 @@ class ConferenceCrud extends Component
 	{
 		$this->currentModal = $modal;
 		session([
-			'conferences.currentModal' => $this->currentModal,
+			'divisions.currentModal' => $this->currentModal,
 		]);
 	}
 
