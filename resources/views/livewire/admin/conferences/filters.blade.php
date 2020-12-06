@@ -99,7 +99,7 @@
 		@endif
 		@if ($filterActive != "all")
 			<li class="list-inline-item mr-1">
-				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterRetired">
+				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterActive">
 					{{ $filterActiveName }}<i class="fas fa-times ml-2"></i>
 				<a>
 			</li>

@@ -19,7 +19,7 @@
                                     <img src="{{ $reg->getImg() }}" alt="{{ $reg->getName() }}">
                                 </figure>
                             @endif
-                            <div>
+                            <div class="{{ $modelHasImg ?: 'pl-1' }}">
                                 <span class="text-sm">
                                     {{ $reg->getName() }}
                                 </span>

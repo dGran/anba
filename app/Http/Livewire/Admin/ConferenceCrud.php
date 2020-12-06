@@ -215,7 +215,7 @@ class ConferenceCrud extends Component
     	$this->search = '';
     }
 
-    public function cancelfilterActive()
+    public function cancelFilterActive()
     {
 		$this->filterActive = "all";
     }

@@ -1,7 +1,7 @@
 <tbody>
 	@foreach ($regs as $reg)
 		<tr class="{{ $regsSelected->find($reg->id) ? 'selected' : '' }}" wire:click.stop="checkSelected({{ $reg->id }})">
-			<td clas="check" style="min-width: 200px; padding: 0">
+			<td clas="check" style="min-width: 160px; padding: 0">
 				<div class="d-flex align-items-center" style="height: inherit; padding: .5em 1em; {{ $fixedFirstColumn ? 'border-right: 1px solid #e2e8f0;' : 'border-right: 1px solid transparent;' }}">
 				    <div class="pretty p-svg p-curve p-jelly p-has-focus mr-2 non-selectable">
 				        <input type="checkbox" id="check{{ $reg->id }}" class="mousetrap"
@@ -25,9 +25,12 @@
 					</div>
 				</div>
 			</td>
-			<td class="{{ $colConference ?: 'd-none' }}" style="width: 300px; min-width: 300px; min-width: 300px">
+			<td class="{{ $colConference ?: 'd-none' }}" style="width: 150px; min-width: 150px; min-width: 150px">
 				<div class="d-flex align-items-center">
-					<span class="{{ $reg->conference ?: 'text-muted' }}">
+					@if ($showTableImages)
+						<img class="image rounded-circle non-selectable" src="{{ $reg->getConferenceImg() }}" alt="{{ $reg->conference ? $reg->conference->name : 'Conferencia' }}" style="width: 40px;">
+					@endif
+					<span class="{{ !$showTableImages ?: 'pl-2' }} {{ !$reg->conference ? 'text-muted' : '' }}">
 						{{ $reg->conference ? $reg->conference->name : '' }}
 					</span>
 				</div>

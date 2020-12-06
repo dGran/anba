@@ -5,7 +5,6 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 
 class Division extends Model
 {
@@ -52,30 +51,11 @@ class Division extends Model
         }
     }
 
-    public function storageImg()
+    public function getConferenceImg()
     {
-        if (substr($this->img, 0, 9) == "divisions") {
-            return true;
-        }
-        return false;
-    }
-
-    public function getImg()
-    {
-        $default = asset('storage/divisions/default.png');
-        $local = asset('storage/' . $this->img);
-        $broken = asset('img/broken.png');
-
-        if ($this->img) {
-            if ($this->storageImg()) {
-                if (Storage::disk('public')->exists($this->img)) {
-                    return $local;
-                } else {
-                    return $broken;
-                }
-            } else {
-                return $this->img;
-            }
+        $default = asset('storage/conferences/default.png');
+        if ($this->conference) {
+            return $this->conference->getImg();
         } else {
             return $default;
         }

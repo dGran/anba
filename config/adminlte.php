@@ -248,13 +248,24 @@ return [
             // 'label'       => 4,
             // 'label_color' => 'success',
         ],
+        [
+            'text'        => 'Log',
+            'route'       => 'admin.log',
+            'icon'        => 'fas fa-history',
+            'label'       => 4,
+            'label_color' => 'success',
+        ],
+        ['header' => 'COMPETICION'],
+        [
+            'text'        => 'Temporadas',
+            'route'       => 'admin.players',
+            'icon'        => 'fas fa-calendar',
+        ],
         ['header' => 'TABLAS GENERALES'],
         [
-            'text'        => 'Usuarios',
-            'route'       => 'admin.users',
+            'text'        => 'Jugadores',
+            'route'       => 'admin.players',
             'icon'        => 'bx bxs-data',
-            // 'label'       => 4,
-            // 'label_color' => 'success',
         ],
         [
             'text'        => 'Equipos',
@@ -262,8 +273,8 @@ return [
             'icon'        => 'bx bxs-data',
         ],
         [
-            'text'        => 'Jugadores',
-            'route'       => 'admin.players',
+            'text'        => 'Divisiones',
+            'route'       => 'admin.divisions',
             'icon'        => 'bx bxs-data',
         ],
         [
@@ -272,9 +283,11 @@ return [
             'icon'        => 'bx bxs-data',
         ],
         [
-            'text'        => 'Divisiones',
-            'route'       => 'admin.divisions',
+            'text'        => 'Usuarios',
+            'route'       => 'admin.users',
             'icon'        => 'bx bxs-data',
+            // 'label'       => 4,
+            // 'label_color' => 'success',
         ],
 
         // [

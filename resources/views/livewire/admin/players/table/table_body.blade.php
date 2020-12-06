@@ -36,7 +36,7 @@
 				<div class="d-flex align-items-center">
 					@if (!$reg->retired)
 						@if ($showTableImages)
-							<img class="image rounded-circle pr-2 non-selectable" src="{{ $reg->getTeamImg() }}" alt="{{ $reg->team ? $reg->team->name : 'Free Agent' }}" style="width: 40px;">
+							<img class="image rounded-circle non-selectable" src="{{ $reg->getTeamImg() }}" alt="{{ $reg->team ? $reg->team->name : 'Free Agent' }}" style="width: 40px;">
 						@endif
 						<span class="{{ !$showTableImages ?: 'pl-2' }} {{ !$reg->team ? 'text-muted' : '' }}">
 							{{ $reg->team ? $reg->team->name : 'Free Agent' }}

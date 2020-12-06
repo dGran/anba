@@ -12,7 +12,6 @@ use Livewire\WithFileUploads;
 use App\Exports\DivisionsExport;
 use App\Imports\DivisionsImport;
 use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\Storage;
 
 use App\Events\TableWasUpdated;
 
@@ -27,7 +26,7 @@ class DivisionCrud extends Component
 	public $modelSingular = "división";
 	public $modelPlural = "divisiones";
 	public $modelGender = "female";
-	public $modelHasImg = true;
+	public $modelHasImg = false;
 
 	//fields
 	public $reg_id, $name, $conference_id, $active;
@@ -40,6 +39,7 @@ class DivisionCrud extends Component
 	public $order = 'id_desc';
 
 	// preferences vars
+	public $showTableImages;
 	public $striped;
 	public $fixedFirstColumn;
 	public $colConference;
@@ -74,13 +74,23 @@ class DivisionCrud extends Component
 	{
 		session([
 			'divisions.fixedFirstColumn' => $this->fixedFirstColumn ? 'on' : 'off',
+			'divisions.showTableImages' => $this->showTableImages ? 'on' : 'off',
 			'divisions.striped' => $this->striped ? 'on' : 'off',
 			'divisions.colConference' => $this->colConference ? 'on' : 'off',
 		]);
+
+		if (!$this->colConference) {
+			session(['divisions.fixedFirstColumn' => 'off']);
+		}
 	}
 
 	protected function getSessionPreferences()
 	{
+		if (session()->get('divisions.showTableImages')) {
+			$this->showTableImages = session()->get('divisions.showTableImages') == 'on' ? true : false;
+		} else {
+			$this->showTableImages = true;
+		}
 		if (session()->get('divisions.fixedFirstColumn')) {
 			$this->fixedFirstColumn = session()->get('divisions.fixedFirstColumn') == 'on' ? true : false;
 		} else {
@@ -228,12 +238,12 @@ class DivisionCrud extends Component
     	$this->search = '';
     }
 
-    public function cancelfilterConference()
+    public function cancelFilterConference()
     {
 		$this->filterConference = "all";
     }
 
-    public function cancelfilterActive()
+    public function cancelFilterActive()
     {
 		$this->filterActive = "all";
     }
@@ -376,7 +386,6 @@ class DivisionCrud extends Component
 		$regs_deleted = 0;
 		foreach ($this->regsSelectedArray as $reg) {
 			if ($reg = Division::find($reg)) {
-				$storageImg = $reg->img;
 				if ($reg->canDestroy()) {
 					event(new TableWasUpdated($reg, 'delete'));
 					if ($reg->delete()) {

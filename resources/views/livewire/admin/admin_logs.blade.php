@@ -1,8 +1,8 @@
-@section('title', 'Divisiones')
+@section('title', 'Log')
 
 @section('content_header')
     <h5 class="content-header-name">
-        Divisiones
+        Log
     </h5>
 @stop
 
@@ -26,25 +26,21 @@
     {{-- Toastr --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous"></script>
 
-    @include('livewire.admin.divisions.js')
+    @include('livewire.admin.admin_logs.js')
     @include('livewire.partials.admin.js')
 @stop
 
 <div class="py-2"> {{-- slot --}}
 
     @include('livewire.partials.admin.session_messages')
-    @include('livewire.admin.divisions.filters')
-    @include('livewire.admin.divisions.table')
+    @include('livewire.admin.admin_logs.filters')
+    @include('livewire.admin.admin_logs.table')
 
     {{-- modals --}}
-    @include('livewire.admin.divisions.modals.add')
-    @include('livewire.admin.divisions.modals.edit')
-    @include('livewire.admin.divisions.modals.filters')
-    @include('livewire.admin.divisions.modals.view')
+    @include('livewire.admin.admin_logs.modals.filters')
+    @include('livewire.admin.admin_logs.modals.view')
 
     @include('livewire.partials.admin.modals.destroy')
-    @include('livewire.partials.admin.modals.duplicate')
-    @include('livewire.partials.admin.modals.import_table')
     @include('livewire.partials.admin.modals.export_table')
     @include('livewire.partials.admin.modals.export_selected')
     @include('livewire.partials.admin.modals.selected')
@@ -52,7 +48,7 @@
     {{-- right-sidebar --}}
     @if (config('adminlte.right_sidebar'))
         <aside class="control-sidebar control-sidebar-{{ config('adminlte.right_sidebar_theme') }} shadow overflow-auto">
-            @include('livewire.admin.divisions.right-sidebar')
+            @include('livewire.admin.admin_logs.right-sidebar')
         </aside>
     @endif
 
