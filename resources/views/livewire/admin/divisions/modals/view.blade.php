@@ -3,7 +3,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header pb-0" style="background: #F9FAFB; position: relative; overflow: hidden;">
-                    <h5 class="modal-title text-base text-uppercase font-medium tracking-wide py-3">
+                    <h5 class="modal-title text-base text-uppercase font-medium tracking-wide my-2 pb-3">
                         <span>{{ $regView->getName() }}</span>
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="closeAnyModal">

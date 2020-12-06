@@ -3,7 +3,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header pb-0" style="background: #F9FAFB; position: relative; overflow: hidden;">
-                    <h5 class="modal-title text-base text-uppercase font-medium tracking-wide py-3">
+                    <h5 class="modal-title text-base text-uppercase font-medium tracking-wide pb-3">
                         <span>{{ $regView->getName() }}</span>
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="closeAnyModal">
@@ -36,6 +36,10 @@
                         <li class="d-flex align-items-center p-2" style="border-bottom: 1px solid #e9ecef" onmouseover="this.style.background='#F9FAFB';" onmouseout="this.style.background='';">
                             <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold text-xs">Usuario</div>
                             <div class="col-7 text-right text-sm">{{ $regView->user ? $regView->user->name : 'N/D'}}</div>
+                        </li>
+                        <li class="d-flex align-items-center p-2" style="border-bottom: 1px solid #e9ecef" onmouseover="this.style.background='#F9FAFB';" onmouseout="this.style.background='';">
+                            <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold text-xs">Fecha</div>
+                            <div class="col-7 text-right text-sm">{{ $regView->created_at ? $regView->getCreatedAtDate() . ' - ' . $regView->getCreatedAtTime() : 'N/D'}}</div>
                         </li>
                         <li class="d-flex align-items-start p-2" style="border-bottom: 1px solid #e9ecef" onmouseover="this.style.background='#F9FAFB';" onmouseout="this.style.background='';">
                             <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold text-xs">Detalle</div>

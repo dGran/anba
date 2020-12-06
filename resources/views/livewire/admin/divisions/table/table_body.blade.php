@@ -27,10 +27,10 @@
 			</td>
 			<td class="{{ $colConference ?: 'd-none' }}" style="width: 150px; min-width: 150px; min-width: 150px">
 				<div class="d-flex align-items-center">
-					@if ($showTableImages)
-						<img class="image rounded-circle non-selectable" src="{{ $reg->getConferenceImg() }}" alt="{{ $reg->conference ? $reg->conference->name : 'Conferencia' }}" style="width: 40px;">
+					@if ($showTableImages && $reg->conference)
+						<img class="image rounded-circle non-selectable" src="{{ $reg->getConferenceImg() }}" alt="{{ $reg->conference ? $reg->conference->name : 'Conferencia' }}" style="width: 40px; {{ $reg->active ?: '-webkit-filter: grayscale(100%); filter: grayscale(100%);' }}">
 					@endif
-					<span class="{{ !$showTableImages ?: 'pl-2' }} {{ !$reg->conference ? 'text-muted' : '' }}">
+					<span class="{{ !$showTableImages ?: 'pl-2' }} {{ $reg->active ?: 'text-gray-500' }}">
 						{{ $reg->conference ? $reg->conference->name : '' }}
 					</span>
 				</div>

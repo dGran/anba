@@ -252,8 +252,6 @@ return [
             'text'        => 'Log',
             'route'       => 'admin.log',
             'icon'        => 'fas fa-history',
-            'label'       => 4,
-            'label_color' => 'success',
         ],
         ['header' => 'COMPETICION'],
         [
@@ -271,6 +269,8 @@ return [
             'text'        => 'Equipos',
             'route'       => 'admin.teams',
             'icon'        => 'bx bxs-data',
+            'label'       => 'PENDING',
+            'label_color' => 'light',
         ],
         [
             'text'        => 'Divisiones',
@@ -286,8 +286,8 @@ return [
             'text'        => 'Usuarios',
             'route'       => 'admin.users',
             'icon'        => 'bx bxs-data',
-            // 'label'       => 4,
-            // 'label_color' => 'success',
+            'label'       => 'PENDING',
+            'label_color' => 'light',
         ],
 
         // [
