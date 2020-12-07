@@ -736,7 +736,18 @@ class TeamsCrud extends Component
     	$this->setSessionState();
 
     	$divisions = Division::orderBy('name', 'asc')->get();
-    	$users = User::orderBy('name', 'asc')->get();
+    	if ($this->editMode) {
+    		$manager = $this->manager_id;
+	    	$users = User::orderBy('name', 'asc')
+	    			->whereNotIn('id', function($query) use ($manager) {
+						$query->select('manager_id')->from('teams')->where('manager_id', '!=', $this->manager_id)->whereNotNull('manager_id');
+	                })->get();
+    	} else {
+	    	$users = User::orderBy('name', 'asc')
+	    			->whereNotIn('id', function($query) {
+						$query->select('manager_id')->from('teams')->whereNotNull('manager_id');
+	                })->get();
+    	}
 
         return view('livewire.admin.teams', [
         			'regs' => $this->getData(),
