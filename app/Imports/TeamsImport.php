@@ -3,12 +3,15 @@
 namespace App\Imports;
 
 use App\Models\Team;
+use App\Models\Division;
+use App\Models\User;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\Importable;
 
 use Illuminate\Support\Facades\Hash;
+use App\Events\TableWasUpdated;
 
 class TeamsImport implements ToModel, WithHeadingRow
 {
@@ -16,13 +19,21 @@ class TeamsImport implements ToModel, WithHeadingRow
 
     public function model(array $row)
     {
-        $team = Team::create([
-           'name'       => $row['name'],
-           'stadium'    => $row['stadium'],
-           'created_at' => $row['created_at'],
-           'updated_at' => $row['updated_at'],
-           'slug'       => Str::slug($row['name'], '-')
-        ]);
-        return $team;
+        if (!Team::where('name', $row['name'])->exists()) {
+            $reg = Team::create([
+                'name'           => $row['name'],
+                'medium_name'    => $row['medium_name'],
+                'short_name'     => $row['short_name'],
+                'division_id'    => Division::find($row['division_id']) ? $row['division_id'] : null,
+                'manager_id'     => User::find($row['manager_id']) ? $row['manager_id'] : null,
+                'img'            => $row['img'],
+                'stadium'        => $row['stadium'],
+                'color'          => $row['color'],
+                'active'         => $row['active'],
+                'slug'           => Str::slug($row['name'], '-')
+            ]);
+            event(new TableWasUpdated($reg, 'insert', $reg->toJson(JSON_PRETTY_PRINT), 'Registro importado'));
+            return $reg;
+        }
     }
 }

@@ -4,7 +4,6 @@ namespace App\Http\Livewire\Admin;
 
 use App\Models\Player;
 use App\Models\Team;
-use App\Models\AdminLog;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\withPagination;
@@ -691,7 +690,7 @@ class PlayerCrud extends Component
 	            	}
 	            	$reg->slug = Str::slug($reg->name, '-');
 	                $reg->save();
-	            	event(new TableWasUpdated($reg, 'insert', $reg->toJson(JSON_PRETTY_PRINT)));
+	            	event(new TableWasUpdated($reg, 'insert', $reg->toJson(JSON_PRETTY_PRINT), 'Registro duplicado'));
 	            }
 			}
 			if ($counter > 0) {
@@ -715,7 +714,7 @@ class PlayerCrud extends Component
             	}
             	$reg->slug = Str::slug($reg->name, '-');
                 $reg->save();
-            	event(new TableWasUpdated($reg, 'insert', $reg->toJson(JSON_PRETTY_PRINT)));
+            	event(new TableWasUpdated($reg, 'insert', $reg->toJson(JSON_PRETTY_PRINT), 'Registro duplicado'));
                 session()->flash('success', 'Registro duplicado correctamente!.');
             } else {
             	session()->flash('error', 'El registro que querías duplicar ya no existe.');

@@ -13,11 +13,14 @@ class Team extends Model
 
     protected $fillable = [
         'name',
+        'division_id',
+        'manager_id',
+        'medium_name',
         'short_name',
-        'conference',
-        'division',
         'img',
         'stadium',
+        'color',
+        'active',
         'slug',
     ];
 
@@ -26,9 +29,47 @@ class Team extends Model
         return $this->hasMany('App\Models\Player');
     }
 
-    public function scopeName($query, $name)
+    public function user()
     {
-        return $query->where('name', 'LIKE', "%{$name}%");
+        return $this->belongsTo('App\Models\User', 'manager_id', 'id');
+    }
+
+    public function division()
+    {
+        return $this->belongsTo('App\Models\Division');
+    }
+
+    public function scopeName($query, $value)
+    {
+        if (trim($value) != "") {
+            return $query->where(function($q) use ($value) {
+                            $q->where('teams.name', 'LIKE', "%{$value}%")
+                                ->orWhere('teams.id', 'LIKE', "%{$value}%")
+                                ->orWhere('teams.medium_name', 'LIKE', "%{$value}%")
+                                ->orWhere('teams.short_name', 'LIKE', "%{$value}%")
+                                ->orWhere('teams.stadium', 'LIKE', "%{$value}%")
+                                ->orWhere('divisions.name', 'LIKE', "%{$value}%")
+                                ->orWhere('users.name', 'LIKE', "%{$value}%");
+                            });
+        }
+    }
+
+    public function scopeDivision($query, $value)
+    {
+        if ($value != 'all') {
+            return $query->where('division_id', '=', $value);
+        }
+    }
+
+    public function scopeActive($query, $value)
+    {
+        if ($value != "all") {
+            if ($value == "active") {
+                return $query->where('divisions.active', 1);
+            } else {
+                return $query->where('divisions.active', 0);
+            }
+        }
     }
 
     public function storageImg()
@@ -57,6 +98,13 @@ class Team extends Model
             }
         } else {
             return $default;
+        }
+    }
+
+    public function getUserImg()
+    {
+        if ($this->user) {
+            return $this->user->profile_photo_url;
         }
     }
 

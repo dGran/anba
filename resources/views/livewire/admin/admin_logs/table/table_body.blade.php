@@ -16,6 +16,16 @@
 				    </div>
 					<div class="pl-2">
 						<div class="name d-flex align-items-center" wire:click.stop="view({{ $reg->id }})">
+							@if ($reg->detail_before == 'Registro importado')
+								<span class="text-uppercase text-xs bg-light rounded mr-2 px-2 border text-gray-600 d-flex align-items-center">
+									<i class="bx bxs-file-import mr-1"></i><span>importado</span>
+								</span>
+							@endif
+							@if ($reg->detail_before == 'Registro duplicado')
+								<span class="text-uppercase text-xs bg-light rounded mr-2 px-2 border text-gray-600 d-flex align-items-center">
+									<i class='bx bxs-copy mr-1'></i><span>duplicado</span>
+								</span>
+							@endif
 							<span>{{ $reg->reg_name }}</span>
 						</div>
 						<p class="text-muted text-xxs m-0">
@@ -25,8 +35,6 @@
 							<strong class="mr-1">REG ID:</strong>
 							{{ $reg->reg_id }}
 						</p>
-{{-- 						<p class="text-muted text-xxs m-0 d-inline-block">
-						</p> --}}
 					</div>
 				</div>
 			</td>

@@ -25,7 +25,7 @@
                     <div class="form-group col-md-6">
                         <label class="text-sm text-uppercase tracking-wide">Estado</label>
                         <select class="form-control custom-select text-sm" wire:model="filterActive">
-                            <option value="all">Todas los estados</option>
+                            <option value="all">Todos los estados</option>
                             <option value="active">Activas</option>
                             <option value="inactive">Inactivas</option>
                         </select>

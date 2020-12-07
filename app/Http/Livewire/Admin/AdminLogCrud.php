@@ -341,7 +341,7 @@ class AdminLogCrud extends Component
 			->orderBy('admin_logs.id', 'desc')
     		->get();
 
-		$regs->makeHidden(['updated_at']);
+		$regs->makeHidden(['user_name', 'updated_at']);
 
 		session()->flash('success', 'Registros exportados correctamente!.');
     	return Excel::download(new AdminLogsExport($regs), $filename . '.' . $this->formatExport);
@@ -366,7 +366,7 @@ class AdminLogCrud extends Component
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
 			->orderBy('admin_logs.id', 'desc')
         	->get();
-        $regs->makeHidden(['updated_at']);
+        $regs->makeHidden(['user_name', 'updated_at']);
 
         session()->flash('success', 'Registros exportados correctamente!.');
 		return Excel::download(new AdminLogsExport($regs), $filename . '.' . $this->formatExport);

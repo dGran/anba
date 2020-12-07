@@ -1,6 +1,6 @@
 <tbody>
 	@foreach ($regs as $reg)
-		<tr class="{{ $regsSelected->find($reg->id) ? 'selected' : '' }}" wire:click.stop="checkSelected({{ $reg->id }})">
+		<tr class="{{ $regsSelected->find($reg->id) ? 'selected' : '' }} {{ $reg->active ?: 'text-gray-500' }}" wire:click.stop="checkSelected({{ $reg->id }})">
 			<td clas="check" style="min-width: 200px; padding: 0">
 				<div class="d-flex align-items-center" style="height: inherit; padding: .5em 1em; }}">
 				    <div class="pretty p-svg p-curve p-jelly p-has-focus mr-2 non-selectable">
@@ -19,9 +19,9 @@
 				    @endif
 					<div class="pl-2">
 						<div class="name d-flex align-items-center" wire:click.stop="view({{ $reg->id }})">
-							<span class="{{ $reg->active ?: 'text-gray-500' }}">{{ $reg->name }}</span>
+							<span>{{ $reg->name }}</span>
 						</div>
-						<p class="text-muted text-xxs m-0">
+						<p class="{{ !$reg->active ?: 'text-muted' }} text-xxs m-0">
 							<strong class="mr-1">ID:</strong>
 							{{ $reg->id }}
 						</p>

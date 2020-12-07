@@ -1,15 +1,17 @@
 <div class="admin-crud-table-wrapper shadow-sm mt-2">
 	@if ($regs->count()>0)
-		<table class="admin-crud-table">
-			@include('livewire.admin.teams.table.table-head')
-			@include('livewire.admin.teams.table.table-body')
+		<table class="admin-crud-table {{ !$fixedFirstColumn ?: 'fixed-first' }} {{ !$striped ?: 'striped' }}">
+			@include('livewire.admin.teams.table.table_head')
+			@include('livewire.admin.teams.table.table_body')
 		</table>
 	@else
 		<div class="p-3">
 			No existen resultados
-			@if ($search)
-				para la búsqueda <span class="text-primary">"{{ $search }}"</span>
-			 @endif
+			@if ($search || $filterDivision != "all" || $filterActive != "all" || $perPage != "10")
+				con los filtros aplicados
+			@endif
 		</div>
 	@endif
 </div>
+
+@include('livewire.partials.admin.table.table_footer')

@@ -14,7 +14,7 @@ class AdminLog extends Model
 
     public function user()
     {
-        return $this->hasOne('App\Models\User', 'id', 'user_id');
+        return $this->belongsTo('App\Models\User');
     }
 
     public function scopeName($query, $value)
@@ -78,4 +78,5 @@ class AdminLog extends Model
         // ....
         return true;
     }
+
 }

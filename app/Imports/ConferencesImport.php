@@ -24,7 +24,7 @@ class ConferencesImport implements ToModel, WithHeadingRow
                 'active'       => $row['active'],
                 'slug'         => Str::slug($row['name'], '-')
             ]);
-            event(new TableWasUpdated($reg, 'update', $reg->toJson(JSON_PRETTY_PRINT)));
+            event(new TableWasUpdated($reg, 'insert', $reg->toJson(JSON_PRETTY_PRINT), 'Registro importado'));
             return $reg;
         }
     }

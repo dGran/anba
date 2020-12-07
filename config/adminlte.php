@@ -167,7 +167,7 @@ return [
     */
 
     'right_sidebar' => true,
-    'right_sidebar_icon' => 'fas fa-cogs',
+    'right_sidebar_icon' => 'fas fa-th-large',
     'right_sidebar_theme' => 'light',
     'right_sidebar_slide' => true,
     'right_sidebar_push' => false,
@@ -245,8 +245,8 @@ return [
             'text'        => 'Dashboard',
             'url'         => 'admin',
             'icon'        => 'bx bxs-dashboard',
-            // 'label'       => 4,
-            // 'label_color' => 'success',
+            'label'       => 'LESS',
+            'label_color' => 'info',
         ],
         [
             'text'        => 'Log',
@@ -256,8 +256,24 @@ return [
         ['header' => 'COMPETICION'],
         [
             'text'        => 'Temporadas',
-            'route'       => 'admin.players',
+            'route'       => 'dashboard',
             'icon'        => 'fas fa-calendar',
+            'label'       => 'PENDING',
+            'label_color' => 'warning',
+        ],
+        [
+            'text'        => 'Reportes',
+            'route'       => 'dashboard',
+            'icon'        => 'fas fa-tasks',
+            'label'       => 'PENDING',
+            'label_color' => 'warning',
+        ],
+        [
+            'text'        => 'Noticias',
+            'route'       => 'dashboard',
+            'icon'        => 'bx bx-news',
+            'label'       => 'PENDING',
+            'label_color' => 'warning',
         ],
         ['header' => 'TABLAS GENERALES'],
         [
@@ -269,8 +285,6 @@ return [
             'text'        => 'Equipos',
             'route'       => 'admin.teams',
             'icon'        => 'bx bxs-data',
-            'label'       => 'PENDING',
-            'label_color' => 'light',
         ],
         [
             'text'        => 'Divisiones',
@@ -284,19 +298,50 @@ return [
         ],
         [
             'text'        => 'Usuarios',
-            'route'       => 'admin.users',
+            'route'       => 'dashboard',
+            'icon'        => 'bx bxs-data',
+            'label'       => 'REFACT',
+            'label_color' => 'danger',
+        ],
+        [
+            'text'        => 'Roles',
+            'route'       => 'dashboard',
             'icon'        => 'bx bxs-data',
             'label'       => 'PENDING',
-            'label_color' => 'light',
+            'label_color' => 'warning',
+        ],
+        [
+            'text'        => 'Paises',
+            'route'       => 'dashboard',
+            'icon'        => 'bx bxs-data',
+            'label'       => 'PENDING',
+            'label_color' => 'warning',
         ],
 
-        // [
-        //     'text'        => 'pages',
-        //     'url'         => 'admin/pages',
-        //     'icon'        => 'far fa-fw fa-file',
-        //     'label'       => 4,
-        //     'label_color' => 'success',
-        // ],
+        ['header' => 'CONFIGURACION'],
+        [
+            'text'        => 'General',
+            'route'       => 'dashboard',
+            'icon'        => 'fas fa-cog',
+            'label'       => 'LESS',
+            'label_color' => 'info',
+        ],
+        [
+            'text'        => 'Notificaciones',
+            'route'       => 'dashboard',
+            'icon'        => 'fab fa-discord',
+            'label'       => 'LESS',
+            'label_color' => 'info',
+        ],
+        [
+            'text'        => 'Jugadores',
+            'route'       => 'dashboard',
+            'icon'        => 'fas fa-cog',
+            'label'       => 'LESS',
+            'label_color' => 'info',
+        ],
+
+
         // ['header' => 'account_settings'],
         // [
         //     'text' => 'profile',

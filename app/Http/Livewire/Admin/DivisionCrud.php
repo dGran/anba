@@ -4,7 +4,6 @@ namespace App\Http\Livewire\Admin;
 
 use App\Models\Division;
 use App\Models\Conference;
-use App\Models\AdminLog;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\withPagination;
@@ -434,7 +433,7 @@ class DivisionCrud extends Component
 	            	$reg->name .= $random_text;
 	            	$reg->slug = Str::slug($reg->name, '-');
 	                $reg->save();
-	            	event(new TableWasUpdated($reg, 'insert', $reg->toJson(JSON_PRETTY_PRINT)));
+	            	event(new TableWasUpdated($reg, 'insert', $reg->toJson(JSON_PRETTY_PRINT), 'Registro duplicado'));
 	            }
 			}
 			if ($counter > 0) {
@@ -450,7 +449,7 @@ class DivisionCrud extends Component
             	$reg->name .= $random_text;
             	$reg->slug = Str::slug($reg->name, '-');
                 $reg->save();
-            	event(new TableWasUpdated($reg, 'insert', $reg->toJson(JSON_PRETTY_PRINT)));
+            	event(new TableWasUpdated($reg, 'insert', $reg->toJson(JSON_PRETTY_PRINT), 'Registro duplicado'));
                 session()->flash('success', 'Registro duplicado correctamente!.');
             } else {
             	session()->flash('error', 'El registro que querías duplicar ya no existe.');
@@ -484,7 +483,7 @@ class DivisionCrud extends Component
 			->orderBy('divisions.name', 'asc')
     		->get();
 
-		$regs->makeHidden(['slug', 'created_at', 'updated_at']);
+		$regs->makeHidden(['slug', 'conference_name', 'created_at', 'updated_at']);
 
 		session()->flash('success', 'Registros exportados correctamente!.');
     	return Excel::download(new DivisionsExport($regs), $filename . '.' . $this->formatExport);
@@ -509,7 +508,7 @@ class DivisionCrud extends Component
         	->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
 			->orderBy('divisions.name', 'asc')
         	->get();
-        $regs->makeHidden(['slug', 'created_at', 'updated_at']);
+        $regs->makeHidden(['slug', 'conference_name', 'created_at', 'updated_at']);
 
         session()->flash('success', 'Registros exportados correctamente!.');
 		return Excel::download(new DivisionsExport($regs), $filename . '.' . $this->formatExport);
@@ -533,6 +532,7 @@ class DivisionCrud extends Component
     	$this->emit('closeImportModal');
     }
 
+	// Update fields
     public function active($id, $active)
     {
     	$reg = Division::find($id);

@@ -12,7 +12,7 @@
             <form wire:submit.prevent="import" enctype="multipart/form-data">
                 <div class="modal-body text-center">
                     <p>Selecciona el archivo que contiene los datos (.xls, .xlsx, .csv)</p>
-                    <p class="font-weight-bold m-0 mb-1">Los {{ $modelPlural }} ya existentes serán omitidos</p>
+                    <p class="font-weight-bold m-0 mb-1">{{ $modelGender == 'male' ? 'Los' : 'Las' }} {{ $modelPlural }} ya existentes serán {{ $modelGender == 'male' ? 'omitidos' : 'omitidas' }}</p>
                     <div class="form-group">
                         <div class="custom-file" style="text-align: left; margin-top: 1.5rem">
                             <input type="file" class="custom-file-input fileImport" id="fileImport" wire:model="fileImport" accept=".xls, .xlsx, .csv">

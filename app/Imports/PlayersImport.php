@@ -35,7 +35,7 @@ class PlayersImport implements ToModel, WithHeadingRow
                 'retired'      => $row['retired'] ?: 0,
                 'slug'         => Str::slug($row['name'], '-')
             ]);
-            event(new TableWasUpdated($reg, 'update', $reg->toJson(JSON_PRETTY_PRINT)));
+            event(new TableWasUpdated($reg, 'insert', $reg->toJson(JSON_PRETTY_PRINT), 'Registro importado'));
             return $reg;
         }
     }
