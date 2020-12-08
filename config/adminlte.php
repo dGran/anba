@@ -258,8 +258,8 @@ return [
             'text'        => 'Temporadas',
             'route'       => 'dashboard',
             'icon'        => 'fas fa-calendar',
-            'label'       => 'PENDING',
-            'label_color' => 'warning',
+            'label'       => 'PROGRESS',
+            'label_color' => 'success',
         ],
         [
             'text'        => 'Reportes',
@@ -287,6 +287,13 @@ return [
             'icon'        => 'bx bxs-data',
         ],
         [
+            'text'        => 'Paises',
+            'route'       => 'dashboard',
+            'icon'        => 'bx bxs-data',
+            'label'       => 'PENDING',
+            'label_color' => 'warning',
+        ],
+        [
             'text'        => 'Divisiones',
             'route'       => 'admin.divisions',
             'icon'        => 'bx bxs-data',
@@ -310,13 +317,6 @@ return [
             'label'       => 'PENDING',
             'label_color' => 'warning',
         ],
-        [
-            'text'        => 'Paises',
-            'route'       => 'dashboard',
-            'icon'        => 'bx bxs-data',
-            'label'       => 'PENDING',
-            'label_color' => 'warning',
-        ],
 
         ['header' => 'CONFIGURACION'],
         [
@@ -335,6 +335,13 @@ return [
         ],
         [
             'text'        => 'Jugadores',
+            'route'       => 'dashboard',
+            'icon'        => 'fas fa-cog',
+            'label'       => 'LESS',
+            'label_color' => 'info',
+        ],
+        [
+            'text'        => 'Resultados',
             'route'       => 'dashboard',
             'icon'        => 'fas fa-cog',
             'label'       => 'LESS',
