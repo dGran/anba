@@ -902,7 +902,7 @@ class PlayerCrud extends Component
     	$nations = Player::select('nation_name')->distinct()->whereNotNull('nation_name')->orderBy('nation_name', 'asc')->get();
     	$colleges = Player::select('college')->distinct()->whereNotNull('college')->orderBy('college', 'asc')->get();
 
-        return view('livewire.admin.players', [
+        return view('admin.players', [
         			'regs' => $this->getData(),
         			'regsSelected' => $this->getDataSelected(),
         			'teams' => $teams,

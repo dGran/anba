@@ -256,10 +256,13 @@ return [
         ['header' => 'COMPETICION'],
         [
             'text'        => 'Temporadas',
-            'route'       => 'dashboard',
+            'route'       => 'admin.seasons',
             'icon'        => 'fas fa-calendar',
-            'label'       => 'PROGRESS',
-            'label_color' => 'success',
+        ],
+        [
+            'text'        => 'Partidos',
+            'route'       => 'admin.matches',
+            'icon'        => 'fas fa-basketball-ball',
         ],
         [
             'text'        => 'Reportes',
@@ -341,7 +344,7 @@ return [
             'label_color' => 'info',
         ],
         [
-            'text'        => 'Resultados',
+            'text'        => '(Score Header)',
             'route'       => 'dashboard',
             'icon'        => 'fas fa-cog',
             'label'       => 'LESS',

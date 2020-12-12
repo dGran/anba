@@ -289,6 +289,10 @@
   outline-offset: 2px;
 }
 
+.modal {
+  overflow-y: auto;
+}
+
 .truncate {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -478,18 +482,20 @@
   background-color: #FEFBF6;
 }
 
-.admin-crud-table-wrapper .admin-crud-table.fixed-first th:first-child {
+.admin-crud-table-wrapper .admin-crud-table.fixed-first thead th:first-child {
   background-color: #F9FAFB;
+  border-radius: 0.375rem 0 0 0;
   left: 0px;
-  position: -webkit-sticky;
   position: sticky;
+  position: -webkit-sticky;
 }
 
 .admin-crud-table-wrapper .admin-crud-table.fixed-first tbody tr td:first-child {
   background-color: #fff;
+  border-radius: 0 0 0 0.375rem;
   left: 0px;
-  position: -webkit-sticky;
   position: sticky;
+  position: -webkit-sticky;
 }
 
 .admin-crud-table-wrapper .admin-crud-table.fixed-first tbody tr.selected:hover td:first-child {

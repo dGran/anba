@@ -22,15 +22,17 @@ class CreateMatchesTable extends Migration
                 ->constrained('seasons_teams')
                 ->onDelete('cascade');
             $table->foreignId('local_manager_id')
+                ->nullable()
                 ->constrained('users')
                 ->onDelete('cascade');
             $table->foreignId('visitor_team_id')
                 ->constrained('seasons_teams')
                 ->onDelete('cascade');
             $table->foreignId('visitor_manager_id')
+                ->nullable()
                 ->constrained('users')
                 ->onDelete('cascade');
-            $table->string('stadium');
+            $table->string('stadium')->nullable();
             $table->timestamps();
         });
     }

@@ -15,6 +15,9 @@ class CreateSeasonsConferencesTable extends Migration
     {
         Schema::create('seasons_conferences', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('season_id')
+                ->constrained()
+                ->onDelete('cascade');
             $table->foreignId('conference_id')
                 ->nullable()
                 ->constrained()

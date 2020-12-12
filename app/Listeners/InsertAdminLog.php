@@ -10,22 +10,11 @@ use App\Models\AdminLog;
 
 class InsertAdminLog
 {
-    /**
-     * Create the event listener.
-     *
-     * @return void
-     */
     public function __construct()
     {
         //
     }
 
-    /**
-     * Handle the event.
-     *
-     * @param  TableWasSaved  $event
-     * @return void
-     */
     public function handle(TableWasUpdated $event)
     {
         AdminLog::create([

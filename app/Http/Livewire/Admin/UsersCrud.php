@@ -420,7 +420,7 @@ class UsersCrud extends Component
     public function render()
     {
     	// $users = User::factory()->count(20)->create();
-        return view('livewire.admin.users', [
+        return view('admin.users', [
         			'regs' => $this->getData(),
         			'regsSelected' => $this->getDataSelected()
         		])->layout('adminlte::page');

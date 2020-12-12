@@ -404,7 +404,7 @@ class AdminLogCrud extends Component
     	$types = AdminLog::select('type')->distinct()->whereNotNull('type')->orderBy('type', 'asc')->get();
     	$tables = AdminLog::select('table')->distinct()->whereNotNull('table')->orderBy('table', 'asc')->get();
 
-        return view('livewire.admin.admin_logs', [
+        return view('admin.admin_logs', [
         			'regs' => $this->getData(),
         			'regsSelected' => $this->getDataSelected(),
         			'users' => $users,

@@ -602,7 +602,7 @@ class ConferenceCrud extends Component
     	}
     	$this->setSessionState();
 
-        return view('livewire.admin.conferences', [
+        return view('admin.conferences', [
         			'regs' => $this->getData(),
         			'regsSelected' => $this->getDataSelected(),
         			'filterActiveName' => $this->filterActiveName(),

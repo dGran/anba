@@ -17,6 +17,7 @@ class CreateSeasonsTable extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->boolean('current')->default(0);
+            $table->string('slug');
             $table->timestamps();
         });
     }

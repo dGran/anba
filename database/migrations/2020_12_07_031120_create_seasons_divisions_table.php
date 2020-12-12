@@ -15,6 +15,9 @@ class CreateSeasonsDivisionsTable extends Migration
     {
         Schema::create('seasons_divisions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('season_id')
+                ->constrained()
+                ->onDelete('cascade');
             $table->foreignId('division_id')
                 ->nullable()
                 ->constrained()

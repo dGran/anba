@@ -574,7 +574,7 @@ class DivisionCrud extends Component
 
     	$conferences = Conference::orderBy('name', 'asc')->get();
 
-        return view('livewire.admin.divisions', [
+        return view('admin.divisions', [
         			'regs' => $this->getData(),
         			'regsSelected' => $this->getDataSelected(),
         			'conferences' => $conferences,
