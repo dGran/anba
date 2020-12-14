@@ -1,6 +1,9 @@
 @section('title', 'Partidos')
 
 @section('content_header')
+    <a href="{{ route('admin.seasons') }}" class="text-xs text-uppercase tracking-wider">Temporadas</a>
+    <span>/</span>
+    <span class="text-xs text-uppercase tracking-wider">{{ $season->name }}</span>
     <h5 class="content-header-name">
         Partidos
     </h5>
@@ -26,6 +29,7 @@
     {{-- Toastr --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous"></script>
 
+    @include('admin.matches.js')
     @include('admin.partials.js')
 @stop
 
@@ -40,6 +44,7 @@
     @include('admin.matches.modals.edit')
     @include('admin.matches.modals.filters')
     @include('admin.matches.modals.view')
+    @include('admin.matches.modals.boxScore')
 
     @include('admin.partials.modals.destroy')
     @include('admin.partials.modals.duplicate')

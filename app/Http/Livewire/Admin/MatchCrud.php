@@ -3,10 +3,13 @@
 namespace App\Http\Livewire\Admin;
 
 use App\Models\Match;
+use App\Models\Score;
 use App\Models\Season;
 use App\Models\SeasonTeam;
 use App\Models\User;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\withPagination;
@@ -31,12 +34,14 @@ class MatchCrud extends Component
 	public $modelHasImg = false;
 
 	//fields
+	public $season;
 	public $reg_id, $season_id, $local_team_id, $local_manager_id, $visitor_team_id, $visitor_manager_id, $stadium;
+	//boxscore
+	public $scores;
 
 	//filters
 	public $search = "";
 	public $perPage = '10';
-	public $filterSeason = "all";
 	public $filterTeam = "all";
 	public $filterUser = "all";
 	public $order = 'id_desc';
@@ -69,7 +74,6 @@ class MatchCrud extends Component
 	// queryString
 	protected $queryString = [
 		'search' => ['except' => ''],
-		'filterSeason' => ['except' => "all"],
 		'filterTeam' => ['except' => "all"],
 		'filterUser' => ['except' => "all"],
 		'perPage' => ['except' => '10'],
@@ -85,7 +89,7 @@ class MatchCrud extends Component
 			'matches.striped' => $this->striped ? 'on' : 'off',
 			'matches.colScores' => $this->colScores ? 'on' : 'off',
 			'matches.colLocalManager' => $this->colLocalManager ? 'on' : 'off',
-			'matches.colVisitorlManager' => $this->colVisitorManager ? 'on' : 'off',
+			'matches.colVisitorManager' => $this->colVisitorManager ? 'on' : 'off',
 			'matches.colStadium' => $this->colStadium ? 'on' : 'off',
 		]);
 
@@ -121,10 +125,10 @@ class MatchCrud extends Component
 		} else {
 			$this->colLocalManager = true;
 		}
-		if (session()->get('matches.colVisitorlManager')) {
-			$this->colVisitorlManager = session()->get('matches.colVisitorlManager') == 'on' ? true : false;
+		if (session()->get('matches.colVisitorManager')) {
+			$this->colVisitorManager = session()->get('matches.colVisitorManager') == 'on' ? true : false;
 		} else {
-			$this->colVisitorlManager = true;
+			$this->colVisitorManager = true;
 		}
 		if (session()->get('matches.colStadium')) {
 			$this->colStadium = session()->get('matches.colStadium') == 'on' ? true : false;
@@ -148,7 +152,6 @@ class MatchCrud extends Component
 			//filters
 			'matches.search' => $this->search,
 			'matches.perPage' => $this->perPage,
-			'matches.filterSeason' => $this->filterSeason,
 			'matches.filterTeam' => $this->filterTeam,
 			'matches.filterUser' => $this->filterUser,
 			'matches.order' => $this->order,
@@ -177,7 +180,6 @@ class MatchCrud extends Component
 		//filters
 		if (session()->get('matches.search')) { $this->search = session()->get('matches.search'); }
 		if (session()->get('matches.perPage')) { $this->perPage = session()->get('matches.perPage'); }
-		if (session()->get('matches.filterSeason')) { $this->filterSeason = session()->get('matches.filterSeason'); }
 		if (session()->get('matches.filterTeam')) { $this->filterTeam = session()->get('matches.filterTeam'); }
 		if (session()->get('matches.filterUser')) { $this->filterUser = session()->get('matches.filterUser'); }
 		if (session()->get('matches.order')) { $this->order = session()->get('matches.order'); }
@@ -215,13 +217,13 @@ class MatchCrud extends Component
                 $join->on('users.id','=','matches.local_manager_id');
                 $join->orOn('users.id','=','matches.visitor_manager_id');
             })
-    		->select('matches.*')->distinct()
     		->name($this->search)
-    		->season($this->filterSeason)
     		->team($this->filterTeam)
     		->user($this->filterUser)
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
 			->orderBy('matches.id', 'desc')
+			->select('matches.*')
+			->groupBy('matches.id')
 			->paginate($this->perPage)->onEachSide(2);
 		foreach ($regs as $reg) {
 			if ($this->checkAllSelector == 1) {
@@ -280,11 +282,6 @@ class MatchCrud extends Component
     	$this->search = '';
     }
 
-    public function cancelFilterSeason()
-    {
-		$this->filterSeason = "all";
-    }
-
     public function cancelFilterTeam()
     {
 		$this->filterTeam = "all";
@@ -311,7 +308,6 @@ class MatchCrud extends Component
     	$this->page = 1;
     	$this->perPage = '10';
 		$this->order = 'id_desc';
-		$this->filterSeason = "all";
 		$this->filterTeam = "all";
 		$this->filterUser = "all";
 
@@ -321,10 +317,15 @@ class MatchCrud extends Component
     // Add & Store
     protected function resetFields()
     {
-		$this->season_id = 14;
-		$this->local_team_id = null;
+		$this->season_id = $this->season->id;
+    	$firstTeam = SeasonTeam::leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
+    	->select('seasons_teams.*')
+    	->where('season_id', $this->season->id)
+    	->orderBy('teams.medium_name', 'asc')
+    	->first()->id;
+		$this->local_team_id = $firstTeam;
 		$this->local_manager_id = null;
-		$this->visitor_team_id = null;
+		$this->visitor_team_id = $firstTeam;
 		$this->visitor_manager_id = null;
 		$this->stadium = null;
     }
@@ -346,8 +347,8 @@ class MatchCrud extends Component
             'visitor_team_id' => 'different:local_team_id',
         ],
 	    [
-	    	'local_team_id.different' => 'El equipo debe ser diferente al visitante',
-	    	'visitor_team_id.different' => 'El equipo debe ser diferente al local',
+	    	'local_team_id.different' => 'Los equipos deben ser diferentes',
+	    	'visitor_team_id.different' => 'Los equipos deben ser diferentes',
         ]);
 
 		$validatedData['season_id'] = $this->season_id;
@@ -367,11 +368,21 @@ class MatchCrud extends Component
 
 		if ($this->continuousInsert) {
 			$this->resetFields();
+			$this->resetValidation();
 		} else {
 			$this->resetFields();
 			$this->emit('closeAddModal');
 			$this->closeAnyModal();
 		}
+    }
+
+    public function exchangeTeams()
+    {
+    	$local = $this->local_team_id;
+    	$visitor = $this->visitor_team_id;
+
+    	$this->local_team_id = $visitor;
+    	$this->visitor_team_id = $local;
     }
 
 	// Edit & Update
@@ -405,8 +416,8 @@ class MatchCrud extends Component
             'visitor_team_id' => 'different:local_team_id',
         ],
 	    [
-	    	'local_team_id.different' => 'El equipo debe ser diferente al visitante',
-	    	'visitor_team_id.different' => 'El equipo debe ser diferente al local',
+	    	'local_team_id.different' => 'Los equipos deben ser diferentes',
+	    	'visitor_team_id.different' => 'Los equipos deben ser diferentes',
         ]);
 
 		$validatedData['season_id'] = $this->season_id;
@@ -479,6 +490,13 @@ class MatchCrud extends Component
     	$this->emit('openViewModal');
     }
 
+    // View
+    public function boxscore($id)
+    {
+    	$this->regView = Match::find($id);
+    	$this->emit('openBoxscoreModal');
+    }
+
     // Duplicate
     public function confirmDuplicate()
     {
@@ -542,13 +560,13 @@ class MatchCrud extends Component
                 $join->on('users.id','=','matches.local_manager_id');
                 $join->orOn('users.id','=','matches.visitor_manager_id');
             })
-    		->select('matches.*')->distinct()
     		->name($this->search)
-    		->season($this->filterSeason)
     		->team($this->filterTeam)
     		->user($this->filterUser)
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
 			->orderBy('matches.id', 'desc')
+			->select('matches.*')
+			->groupBy('matches.id')
     		->get();
 
 		$regs->makeHidden(['created_at', 'updated_at']);
@@ -579,10 +597,11 @@ class MatchCrud extends Component
                 $join->on('users.id','=','matches.local_manager_id');
                 $join->orOn('users.id','=','matches.visitor_manager_id');
             })
-    		->select('matches.*')->distinct()
     		->whereIn('matches.id', $this->regsSelectedArray)
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
 			->orderBy('matches.id', 'desc')
+			->select('matches.*')
+			->groupBy('matches.id')
         	->get();
         $regs->makeHidden(['created_at', 'updated_at']);
 
@@ -620,7 +639,20 @@ class MatchCrud extends Component
     }
 
 
-    // Render
+    // Mount & Render
+    public function mount(Season $season)
+    {
+        $this->season = $season;
+    	$this->scores = Collection::make();
+		foreach ($this->season->scores_headers as $header) {
+			$h['seasons_scores_headers_id'] = $header->id;
+			$h['seasons_scores_headers_name'] = $header->scoreHeader->name;
+			$h['local_score'] = null;
+			$h['visitor_score'] = null;
+			$this->scores->push($h);
+		}
+    }
+
     public function render()
     {
     	// Load Session Preferences
@@ -638,14 +670,17 @@ class MatchCrud extends Component
 
     	$seasons = Season::orderBy('id', 'desc')->get();
     	$season_teams = SeasonTeam::leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
-    	->select('seasons_teams.*', 'teams.name as team_name')
-    	->where('season_id', 14)
-    	->orderBy('teams.name', 'asc')
+    	->select('seasons_teams.*')
+    	->where('season_id', $this->season->id)
+    	->orderBy('teams.medium_name', 'asc')
     	->get();
     	$managers = SeasonTeam::leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
     	->leftJoin('users', 'users.id', 'teams.manager_id')
-    	->where('season_id', 14)
-    	->select('users.name')->distinct()->orderBy('users.name', 'asc')
+    	->where('season_id', $this->season->id)
+    	->whereNotNull('teams.manager_id')
+    	->select('users.*')
+    	->distinct()
+    	->orderBy('users.name', 'asc')
     	->get();
 
         return view('admin.matches', [
@@ -654,11 +689,11 @@ class MatchCrud extends Component
         			'seasons' => $seasons,
         			'season_teams' => $season_teams,
         			'managers' => $managers,
-        			'filterSeasonName' => $this->filterSeasonName(),
         			'filterTeamName' => $this->filterTeamName(),
         			'filterUserName' => $this->filterUserName(),
         			'firstRenderSaved' => $firstRenderSaved,
         			'currentModal' => $this->currentModal,
+        			'scores' => $this->scores
         		])->layout('adminlte::page');
     }
 
@@ -675,13 +710,13 @@ class MatchCrud extends Component
                 $join->on('users.id','=','matches.local_manager_id');
                 $join->orOn('users.id','=','matches.visitor_manager_id');
             })
-    		->select('matches.*')->distinct()
     		->name($this->search)
-    		->season($this->filterSeason)
     		->team($this->filterTeam)
     		->user($this->filterUser)
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
 			->orderBy('matches.id', 'desc')
+			->select('matches.*')
+			->groupBy('matches.id')
 			->paginate($this->perPage)->onEachSide(2);
 
 	    if (($regs->total() > 0 && $regs->count() == 0)) {
@@ -701,14 +736,15 @@ class MatchCrud extends Component
                 $join->on('users.id','=','matches.local_manager_id');
                 $join->orOn('users.id','=','matches.visitor_manager_id');
             })
-    		->select('matches.*')->distinct()
     		->name($this->search)
-    		->season($this->filterSeason)
     		->team($this->filterTeam)
     		->user($this->filterUser)
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
 			->orderBy('matches.id', 'desc')
+			->select('matches.*')
+			->groupBy('matches.id')
 			->paginate($this->perPage)->onEachSide(2);
+
 
         $this->setCheckAllSelector();
 		return $regs;
@@ -726,13 +762,13 @@ class MatchCrud extends Component
                 $join->on('users.id','=','matches.local_manager_id');
                 $join->orOn('users.id','=','matches.visitor_manager_id');
             })
-    		->select('matches.*')->distinct()
     		->name($this->search)
-    		->season($this->filterSeason)
     		->team($this->filterTeam)
     		->user($this->filterUser)
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
 			->orderBy('matches.id', 'desc')
+			->select('matches.*')
+			->groupBy('matches.id')
 			->paginate($this->perPage, ['*'], 'page', $this->page);
 
 		$this->checkAllSelector = 1;
@@ -756,29 +792,32 @@ class MatchCrud extends Component
                 $join->on('users.id','=','matches.local_manager_id');
                 $join->orOn('users.id','=','matches.visitor_manager_id');
             })
-    		->select('matches.*')->distinct()
 			->whereIn('matches.id', $this->regsSelectedArray)
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
 			->orderBy('matches.id', 'desc')
+			->select('matches.*')
+			->groupBy('matches.id')
 			->get();
 	}
 
-	protected function filterSeasonName()
-	{
-		if ($this->filterSeason != "all") {
-			return Season::find($this->filterSeason)->name;
-		}
-	}
 	protected function filterTeamName()
 	{
 		if ($this->filterTeam != "all") {
-			return SeasonTeam::find($this->filterTeam)->team->name;
+			if ($var = SeasonTeam::find($this->filterTeam)) {
+				return $var->team->name;
+			} else {
+				$this->filterTeam = "all";
+			}
 		}
 	}
 	protected function filterUserName()
 	{
 		if ($this->filterUser != "all") {
-			return User::find($this->filterUser)->name;
+			if ($var = User::find($this->filterUser)) {
+				return $var->name;
+			} else {
+				$this->filterUser = "all";
+			}
 		}
 	}
 
@@ -791,7 +830,15 @@ class MatchCrud extends Component
             'id_desc' => [
                 'field'     => 'matches.id',
                 'direction' => 'desc'
-            ]
+            ],
+            'stadium' => [
+                'field'     => 'matches.stadium',
+                'direction' => 'asc'
+            ],
+            'stadium_desc' => [
+                'field'     => 'matches.stadium',
+                'direction' => 'desc'
+            ],
         ];
         return $order_ext[$order];
     }
@@ -807,5 +854,18 @@ class MatchCrud extends Component
 	public function closeAnyModal()
 	{
 		$this->currentModal = '';
+	}
+
+	public function storeResult()
+	{
+		foreach ($this->scores as $key => $score_temp) {
+			$score = Score::create([
+				'match_id' => $this->regView->id,
+				'seasons_scores_headers_id' => $score_temp['seasons_scores_headers_id'],
+				'local_score' => $score_temp['local_score'],
+				'visitor_score' => $score_temp['visitor_score'],
+				'order' => $key+1,
+			]);
+		}
 	}
 }

@@ -1,6 +1,6 @@
 @if ($regView)
     <div wire:ignore.self class="modal fade" tabindex="-1" role="dialog" id="viewModal">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header pb-0" style="background: #F9FAFB; position: relative; overflow: hidden;">
                     @if (!$regView->retired)

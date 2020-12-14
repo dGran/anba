@@ -834,7 +834,11 @@ class TeamCrud extends Component
 	protected function filterDivisionName()
 	{
 		if ($this->filterDivision != "all") {
-			return Division::find($this->filterDivision)->name;
+			if ($var = Division::find($this->filterDivision)) {
+				return $var->name;
+			} else {
+				$this->filterDivision = "all";
+			}
 		}
 	}
 	protected function filterActiveName()

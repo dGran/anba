@@ -654,7 +654,11 @@ class DivisionCrud extends Component
 	protected function filterConferenceName()
 	{
 		if ($this->filterConference != "all") {
-			return Conference::find($this->filterConference)->name;
+			if ($var = Conference::find($this->filterConference)) {
+				return $var->name;
+			} else {
+				$this->filterConference = "all";
+			}
 		}
 	}
 	protected function filterActiveName()

@@ -26,7 +26,7 @@
 				</div>
 			</td>
 			<td style="width: 128px; min-width: 128px; min-width: 128px">
-                <a class="btn btn-primary ml-2 text-xs text-uppercase tracking-widest text-white">
+                <a wire:click.stop href="{{ route('admin.matches', $reg) }}" class="btn btn-primary text-xs text-uppercase tracking-widest text-white">
                     Partidos
                 </a>
 			</td>

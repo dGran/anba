@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class ScoreHeader extends Model
 {
     use HasFactory;
+
+	protected $table = "scores_headers";
 }

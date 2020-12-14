@@ -51,10 +51,10 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/jugadores', function () {
 // 	->name('teams');
 
 Route::middleware(['auth:sanctum', 'verified'])->prefix('admin')->group(function() {
-	Route::get('/', Dashboard::class)->name('admin');
 	Route::get('usuarios', UsersCrud::class)->name('admin.users');
 
 
+	Route::get('/', Dashboard::class)->name('admin');
 	//good
 	Route::get('log', AdminLogCrud::class)->name('admin.log');
 	Route::get('jugadores', PlayerCrud::class)->name('admin.players');
@@ -62,5 +62,5 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('admin')->group(function
 	Route::get('divisiones', DivisionCrud::class)->name('admin.divisions');
 	Route::get('conferencias', ConferenceCrud::class)->name('admin.conferences');
 	Route::get('temporadas', SeasonCrud::class)->name('admin.seasons');
-	Route::get('partidos', MatchCrud::class)->name('admin.matches');
+	Route::get('temporadas/{season:slug}/partidos', MatchCrud::class)->name('admin.matches');
 });

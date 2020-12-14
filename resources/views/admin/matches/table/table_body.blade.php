@@ -25,7 +25,7 @@
 					</div>
 				</div>
 			</td>
-{{-- 			<td class="{{ $colConference ?: 'd-none' }}" style="width: 150px; min-width: 150px; min-width: 150px">
+{{-- 			<td class="{{ $colConference ?: 'd-none' }}" style="width: 150px; min-width: 150px; max-width: 150px">
 				<div class="d-flex align-items-center">
 					@if ($showTableImages && $reg->conference)
 						<img class="image rounded-circle non-selectable" src="{{ $reg->getConferenceImg() }}" alt="{{ $reg->conference ? $reg->conference->name : 'Conferencia' }}" style="width: 40px; {{ $reg->active ?: '-webkit-filter: grayscale(100%); filter: grayscale(100%);' }}">
@@ -35,6 +35,46 @@
 					</span>
 				</div>
 			</td> --}}
+			<td class="truncate {{ $colScores ?: 'd-none' }}" style="width: 300px; min-width: 300px; max-width: 300px">
+				<div class="d-flex align-items-center">
+					<div>
+						<div style="min-width: 40px" class="text-right d-inline-block">{{ $reg->localTeam->team->short_name }}</div>
+						<img src="{{ $reg->localTeam->team->getImg() }}" alt="{{ $reg->localTeam->team->short_name }}" style="width: 32px; height: 32px" class="rounded-circle border ml-1">
+					</div>
+					<div class="mx-3 text-center" style="min-width: 90px">
+						@if ($reg->played())
+		                	{{ $reg->score() }}
+						@else
+			                <button type="button" class="btn btn-primary text-xs text-uppercase tracking-widest text-white" wire:click.stop="boxscore({{ $reg->id }})">
+			                    BoxScore
+			                </button>
+						@endif
+					</div>
+	                <div>
+						<img src="{{ $reg->visitorTeam->team->getImg() }}" alt="{{ $reg->visitorTeam->team->short_name }}" style="width: 32px; height: 32px" class="rounded-circle border mr-1">
+						<div style="min-width: 40px" class="text-left d-inline-block">{{ $reg->visitorTeam->team->short_name }}</div>
+	                </div>
+				</div>
+			</td>
+			<td class="truncate {{ $colLocalManager ?: 'd-none' }}" style="width: 200px; min-width: 200px; max-width: 200px">
+				<div class="d-flex align-items-center">
+					@if ($showTableImages && $reg->localManager)
+						<img class="image rounded-circle non-selectable mr-2" src="{{ $reg->localManager->getImg() }}" alt="{{ $reg->localManager ? $reg->localManager->name : 'Sin manager' }}" style="width: 40px;">
+					@endif
+					<span>{{ $reg->localManager ? $reg->localManager->name : '' }}</span>
+				</div>
+			</td>
+			<td class="truncate {{ $colVisitorManager ?: 'd-none' }}" style="width: 200px; min-width: 200px; max-width: 200px">
+				<div class="d-flex align-items-center">
+					@if ($showTableImages && $reg->visitorManager)
+						<img class="image rounded-circle non-selectable mr-2" src="{{ $reg->visitorManager->getImg() }}" alt="{{ $reg->visitorManager ? $reg->visitorManager->name : 'Sin manager' }}" style="width: 40px;">
+					@endif
+					<span>{{ $reg->visitorManager ? $reg->visitorManager->name : '' }}</span>
+				</div>
+			</td>
+			<td class="truncate {{ $colStadium ?: 'd-none' }}" style="width: 300px; min-width: 300px; max-width: 300px">
+				{{ $reg->stadium }}
+			</td>
 		</tr>
 	@endforeach
 </tbody>

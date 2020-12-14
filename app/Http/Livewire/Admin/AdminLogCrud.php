@@ -488,7 +488,11 @@ class AdminLogCrud extends Component
 	protected function filterUserName()
 	{
 		if ($this->filterUser != "all") {
-			return User::find($this->filterUser)->name;
+			if ($var = User::find($this->filterUser)) {
+				return $var->name;
+			} else {
+				$this->filterUser = "all";
+			}
 		}
 	}
 

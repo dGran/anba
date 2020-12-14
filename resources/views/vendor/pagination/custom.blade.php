@@ -69,11 +69,11 @@
     <div class="pagination-info">
         <p>
             <span class="font-medium">{{ $paginator->firstItem() }}</span>
-            {!! __('/') !!}
+            <span>/</span>
             <span class="font-medium">{{ $paginator->lastItem() }}</span>
-            {!! __('de') !!}
+            <span>de</span>
             <span class="font-medium">{{ $paginator->total() }}</span>
-            {!! __('registros') !!}
+            <span>registros</span>
         </p>
     </div>
 @endif

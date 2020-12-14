@@ -20,14 +20,24 @@
 				@endif
 		    </div>
 		</th>
-{{-- 		<th class="{{ $colConference ?: 'd-none' }}">
-			@if ($order == 'conference')
-				<span class="d-inline-block cursor-pointer" wire:click="order('conference_desc')">Conferencia<i class="fas fa-sort-alpha-up pl-1"></i></span>
-			@elseif ($order == 'conference_desc')
-				<span class="d-inline-block cursor-pointer" wire:click="order('conference')">Conferencia<i class="fas fa-sort-alpha-down pl-1"></i></span>
+		<th class="{{ $colScores ?: 'd-none' }}">
+			Resultado
+		</th>
+		<th class="{{ $colLocalManager ?: 'd-none' }}">
+			Manager Local
+		</th>
+		<th class="{{ $colVisitorManager ?: 'd-none' }}">
+			Manager Visitante
+		</th>
+
+		<th class="{{ $colStadium ?: 'd-none' }}">
+			@if ($order == 'stadium')
+				<span class="d-inline-block cursor-pointer" wire:click="order('stadium_desc')">Estadio<i class="fas fa-sort-alpha-up pl-1"></i></span>
+			@elseif ($order == 'stadium_desc')
+				<span class="d-inline-block cursor-pointer" wire:click="order('stadium')">Estadio<i class="fas fa-sort-alpha-down pl-1"></i></span>
 			@else
-				<span class="d-inline-block cursor-pointer" wire:click="order('conference')">Conferencia</span>
+				<span class="d-inline-block cursor-pointer" wire:click="order('stadium')">Estadio</span>
 			@endif
-		</th> --}}
+		</th>
 	</tr>
 </thead>

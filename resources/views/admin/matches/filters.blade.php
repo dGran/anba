@@ -67,7 +67,7 @@
 			<i class="fas fa-filter"></i>
 		</button>
 
-		<button type="button" class="btn btn-white {{ $order != "id_desc" || $search || $filterSeason != "all" || $filterTeam != "all" || $filterUser != "all" || $perPage != "10" ?: 'disabled' }}" wire:click="clearAllFilters">
+		<button type="button" class="btn btn-white {{ $order != "id_desc" || $search || $filterTeam != "all" || $filterUser != "all" || $perPage != "10" ?: 'disabled' }}" wire:click="clearAllFilters">
 			<i class="fas fa-eraser"></i>
 		</button>
 	</div>
@@ -75,19 +75,12 @@
 </div> {{-- filters --}}
 
 
-@if ($search || $filterSeason != "all" || $filterTeam != "all" || $filterUser != "all" || $perPage != "10")
+@if ($search || $filterTeam != "all" || $filterUser != "all" || $perPage != "10")
 	<ul class="list-inline my-2">
 		@if ($search)
 			<li class="list-inline-item mr-1">
 				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterSearch">
 					{{ $search }}<i class="fas fa-times ml-2"></i>
-				<a>
-			</li>
-		@endif
-		@if ($filterSeason != "all")
-			<li class="list-inline-item mr-1">
-				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterSeason">
-					{{ $filterSeasonName }}<i class="fas fa-times ml-2"></i>
 				<a>
 			</li>
 		@endif

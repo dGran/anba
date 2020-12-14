@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateScoresTable extends Migration
+class CreateSeasonsScoresHeaders extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,14 @@ class CreateScoresTable extends Migration
      */
     public function up()
     {
-        Schema::create('scores', function (Blueprint $table) {
+        Schema::create('seasons_scores_headers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('match_id')
+            $table->foreignId('season_id')
                 ->constrained()
                 ->onDelete('cascade');
-            $table->foreignId('seasons_scores_headers_id')
-                ->constrained('seasons_scores_headers')
+            $table->foreignId('score_header_id')
+                ->constrained('scores_headers')
                 ->onDelete('cascade');
-            $table->integer('local_score')->nullable();
-            $table->integer('visitor_score')->nullable();
-            $table->integer('order')->default(1);
             $table->timestamps();
         });
     }
@@ -35,6 +32,6 @@ class CreateScoresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('scores');
+        Schema::dropIfExists('seasons_scores_headers');
     }
 }

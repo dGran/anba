@@ -259,11 +259,11 @@ return [
             'route'       => 'admin.seasons',
             'icon'        => 'fas fa-calendar',
         ],
-        [
-            'text'        => 'Partidos',
-            'route'       => 'admin.matches',
-            'icon'        => 'fas fa-basketball-ball',
-        ],
+        // [
+        //     'text'        => 'Partidos',
+        //     'route'       => 'admin.matches',
+        //     'icon'        => 'fas fa-basketball-ball',
+        // ],
         [
             'text'        => 'Reportes',
             'route'       => 'dashboard',

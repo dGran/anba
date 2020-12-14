@@ -30,12 +30,17 @@ class Match extends Model
 
     public function localManager()
     {
-        return $this->belongsTo('App\Models\User', 'id', 'local_manager_id');
+        return $this->belongsTo('App\Models\User', 'local_manager_id', 'id');
     }
 
     public function visitorManager()
     {
-        return $this->belongsTo('App\Models\User', 'id', 'visitor_manager_id');
+        return $this->belongsTo('App\Models\User', 'visitor_manager_id', 'id');
+    }
+
+    public function scores()
+    {
+        return $this->hasMany('App\Models\Score');
     }
 
     public function scopeName($query, $value)
@@ -45,15 +50,10 @@ class Match extends Model
                             $q->where('matches.id', 'LIKE', "%{$value}%")
                                 ->orWhere('matches.stadium', 'LIKE', "%{$value}%")
                                 ->orWhere('teams.name', 'LIKE', "%{$value}%")
+                                ->orWhere('teams.short_name', 'LIKE', "%{$value}%")
+                                ->orWhere('teams.medium_name', 'LIKE', "%{$value}%")
                                 ->orWhere('users.name', 'LIKE', "%{$value}%");
                             });
-        }
-    }
-
-    public function scopeSeason($query, $value)
-    {
-        if ($value != 'all') {
-            return $query->where('matches.season_id', '=', $value);
         }
     }
 
@@ -79,7 +79,34 @@ class Match extends Model
 
     public function getName()
     {
-        return $this->localTeam->team->name . ' vs ' . $this->visitorTeam->team->name;
+        return $this->localTeam->team->medium_name . ' vs ' . $this->visitorTeam->team->medium_name;
+    }
+
+    public function getFullName()
+    {
+        return $this->localTeam->team->medium_name . ' vs ' . $this->visitorTeam->team->medium_name;
+    }
+
+    public function getshortName()
+    {
+        return $this->localTeam->team->short_name . ' vs ' . $this->visitorTeam->team->short_name;
+    }
+
+    public function score()
+    {
+        $local = 0;
+        $visitor = 0;
+        foreach ($this->scores as $score) {
+            $local += $score->local_score;
+            $visitor += $score->visitor_score;
+        }
+
+        return $local . ' - ' . $visitor;
+    }
+
+    public function played()
+    {
+        return $this->scores->count() > 0 ? TRUE : FALSE;
     }
 
     public function canDestroy()

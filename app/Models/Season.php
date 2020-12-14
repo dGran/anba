@@ -27,6 +27,10 @@ class Season extends Model
         return $this->hasMany('App\Models\SeasonTeam');
     }
 
+    public function scores_headers() {
+        return $this->hasMany('App\Models\SeasonScoreHeader');
+    }
+
     public function scopeName($query, $value)
     {
         if (trim($value) != "") {

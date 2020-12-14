@@ -7,6 +7,8 @@ use App\Models\Team;
 use App\Models\SeasonTeam;
 use App\Models\SeasonDivision;
 use App\Models\SeasonConference;
+use App\Models\ScoreHeader;
+use App\Models\SeasonScoreHeader;
 
 use Illuminate\Support\Str;
 use Livewire\Component;
@@ -290,7 +292,7 @@ class SeasonCrud extends Component
 
     protected function generateSeasonDependencies($reg)
     {
-        $actived_teams = Team::where('active', true)->get();
+        $actived_teams = Team::where('active', 1)->get();
         foreach ($actived_teams as $team) {
         	$seasonTeam = SeasonTeam::create([
         		'season_id' => $reg->id,
@@ -317,7 +319,14 @@ class SeasonCrud extends Component
         	}
         }
 
-        //create season_score_header with active score headers
+    	$active_scores_headers = ScoreHeader::where('active', 1)->orderBy('order')->get();
+        foreach ($active_scores_headers as $score) {
+        	$scoreHeader = SeasonScoreHeader::create([
+        		'season_id' => $reg->id,
+        		'score_header_id' => $score->id
+        	]);
+        	event(new TableWasUpdated($scoreHeader, 'insert', $scoreHeader->toJson(JSON_PRETTY_PRINT)));
+        }
     }
 
 	// Edit & Update
@@ -352,7 +361,9 @@ class SeasonCrud extends Component
 
         if ($this->existsCurrent()) {
         	if ($this->current) {
-        		$this->desactiveCurrent();
+				if ($this->getCurrent() != $reg->id) {
+        			$this->desactiveCurrent();
+				}
         		$validatedData['current'] = 1;
         	} else {
         		$validatedData['current'] = 0;
@@ -637,6 +648,11 @@ class SeasonCrud extends Component
     protected function existsCurrent()
     {
     	return Season::where('current', true)->count() > 0 ? true : false;
+    }
+
+    protected function getCurrent()
+    {
+    	return Season::where('current', true)->first()->id;
     }
 
    protected function setLastCurrent()

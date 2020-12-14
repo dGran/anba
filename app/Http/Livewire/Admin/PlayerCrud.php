@@ -1008,7 +1008,11 @@ class PlayerCrud extends Component
 	{
 		if ($this->filterTeam != "all") {
 			if ($this->filterTeam != "free_agents") {
-				return Team::find($this->filterTeam)->name;
+				if ($var = Team::find($this->filterTeam)) {
+					return $var->name;
+				} else {
+					$this->filterTeam = "all";
+				}
 			} else {
 				return "Free Agents";
 			}

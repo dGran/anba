@@ -1,5 +1,5 @@
 <div wire:ignore.self class="modal fade" tabindex="-1" role="dialog" id="duplicateModal" data-keyboard="true" data-backdrop="static">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title text-base text-uppercase font-medium tracking-wide">

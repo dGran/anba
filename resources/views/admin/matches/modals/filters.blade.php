@@ -1,5 +1,5 @@
 <div wire:ignore.self class="modal fade" tabindex="-1" role="dialog" id="filtersModal" data-keyboard="true" data-backdrop="static">
-    <div class="modal-dialog non-selectable" role="document">
+    <div class="modal-dialog modal-dialog-scrollable non-selectable" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title text-base text-uppercase font-medium tracking-wide">
@@ -13,23 +13,11 @@
 
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label class="text-sm text-uppercase tracking-wide">Temporada</label>
-                        <select class="form-control custom-select text-sm" wire:model="filterSeason">
-                            <option value="all">Todas las temporadas</option>
-                            @foreach ($seasons as $season)
-                                <option value="{{ $season->id }}">{{ $season->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="form-group col-md-6">
                         <label class="text-sm text-uppercase tracking-wide">Equipo</label>
                         <select class="form-control custom-select text-sm" wire:model="filterTeam">
                             <option value="all">Todos los equipos</option>
                             @foreach ($season_teams as $season_team)
-                                <option value="{{ $season_team->id }}">{{ $season_team->team->name }}</option>
+                                <option value="{{ $season_team->id }}">{{ $season_team->team->medium_name }}</option>
                             @endforeach
                         </select>
                     </div>

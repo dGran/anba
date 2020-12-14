@@ -597,8 +597,6 @@
 .modal-body.selected-regs ul {
   height: auto;
   margin: 0;
-  max-height: 25rem;
-  overflow-y: auto;
   padding: 0;
   width: 100%;
 }

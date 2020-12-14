@@ -17,6 +17,7 @@ class CreateScoresHeadersTable extends Migration
             $table->id();
             $table->string('name');
             $table->integer('active')->default(1);
+            $table->integer('order');
             $table->timestamps();
         });
     }

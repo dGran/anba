@@ -19,13 +19,19 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             'name' => 'pAdRoNe',
             'email' => 'dgranh@gmail.com',
-            'password' => Hash::make('corleone')
+            'password' => Hash::make('corleone'),
+            'email_verified_at' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         DB::table('users')->insert([
             'name' => 'Carlos',
             'email' => 'carlos@gmail.com',
-            'password' => Hash::make('secret')
+            'password' => Hash::make('secret'),
+            'email_verified_at' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         for ($i=1; $i < 50; $i++) {
@@ -33,7 +39,10 @@ class UserSeeder extends Seeder
             DB::table('users')->insert([
                 'name' => $name,
                 'email' => $name . '@gmail.com',
-                'password' => Hash::make('secret')
+                'password' => Hash::make('secret'),
+                'email_verified_at' => now(),
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
         }
     }

@@ -73,6 +73,4 @@
 	        </div>
 	    </div>
 	</div>
-
-	@include('admin.partials.right-sidebar')
 </div>
