@@ -3,6 +3,9 @@
         $('.modal').modal('hide');
         $('#boxscoreModal').modal('show');
     });
+    window.livewire.on('closeBoxscoreModal', () => {
+        $('#boxscoreModal').modal('hide');
+    });
 
     // $("numericInput").keydown(function(){
     //    if ($(this).val() === null) {

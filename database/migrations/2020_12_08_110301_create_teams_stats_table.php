@@ -21,11 +21,11 @@ class CreateTeamsStatsTable extends Migration
             $table->foreignId('team_id')
                 ->constrained()
                 ->onDelete('cascade');
-            $table->integer('contra'); // puntos al contraataque
-            $table->integer('zona'); // puntos en la zona
-            $table->integer('2da'); // puntos en segunda oportunidad
-            $table->integer('suple'); // puntos de los suplentes
-            $table->integer('ventaja'); // ventaja maxima
+            $table->integer('counterattack')->nullable(); // puntos al contraataque
+            $table->integer('zone')->nullable(); // puntos en la zona
+            $table->integer('2nd')->nullable(); // puntos en segunda oportunidad
+            $table->integer('substitute')->nullable(); // puntos de los suplentes
+            $table->integer('advantage')->nullable(); // ventaja maxima
             $table->timestamps();
         });
     }

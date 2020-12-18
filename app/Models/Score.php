@@ -19,7 +19,7 @@ class Score extends Model
 
     public function season_score_headers()
     {
-        return $this->belongsTo('App\Models\SeasonScoreHeader', 'id', 'score_header_id');
+        return $this->belongsTo('App\Models\SeasonScoreHeader', 'seasons_scores_headers_id', 'id');
     }
 
 }

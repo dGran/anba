@@ -15,7 +15,7 @@
 				        </div>
 				    </div>
 					<div class="pl-2">
-						<div class="name d-flex align-items-center" wire:click.stop="view({{ $reg->id }})">
+						<div class="name d-flex align-items-center" wire:click.stop="boxscore({{ $reg->id }})">
 							<span>{{ $reg->getName() }}</span>
 						</div>
 						<p class="{{-- {{ !$reg->active ?: 'text-muted' }} --}} text-xxs m-0">
@@ -42,13 +42,7 @@
 						<img src="{{ $reg->localTeam->team->getImg() }}" alt="{{ $reg->localTeam->team->short_name }}" style="width: 32px; height: 32px" class="rounded-circle border ml-1">
 					</div>
 					<div class="mx-3 text-center" style="min-width: 90px">
-						@if ($reg->played())
-		                	{{ $reg->score() }}
-						@else
-			                <button type="button" class="btn btn-primary text-xs text-uppercase tracking-widest text-white" wire:click.stop="boxscore({{ $reg->id }})">
-			                    BoxScore
-			                </button>
-						@endif
+	                	{{ $reg->score() }}
 					</div>
 	                <div>
 						<img src="{{ $reg->visitorTeam->team->getImg() }}" alt="{{ $reg->visitorTeam->team->short_name }}" style="width: 32px; height: 32px" class="rounded-circle border mr-1">

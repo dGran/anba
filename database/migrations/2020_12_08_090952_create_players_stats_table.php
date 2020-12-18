@@ -21,23 +21,23 @@ class CreatePlayersStatsTable extends Migration
             $table->foreignId('player_id')
                 ->constrained()
                 ->onDelete('cascade');
-            $table->integer('minutos');
-            $table->integer('puntos');
-            $table->integer('rebotes');
-            $table->integer('asistencias');
-            $table->integer('robos');
-            $table->integer('tapones');
-            $table->integer('perdidas');
-            $table->integer('FGM'); // tiros de campo anotados
-            $table->integer('FGA'); // tiros de campo intentados
-            $table->integer('3PM'); // triples anotados
-            $table->integer('3PA'); // triples intentados
-            $table->integer('TLM'); // tiros libres anotados
-            $table->integer('TLA'); // tiros libres intentados
-            $table->integer('RO'); // rebotes ofensivos
-            $table->integer('FP'); // faltas personales
-            $table->integer('more_less');
-            $table->boolean('titular')->default(0);
+            $table->integer('MIN')->nullable(); // minutos
+            $table->integer('PTS')->nullable(); // puntos
+            $table->integer('REB')->nullable(); // rebotes
+            $table->integer('AST')->nullable(); // asistencias
+            $table->integer('STL')->nullable(); // robos
+            $table->integer('BLK')->nullable(); // tapones
+            $table->integer('LOS')->nullable(); // perdidas
+            $table->integer('FGM')->nullable(); // tiros de campo anotados
+            $table->integer('FGA')->nullable(); // tiros de campo intentados
+            $table->integer('TPM')->nullable(); // triples anotados
+            $table->integer('TPA')->nullable(); // triples intentados
+            $table->integer('FTM')->nullable(); // tiros libres anotados
+            $table->integer('FTA')->nullable(); // tiros libres intentados
+            $table->integer('OR')->nullable(); // rebotes ofensivos
+            $table->integer('PF')->nullable(); // faltas personales
+            $table->integer('ML')->nullable(); // +/-
+            $table->boolean('headline')->default(0);
             $table->timestamps();
         });
     }

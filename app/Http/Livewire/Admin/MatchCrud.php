@@ -4,6 +4,8 @@ namespace App\Http\Livewire\Admin;
 
 use App\Models\Match;
 use App\Models\Score;
+use App\Models\Player;
+use App\Models\PlayerStat;
 use App\Models\Season;
 use App\Models\SeasonTeam;
 use App\Models\User;
@@ -37,7 +39,7 @@ class MatchCrud extends Component
 	public $season;
 	public $reg_id, $season_id, $local_team_id, $local_manager_id, $visitor_team_id, $visitor_manager_id, $stadium;
 	//boxscore
-	public $scores;
+	public $scores, $players_stats, $teams_stats;
 
 	//filters
 	public $search = "";
@@ -58,6 +60,7 @@ class MatchCrud extends Component
 	// general vars
 	public $currentModal;
 	public $editMode = false;
+	public $editBoxscoreMode = false;
 	public $continuousInsert = false;
 	public $regView;
 
@@ -494,6 +497,18 @@ class MatchCrud extends Component
     public function boxscore($id)
     {
     	$this->regView = Match::find($id);
+
+    	if ($this->regView->played()) {
+    		$this->loadScores();
+    		$this->loadStats();
+			$this->editBoxscoreMode = true;
+
+    	} else {
+    		$this->initializeScores();
+    		$this->initializeStats();
+			$this->editBoxscoreMode = false;
+    	}
+
     	$this->emit('openBoxscoreModal');
     }
 
@@ -643,14 +658,6 @@ class MatchCrud extends Component
     public function mount(Season $season)
     {
         $this->season = $season;
-    	$this->scores = Collection::make();
-		foreach ($this->season->scores_headers as $header) {
-			$h['seasons_scores_headers_id'] = $header->id;
-			$h['seasons_scores_headers_name'] = $header->scoreHeader->name;
-			$h['local_score'] = null;
-			$h['visitor_score'] = null;
-			$this->scores->push($h);
-		}
     }
 
     public function render()
@@ -858,14 +865,206 @@ class MatchCrud extends Component
 
 	public function storeResult()
 	{
+		$total_score = $this->scores->sum('local_score') + $this->scores->sum('visitor_score');
+		if ($total_score == $this->players_stats->sum('PTS')) {
+			foreach ($this->scores as $key => $score_temp) {
+				$score = Score::create([
+					'match_id' => $this->regView->id,
+					'seasons_scores_headers_id' => $score_temp['seasons_scores_headers_id'],
+					'local_score' => $score_temp['local_score'],
+					'visitor_score' => $score_temp['visitor_score'],
+					'order' => $key+1,
+				]);
+			}
+
+			foreach ($this->players_stats as $key => $player_stat) {
+				$playerStat = PlayerStat::create([
+					'match_id' => $this->regView->id,
+					'player_id' => $player_stat['player_id'],
+					'MIN' 		=> $player_stat['MIN'],
+					'PTS' 		=> $player_stat['PTS'],
+					'REB' 		=> $player_stat['REB'],
+					'AST' 		=> $player_stat['AST'],
+					'STL' 		=> $player_stat['STL'],
+					'BLK' 		=> $player_stat['BLK'],
+					'LOS' 		=> $player_stat['LOS'],
+					'FGM' 		=> $player_stat['FGM'],
+					'FGA' 		=> $player_stat['FGA'],
+					'TPM' 		=> $player_stat['TPM'],
+					'TPA' 		=> $player_stat['TPA'],
+					'FTM' 		=> $player_stat['FTM'],
+					'FTA' 		=> $player_stat['FTA'],
+					'OR' 		=> $player_stat['OR'],
+					'PF' 		=> $player_stat['PF'],
+					'ML' 		=> $player_stat['ML'],
+					'headline' 	=> $player_stat['headline'],
+				]);
+			}
+
+	    	session()->flash('success', 'BoxScore guardado correctamente.');
+	        $this->emit('closeBoxscoreModal');
+	        $this->closeAnyModal();
+		} else {
+			session()->flash('error', 'El resultado no coincide con los puntos registrados de los jugadores.');
+		}
+	}
+
+	public function updateResult($id)
+	{
+		$match = Match::find($id);
+
 		foreach ($this->scores as $key => $score_temp) {
-			$score = Score::create([
-				'match_id' => $this->regView->id,
-				'seasons_scores_headers_id' => $score_temp['seasons_scores_headers_id'],
-				'local_score' => $score_temp['local_score'],
-				'visitor_score' => $score_temp['visitor_score'],
-				'order' => $key+1,
-			]);
+			$score = Score::where('match_id', $match->id)->where('seasons_scores_headers_id', $score_temp['seasons_scores_headers_id'])->first();
+			$score->local_score = $score_temp['local_score'];
+			$score->visitor_score = $score_temp['visitor_score'];
+			$score->save();
+		}
+
+		foreach ($this->players_stats as $key => $player_stat) {
+			$playerStat = PlayerStat::where('match_id', $match->id)->where('player_id', $player_stat['player_id'])->first();
+			$playerStat->MIN = $player_stat['MIN'];
+			$playerStat->PTS = $player_stat['PTS'];
+			$playerStat->REB = $player_stat['REB'];
+			$playerStat->AST = $player_stat['AST'];
+			$playerStat->STL = $player_stat['STL'];
+			$playerStat->BLK = $player_stat['BLK'];
+			$playerStat->LOS = $player_stat['LOS'];
+			$playerStat->FGM = $player_stat['FGM'];
+			$playerStat->FGA = $player_stat['FGA'];
+			$playerStat->TPM = $player_stat['TPM'];
+			$playerStat->TPA = $player_stat['TPA'];
+			$playerStat->FTM = $player_stat['FTM'];
+			$playerStat->FTA = $player_stat['FTA'];
+			$playerStat->OR = $player_stat['OR'];
+			$playerStat->PF = $player_stat['PF'];
+			$playerStat->ML = $player_stat['ML'];
+			$playerStat->headline = $player_stat['headline'];
+			$playerStat->save();
+		}
+
+    	session()->flash('success', 'BoxScore actualizado correctamente.');
+    	$this->emit('closeBoxscoreModal');
+        $this->closeAnyModal();
+	}
+
+	public function resetResult()
+	{
+		$this->initializeScores();
+		$this->initializeStats();
+	}
+
+	protected function initializeScores()
+	{
+    	$this->scores = Collection::make();
+		foreach ($this->season->scores_headers as $header) {
+			$score['seasons_scores_headers_id'] = $header->id;
+			$score['seasons_scores_headers_name'] = $header->scoreHeader->name;
+			$score['local_score'] = null;
+			$score['visitor_score'] = null;
+			$this->scores->push($score);
+		}
+	}
+
+	protected function initializeStats()
+	{
+    	$this->players_stats = Collection::make();
+    	$local_players = Player::where('team_id', $this->regView->localTeam->team->id)->where('retired', false)->orderBy('name', 'asc')->get();
+		foreach ($local_players as $player) {
+			$player_stat['player_id'] = $player->id;
+			$player_stat['player_img'] = $player->getImg();
+			$player_stat['player_name'] = $player->name;
+			$player_stat['player_pos'] = $player->getPosition();
+			$player_stat['team_id'] = $this->regView->localTeam->team->id;
+			$player_stat['MIN'] = 0;
+			$player_stat['PTS'] = 0;
+			$player_stat['REB'] = 0;
+			$player_stat['AST'] = 0;
+			$player_stat['STL'] = 0;
+			$player_stat['BLK'] = 0;
+			$player_stat['LOS'] = 0;
+			$player_stat['FGM'] = 0;
+			$player_stat['FGA'] = 0;
+			$player_stat['TPM'] = 0;
+			$player_stat['TPA'] = 0;
+			$player_stat['FTM'] = 0;
+			$player_stat['FTA'] = 0;
+			$player_stat['OR'] = 0;
+			$player_stat['PF'] = 0;
+			$player_stat['ML'] = 0;
+			$player_stat['headline'] = 0;
+
+			$this->players_stats->push($player_stat);
+		}
+		$visitor_players = Player::where('team_id', $this->regView->visitorTeam->team->id)->where('retired', false)->orderBy('name', 'asc')->get();
+		foreach ($visitor_players as $player) {
+			$player_stat['player_id'] = $player->id;
+			$player_stat['player_img'] = $player->getImg();
+			$player_stat['player_name'] = $player->name;
+			$player_stat['player_pos'] = $player->getPosition();
+			$player_stat['team_id'] = $this->regView->visitorTeam->team->id;
+			$player_stat['MIN'] = 0;
+			$player_stat['PTS'] = 0;
+			$player_stat['REB'] = 0;
+			$player_stat['AST'] = 0;
+			$player_stat['STL'] = 0;
+			$player_stat['BLK'] = 0;
+			$player_stat['LOS'] = 0;
+			$player_stat['FGM'] = 0;
+			$player_stat['FGA'] = 0;
+			$player_stat['TPM'] = 0;
+			$player_stat['TPA'] = 0;
+			$player_stat['FTM'] = 0;
+			$player_stat['FTA'] = 0;
+			$player_stat['OR'] = 0;
+			$player_stat['PF'] = 0;
+			$player_stat['ML'] = 0;
+			$player_stat['headline'] = 0;
+
+			$this->players_stats->push($player_stat);
+		}
+	}
+
+	protected function loadScores()
+	{
+    	$this->scores = Collection::make();
+		foreach ($this->regView->scores as $sc) {
+			$score['seasons_scores_headers_id'] = $sc->season_score_headers->id;
+			$score['seasons_scores_headers_name'] = $sc->season_score_headers->scoreHeader->name;
+			$score['local_score'] = $sc->local_score;
+			$score['visitor_score'] = $sc->visitor_score;
+			// dd($sc);
+			$this->scores->push($score);
+		}
+	}
+
+	protected function loadStats()
+	{
+    	$this->players_stats = Collection::make();
+		foreach ($this->regView->playerStats as $ps) {
+			$player_stat['player_id'] = $ps->player->id;
+			$player_stat['player_img'] = $ps->player->getImg();
+			$player_stat['player_name'] = $ps->player->name;
+			$player_stat['player_pos'] = $ps->player->getPosition();
+			$player_stat['team_id'] = $ps->player->team_id;
+			$player_stat['MIN'] = $ps->MIN;
+			$player_stat['PTS'] = $ps->PTS;
+			$player_stat['REB'] = $ps->REB;
+			$player_stat['AST'] = $ps->AST;
+			$player_stat['STL'] = $ps->STL;
+			$player_stat['BLK'] = $ps->BLK;
+			$player_stat['LOS'] = $ps->LOS;
+			$player_stat['FGM'] = $ps->FGM;
+			$player_stat['FGA'] = $ps->FGA;
+			$player_stat['TPM'] = $ps->TPM;
+			$player_stat['TPA'] = $ps->TPA;
+			$player_stat['FTM'] = $ps->FTM;
+			$player_stat['FTA'] = $ps->FTA;
+			$player_stat['OR'] = $ps->OR;
+			$player_stat['PF'] = $ps->PF;
+			$player_stat['ML'] = $ps->ML;
+			$player_stat['headline'] = $ps->headline;
+
+			$this->players_stats->push($player_stat);
 		}
 	}
 }

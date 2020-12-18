@@ -43,6 +43,11 @@ class Match extends Model
         return $this->hasMany('App\Models\Score');
     }
 
+    public function playerStats()
+    {
+        return $this->hasMany('App\Models\PlayerStat');
+    }
+
     public function scopeName($query, $value)
     {
         if (trim($value) != "") {
@@ -94,14 +99,17 @@ class Match extends Model
 
     public function score()
     {
-        $local = 0;
-        $visitor = 0;
-        foreach ($this->scores as $score) {
-            $local += $score->local_score;
-            $visitor += $score->visitor_score;
+        if ($this->played()) {
+            $local = 0;
+            $visitor = 0;
+            foreach ($this->scores as $score) {
+                $local += $score->local_score;
+                $visitor += $score->visitor_score;
+            }
+            return $local . ' - ' . $visitor;
+        } else {
+            return 'Vs';
         }
-
-        return $local . ' - ' . $visitor;
     }
 
     public function played()
