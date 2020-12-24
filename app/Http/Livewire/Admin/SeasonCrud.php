@@ -294,21 +294,6 @@ class SeasonCrud extends Component
     {
         $actived_teams = Team::where('active', 1)->get();
         foreach ($actived_teams as $team) {
-        	$seasonTeam = SeasonTeam::create([
-        		'season_id' => $reg->id,
-        		'team_id' => $team->id
-        	]);
-        	event(new TableWasUpdated($seasonTeam, 'insert', $seasonTeam->toJson(JSON_PRETTY_PRINT)));
-
-        	$season_divisions = SeasonDivision::where('season_id', $reg->id)->where('division_id', $team->division->id)->count();
-        	if ($season_divisions == 0) {
-	        	$seasonDivision = SeasonDivision::create([
-	        		'season_id' => $reg->id,
-	        		'division_id' => $team->division->id
-	        	]);
-        		event(new TableWasUpdated($seasonDivision, 'insert', $seasonDivision->toJson(JSON_PRETTY_PRINT)));
-        	}
-
         	$season_conferences = SeasonConference::where('season_id', $reg->id)->where('conference_id', $team->division->conference->id)->count();
         	if ($season_conferences == 0) {
 	        	$seasonConference = SeasonConference::create([
@@ -317,6 +302,23 @@ class SeasonCrud extends Component
 	        	]);
         		event(new TableWasUpdated($seasonConference, 'insert', $seasonConference->toJson(JSON_PRETTY_PRINT)));
         	}
+
+        	$season_divisions = SeasonDivision::where('season_id', $reg->id)->where('division_id', $team->division->id)->count();
+        	if ($season_divisions == 0) {
+	        	$seasonDivision = SeasonDivision::create([
+	        		'season_id' => $reg->id,
+	        		'division_id' => $team->division->id,
+                    'season_conference_id' => SeasonConference::where('season_id', $reg->id)->where('conference_id', $team->division->conference_id)->first()->id,
+	        	]);
+        		event(new TableWasUpdated($seasonDivision, 'insert', $seasonDivision->toJson(JSON_PRETTY_PRINT)));
+        	}
+
+        	$seasonTeam = SeasonTeam::create([
+        		'season_id' => $reg->id,
+        		'team_id' => $team->id,
+                'season_division_id' => SeasonDivision::where('season_id', $reg->id)->where('division_id', $team->division_id)->first()->id,
+        	]);
+        	event(new TableWasUpdated($seasonTeam, 'insert', $seasonTeam->toJson(JSON_PRETTY_PRINT)));
         }
 
     	$active_scores_headers = ScoreHeader::where('active', 1)->orderBy('order')->get();

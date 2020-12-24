@@ -700,7 +700,7 @@ class MatchCrud extends Component
         			'filterUserName' => $this->filterUserName(),
         			'firstRenderSaved' => $firstRenderSaved,
         			'currentModal' => $this->currentModal,
-        			'scores' => $this->scores
+        			'scores' => $this->scores,
         		])->layout('adminlte::page');
     }
 
@@ -866,7 +866,7 @@ class MatchCrud extends Component
 	public function storeResult()
 	{
 		$total_score = $this->scores->sum('local_score') + $this->scores->sum('visitor_score');
-		if ($total_score == $this->players_stats->sum('PTS')) {
+		// if ($total_score == $this->players_stats->sum('PTS')) {
 			foreach ($this->scores as $key => $score_temp) {
 				$score = Score::create([
 					'match_id' => $this->regView->id,
@@ -904,9 +904,9 @@ class MatchCrud extends Component
 	    	session()->flash('success', 'BoxScore guardado correctamente.');
 	        $this->emit('closeBoxscoreModal');
 	        $this->closeAnyModal();
-		} else {
-			session()->flash('error', 'El resultado no coincide con los puntos registrados de los jugadores.');
-		}
+		// } else {
+		// 	session()->flash('error', 'El resultado no coincide con los puntos registrados de los jugadores.');
+		// }
 	}
 
 	public function updateResult($id)

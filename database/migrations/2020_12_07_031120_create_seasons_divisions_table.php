@@ -22,6 +22,10 @@ class CreateSeasonsDivisionsTable extends Migration
                 ->nullable()
                 ->constrained()
                 ->onDelete('cascade');
+            $table->foreignId('season_conference_id')
+                ->nullable()
+                ->constrained('seasons_conferences')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -12,7 +12,7 @@ class SeasonDivision extends Model
 	protected $table = 'seasons_divisions';
 
     protected $fillable = [
-        'season_id', 'division_id',
+        'season_id', 'division_id', 'season_conference_id'
     ];
 
     public function season()
@@ -23,6 +23,11 @@ class SeasonDivision extends Model
     public function division()
     {
         return $this->belongsTo('App\Models\Division');
+    }
+
+    public function seasonConference()
+    {
+        return $this->belongsTo('App\Models\seasonConference', 'season_conference_id', 'id');
     }
 
     public function getName()

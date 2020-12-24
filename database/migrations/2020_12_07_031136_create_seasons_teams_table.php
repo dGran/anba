@@ -22,6 +22,10 @@ class CreateSeasonsTeamsTable extends Migration
                 ->nullable()
                 ->constrained()
                 ->onDelete('cascade');
+            $table->foreignId('season_division_id')
+                ->nullable()
+                ->constrained('seasons_divisions')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }
