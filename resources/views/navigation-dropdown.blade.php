@@ -3,13 +3,14 @@
         ['href' => '/dashboard', 'name' => 'dashboard', 'text' => 'Dashboard'],
         ['href' => '/noticias', 'name' => 'news', 'text' => 'Noticias'],
         ['href' => '/clasificaciones', 'name' => 'standings', 'text' => 'Clasificaciones'],
+        ['href' => '/partidos', 'name' => 'matches', 'text' => 'Partidos'],
         ['href' => '/estadisticas', 'name' => 'stats', 'text' => 'Estadísticas'],
         ['href' => '/equipos', 'name' => 'teams', 'text' => 'Equipos'],
         ['href' => '/jugadores', 'name' => 'players', 'text' => 'Jugadores'],
     ]
 @endphp
 
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false }" class="bg-white dark:bg-red-600 border-b border-gray-200 dark:border-gray-900 sticky top-0">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">

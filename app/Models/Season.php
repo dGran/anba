@@ -54,7 +54,7 @@ class Season extends Model
         return true;
     }
 
-    private function makeComparer($criteria)
+    protected function makeComparer($criteria)
     {
         $comparer = function ($first, $second) use ($criteria) {
             foreach ($criteria as $key => $orderType) {
@@ -72,136 +72,178 @@ class Season extends Model
         return $comparer;
     }
 
-    public function generateGeneralTable()
+    protected function setTableOrder($order)
     {
-        $table_teams = collect();
-        $teams = $this->teams;
-        foreach ($teams as $key => $team) {
-            $data = $this->get_table_data_team($team->id);
-            $table_teams->push([
-                'team' => $team,
-                'team_name' => $team->team->medium_name,
-                'w' => $data['w'],
-                'l' => $data['l'],
-                'wavg' => $data['wavg'],
-                'conf_w' => $data['conf_w'],
-                'conf_l' => $data['conf_l'],
-                'div_w' => $data['div_w'],
-                'div_l' => $data['div_l'],
-                'home_w' => $data['home_w'],
-                'home_l' => $data['home_l'],
-                'road_w' => $data['road_w'],
-                'road_l' => $data['road_l'],
-                //ot
-                'last10_w' => $data['last10_w'],
-                'last10_l' => $data['last10_l'],
-                'streak' => $data['streak'],
-            ]);
+        switch ($order) {
+            case 'wavg':
+                return $criteria = [
+                    "wavg" => "desc",
+                    "w" => "desc",
+                    "l" => "asc",
+                    "team_name" => "asc"
+                ];
+                break;
+            case 'wavg_desc':
+                return $criteria = [
+                    "wavg" => "asc",
+                    "w" => "asc",
+                    "l" => "desc",
+                    "team_name" => "asc"
+                ];
+                break;
+            case 'w':
+                return $criteria = [
+                    "w" => "desc",
+                    "wavg" => "desc",
+                    "l" => "asc",
+                    "team_name" => "asc"
+                ];
+                break;
+            case 'w_desc':
+                return $criteria = [
+                    "w" => "asc",
+                    "wavg" => "asc",
+                    "l" => "desc",
+                    "team_name" => "asc"
+                ];
+                break;
+            case 'l':
+                return $criteria = [
+                    "l" => "desc",
+                    "wavg" => "asc",
+                    "w" => "asc",
+                    "team_name" => "asc"
+                ];
+                break;
+            case 'l_desc':
+                return $criteria = [
+                    "l" => "asc",
+                    "wavg" => "desc",
+                    "w" => "desc",
+                    "team_name" => "asc"
+                ];
+            case 'streak':
+                return $criteria = [
+                    "streak" => "desc",
+                    "wavg" => "desc",
+                    "w" => "desc",
+                    "l" => "asc",
+                    "team_name" => "asc"
+                ];
+                break;
+            case 'streak_desc':
+                return $criteria = [
+                    "streak" => "asc",
+                    "wavg" => "asc",
+                    "w" => "asc",
+                    "l" => "desc",
+                    "team_name" => "asc"
+                ];
+                break;
+            case 'last10':
+                return $criteria = [
+                    "last10_diff" => "desc",
+                    "last10_w" => "desc",
+                    "wavg" => "desc",
+                    "w" => "desc",
+                    "l" => "asc",
+                    "team_name" => "asc"
+                ];
+                break;
+            case 'last10_desc':
+                return $criteria = [
+                    "last10_diff" => "asc",
+                    "last10_w" => "asc",
+                    "wavg" => "asc",
+                    "w" => "asc",
+                    "l" => "desc",
+                    "team_name" => "asc"
+                ];
+                break;
+            case 'home':
+                return $criteria = [
+                    "home_diff" => "desc",
+                    "home_w" => "desc",
+                    "wavg" => "desc",
+                    "w" => "desc",
+                    "l" => "asc",
+                    "team_name" => "asc"
+                ];
+                break;
+            case 'home_desc':
+                return $criteria = [
+                    "home_diff" => "asc",
+                    "home_w" => "asc",
+                    "wavg" => "asc",
+                    "w" => "asc",
+                    "l" => "desc",
+                    "team_name" => "asc"
+                ];
+                break;
+            case 'road':
+                return $criteria = [
+                    "road_diff" => "desc",
+                    "road_w" => "desc",
+                    "wavg" => "desc",
+                    "w" => "desc",
+                    "l" => "asc",
+                    "team_name" => "asc"
+                ];
+                break;
+            case 'road_desc':
+                return $criteria = [
+                    "road_diff" => "asc",
+                    "road_w" => "asc",
+                    "wavg" => "asc",
+                    "w" => "asc",
+                    "l" => "desc",
+                    "team_name" => "asc"
+                ];
+                break;
+            case 'conf':
+                return $criteria = [
+                    "conf_diff" => "desc",
+                    "conf_w" => "desc",
+                    "wavg" => "desc",
+                    "w" => "desc",
+                    "l" => "asc",
+                    "team_name" => "asc"
+                ];
+                break;
+            case 'conf_desc':
+                return $criteria = [
+                    "conf_diff" => "asc",
+                    "conf_w" => "asc",
+                    "wavg" => "asc",
+                    "w" => "asc",
+                    "l" => "desc",
+                    "team_name" => "asc"
+                ];
+                break;
+            case 'div':
+                return $criteria = [
+                    "div_diff" => "desc",
+                    "div_w" => "desc",
+                    "wavg" => "desc",
+                    "w" => "desc",
+                    "l" => "asc",
+                    "team_name" => "asc"
+                ];
+                break;
+            case 'div_desc':
+                return $criteria = [
+                    "div_diff" => "asc",
+                    "div_w" => "asc",
+                    "wavg" => "asc",
+                    "w" => "asc",
+                    "l" => "desc",
+                    "team_name" => "asc"
+                ];
+                break;
         }
-
-        $criteria = [
-            "wavg" => "desc",
-            "w" => "desc",
-            "l" => "asc",
-            "team_name" => "asc"
-        ];
-        $comparer = $this->makeComparer($criteria);
-        $sorted = $table_teams->sort($comparer);
-        $positions = $sorted->values()->toArray();
-
-        return $positions;
     }
 
-    public function generateConferencesTable($conference_id)
-    {
-        $table_teams = collect();
-        $teams = SeasonTeam::
-            leftJoin('seasons_divisions', 'seasons_divisions.id', 'seasons_teams.season_division_id')
-            ->leftJoin('seasons_conferences', 'seasons_conferences.id', 'seasons_divisions.season_conference_id')
-            ->select('seasons_teams.*')
-            ->where('seasons_divisions.season_conference_id', $conference_id)
-            ->get();
-        foreach ($teams as $key => $team) {
-            $data = $this->get_table_data_team($team->id);
-            $table_teams->push([
-                'team' => $team,
-                'team_name' => $team->team->medium_name,
-                'w' => $data['w'],
-                'l' => $data['l'],
-                'wavg' => $data['wavg'],
-                'conf_w' => $data['conf_w'],
-                'conf_l' => $data['conf_l'],
-                'div_w' => $data['div_w'],
-                'div_l' => $data['div_l'],
-                'home_w' => $data['home_w'],
-                'home_l' => $data['home_l'],
-                'road_w' => $data['road_w'],
-                'road_l' => $data['road_l'],
-                //ot
-                'last10_w' => $data['last10_w'],
-                'last10_l' => $data['last10_l'],
-                'streak' => $data['streak'],
-            ]);
-        }
-
-        $criteria = [
-            "wavg" => "desc",
-            "w" => "desc",
-            "l" => "asc",
-            "team_name" => "asc"
-        ];
-        $comparer = $this->makeComparer($criteria);
-        $sorted = $table_teams->sort($comparer);
-        $positions = $sorted->values()->toArray();
-
-        return $positions;
-    }
-
-    public function generateDivisionsTable($division_id)
-    {
-        $table_teams = collect();
-        $teams = SeasonTeam::
-            leftJoin('seasons_divisions', 'seasons_divisions.id', 'seasons_teams.season_division_id')
-            ->select('seasons_teams.*')
-            ->where('seasons_teams.season_division_id', $division_id)
-            ->get();
-        foreach ($teams as $key => $team) {
-            $data = $this->get_table_data_team($team->id);
-            $table_teams->push([
-                'team' => $team,
-                'team_name' => $team->team->medium_name,
-                'w' => $data['w'],
-                'l' => $data['l'],
-                'wavg' => $data['wavg'],
-                'conf_w' => $data['conf_w'],
-                'conf_l' => $data['conf_l'],
-                'div_w' => $data['div_w'],
-                'div_l' => $data['div_l'],
-                'home_w' => $data['home_w'],
-                'home_l' => $data['home_l'],
-                'road_w' => $data['road_w'],
-                'road_l' => $data['road_l'],
-                //ot
-                'last10_w' => $data['last10_w'],
-                'last10_l' => $data['last10_l'],
-                'streak' => $data['streak'],
-            ]);
-        }
-
-        $criteria = [
-            "wavg" => "desc",
-            "w" => "desc",
-            "l" => "asc",
-            "team_name" => "asc"
-        ];
-        $comparer = $this->makeComparer($criteria);
-        $sorted = $table_teams->sort($comparer);
-        $positions = $sorted->values()->toArray();
-
-        return $positions;
-    }
-
-    public function get_table_data_team($team_id)
+    protected function get_table_data_team($team_id)
     {
         $data = [
             "w" => 0,
@@ -209,15 +251,20 @@ class Season extends Model
             "wavg" => 0,
             "conf_w" => 0,
             "conf_l" => 0,
+            "conf_diff" => 0,
             "div_w" => 0,
             "div_l" => 0,
+            "div_diff" => 0,
             "home_w" => 0,
             "home_l" => 0,
+            "home_diff" => 0,
             "road_w" => 0,
             "road_l" => 0,
+            "road_diff" => 0,
             // ot
             "last10_w" => 0,
             "last10_l" => 0,
+            "last10_diff" => 0,
             "streak" => 0,
         ];
 
@@ -317,8 +364,75 @@ class Season extends Model
                 }
             }
         }
+
+        //calculed data
         $matches_played = $data['w'] + $data['l'];
         $data['wavg'] = $matches_played > 0 ? $data['w'] / $matches_played : 0;
+        $data['conf_diff'] = $data['conf_w'] - $data['conf_l'];
+        $data['div_diff'] = $data['div_w'] - $data['div_l'];
+        $data['home_diff'] = $data['home_w'] - $data['home_l'];
+        $data['road_diff'] = $data['road_w'] - $data['road_l'];
+        $data['last10_diff'] = $data['last10_w'] - $data['last10_l'];
+
         return $data;
+    }
+
+    public function generateTable($type, $order, $conference_id, $division_id)
+    {
+        $table_teams = collect();
+        switch ($type) {
+            case 'general':
+                $teams = $this->teams;
+                break;
+            case 'conference':
+                $teams = SeasonTeam::
+                    leftJoin('seasons_divisions', 'seasons_divisions.id', 'seasons_teams.season_division_id')
+                    ->leftJoin('seasons_conferences', 'seasons_conferences.id', 'seasons_divisions.season_conference_id')
+                    ->select('seasons_teams.*')
+                    ->where('seasons_divisions.season_conference_id', $conference_id)
+                    ->get();
+                break;
+            case 'division':
+                $teams = SeasonTeam::
+                    leftJoin('seasons_divisions', 'seasons_divisions.id', 'seasons_teams.season_division_id')
+                    ->select('seasons_teams.*')
+                    ->where('seasons_teams.season_division_id', $division_id)
+                    ->get();
+                break;
+        }
+        foreach ($teams as $key => $team) {
+            $data = $this->get_table_data_team($team->id);
+            $table_teams->push([
+                'team' => $team,
+                'team_name' => $team->team->medium_name,
+                'w' => $data['w'],
+                'l' => $data['l'],
+                'wavg' => $data['wavg'],
+                'conf_w' => $data['conf_w'],
+                'conf_l' => $data['conf_l'],
+                'conf_diff' => $data['conf_diff'],
+                'div_w' => $data['div_w'],
+                'div_l' => $data['div_l'],
+                'div_diff' => $data['div_diff'],
+                'home_w' => $data['home_w'],
+                'home_l' => $data['home_l'],
+                'home_diff' => $data['home_diff'],
+                'road_w' => $data['road_w'],
+                'road_l' => $data['road_l'],
+                'road_diff' => $data['road_diff'],
+                //ot
+                'last10_w' => $data['last10_w'],
+                'last10_l' => $data['last10_l'],
+                'last10_diff' => $data['last10_diff'],
+                'streak' => $data['streak'],
+            ]);
+        }
+
+        $criteria = $this->setTableOrder($order);
+        $comparer = $this->makeComparer($criteria);
+        $sorted = $table_teams->sort($comparer);
+        $positions = $sorted->values()->toArray();
+
+        return $positions;
     }
 }

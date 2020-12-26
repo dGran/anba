@@ -1,12 +1,12 @@
-<td class="py-1 border-r border-gray-200">
+<td class="py-1 border-r border-gray-200 dark:border-gray-600">
 	<div class="flex items-center">
 		<p class="m-0 text-right mr-3 font-semibold" style="width: 30px">{{ $loop->iteration }}</p>
 		<img src="{{ $position['team']->team->getImg() }}" alt="{{ $position['team']->team->short_name }}" style="width: 32px; height: 32px" class="mr-2">
 		<span>
 			{{ $position['team']->team->name }}
-			<span class="block text-gray-600">
+{{-- 			<span class="block text-gray-600">
 				{{ $position['team']->seasonDivision->division->name }} / {{ $position['team']->seasonDivision->seasonConference->conference->name }}
-			</span>
+			</span> --}}
 		</span>
 	</div>
 </td>

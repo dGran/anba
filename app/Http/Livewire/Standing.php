@@ -9,58 +9,79 @@ use App\Models\SeasonConference;
 
 class Standing extends Component
 {
-	public $view = "conferencia";
+	public $season;
+	public $view = "conference";
+	public $order = "wavg";
+
+	public $blank_view = false;
 
 	// queryString
 	protected $queryString = [
-		'view' => ['except' => 'conferencia'],
+		'season',
+		'view' => ['except' => 'conference'],
+		'order' => ['except' => 'wavg'],
 	];
 
-	// public function mount()
-	// {
-	// 	$this->view = "conferencia";
-	// }
+	public function setOrder($name)
+	{
+    	$this->order = $name;
+	}
+
+	public function mount()
+	{
+		if ($season = Season::where('current', 1)->first()) {
+			$this->season = $season->slug;
+		} else {
+			$this->blank_view = true;
+		}
+	}
 
     public function render()
     {
-    	if ($season = Season::find(5)) {
+    	if (!$this->blank_view) {
+    		$current_season = Season::where('slug', $this->season)->first();
+    		$seasons = Season::orderBy('id', 'desc')->get();
 	    	$seasons_conferences = SeasonConference::
 	    		leftJoin('conferences', 'conferences.id', 'seasons_conferences.conference_id')
-	    		->select('seasons_conferences.id', 'conferences.name')
-	    		->where('season_id', $season->id)
+	    		->select('seasons_conferences.*', 'conferences.name')
+	    		->where('season_id', $current_season->id)
 	    		->orderBy('conferences.name')
 	    		->get();
 	    	$seasons_divisions = SeasonDivision::
 	    		leftJoin('divisions', 'divisions.id', 'seasons_divisions.division_id')
-	    		->select('seasons_divisions.id', 'divisions.name')
-	    		->where('season_id', $season->id)
-	    		->orderBy('divisions.name')
+	    		->leftJoin('seasons_conferences', 'seasons_conferences.id', 'seasons_divisions.season_conference_id')
+	    		->leftJoin('conferences', 'conferences.id', 'seasons_conferences.conference_id')
+	    		->select('seasons_divisions.*', 'divisions.name')
+	    		->where('seasons_divisions.season_id', $current_season->id)
+	    		->orderBy('conferences.name', 'asc')
+	    		->orderBy('divisions.name', 'asc')
 	    		->get();
 
 	        switch ($this->view) {
-	            case 'conferencia':
+	            case 'conference':
 	            	foreach ($seasons_conferences as $key => $conference) {
-	                	$table_positions[$key] = $season->generateConferencesTable($conference->id);
+	                	$table_positions[$key] = $current_season->generateTable($this->view, $this->order, $conference->id, null);
 	            	}
 	                break;
 	            case 'division':
 	            	foreach ($seasons_divisions as $key => $division) {
-	                	$table_positions[$key] = $season->generateDivisionsTable($division->id);
+	                	$table_positions[$key] = $current_season->generateTable($this->view, $this->order, null, $division->id);
 	            	}
 	                break;
 	            case 'general':
-	            	$table_positions = $season->generateGeneralTable();
+	            	$table_positions = $current_season->generateTable($this->view, $this->order, null, null);
 	                break;
 	        }
 
 	        return view('standings.index', [
-	        	'season' => $season,
+	        	'current_season' => $current_season,
+	        	'seasons' => $seasons,
 	        	'seasons_conferences' => $seasons_conferences,
 	        	'seasons_divisions' => $seasons_divisions,
 				'table_positions' => $table_positions,
 	        ]);
     	} else {
-	        return view('livewire.standing', [
+	        return view('standings.index', [
 	        ]);
     	}
     }

@@ -22,7 +22,7 @@ class SeasonConference extends Model
 
     public function conference()
     {
-        return $this->belongsTo('App\Models\Conference');
+        return $this->belongsTo('App\Models\Conference', 'conference_id', 'id');
     }
 
     public function getName()

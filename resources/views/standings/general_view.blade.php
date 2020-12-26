@@ -1,9 +1,9 @@
 <div class="table-wrapper border-t border-gray-200 ">
 	<table class="w-full">
-		<thead>
+		<thead class="select-none">
 			@include('standings.header_content')
 		</thead>
-		<tbody>
+		<tbody wire:loading.class="opacity-50">
 			@foreach ($table_positions as $key => $position)
 				<tr class="border-t border-gray-200 text-sm hover:bg-blue-100">
 					@include('standings.body_content')
