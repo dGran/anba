@@ -240,6 +240,26 @@ class Season extends Model
                     "team_name" => "asc"
                 ];
                 break;
+            case 'name':
+                return $criteria = [
+                    "team_name" => "asc"
+                ];
+                break;
+            case 'name_desc':
+                return $criteria = [
+                    "team_name" => "desc"
+                ];
+                break;
+            case 'medium_name':
+                return $criteria = [
+                    "team_medium_name" => "asc"
+                ];
+                break;
+            case 'medium_name_desc':
+                return $criteria = [
+                    "team_medium_name" => "desc"
+                ];
+                break;
         }
     }
 
@@ -404,7 +424,8 @@ class Season extends Model
             $data = $this->get_table_data_team($team->id);
             $table_teams->push([
                 'team' => $team,
-                'team_name' => $team->team->medium_name,
+                'team_medium_name' => $team->team->medium_name,
+                'team_name' => $team->team->name,
                 'w' => $data['w'],
                 'l' => $data['l'],
                 'wavg' => $data['wavg'],

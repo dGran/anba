@@ -1,25 +1,31 @@
-	<p class="font-semibold text-2xl pb-1 border-b border-gray-200 dark:border-gray-500">
-		Clasificación Liga Regular {{ $current_season ? " - $current_season->name" : '' }}
-	</p>
-	<div class="filters flex items-center py-4 mb-1 gap-4">
-		<div class="flex flex-col">
-			<label for="season" class="text-xs uppercase">
-				Temporada
-			</label>
-			<select id="season" class="rounded py-1 px-3 text-sm bg-white dark:bg-gray-600 border dark:border-gray-700 mt-1 appearance-none hover:bg-gray-100 dark:hover:bg-gray-600" wire:model="season">
-				@foreach ($seasons as $season)
-					<option value="{{ $season->slug }}">{{ $season->name }}</option>
-				@endforeach
-			</select>
-		</div>
-		<div class="flex flex-col">
-			<label for="season" class="text-xs uppercase">
-				Vista
-			</label>
-			<select id="season" class="rounded py-1 px-3 text-sm bg-white border mt-1 appearance-none hover:bg-gray-100" wire:model="view">
-				<option value="conference">Conferencia</option>
-				<option value="division">División</option>
-				<option value="general">General</option>
-			</select>
-		</div>
-	</div>
+<header class="bg-white dark:bg-gray-750 shadow">
+    <div class="max-w-7xl mx-auto pb-6 px-4 sm:px-6 lg:px-8">
+		<p class="font-semibold text-base md:text-2xl px-3 md:px-0 py-3">
+			{{ $current_season ? "Temporada - $current_season->name" : '' }}
+		</p>
+		@if (isset($table_positions))
+			<div class="filters flex items-center gap-4 px-3 md:px-0">
+				<div class="flex flex-col">
+					<label for="season" class="text-xs uppercase">
+						Temporada
+					</label>
+					<select id="season" class="rounded py-1 px-3 text-sm bg-white dark:bg-gray-700 border mt-1 appearance-none hover:bg-gray-100 dark:hover:bg-gray-650 focus:outline-none light:border-gray-300 dark:border-gray-900 light:focus:border-gray-400 dark:focus:border-dark-link focus:bg-gray-100 dark:focus:bg-gray-650" wire:model="season">
+						@foreach ($seasons as $season)
+							<option value="{{ $season->slug }}">{{ $season->name }}</option>
+						@endforeach
+					</select>
+				</div>
+				<div class="flex flex-col">
+					<label for="view" class="text-xs uppercase">
+						Vista
+					</label>
+					<select id="view" class="rounded py-1 px-3 text-sm bg-white dark:bg-gray-700 border mt-1 appearance-none hover:bg-gray-100 dark:hover:bg-gray-650 focus:outline-none light:border-gray-300 dark:border-gray-900 light:focus:border-gray-400 dark:focus:border-dark-link focus:bg-gray-100 dark:focus:bg-gray-650" wire:model="view">
+						<option value="conference">Conferencia</option>
+						<option value="division">División</option>
+						<option value="general">General</option>
+					</select>
+				</div>
+			</div>
+		@endif
+    </div>
+</header>

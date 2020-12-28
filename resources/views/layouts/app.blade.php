@@ -28,12 +28,12 @@
         <script src="https://cdn.jsdelivr.net/npm/tail.select@latest/"></script>
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-800">
+        <div class="min-h-screen bg-gray-100 dark:bg-gray-850">
             @livewire('navigation-dropdown')
 
             <!-- Page Heading -->
-            <header class="bg-white dark:bg-gray-900 shadow dark:shadow-none">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <header class="bg-gray-100 dark:bg-gray-850 shadow dark:shadow-none">
+                <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
                     {{ $header }}
                 </div>
             </header>
@@ -42,6 +42,40 @@
             <main>
                 {{ $slot }}
             </main>
+
+            <!-- Page Footer -->
+            <footer class="text-sm">
+                <div class="bg-white dark:bg-gray-750 mt-8 shadow-lg">
+                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                            <div>
+                                col 1
+                            </div>
+                            <div>
+                                col 2
+                            </div>
+                            <div>
+                                col 3
+                            </div>
+                        </div>
+                    </div>
+                </div>
+{{--                 <div class="bg-white dark:bg-gray-900 shadow-lg border-t border-black">
+                    <div class="max-w-7xl mx-auto py-3 px-4 sm:px-6 lg:px-8 text-center opacity-25">
+                        <img src="{{ asset('img/logo.png') }}" alt="logo" class="h-12 block w-auto ml-auto mr-auto">
+                        <p class="flex flex-col leading-5 mt-2">
+                            <span class="text-xl font-bold">ANBA</span>
+                            <span class="text-xxs uppercase font-medium">Adictos a la NBA</span>
+                        </p>
+                    </div>
+                </div> --}}
+                <div class="bg-gray-900 dark:bg-gray-950 text-white">
+                    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 text-center">
+                        &copy; 2020 anba2k.es. Todos los derechos reservados
+                    </div>
+                </div>
+                {{-- {{ $footer }} --}}
+            </footer>
         </div>
 
         @stack('modals')

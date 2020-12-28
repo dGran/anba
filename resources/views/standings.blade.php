@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="py-8">
+    <div>
 		@livewire('standing')
     </div>
 </x-app-layout>

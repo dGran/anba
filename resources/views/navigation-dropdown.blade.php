@@ -1,7 +1,5 @@
 @php
     $navLinks = [
-        ['href' => '/dashboard', 'name' => 'dashboard', 'text' => 'Dashboard'],
-        ['href' => '/noticias', 'name' => 'news', 'text' => 'Noticias'],
         ['href' => '/clasificaciones', 'name' => 'standings', 'text' => 'Clasificaciones'],
         ['href' => '/partidos', 'name' => 'matches', 'text' => 'Partidos'],
         ['href' => '/estadisticas', 'name' => 'stats', 'text' => 'Estadísticas'],
@@ -10,14 +8,14 @@
     ]
 @endphp
 
-<nav x-data="{ open: false }" class="bg-white dark:bg-red-600 border-b border-gray-200 dark:border-gray-900 sticky top-0">
+<nav x-data="{ open: false }" class="bg-gray-700 dark:bg-gray-750">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
-                <div class="flex-shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}" class="flex items-center">
+                <div class="flex-shrink-0 flex items-center text-white">
+                    <a href="{{ route('dashboard') }}" class="flex items-center h-full border-b-2 border-transparent focus:outline-none hover:border-indigo-200 focus:border-indigo-200 transition duration-150 ease-in-out">
                         <img src="{{ asset('img/logo.png') }}" alt="logo" class="h-12 block w-auto">
                         <p class="ml-3 flex flex-col leading-5">
                             <span class="text-xl font-bold">ANBA</span>
@@ -27,7 +25,7 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-5 sm:-my-px sm:ml-10 sm:flex">
+                <div class="hidden space-x-4 sm:-my-px sm:ml-10 sm:flex">
                     @foreach ($navLinks as $link)
                         <x-nav-link :href="$link['href']" :active="request()->routeIs($link['name'])">
                             {{ __($link['text']) }}
@@ -41,7 +39,7 @@
                 <x-jet-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                            <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out">
+                            <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none hover:border-pink-500 focus:border-pink-500 transition duration-150 ease-in-out">
                                 <img class="h-8 w-8 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
                             </button>
                         @else
