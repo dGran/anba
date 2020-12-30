@@ -48,6 +48,14 @@ class Match extends Model
         return $this->hasMany('App\Models\PlayerStat');
     }
 
+    public function scopeSeason($query, $value)
+    {
+        if ($value != 'all') {
+            $season = Season::where('slug', $value)->first();
+            return $query->where('matches.season_id', '=', $season->id);
+        }
+    }
+
     public function scopeName($query, $value)
     {
         if (trim($value) != "") {
@@ -108,13 +116,37 @@ class Match extends Model
             }
             return $local . ' - ' . $visitor;
         } else {
-            return 'Vs';
+            return '-';
         }
     }
 
     public function played()
     {
         return $this->scores->count() > 0 ? TRUE : FALSE;
+    }
+
+    public function top_local_player()
+    {
+        $team_id = $this->localTeam->team->id;
+        return $top = PlayerStat::
+            where('match_id', $this->id)
+            ->whereIn('player_id', function($query) use ($team_id) {
+               $query->select('id')->from('players')->where('team_id', '=', $team_id);
+            })
+            ->orderBy('PTS', 'desc')
+            ->first();
+    }
+
+    public function top_visitor_player()
+    {
+        $team_id = $this->visitorTeam->team->id;
+        return $top = PlayerStat::
+            where('match_id', $this->id)
+            ->whereIn('player_id', function($query) use ($team_id) {
+               $query->select('id')->from('players')->where('team_id', '=', $team_id);
+            })
+            ->orderBy('PTS', 'desc')
+            ->first();
     }
 
     public function canDestroy()

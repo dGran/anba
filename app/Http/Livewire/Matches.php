@@ -1,0 +1,225 @@
+<?php
+
+namespace App\Http\Livewire;
+
+use Livewire\Component;
+use App\Models\Match;
+use App\Models\Season;
+use App\Models\SeasonTeam;
+use App\Models\SeasonConference;
+use App\Models\SeasonDivision;
+use Livewire\withPagination;
+
+class Matches extends Component
+{
+	use WithPagination;
+
+	//boxscore
+	public $scores, $players_stats, $teams_stats;
+	public $teams_table_data;
+
+	//filters
+	public $season;
+	public $search = "";
+	public $perPage = '10';
+	public $team = "all";
+	public $manager = "all";
+	public $order = 'id_desc';
+
+	public $blank_view = false;
+
+	// queryString
+	protected $queryString = [
+		'season',
+		'search' => ['except' => ''],
+		'team' => ['except' => "all"],
+		'manager' => ['except' => "all"],
+		'perPage' => ['except' => '10'],
+		'order' => ['except' => 'id_desc'],
+	];
+
+	public function setOrder($name)
+	{
+    	$this->order = $name;
+    	$this->page = 1;
+	}
+
+	public function mount()
+	{
+		if ($season = Season::where('current', 1)->first()) {
+			$this->season = $season->slug;
+		} else {
+			$this->blank_view = true;
+		}
+	}
+
+    public function render()
+    {
+    	if (!$this->blank_view) {
+    		$current_season = Season::where('slug', $this->season)->first();
+    		$seasons = Season::orderBy('id', 'desc')->get();
+	    	$season_teams = SeasonTeam::leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
+	    	->select('seasons_teams.*')
+	    	->where('season_id', $current_season->id)
+	    	->orderBy('teams.medium_name', 'asc')
+	    	->get();
+	    	$managers = SeasonTeam::leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
+	    	->leftJoin('users', 'users.id', 'teams.manager_id')
+	    	->where('season_id', $current_season->id)
+	    	->whereNotNull('teams.manager_id')
+	    	->select('users.*')
+	    	->distinct()
+	    	->orderBy('users.name', 'asc')
+	    	->get();
+
+        	$this->set_teams_table_data();
+
+	        return view('matches.index', [
+	        			'regs' => $this->getData(),
+			        	'current_season' => $current_season,
+			        	'seasons' => $seasons,
+	        			'season_teams' => $season_teams,
+	        			'managers' => $managers,
+	        			'scores' => $this->scores,
+	        			'teams_table_data' => $this->teams_table_data
+	        		]);
+    	} else {
+	        return view('matches.index', [
+	        ]);
+    	}
+    }
+
+	protected function getData()
+	{
+    	$regs = Match::
+   			leftjoin('seasons_teams', function($join){
+                $join->on('seasons_teams.id','=','matches.local_team_id');
+                $join->orOn('seasons_teams.id','=','matches.visitor_team_id');
+            })
+    		->leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
+   			->leftjoin('users', function($join){
+                $join->on('users.id','=','matches.local_manager_id');
+                $join->orOn('users.id','=','matches.visitor_manager_id');
+            })
+            ->season($this->season)
+    		->name($this->search)
+    		->team($this->team)
+    		->user($this->manager)
+			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
+			->orderBy('matches.id', 'desc')
+			->select('matches.*')
+			->groupBy('matches.id')
+			->paginate($this->perPage)->onEachSide(2);
+
+	 //    if (($regs->total() > 0 && $regs->count() == 0)) {
+		// 	$this->page = 1;
+		// }
+		// if ($this->page == 0) {
+		// 	$this->page = $regs->lastPage();
+		// }
+
+  //   	$regs = Match::
+  //  			leftjoin('seasons_teams', function($join){
+  //               $join->on('seasons_teams.id','=','matches.local_team_id');
+  //               $join->orOn('seasons_teams.id','=','matches.visitor_team_id');
+  //           })
+  //   		->leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
+  //  			->leftjoin('users', function($join){
+  //               $join->on('users.id','=','matches.local_manager_id');
+  //               $join->orOn('users.id','=','matches.visitor_manager_id');
+  //           })
+  //           ->season($this->season)
+  //   		->name($this->search)
+  //   		->team($this->team)
+  //   		->user($this->manager)
+		// 	->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
+		// 	->orderBy('matches.id', 'desc')
+		// 	->select('matches.*')
+		// 	->groupBy('matches.id')
+		// 	->paginate($this->perPage)->onEachSide(2);
+
+		return $regs;
+	}
+
+    protected function getOrder($order) {
+        $order_ext = [
+            'id' => [
+                'field'     => 'matches.id',
+                'direction' => 'asc'
+            ],
+            'id_desc' => [
+                'field'     => 'matches.id',
+                'direction' => 'desc'
+            ],
+            'stadium' => [
+                'field'     => 'matches.stadium',
+                'direction' => 'asc'
+            ],
+            'stadium_desc' => [
+                'field'     => 'matches.stadium',
+                'direction' => 'desc'
+            ],
+        ];
+        return $order_ext[$order];
+    }
+
+    public function set_teams_table_data()
+    {
+    	$current_season = Season::where('slug', $this->season)->first();
+
+    	$seasons_conferences = SeasonConference::
+    		leftJoin('conferences', 'conferences.id', 'seasons_conferences.conference_id')
+    		->select('seasons_conferences.*', 'conferences.name')
+    		->where('season_id', $current_season->id)
+    		->orderBy('conferences.name')
+    		->get();
+    	$seasons_divisions = SeasonDivision::
+    		leftJoin('divisions', 'divisions.id', 'seasons_divisions.division_id')
+    		->leftJoin('seasons_conferences', 'seasons_conferences.id', 'seasons_divisions.season_conference_id')
+    		->leftJoin('conferences', 'conferences.id', 'seasons_conferences.conference_id')
+    		->select('seasons_divisions.*', 'divisions.name')
+    		->where('seasons_divisions.season_id', $current_season->id)
+    		->orderBy('conferences.name', 'asc')
+    		->orderBy('divisions.name', 'asc')
+    		->get();
+		foreach ($seasons_conferences as $key => $conference) {
+        	$table_positions_conference[$key] = $current_season->generateTable('conference', 'wavg', $conference->id, null);
+    	}
+		foreach ($seasons_divisions as $key => $division) {
+        	$table_positions_division[$key] = $current_season->generateTable('division', 'wavg', null, $division->id);
+    	}
+
+    	$teams_table_data = collect();
+
+    	$season_teams = $current_season->teams;
+		foreach ($season_teams as $team) {
+	        foreach ($table_positions_conference as $key => $positions) {
+		        foreach ($positions as $key => $pos) {
+		            if ($pos['team']->id == $team->id) {
+		            	$data['conference_position'] = $key+1;
+		            	$data['streak'] = $pos['streak'];
+		            	$data['last10_w'] = $pos['last10_w'];
+		            	$data['last10_l'] = $pos['last10_l'];
+		            }
+		        }
+	        }
+	        foreach ($table_positions_division as $key => $positions) {
+		        foreach ($positions as $key => $pos) {
+		            if ($pos['team']->id == $team->id) {
+		            	$data['division_position'] = $key+1;
+		            }
+		        }
+	        }
+            $teams_table_data->push([
+				'team' => $team,
+				'conference_position' => $data['conference_position'],
+				'division_position' => $data['division_position'],
+				'streak' => $data['streak'],
+				'last10_w' => $data['last10_w'],
+				'last10_l' => $data['last10_l'],
+			]);
+		}
+
+		$this->teams_table_data = $teams_table_data;
+    }
+}

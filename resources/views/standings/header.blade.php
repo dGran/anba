@@ -1,8 +1,8 @@
-<header class="bg-white dark:bg-gray-750 shadow">
-    <div class="max-w-7xl mx-auto pb-6 px-4 sm:px-6 lg:px-8">
-		<p class="font-semibold text-base md:text-2xl px-3 md:px-0 py-3">
+<header class="bg-white dark:bg-gray-750 shadow border-t border-gray-150 dark:border-gray-850">
+    <div class="max-w-7xl mx-auto p-4 sm:px-6 lg:px-8">
+{{-- 		<p class="font-semibold text-base md:text-2xl px-3 md:px-0 py-3">
 			{{ $current_season ? "Temporada - $current_season->name" : '' }}
-		</p>
+		</p> --}}
 		@if (isset($table_positions))
 			<div class="filters flex items-center gap-4 px-3 md:px-0">
 				<div class="flex flex-col">

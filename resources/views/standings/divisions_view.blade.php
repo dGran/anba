@@ -12,7 +12,7 @@
 					</thead>
 					<tbody wire:loading.class="opacity-50">
 						@foreach ($table_positions[$divfKey] as $key => $position)
-							<tr class="border-t border-gray-200 dark:border-gray-700 text-sm hover:bg-blue-100 dark:hover:bg-dark-link dark:hover:text-gray-900">
+							<tr class="group border-t border-gray-200 dark:border-gray-700 text-sm hover:bg-blue-100 dark:hover:bg-dark-link dark:hover:text-gray-900">
 								@include('standings.table_body')
 							</tr>
 						@endforeach

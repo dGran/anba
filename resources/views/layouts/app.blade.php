@@ -32,7 +32,7 @@
             @livewire('navigation-dropdown')
 
             <!-- Page Heading -->
-            <header class="bg-gray-100 dark:bg-gray-850 shadow dark:shadow-none">
+            <header class="bg-white dark:bg-gray-750 shadow dark:shadow-none">
                 <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
                     {{ $header }}
                 </div>
@@ -45,7 +45,7 @@
 
             <!-- Page Footer -->
             <footer class="text-sm">
-                <div class="bg-white dark:bg-gray-750 mt-8 shadow-lg">
+                <div class="bg-white dark:bg-gray-750 mt-10 shadow-lg">
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                             <div>
@@ -69,7 +69,7 @@
                         </p>
                     </div>
                 </div> --}}
-                <div class="bg-gray-900 dark:bg-gray-950 text-white">
+                <div class="bg-gray-750 dark:bg-pink-900 text-white">
                     <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 text-center">
                         &copy; 2020 anba2k.es. Todos los derechos reservados
                     </div>

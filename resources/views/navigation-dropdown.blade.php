@@ -8,15 +8,15 @@
     ]
 @endphp
 
-<nav x-data="{ open: false }" class="bg-gray-700 dark:bg-gray-750">
+<nav x-data="{ open: false }" class="bg-gray-700 dark:bg-pink-900">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center text-white">
-                    <a href="{{ route('dashboard') }}" class="flex items-center h-full border-b-2 border-transparent focus:outline-none hover:border-indigo-200 focus:border-indigo-200 transition duration-150 ease-in-out">
-                        <img src="{{ asset('img/logo.png') }}" alt="logo" class="h-12 block w-auto">
+                    <a href="{{ route('dashboard') }}" class="group flex items-center h-full focus:outline-none">
+                        <img src="{{ asset('img/logo.png') }}" alt="logo" class="h-12 rounded-full block w-auto focus:outline-none border border-transparent group-hover:border-dark-link group-focus:border-dark-link dark:group-hover:border-pink-500 dark:group-focus:border-pink-500 transition duration-150 ease-in-out">
                         <p class="ml-3 flex flex-col leading-5">
                             <span class="text-xl font-bold">ANBA</span>
                             <span class="text-xxs uppercase font-medium">Adictos a la NBA</span>
@@ -39,7 +39,7 @@
                 <x-jet-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                            <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none hover:border-pink-500 focus:border-pink-500 transition duration-150 ease-in-out">
+                            <button class="flex text-sm rounded-full focus:outline-none border border-transparent hover:border-dark-link dark:hover:border-pink-500 focus:border-dark-link dark:focus:border-pink-500 transition duration-150 ease-in-out">
                                 <img class="h-8 w-8 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
                             </button>
                         @else

@@ -21,7 +21,6 @@ module.exports = {
             },
             colors: {
                 "dark-link": '#8ab4f8',
-                "dark-link-light": '#8DB9FF',
                 gray: {
                     '50' : '#F9F9F9',
                     '100': '#F4F4F4',
@@ -42,7 +41,6 @@ module.exports = {
                     '900': '#1d1d1f',
                     '950': '#101010',
                 },
-
             }
         },
     },

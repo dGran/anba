@@ -1,5 +1,5 @@
-<td class="dark:border-gray-600 bg-white dark:bg-gray-750 hover:bg-blue-100 dark:hover:bg-dark-link" style="min-width: 230px; left: 0px; position: sticky;">
-	<div class="flex items-center border-r border-gray-200 dark:border-gray-700 py-2">
+<td class="dark:border-gray-600 bg-white dark:bg-gray-750 group-hover:bg-blue-100 dark:group-hover:bg-dark-link" style="min-width: 230px; left: 0px; position: sticky;">
+	<div class="flex items-center border-r border-gray-200 dark:border-gray-700 py-1">
 		<p class="m-0 text-right mr-3 font-semibold" style="width: 30px">{{ $loop->iteration }}</p>
 		<img src="{{ $position['team']->team->getImg() }}" alt="{{ $position['team']->team->short_name }}" style="width: 32px; height: 32px" class="mr-2">
 		<p>

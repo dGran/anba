@@ -39,6 +39,10 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/clasificaciones', functio
     return view('standings');
 })->name('standings');
 
+Route::middleware(['auth:sanctum', 'verified'])->get('/partidos', function () {
+    return view('matches');
+})->name('matches');
+
 Route::middleware(['auth:sanctum', 'verified'])->get('/equipos', function () {
     return view('teams');
 })->name('teams');

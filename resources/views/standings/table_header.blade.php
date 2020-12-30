@@ -1,6 +1,6 @@
 <tr class="light:bg-gray-50 dark:bg-gray-700 light:text-gray-600 dark:text-gray-300 text-sm uppercase tracking-tight">
-	<th class="hidden sm:block text-left pl-3 dark:border-gray-600 light:bg-gray-50 dark:bg-gray-700" {{-- style="left: 0px; position: sticky;" --}}>
-		<div class="border-r border-gray-200 dark:border-gray-650 py-3">
+	<th class="hidden sm:block text-left pl-3 dark:border-gray-600 light:bg-gray-50 dark:bg-gray-700" style="left: 0px; position: sticky;">
+		<div class="border-r border-gray-200 dark:border-gray-700 py-3">
 			@if ($order == 'name')
 				<span class="d-inline-block cursor-pointer" wire:click="setOrder('name_desc')">Equipo<i class="fas fa-sort pl-1"></i></span>
 			@elseif ($order == 'name_desc')
@@ -11,7 +11,7 @@
 		</div>
 	</th>
 	<th class="sm:hidden text-left pl-3 dark:border-gray-600 light:bg-gray-50 dark:bg-gray-700" style="left: 0px; position: sticky;">
-		<div class="border-r border-gray-200 dark:border-gray-600 py-3">
+		<div class="border-r border-gray-200 dark:border-gray-700 py-3">
 			@if ($order == 'medium_name')
 				<span class="d-inline-block cursor-pointer" wire:click="setOrder('medium_name_desc')">Equipo<i class="fas fa-sort pl-1"></i></span>
 			@elseif ($order == 'medium_name_desc')
