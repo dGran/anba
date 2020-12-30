@@ -189,7 +189,7 @@ class Matches extends Component
         	$table_positions_division[$key] = $current_season->generateTable('division', 'wavg', null, $division->id);
     	}
 
-    	$teams_table_data = collect();
+    	$teams_table_data = [];
 
     	$season_teams = $current_season->teams;
 		foreach ($season_teams as $team) {
@@ -210,14 +210,14 @@ class Matches extends Component
 		            }
 		        }
 	        }
-            $teams_table_data->push([
+            $teams_table_data[$team->id] = [
 				'team' => $team,
 				'conference_position' => $data['conference_position'],
 				'division_position' => $data['division_position'],
 				'streak' => $data['streak'],
 				'last10_w' => $data['last10_w'],
 				'last10_l' => $data['last10_l'],
-			]);
+			];
 		}
 
 		$this->teams_table_data = $teams_table_data;
