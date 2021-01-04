@@ -43,6 +43,11 @@ class Match extends Model
         return $this->hasMany('App\Models\Score');
     }
 
+    public function poll()
+    {
+        return $this->hasOne('App\Models\MatchPoll');
+    }
+
     public function playerStats()
     {
         return $this->hasMany('App\Models\PlayerStat');
@@ -147,6 +152,58 @@ class Match extends Model
             })
             ->orderBy('PTS', 'desc')
             ->first();
+    }
+
+    public function votes()
+    {
+        $pollVotes = MatchPoll::where('match_id', $this->id)->get();
+        $result = [];
+        $local = 0;
+        $visitor = 0;
+        if ($pollVotes->count() > 0) {
+            foreach ($pollVotes as $pollVote) {
+                if ($pollVote->vote == "local") { $local++; } else { $visitor++; }
+            }
+        }
+        $result['local'] = $local;
+        $result['visitor'] = $visitor;
+        return $result;
+    }
+
+    public function votesPercent()
+    {
+        $pollVotes = MatchPoll::where('match_id', $this->id)->get();
+        $result = [];
+        $local = 0;
+        $visitor = 0;
+        if ($pollVotes->count() > 0) {
+            foreach ($pollVotes as $pollVote) {
+                if ($pollVote->vote == "local") { $local++; } else { $visitor++; }
+            }
+        }
+        $total = $local + $visitor;
+        $total_local = ($local / $total) * 100;
+        $total_visitor = ($visitor / $total) * 100;
+        $result['local'] = $total_local;
+        $result['visitor'] = $total_visitor;
+        return $result;
+    }
+
+    public function userHasVoted()
+    {
+        $query = MatchPoll::where('match_id', $this->id)->where('user_id', auth()->user()->id)->get();
+        if ($query->count() > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public function userVote()
+    {
+        if ($query = MatchPoll::where('match_id', $this->id)->where('user_id', auth()->user()->id)->first()) {
+            return $query->vote;
+        }
+        return false;
     }
 
     public function canDestroy()

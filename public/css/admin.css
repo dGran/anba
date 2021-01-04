@@ -1,5 +1,17 @@
 @import url(https://cdnjs.cloudflare.com/ajax/libs/pretty-checkbox/3.0.3/pretty-checkbox.min.css);@charset "UTF-8";
 
+.font-miriam {
+  font-family: "Miriam Libre", sans-serif;
+}
+
+.font-bad-script {
+  font-family: "Bad Script", cursive;
+}
+
+.font-Amatic {
+  font-family: "Amatic SC", cursive;
+}
+
 .text-6xl {
   font-size: 4rem !important;
 }

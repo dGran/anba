@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Admin;
 
 use App\Models\Match;
+use App\Models\MatchPoll;
 use App\Models\Score;
 use App\Models\Player;
 use App\Models\PlayerStat;
@@ -362,6 +363,8 @@ class MatchCrud extends Component
 		$validatedData['visitor_manager_id'] = $visitor_team->team->manager_id;
 
         $reg = Match::create($validatedData);
+
+        // create match_poll
 
         // create scores
         // previously create season_score_headers

@@ -125,6 +125,26 @@ class Team extends Model
         return $date->isoFormat("kk[:]mm");
     }
 
+    public function teamPlayersStats($season_id, $team_id)
+    {
+        $team_players = [];
+        foreach ($team->players as $player) {
+            array_push($team_players, $player->id);
+        }
+        $result = PlayerStat::
+            leftJoin('matches', 'matches.id', 'players_stats.match_id')
+            ->where('matches.season_id', $season)
+            ->whereIn('players_stats.player_id', $team_players)
+            ->select('players_stats.player_id')
+            ->selectRaw("AVG(players_stats.PTS) as total_PTS")
+            ->selectRaw("AVG(players_stats.REB) as total_REB")
+            ->selectRaw("AVG(players_stats.AST) as total_AST")
+            ->groupBy('players_stats.player_id')
+            ->get();
+
+        return $result;
+    }
+
     public function canDestroy()
     {
         // apply logic

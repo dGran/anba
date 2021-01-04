@@ -32,7 +32,7 @@
             @livewire('navigation-dropdown')
 
             <!-- Page Heading -->
-            <header class="bg-white dark:bg-gray-750 shadow dark:shadow-none">
+            <header class="bg-gray-50 dark:bg-gray-800 shadow dark:shadow-none">
                 <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
                     {{ $header }}
                 </div>
@@ -44,36 +44,25 @@
             </main>
 
             <!-- Page Footer -->
-            <footer class="text-sm">
-                <div class="bg-white dark:bg-gray-750 mt-10 shadow-lg">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                            <div>
-                                col 1
-                            </div>
-                            <div>
-                                col 2
-                            </div>
-                            <div>
-                                col 3
-                            </div>
-                        </div>
-                    </div>
-                </div>
-{{--                 <div class="bg-white dark:bg-gray-900 shadow-lg border-t border-black">
-                    <div class="max-w-7xl mx-auto py-3 px-4 sm:px-6 lg:px-8 text-center opacity-25">
-                        <img src="{{ asset('img/logo.png') }}" alt="logo" class="h-12 block w-auto ml-auto mr-auto">
-                        <p class="flex flex-col leading-5 mt-2">
-                            <span class="text-xl font-bold">ANBA</span>
-                            <span class="text-xxs uppercase font-medium">Adictos a la NBA</span>
-                        </p>
-                    </div>
-                </div> --}}
-                <div class="bg-gray-750 dark:bg-pink-900 text-white">
-                    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 text-center">
+            <footer class="bg-gray-50 dark:bg-gray-800 mt-10 leading-normal border-t border-gray-200 dark:border-gray-700" {{-- style="background-color: #2d3e50" --}}>
+
+                <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 text-center">
+                    <ul class="list-none flex justify-center flex-col md:flex-row gap-2 md:gap-4 md:gap-8 font-miriam font-bold uppercase text-sm tracking-wider my-2" style="color: #aeaeae">
+                        <li><a href="{{ route('standings') }}" class="outline-none hover:text-blue-500 focus:text-blue-500 dark:hover:text-dark-link dark:focus:text-dark-link">Clasificaciones</a></li>
+                        <li><a href="{{ route('matches') }}" class="outline-none hover:text-blue-500 focus:text-blue-500 dark:hover:text-dark-link dark:focus:text-dark-link">Partidos</a></li>
+                        <li><a href="#" class="outline-none hover:text-blue-500 focus:text-blue-500 dark:hover:text-dark-link dark:focus:text-dark-link">Estadisticas</a></li>
+                        <li><a href="#" class="outline-none hover:text-blue-500 focus:text-blue-500 dark:hover:text-dark-link dark:focus:text-dark-link">Equipos</a></li>
+                        <li><a href="{{ route('players') }}" class="outline-none hover:text-blue-500 focus:text-blue-500 dark:hover:text-dark-link dark:focus:text-dark-link">Jugadores</a></li>
+                    </ul>
+                    <p class="mt-6" style="color: #aeaeae; padding-bottom: 10px; font-family: Miriam Libre,Source Sans Pro,sans-serif; text-transform: uppercase; letter-spacing: 2px; font-size: 12px;">
                         &copy; 2020 anba2k.es. Todos los derechos reservados
-                    </div>
+                    </p>
+                    <p class="mt-2" style="color: #aeaeae; padding-bottom: 10px; font-family: Miriam Libre,Source Sans Pro,sans-serif; text-transform: uppercase; letter-spacing: 2px; font-size: 10px;">
+                        designed by
+                        <a href="mailto:dgranh@gmail.com" class="block font-bad-script capitalize font-bold text-sm hover:text-pretty-red focus:text-pretty-red focus:outline-none mt-1">David Gran</a>
+                    </p>
                 </div>
+
                 {{-- {{ $footer }} --}}
             </footer>
         </div>

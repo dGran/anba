@@ -263,7 +263,7 @@ class Season extends Model
         }
     }
 
-    protected function get_table_data_team($team_id)
+    public function get_table_data_team($team_id)
     {
         $data = [
             "w" => 0,
@@ -351,8 +351,6 @@ class Season extends Model
             if ($match->played()) {
                 $local_score = $match->scores->sum('local_score');
                 $visitor_score = $match->scores->sum('visitor_score');
-                $same_conf = $match->localTeam->seasonDivision->seasonConference->id == $match->visitorTeam->seasonDivision->seasonConference->id ? true : false;
-                $same_div = $match->localTeam->seasonDivision->id == $match->visitorTeam->seasonDivision->id ? true : false;
                 if ($team_id == $match->local_team_id) {
                     if ($local_score > $visitor_score) {
                         if ($data['streak'] > 0) {
@@ -393,6 +391,48 @@ class Season extends Model
         $data['home_diff'] = $data['home_w'] - $data['home_l'];
         $data['road_diff'] = $data['road_w'] - $data['road_l'];
         $data['last10_diff'] = $data['last10_w'] - $data['last10_l'];
+
+        return $data;
+    }
+
+    public function get_table_data_team_record($team_id)
+    {
+        $data = [
+            "w" => 0,
+            "l" => 0,
+        ];
+
+        $matches = Match::leftJoin('scores', 'scores.match_id', 'matches.id')
+            ->select('matches.*')
+            ->where('season_id', $this->id)
+            ->where(function($q) use ($team_id) {
+                $q->where('local_team_id', $team_id)
+                    ->orWhere('visitor_team_id', $team_id);
+                })
+            ->orderBy('scores.created_at', 'desc')
+            ->get();
+
+        foreach ($matches as $key => $match) {
+            if ($match->played()) {
+                $local_score = $match->scores->sum('local_score');
+                $visitor_score = $match->scores->sum('visitor_score');
+                $same_conf = $match->localTeam->seasonDivision->seasonConference->id == $match->visitorTeam->seasonDivision->seasonConference->id ? true : false;
+                $same_div = $match->localTeam->seasonDivision->id == $match->visitorTeam->seasonDivision->id ? true : false;
+                if ($team_id == $match->local_team_id) {
+                    if ($local_score > $visitor_score) {
+                        $data['w'] += 1;
+                    } else {
+                        $data['l'] += 1;
+                    }
+                } else {
+                    if ($local_score > $visitor_score) {
+                        $data['l'] += 1;
+                    } else {
+                        $data['w'] += 1;
+                    }
+                }
+            }
+        }
 
         return $data;
     }

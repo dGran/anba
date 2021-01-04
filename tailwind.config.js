@@ -20,7 +20,6 @@ module.exports = {
                 dark: { raw: "(prefers-color-scheme: dark)" }
             },
             colors: {
-                "dark-link": '#8ab4f8',
                 gray: {
                     '50' : '#F9F9F9',
                     '100': '#F4F4F4',
@@ -41,6 +40,9 @@ module.exports = {
                     '900': '#1d1d1f',
                     '950': '#101010',
                 },
+                "header-gb": '#2d3e50',
+                "dark-link": '#8ab4f8',
+                "pretty-red": '#f4645f',
             }
         },
     },

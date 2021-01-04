@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Match;
+use App\Models\MatchPoll;
 use App\Models\Season;
 use App\Models\SeasonTeam;
 use App\Models\SeasonConference;
@@ -21,7 +22,7 @@ class Matches extends Component
 	//filters
 	public $season;
 	public $search = "";
-	public $perPage = '10';
+	public $perPage = '3';
 	public $team = "all";
 	public $manager = "all";
 	public $order = 'id_desc';
@@ -38,10 +39,38 @@ class Matches extends Component
 		'order' => ['except' => 'id_desc'],
 	];
 
+    // Pagination
+    public function setNextPage()
+    {
+    	$this->page++;
+    }
+
+    public function setPreviousPage()
+    {
+		$this->page--;
+    }
+
 	public function setOrder($name)
 	{
     	$this->order = $name;
     	$this->page = 1;
+	}
+
+	public function pollVote($match_id, $vote)
+	{
+		MatchPoll::create([
+			'match_id'	=> $match_id,
+			'user_id'	=> auth()->user()->id,
+			'vote'		=> $vote
+		]);
+	}
+
+	public function pollDestroy($match_id, $user_id)
+	{
+		$poll = MatchPoll::where('match_id', $match_id)->where('user_id', $user_id)->first();
+		if ($poll) {
+			$poll->delete();
+		}
 	}
 
 	public function mount()
@@ -72,7 +101,7 @@ class Matches extends Component
 	    	->orderBy('users.name', 'asc')
 	    	->get();
 
-        	$this->set_teams_table_data();
+	    	// $this->set_teams_table_data();
 
 	        return view('matches.index', [
 	        			'regs' => $this->getData(),
@@ -81,7 +110,6 @@ class Matches extends Component
 	        			'season_teams' => $season_teams,
 	        			'managers' => $managers,
 	        			'scores' => $this->scores,
-	        			'teams_table_data' => $this->teams_table_data
 	        		]);
     	} else {
 	        return view('matches.index', [
@@ -111,32 +139,32 @@ class Matches extends Component
 			->groupBy('matches.id')
 			->paginate($this->perPage)->onEachSide(2);
 
-	 //    if (($regs->total() > 0 && $regs->count() == 0)) {
-		// 	$this->page = 1;
-		// }
-		// if ($this->page == 0) {
-		// 	$this->page = $regs->lastPage();
-		// }
+	    if (($regs->total() > 0 && $regs->count() == 0)) {
+			$this->page = 1;
+		}
+		if ($this->page == 0) {
+			$this->page = $regs->lastPage();
+		}
 
-  //   	$regs = Match::
-  //  			leftjoin('seasons_teams', function($join){
-  //               $join->on('seasons_teams.id','=','matches.local_team_id');
-  //               $join->orOn('seasons_teams.id','=','matches.visitor_team_id');
-  //           })
-  //   		->leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
-  //  			->leftjoin('users', function($join){
-  //               $join->on('users.id','=','matches.local_manager_id');
-  //               $join->orOn('users.id','=','matches.visitor_manager_id');
-  //           })
-  //           ->season($this->season)
-  //   		->name($this->search)
-  //   		->team($this->team)
-  //   		->user($this->manager)
-		// 	->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
-		// 	->orderBy('matches.id', 'desc')
-		// 	->select('matches.*')
-		// 	->groupBy('matches.id')
-		// 	->paginate($this->perPage)->onEachSide(2);
+    	$regs = Match::
+   			leftjoin('seasons_teams', function($join){
+                $join->on('seasons_teams.id','=','matches.local_team_id');
+                $join->orOn('seasons_teams.id','=','matches.visitor_team_id');
+            })
+    		->leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
+   			->leftjoin('users', function($join){
+                $join->on('users.id','=','matches.local_manager_id');
+                $join->orOn('users.id','=','matches.visitor_manager_id');
+            })
+            ->season($this->season)
+    		->name($this->search)
+    		->team($this->team)
+    		->user($this->manager)
+			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
+			->orderBy('matches.id', 'desc')
+			->select('matches.*')
+			->groupBy('matches.id')
+			->paginate($this->perPage)->onEachSide(2);
 
 		return $regs;
 	}
@@ -163,6 +191,8 @@ class Matches extends Component
         return $order_ext[$order];
     }
 
+
+    // not functional -- more slow query
     public function set_teams_table_data()
     {
     	$current_season = Season::where('slug', $this->season)->first();
@@ -197,6 +227,8 @@ class Matches extends Component
 		        foreach ($positions as $key => $pos) {
 		            if ($pos['team']->id == $team->id) {
 		            	$data['conference_position'] = $key+1;
+		            	$data['w'] = $pos['w'];
+		            	$data['l'] = $pos['l'];
 		            	$data['streak'] = $pos['streak'];
 		            	$data['last10_w'] = $pos['last10_w'];
 		            	$data['last10_l'] = $pos['last10_l'];
@@ -214,6 +246,8 @@ class Matches extends Component
 				'team' => $team,
 				'conference_position' => $data['conference_position'],
 				'division_position' => $data['division_position'],
+				'w' => $data['w'],
+				'l' => $data['l'],
 				'streak' => $data['streak'],
 				'last10_w' => $data['last10_w'],
 				'last10_l' => $data['last10_l'],
