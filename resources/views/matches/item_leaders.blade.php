@@ -1,9 +1,10 @@
 <div class="leaders hidden md:block md:w-1/2 p-4">
-	<p class="text-xs font-bold">{{ $reg->played() ? 'Game Leaders' : 'Season Leaders' }}</p>
+	<p class="uppercase pb-3 text-sm font-bold tracking-wider">{{ $reg->played() ? 'Game Leaders' : 'Season Leaders' }}</p>
+
 	<table class="w-full mt-1">
 		<thead>
-			<tr class="border-b border-gray-300 dark:border-gray-600">
-				<th class="text-xs font-normal text-left pb-1">JUGADOR</th>
+			<tr class="border-b border-gray-300 dark:border-gray-550">
+				<th class="text-xs font-normal text-left pb-2">JUGADOR</th>
 				@if ($reg->played())
 					<th class="text-xs font-normal text-right">PTS</th>
 					<th class="text-xs font-normal text-right">REB</th>
@@ -17,11 +18,11 @@
 		</thead>
 		<tbody>
 			@if ($reg->played())
-				<tr class="border-b border-gray-200 dark:border-gray-700">
+				<tr class="border-b border-gray-200 dark:border-gray-650">
 					<td style="min-width: 150px">
-						<div class="flex items-center gap-2 py-2">
+						<div class="flex items-center gap-2 py-3">
 							@if ($reg->top_local_player())
-								<img src="{{ $reg->top_local_player() ? $reg->top_local_player()->player->getImg() : '' }}" alt="{{ $reg->top_local_player() ? $reg->top_local_player()->player->name : '' }}" class="rounded-full border border-gray-200 dark:border-gray-700 object-cover" style="width: 24px; height: 24px">
+								<img src="{{ $reg->top_local_player() ? $reg->top_local_player()->player->getImg() : '' }}" alt="{{ $reg->top_local_player() ? $reg->top_local_player()->player->name : '' }}" class="rounded-full border border-gray-200 dark:border-gray-650 object-cover" style="width: 24px; height: 24px">
 							@endif
 							<div class="flex flex-col leading-3">
 								<span class="text-sm">{{ $reg->top_local_player() ? $reg->top_local_player()->player->name : '-' }}</span>
@@ -45,9 +46,9 @@
 
 				<tr>
 					<td style="min-width: 150px">
-						<div class="flex items-center gap-2 py-2">
+						<div class="flex items-center gap-2 py-3">
 							@if ($reg->top_visitor_player())
-								<img src="{{ $reg->top_visitor_player() ? $reg->top_visitor_player()->player->getImg() : '' }}" alt="{{ $reg->top_visitor_player() ? $reg->top_visitor_player()->player->name : '' }}" class="rounded-full border border-gray-200 dark:border-gray-700 object-cover" style="width: 24px; height: 24px">
+								<img src="{{ $reg->top_visitor_player() ? $reg->top_visitor_player()->player->getImg() : '' }}" alt="{{ $reg->top_visitor_player() ? $reg->top_visitor_player()->player->name : '' }}" class="rounded-full border border-gray-200 dark:border-gray-650 object-cover" style="width: 24px; height: 24px">
 							@endif
 							<div class="flex flex-col leading-3">
 								<span class="text-sm">{{ $reg->top_visitor_player() ? $reg->top_visitor_player()->player->name : '-' }}</span>
@@ -69,12 +70,12 @@
 					</td>
 				</tr>
 			@else
-				<tr class="border-b border-gray-200 dark:border-gray-700">
+				<tr class="border-b border-gray-200 dark:border-gray-650">
 					<td style="min-width: 150px">
 						{{-- {{ $reg->localTeam->team->playersStats($current_season->id) }} --}}
-						<div class="flex items-center gap-2 py-2">
+						<div class="flex items-center gap-2 py-3">
 							@if ($reg->top_local_player())
-								<img src="{{ $reg->top_local_player() ? $reg->top_local_player()->player->getImg() : '' }}" alt="{{ $reg->top_local_player() ? $reg->top_local_player()->player->name : '' }}" class="rounded-full border border-gray-200 dark:border-gray-700 object-cover" style="width: 24px; height: 24px">
+								<img src="{{ $reg->top_local_player() ? $reg->top_local_player()->player->getImg() : '' }}" alt="{{ $reg->top_local_player() ? $reg->top_local_player()->player->name : '' }}" class="rounded-full border border-gray-200 dark:border-gray-650 object-cover" style="width: 24px; height: 24px">
 							@endif
 							<div class="flex flex-col leading-3">
 								<span class="text-sm">{{ $reg->top_local_player() ? $reg->top_local_player()->player->name : '-' }}</span>
@@ -98,9 +99,9 @@
 
 				<tr>
 					<td style="min-width: 150px">
-						<div class="flex items-center gap-2 py-2">
+						<div class="flex items-center gap-2 py-3">
 							@if ($reg->top_visitor_player())
-								<img src="{{ $reg->top_visitor_player() ? $reg->top_visitor_player()->player->getImg() : '' }}" alt="{{ $reg->top_visitor_player() ? $reg->top_visitor_player()->player->name : '' }}" class="rounded-full border border-gray-200 dark:border-gray-700 object-cover" style="width: 24px; height: 24px">
+								<img src="{{ $reg->top_visitor_player() ? $reg->top_visitor_player()->player->getImg() : '' }}" alt="{{ $reg->top_visitor_player() ? $reg->top_visitor_player()->player->name : '' }}" class="rounded-full border border-gray-200 dark:border-gray-650 object-cover" style="width: 24px; height: 24px">
 							@endif
 							<div class="flex flex-col leading-3">
 								<span class="text-sm">{{ $reg->top_visitor_player() ? $reg->top_visitor_player()->player->name : '-' }}</span>

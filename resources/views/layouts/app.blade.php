@@ -27,8 +27,9 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mousetrap/1.6.3/mousetrap.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/tail.select@latest/"></script>
     </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-850">
+    <body class="font-sans antialiased bg-gray-100 dark:bg-gray-850">
+
+        <div class="flex flex-col h-screen justify-between">
             @livewire('navigation-dropdown')
 
             <!-- Page Heading -->
@@ -39,7 +40,7 @@
             </header>
 
             <!-- Page Content -->
-            <main>
+            <main class="mb-auto">
                 {{ $slot }}
             </main>
 

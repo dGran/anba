@@ -22,7 +22,7 @@ class Matches extends Component
 	//filters
 	public $season;
 	public $search = "";
-	public $perPage = '3';
+	public $perPage = '5';
 	public $team = "all";
 	public $manager = "all";
 	public $order = 'id_desc';
@@ -35,7 +35,7 @@ class Matches extends Component
 		'search' => ['except' => ''],
 		'team' => ['except' => "all"],
 		'manager' => ['except' => "all"],
-		'perPage' => ['except' => '10'],
+		'perPage' => ['except' => '5'],
 		'order' => ['except' => 'id_desc'],
 	];
 

@@ -1,5 +1,5 @@
-<div class="score w-full md:w-1/2 md:border-r border-gray-200 dark:border-gray-700">
-	<div class="flex justify-between items-center py-6">
+<div class="score w-full md:w-1/2 md:border-r border-gray-200 dark:border-gray-650">
+	<div class="flex justify-between items-center py-8">
 		<div class="flex-1">
 			<img src="{{ $reg->localTeam->team->getImg() }}" alt="{{ $reg->localTeam->team->short_name }}" style="width: 52px; height: 52px" class="mb-3 mx-auto">
 			<div class="text-center text-sm">{{ $reg->localTeam->team->medium_name }}</div>
@@ -9,15 +9,16 @@
 
 		<div class="flex-1 text-center truncate">
 	    	<p class="text-xs truncate">{{ $reg->stadium }}</p>
-	    	<p class="font-bold text-3xl">{{ $reg->score() }}</p>
+	    	<p class="font-bold text-3xl my-1">{{ $reg->score() }}</p>
 	    	<p class="text-xs">
 		    	@if ($reg->scores->count()>0)
 		    		{{ $reg->scores->first()->updated_at }}
 		    	@else
 		    		@if ($reg->votes()['local'] > 0 || $reg->votes()['visitor'] > 0)
 		    			<div class="text-xs">
-			    			<p>Pronósticos</p>
-			    			<span>{{ $reg->votes()['local'] ? number_format($reg->votesPercent()['local'], 0) : '0' }}% - {{ $reg->votes()['visitor'] ? number_format($reg->votesPercent()['visitor'], 0) : '0' }}%</span>
+			    			<p class="font-bold">Pronósticos</p>
+			    			<span>{{ $reg->votes()['local'] ? number_format($reg->votesPercent()['local'], 2) : '0' }}%</span>
+			    			<span class="ml-3">{{ $reg->votes()['visitor'] ? number_format($reg->votesPercent()['visitor'], 2) : '0' }}%</span>
 		    			</div>
 		    		@endif
 		    	@endif
@@ -32,20 +33,24 @@
 	    </div>
 	</div>
 
-	@if ($reg->played())
-		<div class="border-t border-gray-200 dark:border-gray-700 py-4 px-3 text-center">
-			<button class="px-2 py-0.5 uppercase text-xs text-blue-500 rounded focus:outline-none border border-blue-500 hover:bg-blue-500 focus:bg-blue-500 hover:text-white focus:text-white">
-				boxscore
-			</button>
+	<div class="border-t border-gray-200 dark:border-gray-650 px-4 h-16">
+		<div class="h-full flex items-center justify-center gap-3">
+			@if ($reg->played())
+                <x-buttons.primary-outline class="uppercase text-xs px-2 py-0.5 leading-5">
+                    boxscore
+                </x-buttons.primary-outline>
+			@else
+				@if ($reg->userIsParticipant())
+	                <x-buttons.primary class="uppercase text-xs px-2 py-0.5 leading-6">
+						reportar resultado
+	                </x-buttons.primary>
+	                <x-buttons.primary class="uppercase text-xs px-2 py-0.5 leading-6">
+						reportar estadisticas
+	                </x-buttons.primary>
+	            @else
+	            	<span class="text-md uppercase light:text-gray-500 dark:text-gray-400 font-bold lg:tracking-wider">Partido no disputado</span>
+				@endif
+			@endif
 		</div>
-	@else
-		<div class="border-t border-gray-200 dark:border-gray-700 py-4 px-3 text-center">
-			<button class="px-2 py-0.5 uppercase text-xs text-blue-500 rounded focus:outline-none border border-blue-500 hover:bg-blue-500 focus:bg-blue-500 hover:text-white focus:text-white">
-				reportar resultado
-			</button>
-			<button class="px-2 py-0.5 uppercase text-xs text-blue-500 rounded focus:outline-none border border-blue-500 hover:bg-blue-500 focus:bg-blue-500 hover:text-white focus:text-white">
-				reportar estadisticas
-			</button>
-		</div>
-	@endif
+	</div>
 </div>

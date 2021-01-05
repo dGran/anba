@@ -138,6 +138,7 @@ class Match extends Model
             ->whereIn('player_id', function($query) use ($team_id) {
                $query->select('id')->from('players')->where('team_id', '=', $team_id);
             })
+            ->select('*', \DB::raw('sum(PTS + REB + AST) as total'))
             ->orderBy('PTS', 'desc')
             ->first();
     }
@@ -202,6 +203,14 @@ class Match extends Model
     {
         if ($query = MatchPoll::where('match_id', $this->id)->where('user_id', auth()->user()->id)->first()) {
             return $query->vote;
+        }
+        return false;
+    }
+
+    public function userIsParticipant()
+    {
+        if (($this->localTeam->team->user && $this->localTeam->team->user->id == auth()->user()->id) || ($this->visitorTeam->team->user && $this->visitorTeam->team->user->id == auth()->user()->id)) {
+            return true;
         }
         return false;
     }

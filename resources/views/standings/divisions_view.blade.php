@@ -3,7 +3,7 @@
 		<img src="{{ $division->seasonConference->conference->getImg() }}" alt="{{ $division->seasonConference->conference->name }}" style="width: 48px; height: 48px" class="mr-2">
 		{{ $division->name }} Division
 	</p>
-	<div class="overflow-hidden shadow-xl rounded-lg mx-3 md:mx-0">
+	<div class="overflow-hidden shadow-md rounded-lg mx-3 md:mx-0">
 		<div class="bg-white dark:bg-gray-750 dark:text-white rounded-lg">
 			<div class="table-wrapper overflow-x-auto">
 				<table class="w-full">

@@ -35,11 +35,11 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/clasificaciones', function () {
+Route::get('/clasificaciones', function () {
     return view('standings');
 })->name('standings');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/partidos', function () {
+Route::get('/partidos', function () {
     return view('matches');
 })->name('matches');
 

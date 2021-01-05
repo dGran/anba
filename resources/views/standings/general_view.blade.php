@@ -1,4 +1,4 @@
-<div class="overflow-hidden shadow-xl rounded-lg mx-3 md:mx-0">
+<div class="overflow-hidden shadow-md rounded-lg mx-3 md:mx-0">
 	<div class="bg-white dark:bg-gray-750 dark:text-white rounded-lg">
 		<div class="table-wrapper overflow-x-auto">
 			<table class="w-full">
