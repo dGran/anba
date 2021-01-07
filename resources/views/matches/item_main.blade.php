@@ -40,16 +40,21 @@
                     boxscore
                 </x-buttons.primary-outline>
 			@else
-				@if ($reg->userIsParticipant())
-	                <x-buttons.primary class="uppercase text-xs px-2 py-0.5 leading-6">
-						reportar resultado
-	                </x-buttons.primary>
-	                <x-buttons.primary class="uppercase text-xs px-2 py-0.5 leading-6">
-						reportar estadisticas
-	                </x-buttons.primary>
-	            @else
+				@auth
+					@if ($reg->userIsParticipant())
+		                <x-buttons.primary class="uppercase text-xs px-2 py-0.5 leading-6">
+							reportar resultado
+		                </x-buttons.primary>
+		                <x-buttons.primary class="uppercase text-xs px-2 py-0.5 leading-6">
+							reportar estadisticas
+		                </x-buttons.primary>
+		            @else
+		            	<span class="text-md uppercase light:text-gray-500 dark:text-gray-400 font-bold lg:tracking-wider">Partido no disputado</span>
+					@endif
+	            @endauth
+	            @guest
 	            	<span class="text-md uppercase light:text-gray-500 dark:text-gray-400 font-bold lg:tracking-wider">Partido no disputado</span>
-				@endif
+	            @endguest
 			@endif
 		</div>
 	</div>

@@ -138,8 +138,12 @@ class Match extends Model
             ->whereIn('player_id', function($query) use ($team_id) {
                $query->select('id')->from('players')->where('team_id', '=', $team_id);
             })
-            ->select('*', \DB::raw('sum(PTS + REB + AST) as total'))
+            ->select('*', \DB::raw('PTS + REB + AST as total'))
+            ->orderBy('total', 'desc')
             ->orderBy('PTS', 'desc')
+            ->orderBy('REB', 'desc')
+            ->orderBy('AST', 'desc')
+            ->get()
             ->first();
     }
 
@@ -151,7 +155,12 @@ class Match extends Model
             ->whereIn('player_id', function($query) use ($team_id) {
                $query->select('id')->from('players')->where('team_id', '=', $team_id);
             })
+            ->select('*', \DB::raw('PTS + REB + AST as total'))
+            ->orderBy('total', 'desc')
             ->orderBy('PTS', 'desc')
+            ->orderBy('REB', 'desc')
+            ->orderBy('AST', 'desc')
+            ->get()
             ->first();
     }
 
