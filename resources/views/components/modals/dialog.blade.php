@@ -11,7 +11,7 @@
     </div>
     {{-- </div> --}}
 
-    <div class="text-right">
+{{--     <div class="text-right">
         {{ $footer }}
-    </div>
+    </div> --}}
 </x-modals.modal>

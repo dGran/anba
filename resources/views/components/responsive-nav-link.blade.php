@@ -1,11 +1,17 @@
 @props(['active'])
 
 @php
+$classes_li = ($active ?? false)
+            ? 'text-sm uppercase border-b border-gray-700 bg-gray-800'
+            : 'text-sm uppercase border-b border-gray-700';
 $classes = ($active ?? false)
-            ? 'block pl-3 pr-4 py-2 border-l-4 border-teal-400 text-base font-medium text-teal-700 bg-teal-50 focus:outline-none focus:text-teal-800 focus:bg-teal-100 focus:border-teal-700 transition duration-150 ease-in-out'
-            : 'block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out';
+            ? 'flex items-center justify-between px-6 py-3 border-l-4 border-dark-link text-base leading-5 uppercase text-dark-link focus:outline-none transition duration-150 ease-in-out pointer-events-none'
+            : 'group flex items-center justify-between px-6 py-3 text-sm uppercase text-gray-300 leading-5 focus:outline-none transition duration-150 ease-in-out hover:text-white focus:text-white transform hover:-translate-x-1 focus:-translate-x-1 hover:bg-gray-800 focus:bg-gray-800 active:bg-gray-800';
 @endphp
 
-<a {{ $attributes->merge(['class' => $classes]) }}>
-    {{ $slot }}
-</a>
+<li {{ $attributes->merge(['class' => $classes_li]) }}>
+	<a {{ $attributes->merge(['class' => $classes]) }}>
+	    <span class="{{ $active ? 'animate-pulse' : '' }}">{{ $slot }}</span>
+    	<i class="fas fa-chevron-right {{ $active ? 'text-dark-link' : 'text-gray-600 group-hover:text-white group-focus:text-white' }}"></i>
+	</a>
+</li>

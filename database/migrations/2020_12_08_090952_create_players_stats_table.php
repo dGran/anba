@@ -21,6 +21,9 @@ class CreatePlayersStatsTable extends Migration
             $table->foreignId('player_id')
                 ->constrained()
                 ->onDelete('cascade');
+            $table->foreignId('season_team_id')
+                ->constrained('seasons_teams')
+                ->onDelete('cascade');
             $table->integer('MIN')->nullable(); // minutos
             $table->integer('PTS')->nullable(); // puntos
             $table->integer('REB')->nullable(); // rebotes

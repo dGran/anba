@@ -18,14 +18,16 @@ class Matches extends Component
 	//boxscore
 	public $scores, $players_stats, $teams_stats;
 	public $teams_table_data;
+	public $modalForecast = false;
 
 	//filters
 	public $season;
 	public $search = "";
 	public $perPage = '5';
 	public $team = "all";
+	public $hidePlayed = false;
 	public $manager = "all";
-	public $order = 'id_desc';
+	public $order = 'lastPlayed';
 
 	public $blank_view = false;
 
@@ -36,7 +38,7 @@ class Matches extends Component
 		'team' => ['except' => "all"],
 		'manager' => ['except' => "all"],
 		'perPage' => ['except' => '5'],
-		'order' => ['except' => 'id_desc'],
+		'order' => ['except' => 'lastPlayed'],
 	];
 
     // Pagination
@@ -71,6 +73,16 @@ class Matches extends Component
 		if ($poll) {
 			$poll->delete();
 		}
+	}
+
+	public function openForecastsModal()
+	{
+		$this->modalForecast = true;
+	}
+
+	public function closeForecastsModal()
+	{
+		$this->modalForecast = false;
 	}
 
 	public function mount()
@@ -120,12 +132,13 @@ class Matches extends Component
 	protected function getData()
 	{
     	$regs = Match::
-   			leftjoin('seasons_teams', function($join){
+            leftJoin('scores', 'scores.match_id', 'matches.id')
+   			->leftJoin('seasons_teams', function($join){
                 $join->on('seasons_teams.id','=','matches.local_team_id');
                 $join->orOn('seasons_teams.id','=','matches.visitor_team_id');
             })
     		->leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
-   			->leftjoin('users', function($join){
+   			->leftJoin('users', function($join){
                 $join->on('users.id','=','matches.local_manager_id');
                 $join->orOn('users.id','=','matches.visitor_manager_id');
             })
@@ -133,10 +146,11 @@ class Matches extends Component
     		->name($this->search)
     		->team($this->team)
     		->user($this->manager)
+            ->hidePlayed($this->hidePlayed)
+			->select('matches.*')
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
 			->orderBy('matches.id', 'desc')
-			->select('matches.*')
-			->groupBy('matches.id')
+			->groupBy('matches.id', 'scores.created_at')
 			->paginate($this->perPage)->onEachSide(2);
 
 	    if (($regs->total() > 0 && $regs->count() == 0)) {
@@ -147,12 +161,13 @@ class Matches extends Component
 		}
 
     	$regs = Match::
-   			leftjoin('seasons_teams', function($join){
+            leftJoin('scores', 'scores.match_id', 'matches.id')
+   			->leftJoin('seasons_teams', function($join){
                 $join->on('seasons_teams.id','=','matches.local_team_id');
                 $join->orOn('seasons_teams.id','=','matches.visitor_team_id');
             })
     		->leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
-   			->leftjoin('users', function($join){
+   			->leftJoin('users', function($join){
                 $join->on('users.id','=','matches.local_manager_id');
                 $join->orOn('users.id','=','matches.visitor_manager_id');
             })
@@ -160,10 +175,11 @@ class Matches extends Component
     		->name($this->search)
     		->team($this->team)
     		->user($this->manager)
+            ->hidePlayed($this->hidePlayed)
+			->select('matches.*')
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
 			->orderBy('matches.id', 'desc')
-			->select('matches.*')
-			->groupBy('matches.id')
+			->groupBy('matches.id', 'scores.created_at')
 			->paginate($this->perPage)->onEachSide(2);
 
 		return $regs;
@@ -185,6 +201,10 @@ class Matches extends Component
             ],
             'stadium_desc' => [
                 'field'     => 'matches.stadium',
+                'direction' => 'desc'
+            ],
+            'lastPlayed' => [
+                'field'     => 'scores.created_at',
                 'direction' => 'desc'
             ],
         ];

@@ -1,5 +1,85 @@
 @import url(https://cdnjs.cloudflare.com/ajax/libs/pretty-checkbox/3.0.3/pretty-checkbox.min.css);@charset "UTF-8";
 
+.pagination-wrapper {
+  margin: 1em 0 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagination-wrapper .pagination {
+  font-size: 0.8em;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin-bottom: 0;
+}
+
+.pagination-wrapper .pagination .page-item {
+  margin: 0 0.15em;
+}
+
+.pagination-wrapper .pagination .page-item .page-link {
+  background-color: #fff;
+  border-color: #ced4da;
+  border-radius: 9999px;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  -webkit-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  -moz-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  color: #495057;
+  cursor: pointer;
+  height: 45px;
+  width: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.pagination-wrapper .pagination .page-item .page-link:focus, .pagination-wrapper .pagination .page-item .page-link:hover {
+  background-color: #ebf4ff;
+  border-color: #a3bffa;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  color: #667eea;
+}
+
+.pagination-wrapper .pagination .page-item.disabled .page-link {
+  background: #F7F9FE;
+  color: #BFBDC1;
+  cursor: not-allowed;
+}
+
+.pagination-wrapper .pagination .page-item.separator .page-link {
+  color: #495057;
+  background: none;
+  border: 1px solid transparent;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  margin: 0 -1em;
+}
+
+.pagination-wrapper .pagination .page-item.active .page-link {
+  background-image: linear-gradient(70deg, #21c8f6 21%, #637bff 117%);
+  color: white;
+  cursor: not-allowed;
+}
+
+.pagination-wrapper .pagination .page-item.active .page-link:hover {
+  border: 1px solid transparent;
+}
+
+.pagination-wrapper .pagination-info {
+  margin-top: 1em;
+  font-size: 0.9em;
+  color: #718096;
+}
+
 .font-miriam {
   font-family: "Miriam Libre", sans-serif;
 }

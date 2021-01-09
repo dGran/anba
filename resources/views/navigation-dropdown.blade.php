@@ -1,33 +1,49 @@
 @php
     $navLinks = [
-        ['href' => '/clasificaciones', 'name' => 'standings', 'text' => 'Clasificaciones'],
-        ['href' => '/partidos', 'name' => 'matches', 'text' => 'Partidos'],
-        ['href' => '/estadisticas', 'name' => 'stats', 'text' => 'Estadísticas'],
-        ['href' => '/equipos', 'name' => 'teams', 'text' => 'Equipos'],
-        ['href' => '/jugadores', 'name' => 'players', 'text' => 'Jugadores'],
+        ['href' => '/partidos', 'name' => 'matches', 'text' => 'Partidos', 'class' => '', 'class_hamburger' => ''],
+        ['href' => '/clasificaciones', 'name' => 'standings', 'text' => 'Clasificaciones', 'class' => '', 'class_hamburger' => ''],
+        ['href' => '/estadisticas', 'name' => 'stats', 'text' => 'Estadísticas', 'class' => '', 'class_hamburger' => ''],
+        ['href' => '/jugadores', 'name' => 'players', 'text' => 'Jugadores', 'class' => 'hidden md:inline-flex', 'class_hamburger' => ''],
+        ['href' => '/equipos', 'name' => 'teams', 'text' => 'Equipos', 'class' => 'hidden lg:inline-flex', 'class_hamburger' => ''],
+        ['href' => '/managers', 'name' => 'teams', 'text' => 'Managers', 'class' => 'hidden lg:inline-flex', 'class_hamburger' => ''],
     ]
 @endphp
 
-<nav x-data="{ open: false }" class="bg-header-gb">
+<nav x-data="{ open: false }" class="bg-gray-900 select-none z-50 fixed w-full">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
+                <!-- Hamburger -->
+                <div class="flex items-center lg:hidden">
+                    <div id="nav-icon3" @click="open = ! open" class="group">
+                        <span class="bg-gray-300 group-hover:bg-white focus-hover:bg-white"></span>
+                        <span class="bg-gray-300 group-hover:bg-white focus-hover:bg-white"></span>
+                        <span class="bg-gray-300 group-hover:bg-white focus-hover:bg-white"></span>
+                        <span class="bg-gray-300 group-hover:bg-white focus-hover:bg-white"></span>
+                    </div>
+{{--                     <button @click="open = ! open" class="inline-flex items-center justify-center rounded-md text-gray-300 hover:text-white focus:text-white focus:outline-none transition duration-150 ease-in-out">
+                        <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                            <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button> --}}
+                </div>
                 <!-- Logo -->
-                <div class="flex-shrink-0 flex items-center text-white">
-                    <a href="{{ route('dashboard') }}" class="group flex items-center h-full focus:outline-none">
-                        <img src="{{ asset('img/logo.png') }}" alt="logo" class="h-12 rounded-full block w-auto focus:outline-none border border-transparent group-hover:border-dark-link group-focus:border-dark-link dark:group-hover:border-pink-500 dark:group-focus:border-pink-500 transition duration-150 ease-in-out">
-                        <p class="ml-3 flex flex-col leading-5">
-                            <span class="text-xl font-bold">ANBA</span>
-                            <span class="text-xxs uppercase font-medium">Adictos a la NBA</span>
-                        </p>
+                <div class="flex-1 ml-5 lg:ml-0 text-white flex items-center w-full">
+                    <a href="{{ route('home') }}" class="group flex items-center h-full focus:outline-none">
+                        <img src="{{ asset('img/logo.png') }}" alt="logo" class="h-12 rounded-full block w-auto focus:outline-none border border-transparent group-hover:border-dark-link group-focus:border-dark-link transition duration-150 ease-in-out" />
+                        <div class="text-xl ml-3 leading-5  w-full">
+                            <p class="font-bold">ANBA</p>
+                            <div class="block text-xxs uppercase w-24">Adictos a la NBA</div>
+                        </div>
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-4 sm:-my-px sm:ml-10 sm:flex">
                     @foreach ($navLinks as $link)
-                        <x-nav-link :href="$link['href']" :active="request()->routeIs($link['name'])">
+                        <x-nav-link :href="$link['href']" :active="request()->routeIs($link['name'])" :class="$link['class']">
                             {{ __($link['text']) }}
                         </x-nav-link>
                     @endforeach
@@ -35,12 +51,12 @@
             </div>
 
             <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ml-6">
+            <div class="flex items-center ml-6">
                 <x-jet-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         @auth
                             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                                <button class="flex text-sm rounded-full focus:outline-none border border-transparent hover:border-dark-link dark:hover:border-pink-500 focus:border-dark-link dark:focus:border-pink-500 transition duration-150 ease-in-out">
+                                <button class="flex text-sm rounded-full focus:outline-none border border-transparent hover:border-dark-link focus:border-dark-link transition duration-150 ease-in-out">
                                     <img class="h-8 w-8 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
                                 </button>
                             @else
@@ -55,17 +71,22 @@
                                 </button>
                             @endif
                         @endauth
+                        @guest
+                            <button class="flex text-sm rounded-full focus:outline-none border border-transparent hover:border-dark-link dark:hover:border-pink-500 focus:border-dark-link dark:focus:border-pink-500 transition duration-150 ease-in-out">
+                                <img class="h-8 w-8 bg-gray-100 p-0.5 rounded-full object-cover" src="{{ asset('img/guest.png') }}" alt="Invitado"/>
+                            </button>
+                        @endguest
                     </x-slot>
 
                     <x-slot name="content">
                         @auth
                             <!-- Account Management -->
-                            <div class="block px-4 py-2 text-xs text-gray-400">
+{{--                             <div class="block px-4 py-2 text-xs text-gray-400">
                                 {{ __('Manage Account') }}
-                            </div>
+                            </div> --}}
 
                             <x-jet-dropdown-link href="{{ route('profile.show') }}">
-                                {{ __('Profile') }}
+                                {{ __('Perfil') }}
                             </x-jet-dropdown-link>
 
                             @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
@@ -110,11 +131,9 @@
                             <!-- Authentication -->
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-
                                 <x-jet-dropdown-link href="{{ route('logout') }}"
-                                                    onclick="event.preventDefault();
-                                                                this.closest('form').submit();">
-                                    {{ __('Logout') }}
+                                                    onclick="event.preventDefault(); this.closest('form').submit();">
+                                    {{ __('Cerrar sesión') }}
                                 </x-jet-dropdown-link>
                             </form>
                         @endauth
@@ -122,102 +141,112 @@
                             <div class="block px-4 py-2 text-xs text-gray-400">
                                 {{ __('Manage Account') }}
                             </div>
+                            <x-jet-dropdown-link href="{{ route('login') }}">
+                                {{ __('Iniciar sesión') }}
+                            </x-jet-dropdown-link>
+                            <x-jet-dropdown-link href="{{ route('register') }}">
+                                {{ __('Crear cuenta') }}
+                            </x-jet-dropdown-link>
                         @endguest
                     </x-slot>
                 </x-jet-dropdown>
             </div>
 
-            <!-- Hamburger -->
-            <div class="-mr-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
         </div>
     </div>
 
+<style>
+/* Icon 3 */
+
+#nav-icon3 span:nth-child(1) {
+  top: 0px;
+}
+
+#nav-icon3 span:nth-child(2),#nav-icon3 span:nth-child(3) {
+  top: 6px;
+}
+
+#nav-icon3 span:nth-child(4) {
+  top: 12px;
+}
+
+#nav-icon3.open span:nth-child(1) {
+  top: 6px;
+  width: 0%;
+  left: 50%;
+}
+
+#nav-icon3.open span:nth-child(2) {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+#nav-icon3.open span:nth-child(3) {
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+
+#nav-icon3.open span:nth-child(4) {
+  top: 6px;
+  width: 0%;
+  left: 50%;
+}
+
+
+#nav-icon3 {
+  width: 18px;
+  height: 14px;
+  position: relative;
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  transform: rotate(0deg);
+  -webkit-transition: .5s ease-in-out;
+  -moz-transition: .5s ease-in-out;
+  -o-transition: .5s ease-in-out;
+  transition: .5s ease-in-out;
+  cursor: pointer;
+}
+
+#nav-icon3 span {
+  display: block;
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  border-radius: 9px;
+  opacity: 1;
+  left: 0;
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  transform: rotate(0deg);
+  -webkit-transition: .15s ease-in-out;
+  -moz-transition: .15s ease-in-out;
+  -o-transition: .15s ease-in-out;
+  transition: .15s ease-in-out;
+}
+</style>
+
+<script>
+$(document).ready(function(){
+    $('#nav-icon1,#nav-icon2,#nav-icon3,#nav-icon4').click(function(){
+        $(this).toggleClass('open');
+    });
+});
+</script>
+
     <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
+    <div :class="{'block': open, 'hidden': ! open}" class="hidden lg:hidden absolute w-full z-40 transition-all duration-500 ease-in-out">
+        <ul class="bg-gray-850 shadow-lg w-full">
             @foreach ($navLinks as $link)
-                <x-responsive-nav-link :href="$link['href']" :active="request()->routeIs($link['name'])">
+                <x-responsive-nav-link :href="$link['href']" :active="request()->routeIs($link['name'])" :class="$link['class_hamburger']">
                     {{ __($link['text']) }}
                 </x-responsive-nav-link>
             @endforeach
-        </div>
-
-        <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200">
-            @auth
-                <div class="flex items-center px-4">
-                    <div class="flex-shrink-0">
-                        <img class="h-10 w-10 rounded-full" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
-                    </div>
-
-                    <div class="ml-3">
-                        <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                        <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-                    </div>
-                </div>
-            @endauth
-
-            <div class="mt-3 space-y-1">
-                @auth
-                    <!-- Account Management -->
-                    <x-jet-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
-                        {{ __('Profile') }}
-                    </x-jet-responsive-nav-link>
-
-                    @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-                        <x-jet-responsive-nav-link href="{{ route('api-tokens.index') }}" :active="request()->routeIs('api-tokens.index')">
-                            {{ __('API Tokens') }}
-                        </x-jet-responsive-nav-link>
-                    @endif
-
-                    <!-- Authentication -->
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-
-                        <x-jet-responsive-nav-link href="{{ route('logout') }}"
-                                        onclick="event.preventDefault();
-                                                    this.closest('form').submit();">
-                            {{ __('Logout') }}
-                        </x-jet-responsive-nav-link>
-                    </form>
-
-                    <!-- Team Management -->
-                    @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
-                        <div class="border-t border-gray-200"></div>
-
-                        <div class="block px-4 py-2 text-xs text-gray-400">
-                            {{ __('Manage Team') }}
-                        </div>
-
-                        <!-- Team Settings -->
-                        <x-jet-responsive-nav-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}" :active="request()->routeIs('teams.show')">
-                            {{ __('Team Settings') }}
-                        </x-jet-responsive-nav-link>
-
-                        <x-jet-responsive-nav-link href="{{ route('teams.create') }}" :active="request()->routeIs('teams.create')">
-                            {{ __('Create New Team') }}
-                        </x-jet-responsive-nav-link>
-
-                        <div class="border-t border-gray-200"></div>
-
-                        <!-- Team Switcher -->
-                        <div class="block px-4 py-2 text-xs text-gray-400">
-                            {{ __('Switch Teams') }}
-                        </div>
-
-                        @foreach (Auth::user()->allTeams() as $team)
-                            <x-jet-switchable-team :team="$team" component="jet-responsive-nav-link" />
-                        @endforeach
-                    @endif
-                @endauth
-            </div>
-        </div>
+        </ul>
     </div>
 </nav>

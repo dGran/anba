@@ -14,6 +14,7 @@ class PlayerStat extends Model
     protected $fillable = [
         'match_id',
         'player_id',
+        'season_team_id',
         'MIN',
         'PTS',
         'REB',

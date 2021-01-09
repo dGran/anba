@@ -95,6 +95,16 @@ class Match extends Model
         }
     }
 
+    public function scopeHidePlayed($query, $value)
+    {
+        if ($value) {
+            return $query->where(function($q) {
+                            $q->whereNull('scores.local_score')
+                                ->whereNull('scores.visitor_score');
+                            });
+        }
+    }
+
     public function getName()
     {
         return $this->localTeam->team->medium_name . ' vs ' . $this->visitorTeam->team->medium_name;
@@ -138,8 +148,8 @@ class Match extends Model
             ->whereIn('player_id', function($query) use ($team_id) {
                $query->select('id')->from('players')->where('team_id', '=', $team_id);
             })
-            ->select('*', \DB::raw('PTS + REB + AST as total'))
-            ->orderBy('total', 'desc')
+            ->select('*', \DB::raw('PTS + REB + AST as TOTAL'))
+            ->orderBy('TOTAL', 'desc')
             ->orderBy('PTS', 'desc')
             ->orderBy('REB', 'desc')
             ->orderBy('AST', 'desc')
@@ -155,8 +165,8 @@ class Match extends Model
             ->whereIn('player_id', function($query) use ($team_id) {
                $query->select('id')->from('players')->where('team_id', '=', $team_id);
             })
-            ->select('*', \DB::raw('PTS + REB + AST as total'))
-            ->orderBy('total', 'desc')
+            ->select('*', \DB::raw('PTS + REB + AST as TOTAL'))
+            ->orderBy('TOTAL', 'desc')
             ->orderBy('PTS', 'desc')
             ->orderBy('REB', 'desc')
             ->orderBy('AST', 'desc')

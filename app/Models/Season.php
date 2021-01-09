@@ -142,7 +142,7 @@ class Season extends Model
                 break;
             case 'last10':
                 return $criteria = [
-                    "last10_diff" => "desc",
+                    "last10_percent" => "desc",
                     "last10_w" => "desc",
                     "wavg" => "desc",
                     "w" => "desc",
@@ -152,7 +152,7 @@ class Season extends Model
                 break;
             case 'last10_desc':
                 return $criteria = [
-                    "last10_diff" => "asc",
+                    "last10_percent" => "asc",
                     "last10_w" => "asc",
                     "wavg" => "asc",
                     "w" => "asc",
@@ -162,7 +162,7 @@ class Season extends Model
                 break;
             case 'home':
                 return $criteria = [
-                    "home_diff" => "desc",
+                    "home_percent" => "desc",
                     "home_w" => "desc",
                     "wavg" => "desc",
                     "w" => "desc",
@@ -172,7 +172,7 @@ class Season extends Model
                 break;
             case 'home_desc':
                 return $criteria = [
-                    "home_diff" => "asc",
+                    "home_percent" => "asc",
                     "home_w" => "asc",
                     "wavg" => "asc",
                     "w" => "asc",
@@ -182,7 +182,7 @@ class Season extends Model
                 break;
             case 'road':
                 return $criteria = [
-                    "road_diff" => "desc",
+                    "road_percent" => "desc",
                     "road_w" => "desc",
                     "wavg" => "desc",
                     "w" => "desc",
@@ -192,7 +192,7 @@ class Season extends Model
                 break;
             case 'road_desc':
                 return $criteria = [
-                    "road_diff" => "asc",
+                    "road_percent" => "asc",
                     "road_w" => "asc",
                     "wavg" => "asc",
                     "w" => "asc",
@@ -202,7 +202,7 @@ class Season extends Model
                 break;
             case 'conf':
                 return $criteria = [
-                    "conf_diff" => "desc",
+                    "conf_percent" => "desc",
                     "conf_w" => "desc",
                     "wavg" => "desc",
                     "w" => "desc",
@@ -212,7 +212,7 @@ class Season extends Model
                 break;
             case 'conf_desc':
                 return $criteria = [
-                    "conf_diff" => "asc",
+                    "conf_percent" => "asc",
                     "conf_w" => "asc",
                     "wavg" => "asc",
                     "w" => "asc",
@@ -222,7 +222,7 @@ class Season extends Model
                 break;
             case 'div':
                 return $criteria = [
-                    "div_diff" => "desc",
+                    "div_percent" => "desc",
                     "div_w" => "desc",
                     "wavg" => "desc",
                     "w" => "desc",
@@ -232,7 +232,7 @@ class Season extends Model
                 break;
             case 'div_desc':
                 return $criteria = [
-                    "div_diff" => "asc",
+                    "div_percent" => "asc",
                     "div_w" => "asc",
                     "wavg" => "asc",
                     "w" => "asc",
@@ -271,20 +271,20 @@ class Season extends Model
             "wavg" => 0,
             "conf_w" => 0,
             "conf_l" => 0,
-            "conf_diff" => 0,
+            "conf_percent" => 0,
             "div_w" => 0,
             "div_l" => 0,
-            "div_diff" => 0,
+            "div_percent" => 0,
             "home_w" => 0,
             "home_l" => 0,
-            "home_diff" => 0,
+            "home_percent" => 0,
             "road_w" => 0,
             "road_l" => 0,
-            "road_diff" => 0,
+            "road_percent" => 0,
             // ot
             "last10_w" => 0,
             "last10_l" => 0,
-            "last10_diff" => 0,
+            "last10_percent" => 0,
             "streak" => 0,
         ];
 
@@ -386,12 +386,16 @@ class Season extends Model
         //calculed data
         $matches_played = $data['w'] + $data['l'];
         $data['wavg'] = $matches_played > 0 ? $data['w'] / $matches_played : 0;
-        $data['conf_diff'] = $data['conf_w'] - $data['conf_l'];
-        $data['div_diff'] = $data['div_w'] - $data['div_l'];
-        $data['home_diff'] = $data['home_w'] - $data['home_l'];
-        $data['road_diff'] = $data['road_w'] - $data['road_l'];
-        $data['last10_diff'] = $data['last10_w'] - $data['last10_l'];
-
+        $conf_played = $data['conf_w'] + $data['conf_l'];
+        $data['conf_percent'] = $conf_played > 0 ? ($data['conf_w'] / $conf_played) * 100 : 0;
+        $div_played = $data['div_w'] + $data['div_l'];
+        $data['div_percent'] = $div_played > 0 ? ($data['div_w'] / $div_played) * 100 : 0;
+        $home_played = $data['home_w'] + $data['home_l'];
+        $data['home_percent'] = $home_played > 0 ? ($data['home_w'] / $home_played) * 100 : 0;
+        $road_played = $data['road_w'] + $data['road_l'];
+        $data['road_percent'] = $road_played > 0 ? ($data['road_w'] / $road_played) * 100 : 0;
+        $last10_played = $data['last10_w'] + $data['last10_l'];
+        $data['last10_percent'] = $last10_played > 0 ? ($data['last10_w'] / $last10_played) * 100 : 0;
         return $data;
     }
 
@@ -471,20 +475,20 @@ class Season extends Model
                 'wavg' => $data['wavg'],
                 'conf_w' => $data['conf_w'],
                 'conf_l' => $data['conf_l'],
-                'conf_diff' => $data['conf_diff'],
+                'conf_percent' => $data['conf_percent'],
                 'div_w' => $data['div_w'],
                 'div_l' => $data['div_l'],
-                'div_diff' => $data['div_diff'],
+                'div_percent' => $data['div_percent'],
                 'home_w' => $data['home_w'],
                 'home_l' => $data['home_l'],
-                'home_diff' => $data['home_diff'],
+                'home_percent' => $data['home_percent'],
                 'road_w' => $data['road_w'],
                 'road_l' => $data['road_l'],
-                'road_diff' => $data['road_diff'],
+                'road_percent' => $data['road_percent'],
                 //ot
                 'last10_w' => $data['last10_w'],
                 'last10_l' => $data['last10_l'],
-                'last10_diff' => $data['last10_diff'],
+                'last10_percent' => $data['last10_percent'],
                 'streak' => $data['streak'],
             ]);
         }
@@ -495,5 +499,23 @@ class Season extends Model
         $positions = $sorted->values()->toArray();
 
         return $positions;
+    }
+
+    public function top_player($season_team_id)
+    {
+        return $top = PlayerStat::
+            select('player_id',
+                \DB::raw('AVG(PTS) as AVG_PTS'),
+                \DB::raw('AVG(REB) as AVG_REB'),
+                \DB::raw('AVG(AST) as AVG_AST'),
+                \DB::raw('SUM(PTS + REB + AST) / COUNT(player_id) as AVG_TOTAL')
+            )
+            ->where('season_team_id', $season_team_id)
+            ->orderBy('AVG_TOTAL', 'desc')
+            ->orderBy('AVG_PTS', 'desc')
+            ->orderBy('AVG_REB', 'desc')
+            ->orderBy('AVG_AST', 'desc')
+            ->groupBy('player_id')
+            ->first();
     }
 }

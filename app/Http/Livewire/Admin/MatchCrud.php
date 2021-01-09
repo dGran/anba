@@ -884,6 +884,7 @@ class MatchCrud extends Component
 				$playerStat = PlayerStat::create([
 					'match_id' => $this->regView->id,
 					'player_id' => $player_stat['player_id'],
+					'season_team_id' => $player_stat['season_team_id'],
 					'MIN' 		=> $player_stat['MIN'],
 					'PTS' 		=> $player_stat['PTS'],
 					'REB' 		=> $player_stat['REB'],
@@ -978,6 +979,7 @@ class MatchCrud extends Component
 			$player_stat['player_name'] = $player->name;
 			$player_stat['player_pos'] = $player->getPosition();
 			$player_stat['team_id'] = $this->regView->localTeam->team->id;
+			$player_stat['season_team_id'] = $this->regView->localTeam->id;
 			$player_stat['MIN'] = 0;
 			$player_stat['PTS'] = 0;
 			$player_stat['REB'] = 0;
@@ -1005,6 +1007,7 @@ class MatchCrud extends Component
 			$player_stat['player_name'] = $player->name;
 			$player_stat['player_pos'] = $player->getPosition();
 			$player_stat['team_id'] = $this->regView->visitorTeam->team->id;
+			$player_stat['season_team_id'] = $this->regView->visitorTeam->id;
 			$player_stat['MIN'] = 0;
 			$player_stat['PTS'] = 0;
 			$player_stat['REB'] = 0;
@@ -1049,6 +1052,7 @@ class MatchCrud extends Component
 			$player_stat['player_name'] = $ps->player->name;
 			$player_stat['player_pos'] = $ps->player->getPosition();
 			$player_stat['team_id'] = $ps->player->team_id;
+			$player_stat['season_team_id'] = $ps->season_team_id;
 			$player_stat['MIN'] = $ps->MIN;
 			$player_stat['PTS'] = $ps->PTS;
 			$player_stat['REB'] = $ps->REB;

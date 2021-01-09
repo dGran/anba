@@ -18,8 +18,8 @@ class CreateTeamsStatsTable extends Migration
             $table->foreignId('match_id')
                 ->constrained()
                 ->onDelete('cascade');
-            $table->foreignId('team_id')
-                ->constrained()
+            $table->foreignId('season_team_id')
+                ->constrained('seasons_teams')
                 ->onDelete('cascade');
             $table->integer('counterattack')->nullable(); // puntos al contraataque
             $table->integer('zone')->nullable(); // puntos en la zona

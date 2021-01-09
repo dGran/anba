@@ -4,9 +4,9 @@
 
 		<div class="flex mb-4 mt-2">
 			<div class="flex-1 border-r border-gray-200 dark:border-gray-650 py-1">
-				<div class="px-1 flex items-center border-b border-gray-200 dark:border-gray-650 gap-2">
-					<img src="{{ $reg->localTeam->team->getImg() }}" alt="{{ $reg->localTeam->team->short_name }}" style="width: 32px; height: 32px" class="mb-1">
-					<div class="text-sm">{{ $reg->localTeam->team->medium_name }}</div>
+				<div class="px-1 flex items-center border-b border-gray-200 dark:border-gray-650">
+					<img src="{{ $reg->localTeam->team->getImg() }}" alt="{{ $reg->localTeam->team->short_name }}" style="width: 32px; height: 32px">
+					<div class="text-sm ml-2">{{ $reg->localTeam->team->medium_name }}</div>
 				</div>
 				<div class="text-center">
 					<p class="text-2xl font-bold {{ $reg->votes()['local'] > $reg->votes()['visitor'] ? '' : 'light:text-gray-400 dark:text-gray-500' }}">
@@ -23,9 +23,9 @@
 			</div>
 
 			<div class="flex-1 py-1">
-				<div class="px-1 flex items-center justify-end border-b border-gray-200 dark:border-gray-650 gap-2">
-					<div class="text-sm">{{ $reg->visitorTeam->team->medium_name }}</div>
-					<img src="{{ $reg->visitorTeam->team->getImg() }}" alt="{{ $reg->visitorTeam->team->short_name }}" style="width: 32px; height: 32px" class="mb-1">
+				<div class="px-1 flex items-center justify-end border-b border-gray-200 dark:border-gray-650">
+					<div class="text-sm mr-2">{{ $reg->visitorTeam->team->medium_name }}</div>
+					<img src="{{ $reg->visitorTeam->team->getImg() }}" alt="{{ $reg->visitorTeam->team->short_name }}" style="width: 32px; height: 32px">
 				</div>
 				<div class="text-center">
 					<p class="text-2xl font-bold {{ $reg->votes()['visitor'] > $reg->votes()['visitor'] ? '' : 'light:text-gray-400 dark:text-gray-500' }}">
