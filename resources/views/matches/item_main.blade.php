@@ -15,7 +15,7 @@
 		    		{{ $reg->scores->first()->updated_at }}
 		    	@else
 	    			<div class="text-xs">
-		                <x-buttons.primary class="lg:hidden uppercase text-xs px-2 py-0 leading-6 block mx-auto mb-1" wire:click="openForecastsModal">
+		                <x-buttons.primary class="lg:hidden uppercase text-xs px-2 py-0 leading-6 block mx-auto mb-1" wire:click="openForecastsModal({{ $reg->id }})">
 							Pronósticos
 		                </x-buttons.primary>
 	    				@if ($reg->votes()['local'] > 0 || $reg->votes()['visitor'] > 0)
@@ -39,7 +39,7 @@
 	<div class="border-t border-gray-200 dark:border-gray-650 px-4 h-16">
 		<div class="h-full flex items-center justify-center">
 			@if ($reg->played())
-                <x-buttons.primary-outline class="w-24 uppercase text-xs px-2 py-0.5 leading-5 transform hover:scale-125 focus:scale-125 transition duration-300 ease-in-out">
+                <x-buttons.primary-outline class="w-24 uppercase text-xs px-2 py-0.5 leading-5 transform hover:scale-125 focus:scale-125 transition duration-300 ease-in-out" wire:click="openBoxscoreModal({{ $reg->id }})">
                     boxscore
                 </x-buttons.primary-outline>
 			@else

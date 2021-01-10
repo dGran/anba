@@ -28,7 +28,7 @@
 					<img src="{{ $reg->visitorTeam->team->getImg() }}" alt="{{ $reg->visitorTeam->team->short_name }}" style="width: 32px; height: 32px">
 				</div>
 				<div class="text-center">
-					<p class="text-2xl font-bold {{ $reg->votes()['visitor'] > $reg->votes()['visitor'] ? '' : 'light:text-gray-400 dark:text-gray-500' }}">
+					<p class="text-2xl font-bold {{ $reg->votes()['visitor'] > $reg->votes()['local'] ? '' : 'light:text-gray-400 dark:text-gray-500' }}">
 						{{ $reg->votes()['visitor'] ? number_format($reg->votesPercent()['visitor'], 2) : '0' }}%
 					</p>
 					@auth

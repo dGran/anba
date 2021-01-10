@@ -18,7 +18,10 @@ class Matches extends Component
 	//boxscore
 	public $scores, $players_stats, $teams_stats;
 	public $teams_table_data;
-	public $modalForecast = false;
+
+	public $regEdit;
+	public $forecastsModal = false;
+	public $boxscoreModal = false;
 
 	//filters
 	public $season;
@@ -75,14 +78,18 @@ class Matches extends Component
 		}
 	}
 
-	public function openForecastsModal()
+	public function openForecastsModal($match_id)
 	{
-		$this->modalForecast = true;
+		if ($this->regEdit = Match::find($match_id)) {
+			$this->forecastsModal = true;
+		}
 	}
 
-	public function closeForecastsModal()
+	public function openBoxscoreModal($match_id)
 	{
-		$this->modalForecast = false;
+		if ($this->regEdit = Match::find($match_id)) {
+			$this->boxscoreModal = true;
+		}
 	}
 
 	public function mount()
