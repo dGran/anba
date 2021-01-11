@@ -1,6 +1,6 @@
 // pagination
 .pagination-wrapper {
-	margin: 1em 0 0 0;
+	// margin: 1em 0 0 0;
     display: -ms-flexbox;
     display: -webkit-flex;
     display: flex;
@@ -18,13 +18,11 @@
 		.page-item {
 			margin: 0 .15em;
 			.page-link {
-				background-color: #fff;
-				border-color: #ced4da;
 				border-radius: 9999px;
 			    box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
 				-webkit-box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
 				-moz-box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
-				color: #495057;
+				// color: #495057;
 				cursor: pointer;
 				height: 45px;
 				width: 45px;
@@ -42,18 +40,18 @@
 				-ms-user-select: none;
 				user-select: none;
 				&:focus, &:hover {
-					background-color: #ebf4ff;
-					border-color: #a3bffa;
+					// background-color: #ebf4ff;
+					// border-color: #a3bffa;
 					box-shadow: none;
 					-webkit-box-shadow: none;
 					-moz-box-shadow: none;
-					color: #667eea;
+					// color: #667eea;
 				}
 			}
 			&.disabled {
 				.page-link {
-					background: #F7F9FE;
-					color: #BFBDC1;
+					// background: #F7F9FE;
+					// color: #BFBDC1;
 					cursor: not-allowed;
 				}
 			}
@@ -70,6 +68,7 @@
 			}
 			&.active {
 				.page-link {
+					// border-color: #a3bffa;
 					background-image: linear-gradient(70deg, rgb(33, 200, 246) 21%, rgb(99, 123, 255) 117%);
 					color: white;
 					cursor: not-allowed;
@@ -81,7 +80,7 @@
 		}
 	}
 	.pagination-info {
-		margin-top: 1em;
+		// margin-top: 1em;
 		font-size: .9em;
 		color: #718096;
 	}

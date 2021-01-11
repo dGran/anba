@@ -68,9 +68,9 @@
 				</div>
 			</div>
 
-			<div class="flex items-center gap-4 select-none mt-3">
+			<div class="flex items-center select-none mt-3">
 				<div class="flex-1 flex flex-col">
-					<input type="search" class="appearance-none rounded text-sm | py-1.5 px-3 mt-1 | bg-white dark:bg-gray-700 | border light:border-gray-300 dark:border-gray-850 light:focus:border-gray-400 light:hover:border-gray-400 dark:focus:border-dark-link dark:hover:border-dark-link | focus:outline-none" placeholder='Buscar...' wire:model="search" autofocus>
+					<input type="search" class="appearance-none rounded text-sm | py-1.5 px-3 mt-1 | bg-white dark:bg-gray-700 | border light:border-gray-300 dark:border-gray-850 light:focus:border-gray-400 light:hover:border-gray-400 dark:focus:border-dark-link dark:hover:border-dark-link | focus:outline-none" placeholder='Buscar...' wire:model="search">
 				</div>
 			</div>
 		@endif

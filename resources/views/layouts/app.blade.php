@@ -9,6 +9,8 @@
 
         <!-- font-awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+        {{-- box-icons --}}
+        <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
         {{-- animate.css --}}
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
@@ -43,7 +45,7 @@
             </main>
 
             <!-- Page Footer -->
-            <footer class="bg-gray-50 dark:bg-gray-800 mt-10 leading-normal border-t border-gray-200 dark:border-gray-700" {{-- style="background-color: #2d3e50" --}}>
+            <footer class="bg-gray-50 dark:bg-gray-800 leading-normal border-t border-gray-200 dark:border-gray-700" {{-- style="background-color: #2d3e50" --}}>
 
                 <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 text-center">
                     <ul class="list-none flex justify-center flex-col md:flex-row md:gap-4 md:gap-8 font-miriam font-bold uppercase text-sm tracking-wider my-2" style="color: #aeaeae">

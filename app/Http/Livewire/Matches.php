@@ -92,6 +92,11 @@ class Matches extends Component
 		}
 	}
 
+	public function viewMatch($match_id)
+	{
+		return redirect()->route('home');
+	}
+
 	public function mount()
 	{
 		if ($season = Season::where('current', 1)->first()) {

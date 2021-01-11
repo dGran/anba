@@ -1,4 +1,4 @@
-@if ($regEdit)
+@if ($forecastsModal && $regEdit)
 	<x-modals.dialog maxWidth="md" wire:model="forecastsModal" >
 	    <x-slot name="title">
 			<div class="p-4">

@@ -1,6 +1,6 @@
-@props(['id' => null, 'maxWidth' => null])
+@props(['id' => null, 'maxWidth' => null, 'closeOnOutsideClick' => "1", 'closeOnEscKey' => "1"])
 
-<x-modals.modal :id="$id" :maxWidth="$maxWidth" {{ $attributes }} style="z-index: 0">
+<x-modals.modal :id="$id" :maxWidth="$maxWidth" :closeOnOutsideClick="$closeOnOutsideClick" :closeOnEscKey="$closeOnEscKey" {{ $attributes }} style="z-index: 0">
     {{-- <div class=""> --}}
     <div class="">
         {{ $title }}

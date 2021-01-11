@@ -21,11 +21,11 @@
 
 				<tr class="border-b border-gray-200 dark:border-gray-650">
 					<td style="min-width: 150px">
-						<div class="flex items-center gap-2 py-3">
+						<div class="flex items-center py-3">
 							@if ($reg->top_local_player())
 								<img src="{{ $reg->top_local_player() ? $reg->top_local_player()->player->getImg() : '' }}" alt="{{ $reg->top_local_player() ? $reg->top_local_player()->player->name : '' }}" class="rounded-full border border-gray-200 dark:border-gray-650 object-cover" style="width: 26px; height: 26px">
 							@endif
-							<div class="flex flex-col leading-3">
+							<div class="flex flex-col ml-2 leading-3">
 								<span class="text-sm">{{ $reg->top_local_player() ? $reg->top_local_player()->player->name : '-' }}</span>
 								<div class="text-xs uppercase leading-5">
 									<span>{{ $reg->top_local_player() ? $reg->top_local_player()->player->team->short_name : '' }}</span>
@@ -48,11 +48,11 @@
 
 				<tr>
 					<td style="min-width: 150px">
-						<div class="flex items-center gap-2 py-3">
+						<div class="flex items-center py-3">
 							@if ($reg->top_visitor_player())
 								<img src="{{ $reg->top_visitor_player() ? $reg->top_visitor_player()->player->getImg() : '' }}" alt="{{ $reg->top_visitor_player() ? $reg->top_visitor_player()->player->name : '' }}" class="rounded-full border border-gray-200 dark:border-gray-650 object-cover" style="width: 26px; height: 26px">
 							@endif
-							<div class="flex flex-col leading-3">
+							<div class="flex flex-col leading-3 ml-2">
 								<span class="text-sm">{{ $reg->top_visitor_player() ? $reg->top_visitor_player()->player->name : '-' }}</span>
 								<div class="text-xs uppercase leading-5">
 									<span>{{ $reg->top_visitor_player() ? $reg->top_visitor_player()->player->team->short_name : '' }}</span>
@@ -77,11 +77,11 @@
 
 				<tr class="border-b border-gray-200 dark:border-gray-650">
 					<td style="min-width: 150px">
-						<div class="flex items-center gap-2 py-3">
+						<div class="flex items-center py-3">
 							@if ($current_season->top_player($reg->localTeam->id))
 								<img src="{{ $current_season->top_player($reg->localTeam->id) ? $current_season->top_player($reg->localTeam->id)->player->getImg() : '' }}" alt="{{ $current_season->top_player($reg->localTeam->id) ? $current_season->top_player($reg->localTeam->id)->player->name : '' }}" class="rounded-full border border-gray-200 dark:border-gray-650 object-cover" style="width: 26px; height: 26px">
 							@endif
-							<div class="flex flex-col leading-3">
+							<div class="flex flex-col leading-3 ml-2">
 								<span class="text-sm">{{ $current_season->top_player($reg->localTeam->id) ? $current_season->top_player($reg->localTeam->id)->player->name : '-' }}</span>
 								<div class="text-xs uppercase leading-5">
 									<span>{{ $current_season->top_player($reg->localTeam->id) ? $current_season->top_player($reg->localTeam->id)->player->team->short_name : '' }}</span>
@@ -104,11 +104,11 @@
 
 				<tr>
 					<td style="min-width: 150px">
-						<div class="flex items-center gap-2 py-3">
+						<div class="flex items-center py-3">
 							@if ($current_season->top_player($reg->visitorTeam->id))
 								<img src="{{ $current_season->top_player($reg->visitorTeam->id) ? $current_season->top_player($reg->visitorTeam->id)->player->getImg() : '' }}" alt="{{ $current_season->top_player($reg->visitorTeam->id) ? $current_season->top_player($reg->visitorTeam->id)->player->name : '' }}" class="rounded-full border border-gray-200 dark:border-gray-650 object-cover" style="width: 26px; height: 26px">
 							@endif
-							<div class="flex flex-col leading-3">
+							<div class="flex flex-col leading-3 ml-2">
 								<span class="text-sm">{{ $current_season->top_player($reg->visitorTeam->id) ? $current_season->top_player($reg->visitorTeam->id)->player->name : '-' }}</span>
 								<div class="text-xs uppercase leading-5">
 									<span>{{ $current_season->top_player($reg->visitorTeam->id) ? $current_season->top_player($reg->visitorTeam->id)->player->team->short_name : '' }}</span>

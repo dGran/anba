@@ -1,5 +1,5 @@
-@if ($regEdit)
-	<x-modals.dialog maxWidth="xl" wire:model="boxscoreModal" >
+@if ($boxscoreModal && $regEdit)
+	<x-modals.dialog maxWidth="xl" closeOnOutsideClick="1" wire:model="boxscoreModal">
 	    <x-slot name="title">
 			<div class="p-4">
 				<p class="uppercase text-sm font-bold tracking-wider">BOXSCORE</p>

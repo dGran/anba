@@ -1,0 +1,88 @@
+// pagination
+.pagination-wrapper {
+	margin: 1em 0 0 0;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: column;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    align-items: center;
+	justify-content: center;
+	.pagination {
+		font-size: .8em;
+		font-weight: 700;
+		letter-spacing: 0.1em;
+		margin-bottom: 0;
+		.page-item {
+			margin: 0 .15em;
+			.page-link {
+				background-color: #fff;
+				border-color: #ced4da;
+				border-radius: 9999px;
+			    box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+				-webkit-box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+				-moz-box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+				color: #495057;
+				cursor: pointer;
+				height: 45px;
+				width: 45px;
+			    display: -ms-flexbox;
+			    display: -webkit-flex;
+			    display: flex;
+			    -ms-flex-align: center;
+			    -webkit-align-items: center;
+			    -webkit-box-align: center;
+			    align-items: center;
+				justify-content: center;
+				//text non selectable
+				-moz-user-select: none;
+				-webkit-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+				&:focus, &:hover {
+					background-color: #ebf4ff;
+					border-color: #a3bffa;
+					box-shadow: none;
+					-webkit-box-shadow: none;
+					-moz-box-shadow: none;
+					color: #667eea;
+				}
+			}
+			&.disabled {
+				.page-link {
+					background: #F7F9FE;
+					color: #BFBDC1;
+					cursor: not-allowed;
+				}
+			}
+			&.separator {
+				.page-link {
+					color: #495057;
+					background: none;
+					border: 1px solid transparent;
+					box-shadow: none;
+					-webkit-box-shadow: none;
+					-moz-box-shadow: none;
+					margin: 0 -1em;
+				}
+			}
+			&.active {
+				.page-link {
+					background-image: linear-gradient(70deg, rgb(33, 200, 246) 21%, rgb(99, 123, 255) 117%);
+					color: white;
+					cursor: not-allowed;
+					&:hover {
+						border: 1px solid transparent;
+					}
+				}
+			}
+		}
+	}
+	.pagination-info {
+		margin-top: 1em;
+		font-size: .9em;
+		color: #718096;
+	}
+}

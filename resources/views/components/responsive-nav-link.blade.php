@@ -11,7 +11,7 @@ $classes = ($active ?? false)
 
 <li {{ $attributes->merge(['class' => $classes_li]) }}>
 	<a {{ $attributes->merge(['class' => $classes]) }}>
-	    <span class="{{ $active ? 'animate-pulse' : '' }}">{{ $slot }}</span>
+	    <span>{{ $slot }}</span>
     	<i class="fas fa-chevron-right {{ $active ? 'text-dark-link' : 'text-gray-600 group-hover:text-white group-focus:text-white' }}"></i>
 	</a>
 </li>

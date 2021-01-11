@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\TeamController;
+use App\Http\Controllers\MatchController;
 
 use App\Http\Livewire\Admin\Dashboard;
 
@@ -42,6 +43,8 @@ Route::get('/clasificaciones', function () {
 Route::get('/partidos', function () {
     return view('matches');
 })->name('matches');
+
+Route::get('/partidos/{match:id}', [MatchController::class, 'index'])->name('match');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/equipos', function () {
     return view('teams');
