@@ -94,7 +94,7 @@ class Matches extends Component
 
 	public function viewMatch($match_id)
 	{
-		return redirect()->route('home');
+		return redirect()->route('match', $match_id);
 	}
 
 	public function mount()

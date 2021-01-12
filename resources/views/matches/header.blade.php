@@ -76,35 +76,3 @@
 		@endif
     </div>
 </header>
-
-<style>
-	.toggle:before {
-		content: '';
-		position: absolute;
-		width: 1.25rem;
-		height: 1.25rem;
-		border-radius: 50%;
-		top: 0;
-		left: 0;
-		transform: scale(1.1);
-		box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.2);
-		background-color: #fff;
-		transition: .2s ease-in-out;
-	}
-
-	.toggle:checked {
-		background-color:#60a5fa;
-	}
-
-	.toggle:checked:hover {
-		background-color:#3b82f6;
-	}
-
-	.toggle:checked:focus {
-		background-color:#3b82f6;
-	}
-
-	.toggle:checked:before {
-		left: 1.25rem;
-	}
-</style>
