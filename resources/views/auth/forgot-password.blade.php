@@ -16,7 +16,7 @@
             @endif
             @if (session('status'))
                 <div class="mb-4">
-                    <div class="text-sm border-green-700 text-green-500 p-3 text-center rounded">
+                    <div class="text-sm border bg-green-100 border-green-300 text-green-500 dark:bg-green-500 dark:border-green-400 dark:text-white p-3 text-center rounded">
                         {{ session('status') }}
                     </div>
                 </div>
@@ -39,11 +39,11 @@
                     <label for="email" class="text-sm uppercase">
                         {{ __('correo electrónico') }}
                     </label>
-                    <input id="email" class="appearance-none rounded-md text-sm | py-2 px-3 mt-1 | bg-white dark:bg-gray-700 | border border-gray-300 dark:border-gray-850 focus:border-gray-400 hover:border-gray-400 dark:focus:border-dark-link dark:hover:border-dark-link | focus:outline-none | block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
+                    <input id="email" class="appearance-none rounded-md text-sm | py-2 px-3 mt-1 | bg-white dark:bg-gray-700 | border border-gray-300 dark:border-gray-850 focus:border-gray-400 hover:border-gray-400 dark:focus:border-dark-link dark:hover:border-dark-link | focus:outline-none | block mt-1 w-full" type="email" name="email" value="{{ old('email') }}" required autofocus />
                 </div>
 
 
-                <div class="mt-6">
+                <div class="my-6 mb-3">
                     <button type="submit" class="w-full text-center px-4 py-3 bg-gray-800 dark:bg-dark-link rounded-md font-semibold text-xs text-white dark:text-gray-700 uppercase tracking-widest hover:bg-gray-600 dark:hover:bg-blue-300 active:bg-gray-600 dark:active:bg-blue-200 focus:outline-none focus:bg-gray-600 dark:focus:bg-blue-300 disabled:opacity-25 transition ease-in-out duration-150">
                         {{ __('solicitar nueva contraseña') }}
                     </button>

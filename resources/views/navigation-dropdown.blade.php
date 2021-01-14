@@ -9,7 +9,7 @@
     ]
 @endphp
 
-<nav x-data="{ open: false }" class="bg-gray-900 select-none z-50 fixed w-full">
+<nav x-data="{ open: false }" class="bg-header-bg dark:bg-gray-900 select-none z-50 fixed w-full">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">

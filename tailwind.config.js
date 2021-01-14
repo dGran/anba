@@ -39,7 +39,8 @@ module.exports = {
                     '900': '#1d1d1f',
                     '950': '#101010',
                 },
-                "header-bg": '#2d3e50',
+                "header-bg": '#2e3a46',
+                // "sub-header-bg": '#202831',
                 "dark-link": '#8ab4f8',
                 "pretty-red": '#f4645f',
             }

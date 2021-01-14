@@ -37,7 +37,7 @@
                             <li class="pt-2 md:pt-0"><a href="#" class="outline-none hover:text-blue-500 focus:text-blue-500 dark:hover:text-dark-link dark:focus:text-dark-link">Managers</a></li>
                         </ul>
                         <p class="mt-6" style="color: #aeaeae; padding-bottom: 10px; font-family: Miriam Libre,Source Sans Pro,sans-serif; text-transform: uppercase; letter-spacing: 2px; font-size: 12px;">
-                            &copy; 2020 anba2k.es. Todos los derechos reservados
+                            &copy; {{ date('Y') }} {{ config('app.name') }}. Todos los derechos reservados.
                         </p>
                         <p class="mt-2" style="color: #aeaeae; padding-bottom: 10px; font-family: Miriam Libre,Source Sans Pro,sans-serif; text-transform: uppercase; letter-spacing: 2px; font-size: 10px;">
                             designed by

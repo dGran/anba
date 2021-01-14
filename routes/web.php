@@ -46,6 +46,10 @@ Route::get('/partidos', function () {
 
 Route::get('/partidos/{match:id}', [MatchController::class, 'index'])->name('match');
 
+Route::get('/politica-de-cookies', function () {
+    return view('cookies-policy');
+})->name('cookies');
+
 Route::middleware(['auth:sanctum', 'verified'])->get('/equipos', function () {
     return view('teams');
 })->name('teams');
