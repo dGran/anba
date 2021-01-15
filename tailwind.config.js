@@ -40,6 +40,7 @@ module.exports = {
                     '950': '#101010',
                 },
                 "header-bg": '#2e3a46',
+                "header-bg-light": '#354453',
                 // "sub-header-bg": '#202831',
                 "dark-link": '#8ab4f8',
                 "pretty-red": '#f4645f',

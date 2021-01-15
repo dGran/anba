@@ -1,6 +1,5 @@
 <header class="bg-gray-50 dark:bg-gray-800 shadow border-t border-gray-150 dark:border-gray-850 transition duration-500 ease-in-out">
     <div class="max-w-7xl mx-auto p-4 sm:px-6 lg:px-8">
-    	{{-- px-1 sm:px-3 md:px-6 lg:px-8 --}}
 		@if (isset($regs))
 			<div class="flex items-center select-none">
 				<div class="flex-1 sm:flex-auto flex flex-col">
