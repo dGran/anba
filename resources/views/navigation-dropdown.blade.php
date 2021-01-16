@@ -9,7 +9,7 @@
     ]
 @endphp
 
-<nav x-data="{ open: false }" class="bg-header-bg dark:bg-gray-900 select-none z-50 fixed w-full">
+<nav x-data="{ open: false }" class="bg-header-bg dark:bg-gray-900 border-b border-header-bg-dark dark:border-gray-950 select-none z-50 fixed w-full">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -152,7 +152,7 @@
         x-transition:leave="transition origin-top-left ease-in duration-200"
         x-transition:leave-start="opacity-100 transform scale-x-100 scale-y-100"
         x-transition:leave-end="opacity-0 transform scale-x-0 scale-y-0">
-        <ul class="bg-gray-850 shadow-lg w-full" @click.away="open = false">
+        <ul class="bg-header-bg-light dark:bg-gray-850 shadow-lg w-full" @click.away="open = false">
             @foreach ($navLinks as $link)
                 <x-responsive-nav-link :href="$link['href']" :active="request()->routeIs($link['name'])" :class="$link['class_hamburger']">
                     {{ __($link['text']) }}

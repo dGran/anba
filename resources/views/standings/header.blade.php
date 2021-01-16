@@ -1,4 +1,4 @@
-<header class="bg-gray-50 dark:bg-gray-800 shadow border-t border-gray-150 dark:border-gray-850 transition duration-500 ease-in-out">
+<header class="bg-gray-50 dark:bg-gray-800 shadow">
     <div class="max-w-7xl mx-auto p-4 sm:px-6 lg:px-8">
 {{-- 		<p class="font-semibold text-base md:text-2xl px-3 md:px-0 py-3">
 			{{ $current_season ? "Temporada - $current_season->name" : '' }}

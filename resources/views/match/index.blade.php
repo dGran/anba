@@ -1,6 +1,11 @@
 <div>
 	<!-- Page Content -->
 	<div class="max-w-7xl mx-auto px-1 sm:px-3 md:px-6 lg:px-8">
+		<div class="text-xs tracking-wider uppercase font-miriam pt-4 px-4 sm:px-0">
+	    	<a href="{{ route('home') }}" class="text-gray-600 hover:text-gray-900 focus:text-gray-900 dark:text-gray-300 dark:hover:text-white dark:focus:text-white">Inicio</a>
+	    	<span>/</span>
+	    	<a href="{{ route('matches') }}" class="text-gray-600 hover:text-gray-900 focus:text-gray-900 dark:text-gray-300 dark:hover:text-white dark:focus:text-white">Partidos</a>
+		</div>
 		<div class="bg-white dark:bg-gray-750 shadow-md rounded mx-3 md:mx-0 my-6 px-4 py-8">
 			<div class="flex items-center justify-between">
 				<div class="flex-1">

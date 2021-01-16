@@ -1,4 +1,4 @@
-<header class="bg-gray-50 dark:bg-gray-800 shadow border-t border-gray-150 dark:border-gray-850 transition duration-500 ease-in-out">
+<header class="bg-gray-50 dark:bg-gray-800 shadow">
     <div class="max-w-7xl mx-auto p-4 sm:px-6 lg:px-8">
 		@if (isset($regs))
 			<div class="flex items-center select-none">

@@ -3,7 +3,7 @@
 	@include('standings.header')
 
 	<!-- Page Content -->
-	<div class="max-w-7xl mx-auto px-1 sm:px-3 md:px-6 lg:px-8 my-8">
+	<div class="max-w-7xl mx-auto px-1 sm:px-3 md:px-6 lg:px-8 mt-4 mb-8">
 		@if (isset($table_positions))
 			@if ($view == 'conference')
 				@include('standings.conferences_view')
