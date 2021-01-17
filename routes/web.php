@@ -54,7 +54,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/equipos', function () {
     return view('teams');
 })->name('teams');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/jugadores', function () {
+Route::get('/jugadores', function () {
     return view('players');
 })->name('players');
 

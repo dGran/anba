@@ -6,6 +6,6 @@
     </x-slot>
 
     <div>
-		@livewire('standing')
+		@livewire('standings')
     </div>
 </x-app-layout>

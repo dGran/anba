@@ -2,8 +2,8 @@
 
 @php
 $classes_li = ($active ?? false)
-            ? 'text-sm uppercase border-b border-header-bg-dark dark:border-gray-700 bg-header-bg-dark dark:bg-gray-800'
-            : 'text-sm uppercase border-b border-header-bg-dark dark:border-gray-700';
+            ? 'text-sm uppercase border-b border-header-bg-dark dark:border-gray-800 bg-header-bg-dark dark:bg-gray-800'
+            : 'text-sm uppercase border-b border-header-bg-dark dark:border-gray-800';
 $classes = ($active ?? false)
             ? 'flex items-center justify-between px-6 py-3 border-l-4 border-white dark:border-dark-link text-base leading-5 uppercase text-white dark:text-dark-link focus:outline-none transition duration-150 ease-in-out pointer-events-none'
             : 'group flex items-center justify-between px-6 py-3 text-sm uppercase text-gray-300 leading-5 focus:outline-none transition duration-150 ease-in-out hover:text-white focus:text-white transform hover:-translate-x-1 focus:-translate-x-1 hover:bg-header-bg-lighter focus:bg-header-bg-lighter active:bg-header-bg-lighter dark:hover:bg-gray-800 dark:focus:bg-gray-800 dark:active:bg-gray-800';

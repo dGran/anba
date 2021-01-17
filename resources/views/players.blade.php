@@ -15,7 +15,7 @@
                     <li>Retirados</li>
                 </ul>
                 <p class="p-4">
-                    <img src="{{ asset('img/players.png') }}" alt="">
+                    {{-- <img src="{{ asset('img/players.png') }}" alt=""> --}}
                 </p>
             </div>
         </div>

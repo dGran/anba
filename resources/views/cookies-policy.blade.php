@@ -1,11 +1,11 @@
 <x-app-layout blockHeader="1">
     <x-slot name="header">
-        <h2 class="font-semibold text-2xl leading-tight py-4 px-4 sm:px-0">
+        <h2 class="font-semibold text-xl md:text-2xl leading-tight px-4 sm:px-0">
             {{ __('Política de cookies') }}
         </h2>
     </x-slot>
 
-	<div class="max-w-7xl mx-auto md:px-1 sm:px-3 md:px-6 lg:px-8 md:my-8 flex border-t border-gray-200 dark:border-gray-700 md:border-transparent">
+	<div class="max-w-7xl mx-auto md:px-1 sm:px-3 md:px-6 lg:px-8 md:my-8 flex">
         <div class="bg-white dark:bg-gray-750 overflow-hidden md:shadow-md md:rounded-md md:mx-0 p-6 text-gray-900 dark:text-gray-200">
             <p>
                 Una cookie es un archivo de texto que se almacena en el ordenador o dispositivo móvil mediante un servidor Web y tan solo ese servidor será capaz de recuperar o leer el contenido de la cookie y permiten al Sitio Web recordar preferencias de navegación y navegar de manera eficiente. Las cookies hacen la interacción entre el usuario y el sitio Web más rápida y fácil.

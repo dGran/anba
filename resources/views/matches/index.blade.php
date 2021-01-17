@@ -3,7 +3,7 @@
 	@include('matches.header')
 
 	<!-- Page Content -->
-	<div class="max-w-7xl mx-auto px-1 sm:px-3 md:px-6 lg:px-8 mt-4 mb-8">
+	<div class="max-w-7xl mx-auto px-1 sm:px-3 md:px-6 lg:px-8 my-6 md:mt-0">
 		@if (isset($regs))
 			@if ($regs->count() > 0)
 				@foreach ($regs as $key => $reg)
