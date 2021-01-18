@@ -44,4 +44,9 @@ class PlayerStat extends Model
         return $this->belongsTo('App\Models\Player');
     }
 
+    public function seasonTeam()
+    {
+        return $this->belongsTo('App\Models\SeasonTeam', 'season_team_id', 'id');
+    }
+
 }

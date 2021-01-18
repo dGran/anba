@@ -518,4 +518,67 @@ class Season extends Model
             ->groupBy('player_id')
             ->first();
     }
+
+    public function top_season_mvp()
+    {
+        return $top = PlayerStat::
+            select('player_id', 'season_team_id',
+                \DB::raw('AVG(PTS) as AVG_PTS'),
+                \DB::raw('AVG(REB) as AVG_REB'),
+                \DB::raw('AVG(AST) as AVG_AST'),
+                \DB::raw('SUM(PTS + REB + AST) / COUNT(player_id) as AVG_TOTAL')
+            )
+            // ->where('season_id', $this->id)
+            ->orderBy('AVG_TOTAL', 'desc')
+            ->orderBy('AVG_PTS', 'desc')
+            ->orderBy('AVG_REB', 'desc')
+            ->orderBy('AVG_AST', 'desc')
+            ->groupBy('player_id', 'season_team_id')
+            ->take(3)->get();
+    }
+
+    public function top_season_pts()
+    {
+        return $top = PlayerStat::
+            select('player_id', 'season_team_id',
+                \DB::raw('AVG(PTS) as AVG_PTS'),
+                \DB::raw('SUM(PTS) as SUM_PTS'),
+                \DB::raw('COUNT(player_id) as PJ')
+            )
+            // ->where('season_id', $this->id)
+            ->orderBy('AVG_PTS', 'desc')
+            ->orderBy('SUM_PTS', 'desc')
+            ->groupBy('player_id', 'season_team_id')
+            ->take(3)->get();
+    }
+
+    public function top_season_reb()
+    {
+        return $top = PlayerStat::
+            select('player_id', 'season_team_id',
+                \DB::raw('AVG(REB) as AVG_REB'),
+                \DB::raw('SUM(REB) as SUM_REB'),
+                \DB::raw('COUNT(player_id) as PJ')
+            )
+            // ->where('season_id', $this->id)
+            ->orderBy('AVG_REB', 'desc')
+            ->orderBy('SUM_REB', 'desc')
+            ->groupBy('player_id', 'season_team_id')
+            ->take(3)->get();
+    }
+
+    public function top_season_ast()
+    {
+        return $top = PlayerStat::
+            select('player_id', 'season_team_id',
+                \DB::raw('AVG(AST) as AVG_AST'),
+                \DB::raw('SUM(AST) as SUM_AST'),
+                \DB::raw('COUNT(player_id) as PJ')
+            )
+            // ->where('season_id', $this->id)
+            ->orderBy('AVG_AST', 'desc')
+            ->orderBy('SUM_AST', 'desc')
+            ->groupBy('player_id', 'season_team_id')
+            ->take(3)->get();
+    }
 }

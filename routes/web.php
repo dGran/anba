@@ -65,7 +65,7 @@ Route::get('/jugadores', function () {
 // 	->get('/equipos', UsersCrud::class)
 // 	->name('teams');
 
-Route::middleware(['auth:sanctum', 'verified'])->prefix('admin')->group(function() {
+Route::middleware(['auth:sanctum', 'verified', 'role:super-admin|admin', 'password.confirm'])->prefix('admin')->group(function() {
 	Route::get('usuarios', UsersCrud::class)->name('admin.users');
 
 

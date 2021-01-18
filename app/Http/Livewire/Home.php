@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Season;
+use App\Models\SeasonConference;
 
 class Home extends Component
 {
@@ -18,6 +19,21 @@ class Home extends Component
 
     public function render()
     {
-        return view('home.index', []);
+    	if ($this->season) {
+	    	$seasons_conferences = SeasonConference::
+	    		leftJoin('conferences', 'conferences.id', 'seasons_conferences.conference_id')
+	    		->select('seasons_conferences.*', 'conferences.name')
+	    		->where('season_id', $this->season->id)
+	    		->orderBy('conferences.name')
+	    		->get();
+	    	foreach ($seasons_conferences as $key => $conference) {
+	        	$table_positions[$key] = $this->season->generateTable('conference', 'wavg', $conference->id, null);
+	    	}
+    	}
+
+        return view('home.index', [
+        	'seasons_conferences' => $this->season ? $seasons_conferences : null,
+        	'table_positions' => $this->season ? $table_positions : null,
+        ]);
     }
 }

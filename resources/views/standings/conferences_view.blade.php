@@ -5,7 +5,7 @@
 	</p>
 	<div class="overflow-hidden shadow-md rounded-lg mx-3 md:mx-0">
 		<div class="bg-white dark:bg-gray-750 dark:text-white rounded-lg">
-			<div class="table-wrapper overflow-x-auto">
+			<div class="table-wrapper overflow-x-auto scrollbar-thumb-gray scrollbar-thumb-rounded scrollbar-track-gray-lighter scrollbar-w-2 scrolling-touch">
 				<table class="w-full">
 					<thead class="select-none">
 						@include('standings.table_header')

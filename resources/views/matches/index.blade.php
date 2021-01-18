@@ -1,6 +1,8 @@
 <div>
 	<!-- Page Heading -->
-	@include('matches.header')
+	@if (isset($regs))
+		@include('matches.header')
+	@endif
 
 	<!-- Page Content -->
 	<div class="max-w-7xl mx-auto px-1 sm:px-3 md:px-6 lg:px-8 my-6 md:mt-0">
@@ -20,8 +22,11 @@
 				</div>
 			@endif
 		@else
-			<div class="bg-white dark:bg-gray-750 shadow-md rounded mx-3 md:mx-0 w-full p-4">
-				No existen temporadas configuradas
+			<div class="px-4 md:px-0 md:pt-4">
+				<h3 class="font-bold text-3xl">
+					Ups!
+				</h3>
+				No existen temporadas configuradas, contacta con los administradores o espera a que se actualice el contenido.
 			</div>
 		@endif
 	</div>
