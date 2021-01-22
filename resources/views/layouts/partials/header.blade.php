@@ -1,11 +1,11 @@
 @php
     $navLinks = [
-        ['href' => '/partidos', 'name' => 'matches', 'text' => 'Partidos', 'class' => '', 'class_hamburger' => ''],
-        ['href' => '/clasificaciones', 'name' => 'standings', 'text' => 'Clasificaciones', 'class' => '', 'class_hamburger' => ''],
-        ['href' => '/estadisticas', 'name' => 'stats', 'text' => 'Estadísticas', 'class' => '', 'class_hamburger' => ''],
-        ['href' => '/jugadores', 'name' => 'players', 'text' => 'Jugadores', 'class' => 'hidden md:inline-flex', 'class_hamburger' => ''],
-        ['href' => '/equipos', 'name' => 'teams', 'text' => 'Equipos', 'class' => 'hidden lg:inline-flex', 'class_hamburger' => ''],
-        ['href' => '/managers', 'name' => 'teams', 'text' => 'Managers', 'class' => 'hidden lg:inline-flex', 'class_hamburger' => ''],
+        ['href' => '/partidos', 'name' => 'matches', 'text' => 'Partidos', 'class' => '', 'icon' => 'icon-ball'],
+        ['href' => '/clasificaciones', 'name' => 'standings', 'text' => 'Clasificaciones', 'class' => '', 'icon' => 'icon-league-table'],
+        ['href' => '/estadisticas', 'name' => 'stats', 'text' => 'Estadísticas', 'class' => '', 'icon' => 'icon-stats'],
+        ['href' => '/jugadores', 'name' => 'players', 'text' => 'Jugadores', 'class' => 'hidden md:inline-flex', 'icon' => 'icon-player'],
+        ['href' => '/equipos', 'name' => 'teams', 'text' => 'Equipos', 'class' => 'hidden lg:inline-flex', 'icon' => 'icon-shirt'],
+        ['href' => '/managers', 'name' => 'teams', 'text' => 'Managers', 'class' => 'hidden lg:inline-flex', 'icon' => 'icon-coach'],
     ]
 @endphp
 
@@ -37,7 +37,7 @@
                         </x-nav-link>
                     @endforeach
                     <a href="http://anba2k.es/phpBB3/index.php" target="_blank" class="uppercase inline-flex items-center px-1 pt-1 text-sm font-medium leading-5 text-gray-300 hover:text-white focus:text-white focus:outline-none transition duration-150 ease-in-out transform hover:translate-y-0.5 hidden lg:inline-flex">
-                        Foro
+                        Foros
                     </a>
                 </div>
             </div>
@@ -97,7 +97,7 @@
                                     <i class="fas fa-shield-alt text-base w-6 mr-1.5 text-center"></i><span>{{ __('Mi equipo') }}</span>
                                 </x-dropdown-link>
                                 <x-dropdown-link href="#" class="flex items-center">
-                                    <i class="fas fa-basketball-ball text-base w-6 mr-1.5 text-center"></i><span>{{ __('Partidas pendientes') }}</span>
+                                    <i class="icon-gamepad text-base w-6 mr-1.5 text-center"></i><span>{{ __('Partidas pendientes') }}</span>
                                 </x-dropdown-link>
                             @endhasrole
 
@@ -106,18 +106,18 @@
                                     {{ __('Administración') }}
                                 </div>
                                 <x-dropdown-link href="{{ route('admin') }}" class="flex items-center">
-                                    <i class="fas fa-cogs text-base w-6 mr-1.5 text-center"></i><span>{{ __('AdminANBA') }}</span>
+                                    <i class="icon-admin text-base w-6 mr-1.5 text-center"></i><span>{{ __('AdminANBA') }}</span>
                                 </x-dropdown-link>
                                 @if (isset($currentSeason))
                                     <x-dropdown-link href="{{ route('admin.matches', $currentSeason->slug) }}" class="flex items-center">
-                                        <i class="fas fa-cog text-sm w-6 mr-1.5 text-right"></i><span>{{ __('Partidos') }}</span>
+                                        <i class="icon-cog text-sm w-6 mr-1.5 text-right"></i><span>{{ __('Partidos') }}</span>
                                     </x-dropdown-link>
                                 @endif
                                 <x-dropdown-link href="{{ route('admin.teams') }}" class="flex items-center">
-                                    <i class="fas fa-cog text-sm w-6 mr-1.5 text-right"></i><span>{{ __('Equipos') }}</span>
+                                    <i class="icon-cog text-sm w-6 mr-1.5 text-right"></i><span>{{ __('Equipos') }}</span>
                                 </x-dropdown-link>
                                 <x-dropdown-link href="{{ route('admin.players') }}" class="flex items-center">
-                                    <i class="fas fa-cog text-sm w-6 mr-1.5 text-right"></i><span>{{ __('Jugadores') }}</span>
+                                    <i class="icon-cog text-sm w-6 mr-1.5 text-right"></i><span>{{ __('Jugadores') }}</span>
                                 </x-dropdown-link>
                             @endhasanyrole
 
@@ -197,22 +197,26 @@
 
     <!-- Responsive Navigation Menu -->
     <div class="lg:hidden absolute w-full z-40" id="responsiveNavMenu" x-show="open"
-        x-transition:enter="transition ease-out origin-top-left duration-200"
-        x-transition:enter-start="opacity-0 transform scale-x-0 scale-y-0"
-        x-transition:enter-end="opacity-100 transform scale-x-100 scale-y-100"
-        x-transition:leave="transition origin-top-left ease-in duration-200"
-        x-transition:leave-start="opacity-100 transform scale-x-100 scale-y-100"
-        x-transition:leave-end="opacity-0 transform scale-x-0 scale-y-0">
+        x-transition:enter="transition ease-out origin-top-left duration-150"
+        x-transition:enter-start="opacity-0 transform scale-x-0"
+        x-transition:enter-end="opacity-100 transform scale-x-100"
+        x-transition:leave="transition origin-top-left ease-in duration-150"
+        x-transition:leave-start="opacity-100 transform scale-x-100"
+        x-transition:leave-end="opacity-0 transform scale-x-0">
         <ul class="bg-header-bg-light dark:bg-gray-900 shadow-lg w-full" @click.away="open = false">
             @foreach ($navLinks as $link)
-                <x-responsive-nav-link :href="$link['href']" :active="request()->routeIs($link['name'])" :class="$link['class_hamburger']">
+                <x-responsive-nav-link :href="$link['href']" :active="request()->routeIs($link['name'])">
+                    <x-slot name="icon">
+                        {{ $link['icon'] }}
+                    </x-slot>
                     {{ __($link['text']) }}
                 </x-responsive-nav-link>
             @endforeach
             <li class="text-sm uppercase border-b border-header-bg-dark dark:border-gray-800">
-                <a href="http://anba2k.es/phpBB3/index.php" target="_blank" class="group flex items-center justify-between px-6 py-3 text-sm uppercase text-gray-300 leading-5 focus:outline-none transition duration-150 ease-in-out hover:text-white focus:text-white transform hover:-translate-x-1 focus:-translate-x-1 hover:bg-header-bg-lighter focus:bg-header-bg-lighter active:bg-header-bg-lighter dark:hover:bg-gray-800 dark:focus:bg-gray-800 dark:active:bg-gray-800">
-                    <span>Foro</span>
-                    <i class="fas fa-chevron-right text-gray-500 dark:text-gray-600 group-hover:text-white group-focus:text-white"></i>
+                <a href="http://anba2k.es/phpBB3/index.php" target="_blank" class="group flex items-center justify-between px-6 py-3 text-sm uppercase text-gray-300 leading-4 focus:outline-none transition duration-150 ease-in-out hover:text-white focus:text-white transform hover:-translate-x-1 focus:-translate-x-1 hover:bg-header-bg-lighter focus:bg-header-bg-lighter active:bg-header-bg-lighter dark:hover:bg-gray-800 dark:focus:bg-gray-800 dark:active:bg-gray-800">
+                    <span><i class="icon-forum mr-4 text-xl"></i></span>
+                    <span class="flex-1">Foro</span>
+                    <i class="fas fa-chevron-right text-gray-400 dark:text-gray-500 group-hover:text-white group-focus:text-white"></i>
                 </a>
             </li>
         </ul>
