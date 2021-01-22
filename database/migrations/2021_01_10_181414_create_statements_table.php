@@ -25,7 +25,7 @@ class CreateStatementsTable extends Migration
                 ->constrained('seasons_teams')
                 ->onDelete('cascade');
             $table->foreignId('match_id')
-                -nullable()
+                ->nullable()
                 ->constrained()
                 ->onDelete('cascade');
             $table->string('title')->nullable();

@@ -31,6 +31,7 @@ class TeamCrud extends Component
 
 	//fields
 	public $reg_id, $name, $medium_name, $short_name, $division_id, $manager_id, $img, $reg_img, $reg_img_formated, $stadium, $color, $active;
+	public $users = [];
 
 	//filters
 	public $search = "";
@@ -349,6 +350,11 @@ class TeamCrud extends Component
     	$this->emit('openAddModal');
     	$this->setCurrentModal('addModal');
 
+    	$this->users = User::orderBy('name', 'asc')
+    			->whereNotIn('id', function($query) {
+					$query->select('manager_id')->from('teams')->whereNotNull('manager_id');
+                })->get();
+
     	$this->editMode = false;
     }
 
@@ -400,6 +406,10 @@ class TeamCrud extends Component
 
         $reg = Team::create($validatedData);
 
+        if ($reg->manager_id) {
+        	$reg->user->assignRole('manager');
+        }
+
         event(new TableWasUpdated($reg, 'insert', $reg->toJson(JSON_PRETTY_PRINT)));
         session()->flash('success', 'Registro agregado correctamente.');
 
@@ -432,6 +442,11 @@ class TeamCrud extends Component
 		$this->color = $reg->color;
 		$this->active = $reg->active;
 
+    	$this->users = User::orderBy('name', 'asc')
+    			->whereNotIn('id', function($query) use ($reg) {
+					$query->select('manager_id')->from('teams')->where('manager_id', '!=', $reg->manager_id)->whereNotNull('manager_id');
+                })->get();
+
     	$this->emit('openEditModal');
     	$this->setCurrentModal('editModal');
 
@@ -441,6 +456,9 @@ class TeamCrud extends Component
     public function update()
     {
     	$reg = Team::find($this->reg_id);
+    	if ($reg->user) {
+    		$old_user = $reg->user;
+    	}
     	$before = $reg->toJson(JSON_PRETTY_PRINT);
 
         if ($this->img) {
@@ -497,6 +515,13 @@ class TeamCrud extends Component
 
         if ($reg->isDirty()) {
             if ($reg->update()) {
+		    	if (isset($old_user)) {
+					$old_user->removeRole('manager');
+		    	}
+		    	if ($this->manager_id) {
+		    		$user = User::find($this->manager_id);
+        			$user->assignRole('manager');
+		    	}
             	event(new TableWasUpdated($reg, 'update', $reg->toJson(JSON_PRETTY_PRINT), $before));
             	session()->flash('success', 'Registro actualizado correctamente.');
             } else {
@@ -529,6 +554,9 @@ class TeamCrud extends Component
 			if ($reg = Team::find($reg)) {
 				$storageImg = $reg->img;
 				if ($reg->canDestroy()) {
+					if ($reg->user) {
+						$reg->user->removeRole('manager');
+					}
 					event(new TableWasUpdated($reg, 'delete'));
 					if ($reg->delete()) {
 						$regs_deleted++;
@@ -699,6 +727,7 @@ class TeamCrud extends Component
     public function active($id, $active)
     {
     	$reg = Team::find($id);
+    	$active ? $reg->user->assignRole('manager') : $reg->user->removeRole('manager');
     	$before = $reg->toJson(JSON_PRETTY_PRINT);
     	$reg->active = $active;
     	$reg->save();
@@ -736,24 +765,11 @@ class TeamCrud extends Component
     	$this->setSessionState();
 
     	$divisions = Division::orderBy('name', 'asc')->get();
-    	if ($this->editMode) {
-    		$manager = $this->manager_id;
-	    	$users = User::orderBy('name', 'asc')
-	    			->whereNotIn('id', function($query) use ($manager) {
-						$query->select('manager_id')->from('teams')->where('manager_id', '!=', $this->manager_id)->whereNotNull('manager_id');
-	                })->get();
-    	} else {
-	    	$users = User::orderBy('name', 'asc')
-	    			->whereNotIn('id', function($query) {
-						$query->select('manager_id')->from('teams')->whereNotNull('manager_id');
-	                })->get();
-    	}
 
         return view('admin.teams', [
         			'regs' => $this->getData(),
         			'regsSelected' => $this->getDataSelected(),
         			'divisions' => $divisions,
-        			'users' => $users,
         			'filterDivisionName' => $this->filterDivisionName(),
         			'filterActiveName' => $this->filterActiveName(),
         			'firstRenderSaved' => $firstRenderSaved,

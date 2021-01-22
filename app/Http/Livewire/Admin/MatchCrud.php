@@ -883,6 +883,7 @@ class MatchCrud extends Component
 			foreach ($this->players_stats as $key => $player_stat) {
 				$playerStat = PlayerStat::create([
 					'match_id' => $this->regView->id,
+					'season_id' => $this->regView->season_id,
 					'player_id' => $player_stat['player_id'],
 					'season_team_id' => $player_stat['season_team_id'],
 					'MIN' 		=> $player_stat['MIN'],

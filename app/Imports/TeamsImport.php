@@ -32,6 +32,9 @@ class TeamsImport implements ToModel, WithHeadingRow
                 'active'         => $row['active'],
                 'slug'           => Str::slug($row['name'], '-')
             ]);
+            if ($reg->user) {
+                $reg->user->assignRole('manager');
+            }
             event(new TableWasUpdated($reg, 'insert', $reg->toJson(JSON_PRETTY_PRINT), 'Registro importado'));
             return $reg;
         }

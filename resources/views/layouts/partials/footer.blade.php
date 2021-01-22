@@ -28,7 +28,7 @@
         <ul class="md:hidden max-w-7xl mx-auto select-none" x-data="{selected:null}">
             <li class="flex align-center flex-col">
                 <h4 @click="selected !== 2 ? selected = 2 : selected = null"
-                    class="cursor-pointer px-4 md:px-6 lg:px-8 py-3 border-b border-header-bg-dark dark:border-gray-750 text-gray-200 font-bold uppercase text-left inline-block flex justify-between">
+                    class="cursor-pointer px-4 md:px-6 lg:px-8 py-3 border-b border-header-bg-dark dark:border-gray-750 text-gray-200 font-bold uppercase text-left inline-block flex justify-between tracking-wide">
                     <span>menu</span>
                     <span><i x-bind:class="{ 'fas fa-angle-down' : selected !== 2, 'fas fa-angle-up' : selected == 2 }" class="text-xl"></i></span>
                 </h4>
@@ -39,7 +39,7 @@
                     x-transition:leave="transition ease-in duration-150 origin-top"
                     x-transition:leave-start="opacity-100 transform scale-y-100"
                     x-transition:leave-end="opacity-0 transform scale-y-0">
-                    <ul class="flex flex-col leading-6 list-none text-sm tracking-wider text-gray-350">
+                    <ul class="flex flex-col leading-6 list-none text-sm tracking-wide text-gray-350">
                         <li class="py-1"><a href="{{ route('home') }}" class="block outline-none hover:text-white focus:text-white">Inicio</a></li>
                         <li class="py-1"><a href="{{ route('matches') }}" class="block outline-none hover:text-white focus:text-white">Partidos</a></li>
                         <li class="py-1"><a href="{{ route('standings') }}" class="block outline-none hover:text-white focus:text-white">Clasificaciones</a></li>
@@ -51,9 +51,30 @@
                     </ul>
                 </div>
             </li>
+            @hasrole('manager')
+            <li class="flex align-center flex-col">
+                <h4 @click="selected !== 4 ? selected = 4 : selected = null"
+                    class="cursor-pointer px-4 md:px-6 lg:px-8 py-3 border-b border-header-bg-dark dark:border-gray-750 text-gray-200 font-bold uppercase text-left inline-block flex justify-between tracking-wide">
+                    <span>manager</span>
+                    <span><i x-bind:class="{ 'fas fa-angle-down' : selected !== 4, 'fas fa-angle-up' : selected == 4 }" class="text-xl"></i></span>
+                </h4>
+                <div x-show="selected == 4" class="border-b border-header-bg-dark px-8 md:px-10 lg:px-12 py-1.5"
+                    x-transition:enter="transition ease-out duration-300 origin-top"
+                    x-transition:enter-start="opacity-0 transform scale-y-0"
+                    x-transition:enter-end="opacity-100 transform scale-y-100"
+                    x-transition:leave="transition ease-in duration-150 origin-top"
+                    x-transition:leave-start="opacity-100 transform scale-y-100"
+                    x-transition:leave-end="opacity-0 transform scale-y-0">
+                    <ul class="flex flex-col leading-6 list-none text-sm tracking-wide text-gray-350">
+                        <li class="py-1"><a href="#" class="block outline-none hover:text-white focus:text-white">Mi equipo</a></li>
+                        <li class="py-1"><a href="#" class="block outline-none hover:text-white focus:text-white">Partidas pendientes</a></li>
+                    </ul>
+                </div>
+            </li>
+            @endhasrole
             <li class="flex align-center flex-col">
                 <h4 @click="selected !== 1 ? selected = 1 : selected = null"
-                    class="cursor-pointer px-4 md:px-6 lg:px-8 py-3 border-b border-header-bg-dark dark:border-gray-750 text-gray-200 font-bold uppercase text-left inline-block flex justify-between">
+                    class="cursor-pointer px-4 md:px-6 lg:px-8 py-3 border-b border-header-bg-dark dark:border-gray-750 text-gray-200 font-bold uppercase text-left inline-block flex justify-between tracking-wide">
                     <span>ANBA</span>
                     <span><i x-bind:class="{ 'fas fa-angle-down' : selected !== 1, 'fas fa-angle-up' : selected == 1 }" class="text-xl"></i></span>
                 </h4>
@@ -64,7 +85,7 @@
                     x-transition:leave="transition ease-in duration-150 origin-top"
                     x-transition:leave-start="opacity-100 transform scale-y-100"
                     x-transition:leave-end="opacity-0 transform scale-y-0">
-                    <ul class="flex flex-col leading-6 list-none text-sm tracking-wider text-gray-350">
+                    <ul class="flex flex-col leading-6 list-none text-sm tracking-wide text-gray-350">
                         <li class="py-1"><a href="http://anba2k.es/phpBB3/viewforum.php?f=13&sid=c259efecf44ecda45c0f3e66871aa7ef" target="_blank" class="block outline-none hover:text-white focus:text-white">Reglamento</a></li>
                         <li class="py-1"><a href="mailto:dgranh@gmail.com" class="block outline-none hover:text-white focus:text-white">Contacto</a></li>
                     </ul>
@@ -72,7 +93,7 @@
             </li>
             <li class="flex align-center flex-col">
                 <h4 @click="selected !== 3 ? selected = 3 : selected = null"
-                    class="cursor-pointer px-4 md:px-6 lg:px-8 py-3 border-b border-header-bg-dark dark:border-gray-750 text-gray-200 font-bold uppercase text-left inline-block flex justify-between">
+                    class="cursor-pointer px-4 md:px-6 lg:px-8 py-3 border-b border-header-bg-dark dark:border-gray-750 text-gray-200 font-bold uppercase text-left inline-block flex justify-between tracking-wide">
                     <span>legal</span>
                     <span><i x-bind:class="{ 'fas fa-angle-down' : selected !== 3, 'fas fa-angle-up' : selected == 3 }" class="text-xl"></i></span>
                 </h4>
@@ -83,7 +104,7 @@
                     x-transition:leave="transition ease-in duration-150 origin-top"
                     x-transition:leave-start="opacity-100 transform scale-y-100"
                     x-transition:leave-end="opacity-0 transform scale-y-0">
-                    <ul class="flex flex-col leading-6 list-none text-sm tracking-wider text-gray-350">
+                    <ul class="flex flex-col leading-6 list-none text-sm tracking-wide text-gray-350">
                         <li class="py-1"><a href="{{ route('cookies') }}" class="block outline-none hover:text-white focus:text-white">Política de cookies</a></li>
                         <li class="py-1"><a href="{{ route('privacity') }}" class="block outline-none hover:text-white focus:text-white">Política de privacidad</a></li>
                     </ul>
@@ -94,7 +115,7 @@
         <div class="hidden md:flex items-start max-w-7xl mx-auto select-none pt-5">
             <div class="px-4 md:px-6 lg:px-8">
                 <h4 class="text-gray-200 font-bold uppercase">menu</h4>
-                <ul class="flex flex-col leading-6 list-none text-sm tracking-wider text-gray-350 mt-1.5">
+                <ul class="flex flex-col leading-6 list-none text-sm tracking-wide text-gray-350 mt-1.5">
                     <li class="py-1"><a href="{{ route('home') }}" class="block outline-none hover:text-white focus:text-white">Inicio</a></li>
                     <li class="py-1"><a href="{{ route('matches') }}" class="block outline-none hover:text-white focus:text-white">Partidos</a></li>
                     <li class="py-1"><a href="{{ route('standings') }}" class="block outline-none hover:text-white focus:text-white">Clasificaciones</a></li>
@@ -106,17 +127,27 @@
                 </ul>
             </div>
 
-            <div class="px-4 md:px-6 lg:px-8 ml-16">
+            @hasrole('manager')
+            <div class="px-4 md:px-6 lg:px-8 ml-8 lg:ml-12 xl:ml-16">
+                <h4 class="text-gray-200 font-bold uppercase">manager</h4>
+                <ul class="flex flex-col leading-6 list-none text-sm tracking-wide text-gray-350 mt-1.5">
+                    <li class="py-1"><a href="#" class="block outline-none hover:text-white focus:text-white">Mi equipo</a></li>
+                    <li class="py-1"><a href="#" class="block outline-none hover:text-white focus:text-white">Partidas pendientes</a></li>
+                </ul>
+            </div>
+            @endhasrole
+
+            <div class="px-4 md:px-6 lg:px-8 ml-8 lg:ml-12 xl:ml-16">
                 <h4 class="text-gray-200 font-bold uppercase">anba</h4>
-                <ul class="flex flex-col leading-6 list-none text-sm tracking-wider text-gray-350 mt-1.5">
+                <ul class="flex flex-col leading-6 list-none text-sm tracking-wide text-gray-350 mt-1.5">
                     <li class="py-1"><a href="http://anba2k.es/phpBB3/viewforum.php?f=13&sid=c259efecf44ecda45c0f3e66871aa7ef" target="_blank" class="block outline-none hover:text-white focus:text-white">Reglamento</a></li>
                     <li class="py-1"><a href="mailto:dgranh@gmail.com" class="block outline-none hover:text-white focus:text-white">Contacto</a></li>
                 </ul>
             </div>
 
-            <div class="px-4 md:px-6 lg:px-8 ml-16">
+            <div class="px-4 md:px-6 lg:px-8 ml-8 lg:ml-12 xl:ml-16">
                 <h4 class="text-gray-200 font-bold uppercase">legal</h4>
-                <ul class="flex flex-col leading-6 list-none text-sm tracking-wider text-gray-350 mt-1.5">
+                <ul class="flex flex-col leading-6 list-none text-sm tracking-wide text-gray-350 mt-1.5">
                     <li class="py-1"><a href="{{ route('cookies') }}" class="block outline-none hover:text-white focus:text-white">Política de cookies</a></li>
                     <li class="py-1"><a href="{{ route('privacity') }}" class="block outline-none hover:text-white focus:text-white">Política de privacidad</a></li>
                 </ul>

@@ -89,30 +89,59 @@
 
                     <x-slot name="content">
                         @auth
-                            <!-- Account Management -->
-{{--                             <div class="block px-4 py-2 text-xs text-gray-400">
-                                {{ __('Manage Account') }}
-                            </div> --}}
-
-                            <x-dropdown-link href="{{ route('profile.show') }}">
-                                {{ __('Perfil') }}
-                            </x-dropdown-link>
+                            @hasrole('manager')
+                                <div class="block px-4 py-2 text-xs text-gray-400 dark:text-gray-300">
+                                    {{ __('Manager') }}
+                                </div>
+                                <x-dropdown-link href="#" class="flex items-center">
+                                    <i class="fas fa-shield-alt text-base w-6 mr-1.5 text-center"></i><span>{{ __('Mi equipo') }}</span>
+                                </x-dropdown-link>
+                                <x-dropdown-link href="#" class="flex items-center">
+                                    <i class="fas fa-basketball-ball text-base w-6 mr-1.5 text-center"></i><span>{{ __('Partidas pendientes') }}</span>
+                                </x-dropdown-link>
+                            @endhasrole
 
                             @hasanyrole('super-admin|admin')
-                                <div class="border-t border-gray-100 dark:border-gray-350"></div>
-                                <x-dropdown-link href="{{ route('admin') }}">
-                                    {{ __('Panel de Admin') }}
+                                <div class="block px-4 py-2 text-xs text-gray-400 dark:text-gray-300">
+                                    {{ __('Administración') }}
+                                </div>
+                                <x-dropdown-link href="{{ route('admin') }}" class="flex items-center">
+                                    <i class="fas fa-cogs text-base w-6 mr-1.5 text-center"></i><span>{{ __('AdminANBA') }}</span>
+                                </x-dropdown-link>
+                                @if (isset($currentSeason))
+                                    <x-dropdown-link href="{{ route('admin.matches', $currentSeason->slug) }}" class="flex items-center">
+                                        <i class="fas fa-cog text-sm w-6 mr-1.5 text-right"></i><span>{{ __('Partidos') }}</span>
+                                    </x-dropdown-link>
+                                @endif
+                                <x-dropdown-link href="{{ route('admin.teams') }}" class="flex items-center">
+                                    <i class="fas fa-cog text-sm w-6 mr-1.5 text-right"></i><span>{{ __('Equipos') }}</span>
+                                </x-dropdown-link>
+                                <x-dropdown-link href="{{ route('admin.players') }}" class="flex items-center">
+                                    <i class="fas fa-cog text-sm w-6 mr-1.5 text-right"></i><span>{{ __('Jugadores') }}</span>
                                 </x-dropdown-link>
                             @endhasanyrole
+
+                            <div class="block px-4 py-2 text-xs text-gray-400 dark:text-gray-300">
+                                {{ __('Mi cuenta') }}
+                            </div>
+                            <x-dropdown-link href="{{ route('profile.show') }}" class="flex items-center">
+                                <i class="fas fa-id-card-alt text-base w-6 mr-1.5 text-center"></i><span>{{ __('Perfil') }}</span>
+                            </x-dropdown-link>
+                            <!-- Authentication -->
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <x-dropdown-link href="{{ route('logout') }}" class="flex items-center"
+                                                    onclick="event.preventDefault(); this.closest('form').submit();">
+                                    <i class="fas fa-door-open text-base w-6 mr-1.5 text-center"></i><span>{{ __('Cerrar sesión') }}</span>
+                                </x-dropdown-link>
+                            </form>
+
 
                             @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                                 <x-dropdown-link href="{{ route('api-tokens.index') }}">
                                     {{ __('API Tokens') }}
                                 </x-dropdown-link>
                             @endif
-
-                            <div class="border-t border-gray-100 dark:border-gray-350"></div>
-
                             <!-- Team Management -->
                             @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
                                 <div class="block px-4 py-2 text-xs text-gray-400">
@@ -130,7 +159,7 @@
                                     </x-dropdown-link>
                                 @endcan
 
-                                <div class="border-t border-gray-100 dark:border-gray-350"></div>
+                                <div class="border-t border-gray-150 dark:border-gray-700"></div>
 
                                 <!-- Team Switcher -->
                                 <div class="block px-4 py-2 text-xs text-gray-400">
@@ -141,27 +170,22 @@
                                     <x-switchable-team :team="$team" />
                                 @endforeach
 
-                                <div class="border-t border-gray-100 dark:border-gray-350"></div>
+                                <div class="border-t border-gray-150 dark:border-gray-700"></div>
                             @endif
 
-                            <!-- Authentication -->
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <x-dropdown-link href="{{ route('logout') }}"
-                                                    onclick="event.preventDefault(); this.closest('form').submit();">
-                                    {{ __('Cerrar sesión') }}
-                                </x-dropdown-link>
-                            </form>
                         @endauth
                         @guest
-{{--                             <div class="block px-4 py-2 text-xs text-gray-400">
+{{--                             <div class="block px-4 py-2 text-xs text-gray-400 dark:text-gray-300">
                                 {{ __('Manage Account') }}
                             </div> --}}
-                            <x-dropdown-link href="{{ route('login') }}">
-                                {{ __('Iniciar sesión') }}
+                            <div class="block px-4 py-2 text-xs text-gray-400 dark:text-gray-300">
+                                {{ __('Bienvenido, invitado') }}
+                            </div>
+                            <x-dropdown-link href="{{ route('login') }}" class="flex items-center">
+                                <i class="fas fa-fingerprint text-base w-6 mr-1.5 text-center"></i><span>{{ __('Iniciar sesión') }}</span>
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('register') }}">
-                                {{ __('Crear cuenta') }}
+                            <x-dropdown-link href="{{ route('register') }}" class="flex items-center">
+                                <i class="fas fa-user-plus text-base w-6 mr-1.5 text-center"></i><span>{{ __('Crear cuenta') }}</span>
                             </x-dropdown-link>
                         @endguest
                     </x-slot>

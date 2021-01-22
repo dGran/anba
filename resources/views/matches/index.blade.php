@@ -18,7 +18,7 @@
 				@endif
 			@else
 				<div class="bg-white dark:bg-gray-750 shadow-md rounded mx-3 md:mx-0 w-full p-4">
-					No existen partidos
+					No se han encontrado partidos
 				</div>
 			@endif
 		@else

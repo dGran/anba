@@ -13,6 +13,7 @@ class PlayerStat extends Model
 
     protected $fillable = [
         'match_id',
+        'season_id',
         'player_id',
         'season_team_id',
         'MIN',
