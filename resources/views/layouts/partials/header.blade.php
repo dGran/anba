@@ -36,35 +36,55 @@
                             {{ __($link['text']) }}
                         </x-nav-link>
                     @endforeach
+                    <a href="http://anba2k.es/phpBB3/index.php" target="_blank" class="uppercase inline-flex items-center px-1 pt-1 text-sm font-medium leading-5 text-gray-300 hover:text-white focus:text-white focus:outline-none transition duration-150 ease-in-out transform hover:translate-y-0.5 hidden lg:inline-flex">
+                        Foro
+                    </a>
                 </div>
             </div>
 
             <!-- Settings Dropdown -->
             <div class="flex items-center ml-6">
+{{--                 <button type="button" class="h-8 w-8 text-xl mr-2 focus:outline-none text-gray-300 hover:text-white focus:text-white transition duration-150 ease-in-out" onclick="toggleDarkMode()">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <script>
+                    const html = document.getElementsByTagName('html')[0];
+
+                    function toggleDarkMode() {
+                        if(html.classList.contains('scheme-dark')) {
+                            html.classList.remove('scheme-dark');
+                        } else {
+                            html.classList.add('scheme-dark');
+                        }
+                    }
+                </script> --}}
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        @auth
-                            @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                                <button class="flex text-sm rounded-full focus:outline-none border border-transparent hover:border-dark-link focus:border-dark-link transition duration-150 ease-in-out">
-                                    <img class="h-8 w-8 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
-                                </button>
-                            @else
-                                <button class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
-                                    <div>{{ Auth::user()->name }}</div>
 
-                                    <div class="ml-1">
-                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
+                        <div class="flex items-center">
+                            @auth
+                                @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
+                                    <button class="flex text-sm rounded-full focus:outline-none border border-transparent hover:border-dark-link focus:border-dark-link transition duration-150 ease-in-out">
+                                        <img class="h-8 w-8 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                                    </button>
+                                @else
+                                    <button class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
+                                        <div>{{ Auth::user()->name }}</div>
+
+                                        <div class="ml-1">
+                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                    </button>
+                                @endif
+                            @endauth
+                            @guest
+                                <button class="flex text-sm rounded-full focus:outline-none border border-transparent hover:border-dark-link focus:border-dark-link transition duration-150 ease-in-out">
+                                    <img class="h-8 w-8 bg-gray-100 p-0.5 rounded-full object-cover" src="{{ asset('img/guest.png') }}" alt="Invitado"/>
                                 </button>
-                            @endif
-                        @endauth
-                        @guest
-                            <button class="flex text-sm rounded-full focus:outline-none border border-transparent hover:border-dark-link focus:border-dark-link transition duration-150 ease-in-out">
-                                <img class="h-8 w-8 bg-gray-100 p-0.5 rounded-full object-cover" src="{{ asset('img/guest.png') }}" alt="Invitado"/>
-                            </button>
-                        @endguest
+                            @endguest
+                        </div>
                     </x-slot>
 
                     <x-slot name="content">
@@ -165,6 +185,12 @@
                     {{ __($link['text']) }}
                 </x-responsive-nav-link>
             @endforeach
+            <li class="text-sm uppercase border-b border-header-bg-dark dark:border-gray-800">
+                <a href="http://anba2k.es/phpBB3/index.php" target="_blank" class="group flex items-center justify-between px-6 py-3 text-sm uppercase text-gray-300 leading-5 focus:outline-none transition duration-150 ease-in-out hover:text-white focus:text-white transform hover:-translate-x-1 focus:-translate-x-1 hover:bg-header-bg-lighter focus:bg-header-bg-lighter active:bg-header-bg-lighter dark:hover:bg-gray-800 dark:focus:bg-gray-800 dark:active:bg-gray-800">
+                    <span>Foro</span>
+                    <i class="fas fa-chevron-right text-gray-500 dark:text-gray-600 group-hover:text-white group-focus:text-white"></i>
+                </a>
+            </li>
         </ul>
     </div>
 

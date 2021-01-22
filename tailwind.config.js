@@ -1,4 +1,6 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
+const plugin = require("tailwindcss/plugin");
+const selectorParser = require("postcss-selector-parser");
 
 module.exports = {
     darkMode: 'class',
@@ -59,6 +61,9 @@ module.exports = {
     },
 
     variants: {
+        textColor: ['dark', 'responsive', 'hover', 'focus'],
+        backgroundColor: ['dark', 'responsive', 'hover', 'focus'],
+        borderColor: ['dark', 'responsive', 'hover', 'focus'],
         opacity: ['responsive', 'hover', 'focus', 'disabled'],
     },
 
@@ -77,6 +82,18 @@ module.exports = {
                     }
                 }
             });
-        }
+        },
+        plugin(function ({ addVariant, prefix }) {
+            addVariant('dark', ({ modifySelectors, separator}) => {
+                modifySelectors(({ selector }) => {
+                    return selectorParser((selectors) => {
+                        selectors.walkClasses((sel) => {
+                            sel.value = `dark${separator}${sel.value}`
+                            sel.parent.insertBefore(sel, selectorParser().astSync(prefix('.scheme-dark ')))
+                        })
+                    }).processSync(selector)
+                })
+            })
+        })
     ]
 };

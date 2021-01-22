@@ -22,7 +22,7 @@
 				</div>
 			@endif
 		@else
-			<div class="px-4 md:px-0 md:pt-4">
+			<div class="px-4 md:px-0 md:pt-4 h-screen md:h-auto">
 				<h3 class="font-bold text-3xl">
 					Ups!
 				</h3>

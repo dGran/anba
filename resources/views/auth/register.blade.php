@@ -1,4 +1,11 @@
 <x-guest-layout>
+    {!! NoCaptcha::renderJs() !!}
+    <style>
+        .rc-anchor-container {
+            width: 100%;
+        }
+    </style>
+
     <div class="py-6 md:py-16 bg-gray-100 dark:bg-gray-850 flex flex-col items-center mx-4 lg:mx-0">
         <x-jet-authentication-card-logo />
 
@@ -18,7 +25,7 @@
                 registro usuario
             </p>
 
-            <form method="POST" action="{{ route('register') }}" class="mx-6">
+            <form method="POST" id="register" action="{{ route('register') }}" class="mx-0 md:mx-6">
                 @csrf
 
                 <div class="text-gray-700 dark:text-white mt-4">
@@ -50,11 +57,16 @@
                     <input id="password_confirmation" minlength="8" class="appearance-none rounded-md text-sm | py-2 px-3 mt-1 | bg-white dark:bg-gray-700 | border border-gray-300 dark:border-gray-850 focus:border-gray-400 hover:border-gray-400 dark:focus:border-dark-link dark:hover:border-dark-link | focus:outline-none | block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password">
                 </div>
 
-                <div class="flex items-center justify-end mt-5">
+                <div class="mt-8">
+                    {!! NoCaptcha::display() !!}
+                </div>
+
+                <div class="flex items-center justify-end mt-8">
                     <button type="submit" class="ml-4 inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-dark-link rounded-md font-semibold text-xs text-white dark:text-gray-700 uppercase tracking-widest hover:bg-gray-600 dark:hover:bg-blue-300 active:bg-gray-600 dark:active:bg-blue-200 focus:outline-none focus:bg-gray-600 dark:focus:bg-blue-300 disabled:opacity-25 transition ease-in-out duration-150">
                         {{ __('crear cuenta') }}
                     </button>
                 </div>
+
             </form>
         </div>
 

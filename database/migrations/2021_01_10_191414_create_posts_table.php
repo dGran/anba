@@ -15,6 +15,23 @@ class CreatePostsTable extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
+            $table->enum('type', ['general', 'resultados', 'records', 'rachas', 'lesiones', 'movimientos', 'destacados']);
+            $table->foreignId('match_id')
+                ->nullable()
+                ->constrained()
+                ->onDelete('cascade');
+            $table->foreignId('statement_id')
+                ->nullable()
+                ->constrained()
+                ->onDelete('cascade');
+            $table->foreignId('transfer_id')
+                ->nullable()
+                ->constrained()
+                ->onDelete('cascade');
+            $table->string('category');
+            $table->string('title')->nullable();
+            $table->string('description')->nullable();
+            $table->text('img')->nullable();
             $table->timestamps();
         });
     }

@@ -16,6 +16,7 @@
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <link rel="stylesheet" href="{{ asset('fonts/iconmoon.css') }}"/>
 
         @livewireStyles
 
@@ -28,7 +29,6 @@
         <script src="https://cdn.jsdelivr.net/npm/tail.select@latest/"></script>
     </head>
     <body class="font-sans antialiased bg-gray-100 dark:bg-gray-850">
-
         <div class="flex flex-col h-screen justify-between">
             @livewire('top-header')
 

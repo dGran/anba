@@ -31,6 +31,12 @@ class CreatePlayersTable extends Migration
             $table->string('draft_year')->nullable();;
             $table->integer('average')->nullable();
             $table->boolean('retired')->default(false);
+            $table->foreignId('injury_id')
+                ->nullable()
+                ->constrained('injuries')
+                ->onDelete('cascade');
+            $table->integer('injury_matches')->nullable();
+            $table->integer('injury_days')->nullable();
             $table->string('slug');
             $table->timestamps();
         });

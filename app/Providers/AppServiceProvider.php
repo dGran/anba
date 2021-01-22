@@ -27,6 +27,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $usersOnline = \App\Models\Session::whereNotNull('user_id')->distinct('user_id')->count('user_id');
+        view()->share('usersOnline', $usersOnline);
+        $visitorsOnline = \App\Models\Session::whereNull('user_id')->distinct('ip_address')->count('ip_address');
+        view()->share('visitorsOnline', $visitorsOnline);
+
         VerifyEmail::toMailUsing(function ($notifiable, $url) {
             return (new MailMessage)
                 ->subject('Verificación de cuenta')

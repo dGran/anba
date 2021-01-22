@@ -33,6 +33,8 @@ use App\Http\Livewire\Admin\UsersCrud;
 // })->name('dashboard');
 
 Route::get('/', function () {
+	$usersOnline = \App\Models\Session::whereNotNull('user_id')->distinct('user_id')->count('user_id');
+	$visitorsOnline = \App\Models\Session::whereNull('user_id')->count();
     return view('home');
 })->name('home');
 
@@ -49,6 +51,13 @@ Route::get('/partidos/{match:id}', [MatchController::class, 'index'])->name('mat
 Route::get('/politica-de-cookies', function () {
     return view('cookies-policy');
 })->name('cookies');
+Route::get('/politica-de-privacidad', function () {
+    return view('privacity-policy');
+})->name('privacity');
+Route::get('/reglamento', function () {
+    return view('rules');
+})->name('rules');
+
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/equipos', function () {
     return view('teams');

@@ -323,6 +323,13 @@ return [
 
         ['header' => 'CONFIGURACION'],
         [
+            'text'        => 'Lesiones',
+            'route'       => 'home',
+            'icon'        => 'fas fa-briefcase-medical',
+            'label'       => 'PENDING',
+            'label_color' => 'warning',
+        ],
+        [
             'text'        => 'General',
             'route'       => 'home',
             'icon'        => 'fas fa-cog',
