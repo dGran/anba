@@ -15,11 +15,13 @@
             <div class="md:mr-3 w-full md:w-1/2 lg:w-7/12 xl:w-8/12">
                 <h4 class="flex items-center justify-between text-base uppercase font-bold tracking-wider md:mt-0 bg-header-bg dark:bg-gray-750 px-4 py-2.5 md:rounded-t-md text-white">
                     <span>ultimas noticias</span>
-                    <div class="flex items-center">
-                        <button type="button" class="focus:outline-none" wire:click="setPreviousPage"><i class="fas fa-chevron-left"></i></button>
-                        <span class="text-sm px-3">{{ $page }}</span>
-                        <button type="button" class="focus:outline-none" wire:click="setNextPage"><i class="fas fa-chevron-right"></i></button>
-                    </div>
+                    @if ($posts->lastPage() > 1)
+                        <div class="flex items-center">
+                            <button type="button" class="focus:outline-none" wire:click="setPreviousPage"><i class="fas fa-chevron-left"></i></button>
+                            <span class="text-sm px-3">{{ $page }}</span>
+                            <button type="button" class="focus:outline-none" wire:click="setNextPage"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    @endif
                 </h4>
                 @include('home.last-news.filters')
                 @include('home.last-news.content')
