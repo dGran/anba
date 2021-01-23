@@ -11,7 +11,7 @@
 						<thead class="select-none">
 							@include('home.standings.table_header')
 						</thead>
-						<tbody wire:loading.class="opacity-50">
+						<tbody>
 							@foreach (array_slice($table_positions[$confKey], 0, 6) as $key => $position)
 								<tr class="group border-t border-gray-200 dark:border-gray-650 text-sm">
 									@include('home.standings.table_body')

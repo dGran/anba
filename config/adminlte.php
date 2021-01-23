@@ -273,10 +273,8 @@ return [
         ],
         [
             'text'        => 'Noticias',
-            'route'       => 'home',
+            'route'       => 'admin.posts',
             'icon'        => 'bx bx-news',
-            'label'       => 'PENDING',
-            'label_color' => 'warning',
         ],
         ['header' => 'TABLAS GENERALES'],
         [

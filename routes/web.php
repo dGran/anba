@@ -16,6 +16,7 @@ use App\Http\Livewire\Admin\DivisionCrud;
 use App\Http\Livewire\Admin\TeamCrud;
 use App\Http\Livewire\Admin\PlayerCrud;
 use App\Http\Livewire\Admin\UsersCrud;
+use App\Http\Livewire\Admin\PostCrud;
 
 /*
 |--------------------------------------------------------------------------
@@ -85,6 +86,7 @@ Route::middleware(['auth:sanctum', 'verified', 'role:super-admin|admin', 'passwo
 	Route::get('equipos', TeamCrud::class)->name('admin.teams');
 	Route::get('divisiones', DivisionCrud::class)->name('admin.divisions');
 	Route::get('conferencias', ConferenceCrud::class)->name('admin.conferences');
+	Route::get('noticias', PostCrud::class)->name('admin.posts');
 	Route::get('temporadas', SeasonCrud::class)->name('admin.seasons');
 	Route::get('temporadas/{season:slug}/partidos', MatchCrud::class)->name('admin.matches');
 });

@@ -36,7 +36,7 @@
                     <input id="password" class="appearance-none rounded-md text-sm | py-2 px-3 mt-1 | bg-white dark:bg-gray-700 | border border-gray-300 dark:border-gray-850 focus:border-gray-400 hover:border-gray-400 dark:focus:border-dark-link dark:hover:border-dark-link | focus:outline-none | block mt-1 w-full" type="password" name="password" required autocomplete="current-password" autofocus>
                 </div>
 
-                <div class="flex items-center justify-end mt-5">
+                <div class="flex items-center justify-center mt-5">
 {{--                     @if (Route::has('password.request'))
                         <a class="underline text-sm text-gray-600 dark:text-gray-100 hover:text-gray-900 dark:hover:text-gray-300 focus:text-gray-900 dark:focus:text-gray-300 focus:outline-none" href="{{ route('password.request') }}">
                             {{ __('Olvidé mi contraseña') }}

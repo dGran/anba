@@ -10,4 +10,10 @@ class ScoreHeader extends Model
     use HasFactory;
 
 	protected $table = "scores_headers";
+
+    protected $fillable = [
+        'name',
+        'active',
+        'order',
+    ];
 }

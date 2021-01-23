@@ -29,9 +29,10 @@ class CreatePostsTable extends Migration
                 ->constrained()
                 ->onDelete('cascade');
             $table->string('category');
-            $table->string('title')->nullable();
-            $table->string('description')->nullable();
+            $table->string('title');
+            $table->string('description');
             $table->text('img')->nullable();
+            $table->string('slug');
             $table->timestamps();
         });
     }
