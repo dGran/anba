@@ -23,6 +23,7 @@
                             <option value="lesiones">Lesiones</option>
                             <option value="movimientos">Movimientos</option>
                             <option value="destacados">Destacados</option>
+                            <option value="declaraciones">Declaraciones</option>
                         </select>
                     </div>
                 </div>

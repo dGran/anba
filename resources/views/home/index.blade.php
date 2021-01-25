@@ -7,13 +7,16 @@
 {{--         <h4 class="text-center py-3 font-bold">
         	La liga interactiva mas real para NBA2K
     	</h4> --}}
+{{--         <button type="button" class="bg-indigo-500 border border-indigo-700 hover:bg-indigo-600 focus:bg-indigo-600 rounded-md px-3 py-1.5 mt-8 fon-bold text-sm uppercase" wire:click="autopost">
+            Test auto-new
+        </button> --}}
     </div>
 
     <div class="max-w-7xl mx-auto md:px-6 lg:px-8 md:my-8">
         <div class="flex flex-col md:flex-row">
 
             <div class="md:mr-3 w-full md:w-1/2 lg:w-7/12 xl:w-8/12">
-                <h4 class="flex items-center justify-between text-base uppercase font-bold tracking-wider md:mt-0 bg-header-bg dark:bg-gray-750 px-4 py-2.5 md:rounded-t-md text-white">
+                <h4 class="flex items-center justify-between text-base uppercase font-bold tracking-wider md:mt-0 bg-header-bg-light dark:bg-gray-750 px-4 py-2.5 md:rounded-t-md text-white">
                     <span>ultimas noticias</span>
                     @if ($posts->lastPage() > 1)
                         <div class="flex items-center">
@@ -30,35 +33,35 @@
             <div class="md:ml-3 w-full md:w-1/2 lg:w-5/12 xl:w-4/12">
                 <div class="flex flex-col">
                     <div>
-                        <h4 class="text-base uppercase font-bold tracking-wider md:mt-0 md:mb-3 bg-header-bg dark:bg-gray-750 px-4 py-2.5 md:rounded-md text-white">
+                        <h4 class="text-base uppercase font-bold tracking-wider md:mt-0 md:mb-3 bg-header-bg-light dark:bg-gray-750 px-4 py-2.5 md:rounded-md text-white">
                             clasificaciones
                         </h4>
                         @include('home.standings')
                     </div>
 
                     <div class="md:mt-6">
-                         <h4 class="text-base uppercase font-bold tracking-wider md:mt-0 md:mb-3 bg-header-bg dark:bg-gray-750 px-4 py-2.5 md:rounded-md text-white">
+                         <h4 class="text-base uppercase font-bold tracking-wider md:mt-0 md:mb-3 bg-header-bg-light dark:bg-gray-750 px-4 py-2.5 md:rounded-md text-white">
                             MVP de la temporada
                         </h4>
                         @include('home.tops.top_season_mvp')
                     </div>
 
                     <div class="md:mt-6">
-                         <h4 class="text-base uppercase font-bold tracking-wider md:mt-0 md:mb-3 bg-header-bg dark:bg-gray-750 px-4 py-2.5 md:rounded-md text-white">
+                         <h4 class="text-base uppercase font-bold tracking-wider md:mt-0 md:mb-3 bg-header-bg-light dark:bg-gray-750 px-4 py-2.5 md:rounded-md text-white">
                             top anotadores
                         </h4>
                         @include('home.tops.top_season_pts')
                     </div>
 
                     <div class="md:mt-6">
-                         <h4 class="text-base uppercase font-bold tracking-wider md:mt-0 md:mb-3 bg-header-bg dark:bg-gray-750 px-4 py-2.5 md:rounded-md text-white">
+                         <h4 class="text-base uppercase font-bold tracking-wider md:mt-0 md:mb-3 bg-header-bg-light dark:bg-gray-750 px-4 py-2.5 md:rounded-md text-white">
                             top rebotes
                         </h4>
                         @include('home.tops.top_season_reb')
                     </div>
 
                     <div class="md:mt-6">
-                         <h4 class="text-base uppercase font-bold tracking-wider md:mt-0 md:mb-3 bg-header-bg dark:bg-gray-750 px-4 py-2.5 md:rounded-md text-white">
+                         <h4 class="text-base uppercase font-bold tracking-wider md:mt-0 md:mb-3 bg-header-bg-light dark:bg-gray-750 px-4 py-2.5 md:rounded-md text-white">
                             top asistencias
                         </h4>
                         @include('home.tops.top_season_ast')

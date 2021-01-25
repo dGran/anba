@@ -8,9 +8,14 @@ use App\Models\Season;
 use App\Models\SeasonConference;
 use App\Models\Post;
 
+use App\Http\Traits\PostTrait;
+
+use App\Events\PostStored;
+
 class Home extends Component
 {
 	use WithPagination;
+	use PostTrait;
 
 	public $season;
 	public $filterType = "all";
@@ -35,6 +40,21 @@ class Home extends Component
     public function setPreviousPage()
     {
 		$this->page--;
+    }
+
+    public function autopost()
+    {
+    	$post = $this->storePost(
+			'declaraciones',
+			null,
+			null,
+			null,
+			'Categoria',
+			'Título de prueba',
+			'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Culpa quaerat, sequi, ratione fugiat alias odio atque. Porro, quae perspiciatis repellendus omnis iste a dolore neque nam quaerat, molestias, et quisquam.',
+			null
+    	);
+    	event(new PostStored($post));
     }
 
 	public function mount()

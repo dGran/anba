@@ -14,7 +14,7 @@
 					</p>
 					@auth
 						@if (!$reg->userHasVoted())
-			                <x-buttons.primary class="uppercase text-xs px-2.5 py-0.5 mt-2 tracking-wide leading-6" wire:click="pollVote({{ $reg->id }}, 'local')">
+			                <x-buttons.primary class="uppercase text-xs px-2.5 py-0.5 mt-2 tracking-wide leading-6" wire:click.stop="pollVote({{ $reg->id }}, 'local')">
 			                    votar
 			                </x-buttons.primary>
 						@endif
@@ -33,7 +33,7 @@
 					</p>
 					@auth
 						@if (!$reg->userHasVoted())
-			                <x-buttons.primary class="uppercase text-xs px-2.5 py-0.5 mt-2 tracking-wide leading-6" wire:click="pollVote({{ $reg->id }}, 'visitor')">
+			                <x-buttons.primary class="uppercase text-xs px-2.5 py-0.5 mt-2 tracking-wide leading-6" wire:click.stop="pollVote({{ $reg->id }}, 'visitor')">
 			                    votar
 			                </x-buttons.primary>
 						@endif
@@ -46,7 +46,7 @@
 			@auth
 				@if ($reg->userHasVoted())
 					<p>Has votado por la victoria de {{ $reg->userVote() == 'local' ? $reg->localTeam->team->medium_name : $reg->visitorTeam->team->medium_name }}</p>
-	                <x-buttons.danger-outline class="uppercase text-xs px-2 py-0.5 mt-1" wire:click="pollDestroy({{ $reg->id }}, {{ auth()->user()->id }})">
+	                <x-buttons.danger-outline class="uppercase text-xs px-2 py-0.5 mt-1" wire:click.stop="pollDestroy({{ $reg->id }}, {{ auth()->user()->id }})">
 	                    Eliminar voto
 	                </x-buttons.danger-outline>
 				@endif

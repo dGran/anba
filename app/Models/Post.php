@@ -67,7 +67,16 @@ class Post extends Model
 
     public function getImg()
     {
-        $default = asset('storage/posts/default.png');
+        switch ($this->type) {
+            case 'general': $default = asset('storage/posts/defaults/default.png'); break;
+            case 'resultados': $default = asset('storage/posts/defaults/results.svg'); break;
+            case 'records': $default = asset('storage/posts/defaults/default.png'); break;
+            case 'rachas': $default = asset('storage/posts/defaults/default.png'); break;
+            case 'lesiones': $default = asset('storage/posts/defaults/injury.svg'); break;
+            case 'movimientos': $default = asset('storage/posts/defaults/default.png'); break;
+            case 'destacados': $default = asset('storage/posts/defaults/default.png'); break;
+            case 'declaraciones': $default = asset('storage/posts/defaults/statement.svg'); break;
+        }
         $local = asset('storage/' . $this->img);
         $broken = asset('img/broken.png');
 

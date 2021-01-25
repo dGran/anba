@@ -15,7 +15,7 @@
 				        </div>
 				    </div>
 				    @if ($showTableImages)
-						<img class="image rounded-circle non-selectable" src="{{ $reg->getImg() }}" alt="{{ $reg->title }}" style="width: 40px;">
+						<img class="image rounded non-selectable" src="{{ $reg->getImg() }}" alt="{{ $reg->title }}" style="width: 40px;">
 				    @endif
 					<div class="pl-2" style="width: 150px; min-width: 150px; max-width: 150px">
 						<div class="name d-flex align-items-center" wire:click.stop="view({{ $reg->id }})">

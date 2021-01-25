@@ -21,7 +21,7 @@
                 <!-- Logo -->
                 <div class="flex-1 ml-5 lg:ml-0 text-white flex items-center w-full">
                     <a href="{{ route('home') }}" class="group flex items-center h-full focus:outline-none">
-                        <img src="{{ asset('img/logo.png') }}" alt="logo" class="h-12 rounded-full block w-auto focus:outline-none border border-transparent group-hover:border-dark-link group-focus:border-dark-link transition duration-150 ease-in-out" />
+                        <img src="{{ asset('img/logo.png') }}" alt="logo" class="h-12 block w-auto focus:outline-none border border-transparent group-hover:border-dark-link group-focus:border-dark-link transition duration-150 ease-in-out" />
                         <div class="text-xl ml-3 leading-5  w-full">
                             <p class="font-bold">ANBA</p>
                             <div class="block text-xxs uppercase w-24">Adictos a la NBA</div>
@@ -65,7 +65,7 @@
                             @auth
                                 @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                                     <button class="flex text-sm rounded-full focus:outline-none border border-transparent hover:border-dark-link focus:border-dark-link transition duration-150 ease-in-out">
-                                        <img class="h-8 w-8 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                                        <img class="h-9 w-9 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
                                     </button>
                                 @else
                                     <button class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
@@ -81,7 +81,7 @@
                             @endauth
                             @guest
                                 <button class="flex text-sm rounded-full focus:outline-none border border-transparent hover:border-dark-link focus:border-dark-link transition duration-150 ease-in-out">
-                                    <img class="h-8 w-8 bg-gray-100 p-0.5 rounded-full object-cover" src="{{ asset('img/guest.png') }}" alt="Invitado"/>
+                                    <img class="h-9 w-9 bg-gray-100 p-0.5 rounded-full object-cover" src="{{ asset('img/guest.png') }}" alt="Invitado"/>
                                 </button>
                             @endguest
                         </div>

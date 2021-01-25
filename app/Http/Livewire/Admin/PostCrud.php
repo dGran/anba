@@ -13,6 +13,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 
 use App\Events\TableWasUpdated;
+use App\Events\PostStored;
 
 class PostCrud extends Component
 {
@@ -323,6 +324,7 @@ class PostCrud extends Component
     {
         if ($this->img) {
 	       $validatedData = $this->validate([
+	       		'type' => 'required',
 	       		'category' => 'required',
 	       		'title' => 'required',
 	       		'description' => 'required',
@@ -330,6 +332,7 @@ class PostCrud extends Component
 	            // 'img' => 'mimes:jpeg,png,jpg,gif,svg|max:2048|dimensions:ratio=1/1'
 	        ],
 		    [
+		    	'type.required' => 'El tipo es obligatorio',
 		    	'category.required' => 'La categoría es obligatoria',
 		    	'title.required' => 'El título es obligatorio',
 		    	'description.required' => 'La descripción es obligatoria',
@@ -341,11 +344,13 @@ class PostCrud extends Component
 	        $validatedData['img'] = $this->img->storeAs('posts', $fileName, 'public');
 	    } else {
 	        $validatedData = $this->validate([
+	        	'type' => 'required',
 	       		'category' => 'required',
 	       		'title' => 'required',
 	       		'description' => 'required',
 	        ],
 		    [
+		    	'type.required' => 'El tipo es obligatorio',
 		    	'category.required' => 'La categoría es obligatoria',
 		    	'title.required' => 'El título es obligatorio',
 		    	'description.required' => 'La descripción es obligatoria',
@@ -357,6 +362,7 @@ class PostCrud extends Component
         $reg = Post::create($validatedData);
 
         event(new TableWasUpdated($reg, 'insert', $reg->toJson(JSON_PRETTY_PRINT)));
+        event(new PostStored($reg));
         session()->flash('success', 'Registro agregado correctamente.');
 
 		if ($this->continuousInsert) {
@@ -400,6 +406,7 @@ class PostCrud extends Component
 
         if ($this->img) {
 	        $validatedData = $this->validate([
+	        	'type' => 'required',
 	       		'category' => 'required',
 	       		'title' => 'required',
 	       		'description' => 'required',
@@ -407,6 +414,7 @@ class PostCrud extends Component
 	            // 'img' => 'mimes:jpeg,png,jpg,gif,svg|max:2048|dimensions:ratio=1/1'
 	        ],
 		    [
+		    	'type.required' => 'El tipo es obligatorio',
 		    	'category.required' => 'La categoría es obligatoria',
 		    	'title.required' => 'El título es obligatorio',
 		    	'description.required' => 'La descripción es obligatoria',
@@ -419,11 +427,13 @@ class PostCrud extends Component
 	        $validatedData['img'] = $this->img->storeAs('posts', $fileName, 'public');
 	    } else {
 	        $validatedData = $this->validate([
+	        	'type' => 'required',
 	       		'category' => 'required',
 	       		'title' => 'required',
 	       		'description' => 'required',
 	        ],
 		    [
+		    	'type.required' => 'El tipo es obligatorio',
 		    	'category.required' => 'La categoría es obligatoria',
 		    	'title.required' => 'El título es obligatorio',
 		    	'description.required' => 'La descripción es obligatoria',

@@ -135,6 +135,44 @@ class Match extends Model
         }
     }
 
+    public function winner()
+    {
+        if ($this->played()) {
+            $local = 0;
+            $visitor = 0;
+            foreach ($this->scores as $score) {
+                $local += $score->local_score;
+                $visitor += $score->visitor_score;
+            }
+            if ($local > $visitor) {
+                return $this->localTeam;
+            } else {
+                return $this->visitorTeam;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public function loser()
+    {
+        if ($this->played()) {
+            $local = 0;
+            $visitor = 0;
+            foreach ($this->scores as $score) {
+                $local += $score->local_score;
+                $visitor += $score->visitor_score;
+            }
+            if ($local > $visitor) {
+                return $this->visitorTeam;
+            } else {
+                return $this->localTeam;
+            }
+        } else {
+            return false;
+        }
+    }
+
     public function played()
     {
         return $this->scores->count() > 0 ? TRUE : FALSE;

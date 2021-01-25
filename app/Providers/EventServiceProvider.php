@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Event;
 
 use App\Events\TableWasUpdated;
 use App\Listeners\InsertAdminLog;
+use App\Events\PostStored;
+use App\Listeners\SendPostNotification;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -23,6 +25,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         TableWasUpdated::class => [
             InsertAdminLog::class,
+        ],
+        PostStored::class => [
+            SendPostNotification::class,
         ],
     ];
 

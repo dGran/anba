@@ -37,9 +37,10 @@
 </div> {{-- form-row --}}
 
 <div class="form-row">
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-6 @error('type') error @enderror">
         <label class="text-sm text-uppercase tracking-wide">Tipo</label>
         <select class="form-control custom-select text-sm" wire:model="type">
+            <option value="">N/D</option>
             <option value="general">General</option>
             <option value="resultados">Resultados</option>
             <option value="records">Records</option>
@@ -47,7 +48,11 @@
             <option value="lesiones">Lesiones</option>
             <option value="movimientos">Movimientos</option>
             <option value="destacados">Destacados</option>
+            <option value="declaraciones">Declaraciones</option>
         </select>
+        @error('type')
+            <p class="text-xs pt-1 m-0">{{ $message }}</p>
+        @enderror
     </div>
     <div class="form-group col-md-6 @error('category') error @enderror">
         <label class="text-sm text-uppercase tracking-wide">Categoría</label>

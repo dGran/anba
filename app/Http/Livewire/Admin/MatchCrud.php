@@ -21,12 +21,16 @@ use App\Exports\MatchesExport;
 use App\Imports\MatchesImport;
 use Maatwebsite\Excel\Facades\Excel;
 
+use App\Http\Traits\PostTrait;
+
 use App\Events\TableWasUpdated;
+use App\Events\PostStored;
 
 class MatchCrud extends Component
 {
 	use WithPagination;
 	use WithFileUploads;
+	use PostTrait;
 
 	public $firstRender = true;
 
@@ -906,6 +910,9 @@ class MatchCrud extends Component
 				]);
 			}
 
+
+			$this->createMatchPosts($this->regView->id);
+
 	    	session()->flash('success', 'BoxScore guardado correctamente.');
 	        $this->emit('closeBoxscoreModal');
 	        $this->closeAnyModal();
@@ -1074,5 +1081,75 @@ class MatchCrud extends Component
 
 			$this->players_stats->push($player_stat);
 		}
+	}
+
+	protected function createMatchPosts($match_id)
+	{
+		$match = Match::find($match_id);
+
+		$this->createResultPost($match);
+		$this->createFeaturedPost($match);
+		$this->createStreakPost($match);
+	}
+
+	protected function createResultPost($match)
+	{
+		$descriptions = [
+			$match->winner()->team->medium_name . ' logra la victoria frente a los ' . $match->loser()->team->medium_name . ' en el ' . $match->stadium,
+			'Los ' . $match->winner()->team->medium_name . ' vencen a los ' . $match->loser()->team->medium_name . ' en el ' . $match->stadium,
+			'Los ' . $match->loser()->team->medium_name . ' han caído derrotados ante los ' . $match->winner()->team->medium_name . ' en el ' . $match->stadium,
+		];
+		$description_index = rand(0,2);
+		$description = $descriptions[$description_index];
+
+		$description .= '.';
+
+    	$post = $this->storePost(
+			'resultados',
+			$match->id,
+			null,
+			null,
+			$match->localTeam->team->short_name . ' | ' . $match->visitorTeam->team->short_name,
+			$match->localTeam->team->medium_name . '  ' . $match->score() . '  ' . $match->visitorTeam->team->medium_name,
+			$description,
+			null,
+    	);
+    	event(new PostStored($post));
+	}
+
+	protected function createFeaturedPost($match)
+	{
+		//votes
+		$votes = $match->votes()['local'] + $match->votes()['visitor'];
+		if ($votes > 0) {
+			$votes_local = ($match->votes()['local'] / $votes) * 100;
+			$votes_visitor = ($match->votes()['visitor'] / $votes) * 100;
+
+			if ( $votes_local <= 20 && $match->localTeam == $match->winner() || $votes_visitor <= 20 && $match->visitorTeam == $match->winner() ) {
+				$descriptions = [
+					$match->winner()->team->name . ' dan la sorpresa al imponerse a ' . $match->loser()->team->name,
+					$match->loser()->team->name . ' cayó de forma inesperada frente a ' . $match->winner()->team->name
+				];
+				$description_index = rand(0,1);
+				$description = $descriptions[$description_index];
+				$description .= '.';
+
+		    	$post = $this->storePost(
+					'destacados',
+					$match->id,
+					null,
+					null,
+					'pronósticos' . ' | ' . $match->winner()->team->short_name,
+					'Los ' . $match->winner()->team->medium_name . ' contra todo pronóstico',
+					$description,
+					$match->winner()->team->getImg(),
+		    	);
+		    	event(new PostStored($post));
+			}
+		}
+	}
+
+	protected function createStreakPost($match)
+	{
 	}
 }

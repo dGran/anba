@@ -15,7 +15,7 @@ class CreatePostsTable extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['general', 'resultados', 'records', 'rachas', 'lesiones', 'movimientos', 'destacados']);
+            $table->enum('type', ['general', 'resultados', 'records', 'rachas', 'lesiones', 'movimientos', 'destacados', 'declaraciones']);
             $table->foreignId('match_id')
                 ->nullable()
                 ->constrained()
