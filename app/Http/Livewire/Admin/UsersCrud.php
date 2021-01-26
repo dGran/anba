@@ -5,7 +5,7 @@ namespace App\Http\Livewire\Admin;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Livewire\Component;
-use Livewire\withPagination;
+use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use App\Exports\UsersExport;
 use App\Imports\UsersImport;
