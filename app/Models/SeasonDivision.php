@@ -27,7 +27,7 @@ class SeasonDivision extends Model
 
     public function seasonConference()
     {
-        return $this->belongsTo('App\Models\seasonConference', 'season_conference_id', 'id');
+        return $this->belongsTo('App\Models\SeasonConference', 'season_conference_id', 'id');
     }
 
     public function getName()
