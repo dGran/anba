@@ -12,7 +12,7 @@
 							@include('home.standings.table_header')
 						</thead>
 						<tbody>
-							@foreach (array_slice($table_positions[$confKey], 0, 6) as $key => $position)
+							@foreach (array_slice($table_positions[$confKey], 0, 8) as $key => $position)
 								<tr class="group border-t border-gray-200 dark:border-gray-650 text-sm">
 									@include('home.standings.table_body')
 								</tr>
