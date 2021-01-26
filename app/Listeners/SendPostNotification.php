@@ -23,7 +23,7 @@ class SendPostNotification
     			$webhook = config('discord.webhook_general');
     			break;
     		case ($event->post->type == 'resultados' || $event->post->type == 'rachas' || $event->post->type == 'destacados'):
-    			$webhook = config('discord.webhook_general');
+    			$webhook = config('discord.webhook_matches');
     			break;
     		case 'records':
     			$webhook = config('discord.webhook_records');
