@@ -87,7 +87,7 @@
                     x-transition:leave-end="opacity-0 transform scale-y-0">
                     <ul class="flex flex-col leading-6 list-none text-sm tracking-wide text-gray-350">
                         <li class="py-1"><a href="http://anba2k.es/phpBB3/viewforum.php?f=13&sid=c259efecf44ecda45c0f3e66871aa7ef" target="_blank" class="block outline-none hover:text-white focus:text-white">Reglamento</a></li>
-                        <li class="py-1"><a href="mailto:dgranh@gmail.com" class="block outline-none hover:text-white focus:text-white">Contacto</a></li>
+                        <li class="py-1"><a href="mailto:darth0@gmail.com" class="block outline-none hover:text-white focus:text-white">Contacto</a></li>
                     </ul>
                 </div>
             </li>
@@ -141,7 +141,7 @@
                 <h4 class="text-gray-200 font-bold uppercase">anba</h4>
                 <ul class="flex flex-col leading-6 list-none text-sm tracking-wide text-gray-350 mt-1.5">
                     <li class="py-1"><a href="http://anba2k.es/phpBB3/viewforum.php?f=13&sid=c259efecf44ecda45c0f3e66871aa7ef" target="_blank" class="block outline-none hover:text-white focus:text-white">Reglamento</a></li>
-                    <li class="py-1"><a href="mailto:dgranh@gmail.com" class="block outline-none hover:text-white focus:text-white">Contacto</a></li>
+                    <li class="py-1"><a href="mailto:darth0@gmail.com" class="block outline-none hover:text-white focus:text-white">Contacto</a></li>
                 </ul>
             </div>
 
