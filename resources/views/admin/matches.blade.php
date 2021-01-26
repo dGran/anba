@@ -44,7 +44,7 @@
     @include('admin.matches.modals.edit')
     @include('admin.matches.modals.filters')
     @include('admin.matches.modals.view')
-    @include('admin.matches.modals.boxScore')
+    @include('admin.matches.modals.boxscore')
 
     @include('admin.partials.modals.destroy')
     @include('admin.partials.modals.duplicate')
