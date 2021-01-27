@@ -3,7 +3,7 @@
         @foreach ($posts as $post)
             <div class="flex justify-between p-4 border-b border-gray-200 dark:border-gray-650" wire:loading.class="opacity-50">
                 <figure class="h-20 w-20 md:h-24 md:w-24 rounded-md shadow-md p-0.5 border border-gray-200 dark:border-gray-650 relative">
-                    @if ($post->type == "resultados")
+                    @if ($post->type == "resultados" && $post->match)
                         <img src="{{ $post->match->visitorTeam->team->getImg() }}" alt="{{ $post->getName() }}" class="absolute bottom-0 right-0 m-0.5 w-14 h-14 md:w-16 md:h-16 object-cover">
                         <img src="{{ $post->match->localTeam->team->getImg() }}" alt="{{ $post->getName() }}" class="absolute top-0 left-0 m-0.5 w-14 h-14 md:w-16 md:h-16 object-cover">
                     @else

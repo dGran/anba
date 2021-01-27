@@ -336,10 +336,8 @@ return [
         ],
         [
             'text'        => 'Notificaciones',
-            'route'       => 'home',
+            'route'       => 'admin.config.notifications',
             'icon'        => 'fab fa-discord',
-            'label'       => 'LESS',
-            'label_color' => 'info',
         ],
         [
             'text'        => 'Jugadores',
