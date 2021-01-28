@@ -17,7 +17,7 @@
 		@endif
 
 		@if ($match->played())
-			@inclue('match.game_tops')
+			@include('match.game_tops')
 		@endif
 	</div>
 </div>
