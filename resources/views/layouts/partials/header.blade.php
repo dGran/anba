@@ -5,7 +5,7 @@
         ['href' => '/estadisticas', 'name' => 'stats', 'text' => 'Estadísticas', 'class' => '', 'icon' => 'icon-stats'],
         ['href' => '/jugadores', 'name' => 'players', 'text' => 'Jugadores', 'class' => 'hidden md:inline-flex', 'icon' => 'icon-player'],
         ['href' => '/equipos', 'name' => 'teams', 'text' => 'Equipos', 'class' => 'hidden lg:inline-flex', 'icon' => 'icon-shirt'],
-        ['href' => '/managers', 'name' => 'teams', 'text' => 'Managers', 'class' => 'hidden lg:inline-flex', 'icon' => 'icon-coach'],
+        ['href' => '/managers', 'name' => 'managers', 'text' => 'Managers', 'class' => 'hidden lg:inline-flex', 'icon' => 'icon-coach'],
     ]
 @endphp
 
@@ -37,7 +37,7 @@
                         </x-nav-link>
                     @endforeach
                     <a href="http://anba2k.es/phpBB3/index.php" target="_blank" class="uppercase inline-flex items-center px-1 pt-1 text-sm font-medium leading-5 text-gray-300 hover:text-white focus:text-white focus:outline-none transition duration-150 ease-in-out transform hover:translate-y-0.5 hidden lg:inline-flex">
-                        Foros
+                        Foro
                     </a>
                 </div>
             </div>

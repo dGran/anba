@@ -19,37 +19,31 @@ use App\Http\Livewire\Admin\UsersCrud;
 use App\Http\Livewire\Admin\PostCrud;
 use App\Http\Livewire\Admin\ConfigNotificationsCrud;
 
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-// Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-//     return view('dashboard');
-// })->name('dashboard');
-
 Route::get('/', function () {
 	$usersOnline = \App\Models\Session::whereNotNull('user_id')->distinct('user_id')->count('user_id');
 	$visitorsOnline = \App\Models\Session::whereNull('user_id')->count();
     return view('home');
 })->name('home');
 
-Route::get('/clasificaciones', function () {
-    return view('standings');
-})->name('standings');
-
 Route::get('/partidos', function () {
     return view('matches');
 })->name('matches');
-
 Route::get('/partidos/{match:id}', [MatchController::class, 'index'])->name('match');
+Route::get('/clasificaciones', function () {
+    return view('standings');
+})->name('standings');
+Route::get('/estadisticas', function () {
+    return view('stats');
+})->name('stats');
+Route::get('/jugadores', function () {
+    return view('players');
+})->name('players');
+Route::get('/equipos', function () {
+    return view('teams');
+})->name('teams');
+Route::get('/managers', function () {
+    return view('managers');
+})->name('managers');
 
 Route::get('/politica-de-cookies', function () {
     return view('cookies-policy');
@@ -61,16 +55,6 @@ Route::get('/reglamento', function () {
     return view('rules');
 })->name('rules');
 
-
-Route::middleware(['auth:sanctum', 'verified'])->get('/equipos', function () {
-    return view('teams');
-})->name('teams');
-
-Route::get('/jugadores', function () {
-    return view('players');
-})->name('players');
-
-
 // admin routes
 
 // Route::middleware(['auth:sanctum', 'verified'])
@@ -79,7 +63,6 @@ Route::get('/jugadores', function () {
 
 Route::middleware(['auth:sanctum', 'verified', 'role:super-admin|admin', 'password.confirm'])->prefix('admin')->group(function() {
 	Route::get('usuarios', UsersCrud::class)->name('admin.users');
-
 
 	Route::get('/', Dashboard::class)->name('admin');
 	//good

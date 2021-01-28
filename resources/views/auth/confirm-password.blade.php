@@ -1,4 +1,7 @@
 <x-guest-layout>
+
+    @section('title', 'Confirmación contraseña')
+
     <div class="py-6 md:py-16 flex flex-col items-center mx-4 lg:mx-0">
         <x-jet-authentication-card-logo />
 

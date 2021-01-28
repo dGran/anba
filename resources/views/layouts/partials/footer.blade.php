@@ -43,10 +43,10 @@
                         <li class="py-1"><a href="{{ route('home') }}" class="block outline-none hover:text-white focus:text-white">Inicio</a></li>
                         <li class="py-1"><a href="{{ route('matches') }}" class="block outline-none hover:text-white focus:text-white">Partidos</a></li>
                         <li class="py-1"><a href="{{ route('standings') }}" class="block outline-none hover:text-white focus:text-white">Clasificaciones</a></li>
-                        <li class="py-1"><a href="#" class="block outline-none hover:text-white focus:text-white">Estadisticas</a></li>
+                        <li class="py-1"><a href="{{ route('stats') }}" class="block outline-none hover:text-white focus:text-white">Estadisticas</a></li>
                         <li class="py-1"><a href="{{ route('players') }}" class="block outline-none hover:text-white focus:text-white">Jugadores</a></li>
-                        <li class="py-1"><a href="#" class="block outline-none hover:text-white focus:text-white">Equipos</a></li>
-                        <li class="py-1"><a href="#" class="block outline-none hover:text-white focus:text-white">Managers</a></li>
+                        <li class="py-1"><a href="{{ route('teams') }}" class="block outline-none hover:text-white focus:text-white">Equipos</a></li>
+                        <li class="py-1"><a href="{{ route('managers') }}" class="block outline-none hover:text-white focus:text-white">Managers</a></li>
                         <li class="py-1"><a href="http://anba2k.es/phpBB3/index.php" target="_blank" class="block outline-none hover:text-white focus:text-white">Foro</a></li>
                     </ul>
                 </div>
@@ -119,10 +119,10 @@
                     <li class="py-1"><a href="{{ route('home') }}" class="block outline-none hover:text-white focus:text-white">Inicio</a></li>
                     <li class="py-1"><a href="{{ route('matches') }}" class="block outline-none hover:text-white focus:text-white">Partidos</a></li>
                     <li class="py-1"><a href="{{ route('standings') }}" class="block outline-none hover:text-white focus:text-white">Clasificaciones</a></li>
-                    <li class="py-1"><a href="#" class="block outline-none hover:text-white focus:text-white">Estadisticas</a></li>
+                    <li class="py-1"><a href="{{ route('stats') }}" class="block outline-none hover:text-white focus:text-white">Estadisticas</a></li>
                     <li class="py-1"><a href="{{ route('players') }}" class="block outline-none hover:text-white focus:text-white">Jugadores</a></li>
-                    <li class="py-1"><a href="#" class="block outline-none hover:text-white focus:text-white">Equipos</a></li>
-                    <li class="py-1"><a href="#" class="block outline-none hover:text-white focus:text-white">Managers</a></li>
+                    <li class="py-1"><a href="{{ route('teams') }}" class="block outline-none hover:text-white focus:text-white">Equipos</a></li>
+                    <li class="py-1"><a href="{{ route('managers') }}" class="block outline-none hover:text-white focus:text-white">Managers</a></li>
                     <li class="py-1"><a href="http://anba2k.es/phpBB3/index.php" target="_blank" class="block outline-none hover:text-white focus:text-white">Foro</a></li>
                 </ul>
             </div>

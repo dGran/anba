@@ -1,4 +1,7 @@
 <x-guest-layout>
+
+    @section('title', 'Solicitud nueva contraseña')
+
     <div class="pt-6 pb-10 md:py-16 bg-gray-100 dark:bg-gray-850 flex flex-col items-center mx-4 lg:mx-0">
         <x-jet-authentication-card-logo />
 

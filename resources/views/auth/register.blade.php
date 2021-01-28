@@ -1,4 +1,7 @@
 <x-guest-layout>
+
+    @section('title', 'Registro')
+
     {!! NoCaptcha::renderJs() !!}
     <style>
         .rc-anchor-container {
