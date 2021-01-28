@@ -1,6 +1,4 @@
-<x-guest-layout>
-
-    @section('title', 'Registro')
+<x-guest-layout title="Registro">
 
     {!! NoCaptcha::renderJs() !!}
     <style>

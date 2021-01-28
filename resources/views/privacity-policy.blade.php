@@ -1,7 +1,4 @@
-<x-app-layout blockHeader="1">
-
-	@section('title', 'Política de privacidad')
-
+<x-app-layout blockHeader="1" title="Política de privacidad">
     <x-slot name="header">
         <h2 class="font-semibold text-xl md:text-2xl leading-tight px-4 sm:px-0">
             {{ __('Política de privacidad') }}

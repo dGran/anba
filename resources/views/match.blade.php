@@ -1,7 +1,4 @@
-<x-app-layout blockHeader="0">
-
-	@section('title', $match->getName())
-
+<x-app-layout blockHeader="0" title="{{ $match->getName() }}">
     <div>
 		@livewire('match', ['match' => $match])
     </div>

@@ -1,7 +1,4 @@
-<x-guest-layout>
-
-    @section('title', 'Verificación de cuenta')
-
+<x-guest-layout title="Verificación de cuenta">
 
     <div class="py-6 md:py-16 bg-gray-100 dark:bg-gray-850 flex flex-col items-center mx-4 lg:mx-0">
         <x-jet-authentication-card-logo />

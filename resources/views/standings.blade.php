@@ -1,6 +1,4 @@
-<x-app-layout blockHeader="1">
-
-	@section('title', 'Clasificaciones')
+<x-app-layout blockHeader="1" title="Clasificaciones">
 
     <x-slot name="header">
         <h2 class="font-semibold text-xl md:text-2xl leading-tight px-4 sm:px-0">

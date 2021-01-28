@@ -8,7 +8,8 @@
 
         {{-- Title --}}
         <title>
-            {{ config('app.name', 'Laravel') }} - @yield('title')
+            @isset($title) {{ $title }} | @endisset
+            {{ config('app.name', 'Laravel') }}
         </title>
 
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
