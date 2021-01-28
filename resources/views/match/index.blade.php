@@ -4,9 +4,9 @@
 		@include('match.header')
 
 		@if (!$match->played())
+			@include('match.last_matches')
 			<div class="bg-white dark:bg-gray-750 shadow-md rounded mx-3 md:mx-0 my-6">
 				<div class="px-4 py-3">
-					<p class="uppercase text-sm font-bold tracking-wider">previa</p>
 					<p class="uppercase text-sm font-bold tracking-wider">últimos partidos</p>
 					<p class="uppercase text-sm font-bold tracking-wider">últimos enfrentamientos</p>
 					<p class="uppercase text-sm font-bold tracking-wider">pronósticos</p>

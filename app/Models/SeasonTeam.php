@@ -34,4 +34,26 @@ class SeasonTeam extends Model
     {
         return $this->season->name . ' - ' . $this->team->name;
     }
+
+    public function lastMatches()
+    {
+        return $regs = Match::
+            leftJoin('scores', 'scores.match_id', 'matches.id')
+            ->leftJoin('seasons_teams', function($join){
+                $join->on('seasons_teams.id','=','matches.local_team_id');
+                $join->orOn('seasons_teams.id','=','matches.visitor_team_id');
+            })
+            // ->leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
+            // ->leftJoin('users', function($join){
+            //     $join->on('users.id','=','matches.local_manager_id');
+            //     $join->orOn('users.id','=','matches.visitor_manager_id');
+            // })
+            ->team($this->id)
+            ->whereNotNull('scores.match_id')
+            ->select('matches.*')
+            ->orderBy('scores.created_at', 'desc')
+            ->groupBy('matches.id', 'scores.created_at')
+            ->take(5)
+            ->get();
+    }
 }
