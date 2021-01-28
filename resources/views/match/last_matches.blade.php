@@ -20,7 +20,7 @@
 							<div class="flex flex col">
 								<div class="flex items-center text-sm py-1.5">
 									<div class="w-10 mr-2">
-										@if ($lastMatch->winner()->team_id == $match->localTeam->id)
+										@if ($lastMatch->winner() && $lastMatch->winner()->team_id == $match->localTeam->id)
 											<span class="bg-green-500 rounded-full w-6 h-6 text-xs text-white uppercase flex items-center justify-center mx-auto">V</span>
 										@else
 											<span class="bg-red-500 rounded-full w-6 h-6 text-xs text-white uppercase flex items-center justify-center mx-auto">D</span>
