@@ -175,7 +175,22 @@ class Match extends Model
 
     public function played()
     {
-        return $this->scores->count() > 0 ? TRUE : FALSE;
+        $scores = $this->scores->count() > 0 ? TRUE : FALSE;
+        if ($scores) {
+            $local = null;
+            $visitor = null;
+            foreach ($this->scores as $score) {
+                $local += $score->local_score;
+                $visitor += $score->visitor_score;
+            }
+            if ($local > 0 && $visitor > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
     public function top_local_player()

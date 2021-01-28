@@ -16,8 +16,8 @@
                         <span class="ml-2 text-xs text-gray-350 uppercase">{{ $visitorsOnline == 1 ? 'invitado' : 'invitados' }}</span><span class="hidden xs:inline-block text-xs text-gray-350 uppercase ml-0.5">en línea</span>
                     </div>
                 </div>
-                <a href="https://discord.gg/AcuUbDR" target="_blank" class="text-gray-350 hover:text-white flex flex-col text-center">
-                    <img src="{{ asset('img/discord.png') }}" alt="" class="w-28 opacity-75 hover:opacity-100">
+                <a href="https://discord.gg/AcuUbDR" target="_blank" class="flex flex-col focus:outline-none opacity-75 hover:opacity-100 focus:opacity-100">
+                    <img src="{{ asset('img/discord.png') }}" alt="" class="w-28">
                 </a>
             </div>
         </div>

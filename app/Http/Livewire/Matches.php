@@ -40,6 +40,7 @@ class Matches extends Component
 		'search' => ['except' => ''],
 		'team' => ['except' => "all"],
 		'manager' => ['except' => "all"],
+		'hidePlayed' => ['except' => false],
 		'perPage' => ['except' => '5'],
 		'order' => ['except' => 'lastPlayed'],
 	];
