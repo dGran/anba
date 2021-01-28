@@ -14,24 +14,26 @@
 					</div>
 				</div>
 
-				<div class="mt-2">
-					@foreach ($match->localTeam->lastMatches() as $lastMatch)
-						<div class="flex flex col">
-							<div class="flex items-center text-sm py-1.5">
-								<div class="w-10 mr-2">
-									@if ($lastMatch->winner()->team_id == $match->localTeam->id)
-										<span class="bg-green-500 rounded-full w-6 h-6 text-xs text-white uppercase flex items-center justify-center mx-auto">V</span>
-									@else
-										<span class="bg-red-500 rounded-full w-6 h-6 text-xs text-white uppercase flex items-center justify-center mx-auto">D</span>
-									@endif
+				@if ($match->localTeam->lastMatches())
+					<div class="mt-2">
+						@foreach ($match->localTeam->lastMatches() as $lastMatch)
+							<div class="flex flex col">
+								<div class="flex items-center text-sm py-1.5">
+									<div class="w-10 mr-2">
+										@if ($lastMatch->winner()->team_id == $match->localTeam->id)
+											<span class="bg-green-500 rounded-full w-6 h-6 text-xs text-white uppercase flex items-center justify-center mx-auto">V</span>
+										@else
+											<span class="bg-red-500 rounded-full w-6 h-6 text-xs text-white uppercase flex items-center justify-center mx-auto">D</span>
+										@endif
+									</div>
+									<span class="text-right {{ $lastMatch->localTeam->team_id == $match->localTeam->id ? 'font-bold' : '' }}">{{ $lastMatch->localTeam->team->medium_name }}</span>
+									<span class="mx-3 border border-gray-300 rounded px-2 py-0.5 bg-gray-100">{{ $lastMatch->score() }}</span>
+									<span class="{{ $lastMatch->visitorTeam->team_id == $match->localTeam->id ? 'font-bold' : '' }}">{{ $lastMatch->visitorTeam->team->medium_name }}</span>
 								</div>
-								<span class="text-right {{ $lastMatch->localTeam->team_id == $match->localTeam->id ? 'font-bold' : '' }}">{{ $lastMatch->localTeam->team->medium_name }}</span>
-								<span class="mx-3 border border-gray-300 rounded px-2 py-0.5 bg-gray-100">{{ $lastMatch->score() }}</span>
-								<span class="{{ $lastMatch->visitorTeam->team_id == $match->localTeam->id ? 'font-bold' : '' }}">{{ $lastMatch->visitorTeam->team->medium_name }}</span>
 							</div>
-						</div>
-					@endforeach
-				</div>
+						@endforeach
+					</div>
+				@endif
 			</div>
 
 			{{-- visitor --}}
@@ -45,24 +47,26 @@
 					</div>
 				</div>
 
-				<div class="mt-2">
-					@foreach ($match->visitorTeam->lastMatches() as $lastMatch)
-						<div class="flex flex col">
-							<div class="flex items-center text-sm py-1.5">
-								<div class="w-10 mr-2">
-									@if ($lastMatch->winner()->team_id == $match->visitorTeam->id)
-										<span class="bg-green-500 rounded-full w-6 h-6 text-xs text-white uppercase flex items-center justify-center mx-auto">V</span>
-									@else
-										<span class="bg-red-500 rounded-full w-6 h-6 text-xs text-white uppercase flex items-center justify-center mx-auto">D</span>
-									@endif
+				@if ($match->visitorTeam->lastMatches())
+					<div class="mt-2">
+						@foreach ($match->visitorTeam->lastMatches() as $lastMatch)
+							<div class="flex flex col">
+								<div class="flex items-center text-sm py-1.5">
+									<div class="w-10 mr-2">
+										@if ($lastMatch->winner()->team_id == $match->visitorTeam->id)
+											<span class="bg-green-500 rounded-full w-6 h-6 text-xs text-white uppercase flex items-center justify-center mx-auto">V</span>
+										@else
+											<span class="bg-red-500 rounded-full w-6 h-6 text-xs text-white uppercase flex items-center justify-center mx-auto">D</span>
+										@endif
+									</div>
+									<span class="{{ $lastMatch->localTeam->team_id == $match->visitorTeam->id ? 'font-bold' : '' }}">{{ $lastMatch->localTeam->team->medium_name }}</span>
+									<span class="mx-3 border border-gray-300 rounded px-2 py-0.5 bg-gray-100">{{ $lastMatch->score() }}</span>
+									<span class="{{ $lastMatch->visitorTeam->team_id == $match->visitorTeam->id ? 'font-bold' : '' }}">{{ $lastMatch->visitorTeam->team->medium_name }}</span>
 								</div>
-								<span class="{{ $lastMatch->localTeam->team_id == $match->visitorTeam->id ? 'font-bold' : '' }}">{{ $lastMatch->localTeam->team->medium_name }}</span>
-								<span class="mx-3 border border-gray-300 rounded px-2 py-0.5 bg-gray-100">{{ $lastMatch->score() }}</span>
-								<span class="{{ $lastMatch->visitorTeam->team_id == $match->visitorTeam->id ? 'font-bold' : '' }}">{{ $lastMatch->visitorTeam->team->medium_name }}</span>
 							</div>
-						</div>
-					@endforeach
-				</div>
+						@endforeach
+					</div>
+				@endif
 			</div>
 
 		</div> {{-- grid --}}
