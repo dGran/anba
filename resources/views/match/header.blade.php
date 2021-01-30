@@ -14,8 +14,8 @@
 				<p class="text-center hidden md:block uppercase text-base text-pretty-red font-bold">
 					{{ $match->stadium }}
 				</p>
-				<p class="text-center hidden md:block uppercase text-sm text-gray-600 dark:text-gray-300">
-					<span class="text-xs">{{ $match->scores->first()->getUpdatedAt() }}</span>
+				<p class="text-center hidden md:block text-sm text-gray-600 dark:text-gray-300">
+					<span class="text-sm">{{ $match->scores->first()->getUpdatedAt() }}</span>
 				</p>
 			@endif
 		</div>

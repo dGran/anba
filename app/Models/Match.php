@@ -300,6 +300,19 @@ class Match extends Model
                 \DB::raw('SUM(AST) AS AST'),
                 \DB::raw('SUM(BLK) AS BLK'),
                 \DB::raw('SUM(STL) AS STL'),
+
+                \DB::raw('SUM(FGM) AS FGM'),
+                \DB::raw('SUM(FGA) AS FGA'),
+                \DB::raw('(SUM(FGA) / SUM(FGM)) * 100  AS FGAVG'),
+                \DB::raw('SUM(TPM) AS TPM'),
+                \DB::raw('SUM(TPA) AS TPA'),
+                \DB::raw('(SUM(TPA) / SUM(TPM)) * 100  AS TPAVG'),
+                \DB::raw('SUM(FTM) AS FTM'),
+                \DB::raw('SUM(FTA) AS FTA'),
+                \DB::raw('(SUM(FTA) / SUM(FTM)) * 100  AS FTAVG'),
+
+                \DB::raw('SUM(ORB) AS ORB'),
+                \DB::raw('SUM(PF) AS PF'),
             )
             ->first();
     }
