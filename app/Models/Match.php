@@ -231,7 +231,6 @@ class Match extends Model
             ->orderBy('PTS', 'desc')
             ->orderBy('REB', 'desc')
             ->orderBy('AST', 'desc')
-            ->get()
             ->first();
     }
 
@@ -248,7 +247,6 @@ class Match extends Model
             ->orderBy('PTS', 'desc')
             ->orderBy('REB', 'desc')
             ->orderBy('AST', 'desc')
-            ->get()
             ->first();
     }
 
@@ -265,7 +263,44 @@ class Match extends Model
             ->orderBy('PTS', 'desc')
             ->orderBy('REB', 'desc')
             ->orderBy('AST', 'desc')
-            ->get()
+            ->first();
+    }
+
+    public function localTeam_totals()
+    {
+        $team_id = $this->localTeam->id;
+        return $top = PlayerStat::
+            where('match_id', $this->id)
+            ->whereIn('player_id', function($query) use ($team_id) {
+               $query->select('id')->from('players')->where('team_id', '=', $team_id);
+            })
+            ->select(
+                // \DB::raw('AVG(PTS) as AVG_PTS'),
+                \DB::raw('SUM(PTS) AS PTS'),
+                \DB::raw('SUM(REB) AS REB'),
+                \DB::raw('SUM(AST) AS AST'),
+                \DB::raw('SUM(BLK) AS BLK'),
+                \DB::raw('SUM(STL) AS STL'),
+            )
+            ->first();
+    }
+
+    public function visitorTeam_totals()
+    {
+        $team_id = $this->visitorTeam->id;
+        return $top = PlayerStat::
+            where('match_id', $this->id)
+            ->whereIn('player_id', function($query) use ($team_id) {
+               $query->select('id')->from('players')->where('team_id', '=', $team_id);
+            })
+            ->select(
+                // \DB::raw('AVG(PTS) as AVG_PTS'),
+                \DB::raw('SUM(PTS) AS PTS'),
+                \DB::raw('SUM(REB) AS REB'),
+                \DB::raw('SUM(AST) AS AST'),
+                \DB::raw('SUM(BLK) AS BLK'),
+                \DB::raw('SUM(STL) AS STL'),
+            )
             ->first();
     }
 
