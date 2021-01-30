@@ -1,6 +1,6 @@
 <div class="px-4 py-3">
 
-	<p class="uppercase md:text-2xl font-bold tracking-wider border-b border-gray-150 dark:border-gray-650 pb-2">tops del partido</p>
+	<p class="uppercase text-sm md:text-2xl font-bold tracking-wider border-b border-gray-150 dark:border-gray-650 pb-2">tops del partido</p>
 
 	@if ($match->playerStats->count() == 0)
 		<div class="text-sm py-2.5 w-full text-gray-500 dark:text-gray-300">

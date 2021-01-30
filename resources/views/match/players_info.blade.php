@@ -1,4 +1,4 @@
-<div class="bg-white dark:bg-gray-750 shadow-md rounded mx-3 md:mx-0 my-8">
+<div class="bg-white dark:bg-gray-750 shadow-md rounded mx-3 md:mx-0 my-6">
 	<div class="px-4 py-3">
 
 		<div class="grid grid-cols-1 md:grid-cols-2">
