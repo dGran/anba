@@ -3,7 +3,9 @@
 	<p class="uppercase md:text-2xl font-bold tracking-wider border-b border-gray-150 dark:border-gray-650 pb-2">tops del partido</p>
 
 	@if ($match->playerStats->count() == 0)
-		<p class="text-sm pt-2">No hay estadisticas registradas</p>
+		<div class="text-sm py-2.5 w-full text-gray-500 dark:text-gray-300">
+			No hay estadisticas registradas
+		</div>
 	@else
 		<div class="md:py-3">
 
