@@ -135,6 +135,32 @@ class Match extends Model
         }
     }
 
+    public function localScore()
+    {
+        if ($this->played()) {
+            $local = 0;
+            foreach ($this->scores as $score) {
+                $local += $score->local_score;
+            }
+            return $local;
+        } else {
+            return '-';
+        }
+    }
+
+    public function visitorScore()
+    {
+        if ($this->played()) {
+            $visitor = 0;
+            foreach ($this->scores as $score) {
+                $visitor += $score->visitor_score;
+            }
+            return $visitor;
+        } else {
+            return '-';
+        }
+    }
+
     public function winner()
     {
         if ($this->played()) {

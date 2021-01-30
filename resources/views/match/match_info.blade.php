@@ -5,135 +5,128 @@
 
 		<div class="flex flex-col text-center py-0.5 md:py-1.5 border-b border-gray-150 dark:border-gray-650">
 			<div class="flex items-center">
-				<p class="md:pl-3">-</p>
-				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-xl">puntos</p>
-				<p class="md:pr-3">-</p>
+				<p class="md:pl-3 text-sm md:text-base lg:text-xl font-bold {{ $match->localScore() > $match->visitorScore() ? 'text-black dark:text-yellow-400' : 'text-gray-500 dark:text-gray-300' }}">{{ $match->localScore() }}</p>
+				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-base lg:text-xl text-gray-500 dark:text-gray-300">puntos</p>
+				<p class="md:pr-3 text-sm md:text-base lg:text-xl font-bold {{ $match->visitorScore() > $match->localScore() ? 'text-black dark:text-yellow-400' : 'text-gray-500 dark:text-gray-300' }}">{{ $match->visitorScore() }}</p>
 			</div>
 		</div>
 		<div class="flex flex-col text-center py-0.5 md:py-1.5 border-b border-gray-150 dark:border-gray-650">
 			<div class="flex items-center">
-				<p class="md:pl-3">-</p>
-				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-xl">tiros de campo</p>
-				<p class="md:pr-3">-</p>
+				<p class="md:pl-3 text-sm md:text-base lg:text-xl font-bold">-</p>
+				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-base lg:text-xl text-gray-500 dark:text-gray-300">tiros de campo</p>
+				<p class="md:pr-3 text-sm md:text-base lg:text-xl font-bold">-</p>
 			</div>
 		</div>
 		<div class="flex flex-col text-center py-0.5 md:py-1.5 border-b border-gray-150 dark:border-gray-650">
 			<div class="flex items-center">
-				<p class="md:pl-3">-</p>
-				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-xl">triples</p>
-				<p class="md:pr-3">-</p>
+				<p class="md:pl-3 text-sm md:text-base lg:text-xl font-bold">-</p>
+				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-base lg:text-xl text-gray-500 dark:text-gray-300">triples</p>
+				<p class="md:pr-3 text-sm md:text-base lg:text-xl font-bold">-</p>
 			</div>
 		</div>
 		<div class="flex flex-col text-center py-0.5 md:py-1.5 border-b border-gray-150 dark:border-gray-650">
 			<div class="flex items-center">
-				<p class="md:pl-3">-</p>
-				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-xl">tiros libres</p>
-				<p class="md:pr-3">-</p>
+				<p class="md:pl-3 text-sm md:text-base lg:text-xl font-bold">-</p>
+				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-base lg:text-xl text-gray-500 dark:text-gray-300">tiros libres</p>
+				<p class="md:pr-3 text-sm md:text-base lg:text-xl font-bold">-</p>
 			</div>
 		</div>
 		<div class="flex flex-col text-center py-0.5 md:py-1.5 border-b border-gray-150 dark:border-gray-650">
 			<div class="flex items-center">
-				<p class="md:pl-3">-</p>
-				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-xl">pts. contraataque</p>
-				<p class="md:pr-3">-</p>
+				<p class="md:pl-3 text-sm md:text-base lg:text-xl font-bold">-</p>
+				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-base lg:text-xl text-gray-500 dark:text-gray-300">pts. contraataque</p>
+				<p class="md:pr-3 text-sm md:text-base lg:text-xl font-bold">-</p>
 			</div>
 		</div>
 		<div class="flex flex-col text-center py-0.5 md:py-1.5 border-b border-gray-150 dark:border-gray-650">
 			<div class="flex items-center">
-				<p class="md:pl-3">-</p>
-				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-xl">pts. desde la zona</p>
-				<p class="md:pr-3">-</p>
+				<p class="md:pl-3 text-sm md:text-base lg:text-xl font-bold">-</p>
+				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-base lg:text-xl text-gray-500 dark:text-gray-300">pts. desde la zona</p>
+				<p class="md:pr-3 text-sm md:text-base lg:text-xl font-bold">-</p>
 			</div>
 		</div>
 		<div class="flex flex-col text-center py-0.5 md:py-1.5 border-b border-gray-150 dark:border-gray-650">
 			<div class="flex items-center">
-				<p class="md:pl-3">-</p>
-				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-xl">pts. 2a oportunidad</p>
-				<p class="md:pr-3">-</p>
+				<p class="md:pl-3 text-sm md:text-base lg:text-xl font-bold">-</p>
+				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-base lg:text-xl text-gray-500 dark:text-gray-300">pts. 2a oportunidad</p>
+				<p class="md:pr-3 text-sm md:text-base lg:text-xl font-bold">-</p>
 			</div>
 		</div>
 		<div class="flex flex-col text-center py-0.5 md:py-1.5 border-b border-gray-150 dark:border-gray-650">
 			<div class="flex items-center">
-				<p class="md:pl-3">-</p>
-				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-xl">pts. de suplentes</p>
-				<p class="md:pr-3">-</p>
+				<p class="md:pl-3 text-sm md:text-base lg:text-xl font-bold">-</p>
+				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-base lg:text-xl text-gray-500 dark:text-gray-300">pts. de suplentes</p>
+				<p class="md:pr-3 text-sm md:text-base lg:text-xl font-bold">-</p>
 			</div>
 		</div>
 		<div class="flex flex-col text-center py-0.5 md:py-1.5 border-b border-gray-150 dark:border-gray-650">
 			<div class="flex items-center">
-				<p class="md:pl-3">-</p>
-				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-xl">asistencias</p>
-				<p class="md:pr-3">-</p>
+				<p class="md:pl-3 text-sm md:text-base lg:text-xl font-bold">-</p>
+				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-base lg:text-xl text-gray-500 dark:text-gray-300">asistencias</p>
+				<p class="md:pr-3 text-sm md:text-base lg:text-xl font-bold">-</p>
 			</div>
 		</div>
 		<div class="flex flex-col text-center py-0.5 md:py-1.5 border-b border-gray-150 dark:border-gray-650">
 			<div class="flex items-center">
-				<p class="md:pl-3">-</p>
-				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-xl">rebotes ofensivos</p>
-				<p class="md:pr-3">-</p>
+				<p class="md:pl-3 text-sm md:text-base lg:text-xl font-bold">-</p>
+				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-base lg:text-xl text-gray-500 dark:text-gray-300">rebotes ofensivos</p>
+				<p class="md:pr-3 text-sm md:text-base lg:text-xl font-bold">-</p>
 			</div>
 		</div>
 		<div class="flex flex-col text-center py-0.5 md:py-1.5 border-b border-gray-150 dark:border-gray-650">
 			<div class="flex items-center">
-				<p class="md:pl-3">-</p>
-				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-xl">rebotes defensivos</p>
-				<p class="md:pr-3">-</p>
+				<p class="md:pl-3 text-sm md:text-base lg:text-xl font-bold">-</p>
+				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-base lg:text-xl text-gray-500 dark:text-gray-300">rebotes defensivos</p>
+				<p class="md:pr-3 text-sm md:text-base lg:text-xl font-bold">-</p>
 			</div>
 		</div>
 		<div class="flex flex-col text-center py-0.5 md:py-1.5 border-b border-gray-150 dark:border-gray-650">
 			<div class="flex items-center">
-				<p class="md:pl-3">-</p>
-				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-xl">robos</p>
-				<p class="md:pr-3">-</p>
+				<p class="md:pl-3 text-sm md:text-base lg:text-xl font-bold">-</p>
+				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-base lg:text-xl text-gray-500 dark:text-gray-300">robos</p>
+				<p class="md:pr-3 text-sm md:text-base lg:text-xl font-bold">-</p>
 			</div>
 		</div>
 		<div class="flex flex-col text-center py-0.5 md:py-1.5 border-b border-gray-150 dark:border-gray-650">
 			<div class="flex items-center">
-				<p class="md:pl-3">-</p>
-				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-xl">tapones</p>
-				<p class="md:pr-3">-</p>
+				<p class="md:pl-3 text-sm md:text-base lg:text-xl font-bold">-</p>
+				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-base lg:text-xl text-gray-500 dark:text-gray-300">tapones</p>
+				<p class="md:pr-3 text-sm md:text-base lg:text-xl font-bold">-</p>
 			</div>
 		</div>
 		<div class="flex flex-col text-center py-0.5 md:py-1.5 border-b border-gray-150 dark:border-gray-650">
 			<div class="flex items-center">
-				<p class="md:pl-3">-</p>
-				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-xl">pérdidas (pts. conseguidos)</p>
-				<p class="md:pr-3">-</p>
+				<p class="md:pl-3 text-sm md:text-base lg:text-xl font-bold">-</p>
+				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-base lg:text-xl text-gray-500 dark:text-gray-300">pérdidas (pts. conseguidos)</p>
+				<p class="md:pr-3 text-sm md:text-base lg:text-xl font-bold">-</p>
 			</div>
 		</div>
 		<div class="flex flex-col text-center py-0.5 md:py-1.5 border-b border-gray-150 dark:border-gray-650">
 			<div class="flex items-center">
-				<p class="md:pl-3">-</p>
-				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-xl">faltas equipo</p>
-				<p class="md:pr-3">-</p>
+				<p class="md:pl-3 text-sm md:text-base lg:text-xl font-bold">-</p>
+				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-base lg:text-xl text-gray-500 dark:text-gray-300">faltas equipo</p>
+				<p class="md:pr-3 text-sm md:text-base lg:text-xl font-bold">-</p>
 			</div>
 		</div>
 		<div class="flex flex-col text-center py-0.5 md:py-1.5 border-b border-gray-150 dark:border-gray-650">
 			<div class="flex items-center">
-				<p class="md:pl-3">-</p>
-				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-xl">mates</p>
-				<p class="md:pr-3">-</p>
+				<p class="md:pl-3 text-sm md:text-base lg:text-xl font-bold">-</p>
+				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-base lg:text-xl text-gray-500 dark:text-gray-300">mates</p>
+				<p class="md:pr-3 text-sm md:text-base lg:text-xl font-bold">-</p>
 			</div>
 		</div>
 		<div class="flex flex-col text-center py-0.5 md:py-1.5 border-b border-gray-150 dark:border-gray-650">
 			<div class="flex items-center">
-				<p class="md:pl-3">-</p>
-				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-xl">mayor ventaja</p>
-				<p class="md:pr-3">-</p>
-			</div>
-		</div>
-		<div class="flex flex-col text-center py-0.5 md:py-1.5 border-b border-gray-150 dark:border-gray-650">
-			<div class="flex items-center">
-				<p class="md:pl-3">-</p>
-				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-xl">tiempo posesión</p>
-				<p class="md:pr-3">-</p>
+				<p class="md:pl-3 text-sm md:text-base lg:text-xl font-bold">-</p>
+				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-base lg:text-xl text-gray-500 dark:text-gray-300">mayor ventaja</p>
+				<p class="md:pr-3 text-sm md:text-base lg:text-xl font-bold">-</p>
 			</div>
 		</div>
 		<div class="flex flex-col text-center py-0.5 md:py-1.5">
 			<div class="flex items-center">
-				<p class="md:pl-3">-</p>
-				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-xl">tiempos muertos restantes</p>
-				<p class="md:pr-3">-</p>
+				<p class="md:pl-3 text-sm md:text-base lg:text-xl font-bold">-</p>
+				<p class="flex-1 px-3 uppercase font-bold text-sm md:text-base lg:text-xl text-gray-500 dark:text-gray-300">tiempo posesión</p>
+				<p class="md:pr-3 text-sm md:text-base lg:text-xl font-bold">-</p>
 			</div>
 		</div>
 
