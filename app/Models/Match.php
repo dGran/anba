@@ -193,6 +193,22 @@ class Match extends Model
         }
     }
 
+    public function mvp()
+    {
+        return $top = PlayerStat::
+            where('match_id', $this->id)
+            // ->whereIn('player_id', function($query) use ($team_id) {
+            //    $query->select('id')->from('players')->where('team_id', '=', $team_id);
+            // })
+            ->select('*', \DB::raw('PTS + REB + AST as TOTAL'))
+            ->orderBy('TOTAL', 'desc')
+            ->orderBy('PTS', 'desc')
+            ->orderBy('REB', 'desc')
+            ->orderBy('AST', 'desc')
+            ->get()
+            ->first();
+    }
+
     public function top_local_player()
     {
         $team_id = $this->localTeam->team->id;
@@ -277,6 +293,73 @@ class Match extends Model
             return $query->vote;
         }
         return false;
+    }
+
+    public function lastClashes()
+    {
+        $current = $this;
+        return Match::
+            leftJoin('scores', 'scores.match_id', 'matches.id')
+            ->leftJoin('seasons_teams', function($join){
+                $join->on('seasons_teams.id','=','matches.local_team_id');
+                $join->orOn('seasons_teams.id','=','matches.visitor_team_id');
+            })
+            ->whereNotNull('scores.match_id')
+            ->where(function($q) use ($current) {
+                $q->where('matches.local_team_id', $current->localTeam->id)
+                    ->orWhere('matches.local_team_id', $current->visitorTeam->id);
+                })
+            ->where(function($q) use ($current) {
+                $q->where('matches.visitor_team_id', $current->localTeam->id)
+                    ->orWhere('matches.visitor_team_id', $current->visitorTeam->id);
+                })
+            ->select('matches.*')
+            ->orderBy('scores.created_at', 'desc')
+            ->groupBy('matches.id', 'scores.created_at')
+            ->take(5)
+            ->get();
+    }
+
+    public function lastClashes_wins()
+    {
+        $current = $this;
+        $regs = Match::
+            leftJoin('scores', 'scores.match_id', 'matches.id')
+            ->leftJoin('seasons_teams', function($join){
+                $join->on('seasons_teams.id','=','matches.local_team_id');
+                $join->orOn('seasons_teams.id','=','matches.visitor_team_id');
+            })
+            ->whereNotNull('scores.match_id')
+            ->where(function($q) use ($current) {
+                $q->where('matches.local_team_id', $current->localTeam->id)
+                    ->orWhere('matches.local_team_id', $current->visitorTeam->id);
+                })
+            ->where(function($q) use ($current) {
+                $q->where('matches.visitor_team_id', $current->localTeam->id)
+                    ->orWhere('matches.visitor_team_id', $current->visitorTeam->id);
+                })
+            ->select('matches.*')
+            ->orderBy('scores.created_at', 'desc')
+            ->groupBy('matches.id', 'scores.created_at')
+            ->take(5)
+            ->get();
+
+        $local_wins = 0;
+        $visitor_wins = 0;
+        foreach ($regs as $reg) {
+            if ($reg->winner()->team_id == $current->localTeam->id) {
+                $local_wins++;
+            } else {
+                $visitor_wins++;
+            }
+        }
+
+        $values = [
+            'local' => $local_wins,
+            'visitor' => $visitor_wins
+        ];
+
+        return $values;
     }
 
     public function userIsParticipant()

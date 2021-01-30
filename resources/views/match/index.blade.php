@@ -3,23 +3,33 @@
 	<div class="max-w-7xl mx-auto px-1 sm:px-3 md:px-6 lg:px-8">
 		@include('match.header')
 
-		@if (!$match->played())
+		<div class="my-8">
+			@if (!$match->played())
+				@include('match.reports')
 
-			@include('match.last_matches')
+				@include('match.players_info')
 
-			<div class="bg-white dark:bg-gray-750 shadow-md rounded mx-3 md:mx-0 my-6">
-				<div class="px-4 py-3">
-					<p class="uppercase text-sm font-bold tracking-wider">últimos partidos</p>
-					<p class="uppercase text-sm font-bold tracking-wider">últimos enfrentamientos</p>
-					<p class="uppercase text-sm font-bold tracking-wider">pronósticos</p>
-					<p class="uppercase text-sm font-bold tracking-wider">lesionados</p>
-					<p class="uppercase text-sm font-bold tracking-wider">top jugadores</p>
+				@include('match.last_matches')
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+					<div class="bg-white dark:bg-gray-750 shadow-md rounded mx-3 md:mx-0">
+						@include('match.last_clashes')
+					</div>
+					<div class="bg-white dark:bg-gray-750 shadow-md rounded mx-3 md:mx-0">
+						@include('match.forecasts')
+					</div>
 				</div>
-			</div>
-		@endif
+			@endif
 
-		@if ($match->played())
-			@include('match.game_tops')
-		@endif
+			@if ($match->played())
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+					<div class="bg-white dark:bg-gray-750 shadow-md rounded mx-3 md:mx-0">
+						@include('match.mvp')
+					</div>
+					<div class="bg-white dark:bg-gray-750 shadow-md rounded mx-3 md:mx-0">
+						@include('match.game_tops')
+					</div>
+				</div>
+			@endif
+		</div>
 	</div>
 </div>
