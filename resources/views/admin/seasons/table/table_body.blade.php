@@ -27,7 +27,7 @@
 			</td>
 			<td style="width: 128px; min-width: 128px; min-width: 128px">
                 <a wire:click.stop href="{{ route('admin.matches', $reg) }}" class="btn btn-primary text-xs text-uppercase tracking-widest text-white">
-                    Partidos
+                    Liga regular
                 </a>
 			</td>
 		</tr>

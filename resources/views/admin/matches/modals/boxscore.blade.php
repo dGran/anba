@@ -34,11 +34,11 @@
                     </div>
                     <p class="text-center my-3">{{ $regView->stadium }}</p>
 
-                    @if ( ($scores->sum('local_score') + $scores->sum('visitor_score')) == $players_stats->sum('PTS') )
+{{--                     @if ( ($scores->sum('local_score') + $scores->sum('visitor_score')) == $players_stats->sum('PTS') )
                         <p class="text-success font-weight-bold text-center">Todo Ok!</p>
                     @else
                         <p class="text-danger font-weight-bold text-center">Los puntos de los jugadores no coinciden con los del resultado</p>
-                    @endif
+                    @endif --}}
 
                     <div class="form-row d-flex align-items-end justify-content-center py-3">
                         @foreach ($scores as $key => $score)

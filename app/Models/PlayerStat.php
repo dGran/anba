@@ -29,7 +29,7 @@ class PlayerStat extends Model
         'TPA',
         'FTM',
         'FTA',
-        'OR',
+        'ORB',
         'PF',
         'ML',
         'headline',

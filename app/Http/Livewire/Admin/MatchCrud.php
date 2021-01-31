@@ -908,7 +908,7 @@ class MatchCrud extends Component
 					'TPA' 		=> $player_stat['TPA'],
 					'FTM' 		=> $player_stat['FTM'],
 					'FTA' 		=> $player_stat['FTA'],
-					'OR' 		=> $player_stat['OR'],
+					'ORB' 		=> $player_stat['ORB'],
 					'PF' 		=> $player_stat['PF'],
 					'ML' 		=> $player_stat['ML'],
 					'headline' 	=> $player_stat['headline'],
@@ -952,7 +952,7 @@ class MatchCrud extends Component
 			$playerStat->TPA = $player_stat['TPA'];
 			$playerStat->FTM = $player_stat['FTM'];
 			$playerStat->FTA = $player_stat['FTA'];
-			$playerStat->OR = $player_stat['OR'];
+			$playerStat->ORB = $player_stat['ORB'];
 			$playerStat->PF = $player_stat['PF'];
 			$playerStat->ML = $player_stat['ML'];
 			$playerStat->headline = $player_stat['headline'];
@@ -1006,7 +1006,7 @@ class MatchCrud extends Component
 			$player_stat['TPA'] = 0;
 			$player_stat['FTM'] = 0;
 			$player_stat['FTA'] = 0;
-			$player_stat['OR'] = 0;
+			$player_stat['ORB'] = 0;
 			$player_stat['PF'] = 0;
 			$player_stat['ML'] = 0;
 			$player_stat['headline'] = 0;
@@ -1034,7 +1034,7 @@ class MatchCrud extends Component
 			$player_stat['TPA'] = 0;
 			$player_stat['FTM'] = 0;
 			$player_stat['FTA'] = 0;
-			$player_stat['OR'] = 0;
+			$player_stat['ORB'] = 0;
 			$player_stat['PF'] = 0;
 			$player_stat['ML'] = 0;
 			$player_stat['headline'] = 0;
@@ -1079,7 +1079,7 @@ class MatchCrud extends Component
 			$player_stat['TPA'] = $ps->TPA;
 			$player_stat['FTM'] = $ps->FTM;
 			$player_stat['FTA'] = $ps->FTA;
-			$player_stat['OR'] = $ps->OR;
+			$player_stat['ORB'] = $ps->ORB;
 			$player_stat['PF'] = $ps->PF;
 			$player_stat['ML'] = $ps->ML;
 			$player_stat['headline'] = $ps->headline;
