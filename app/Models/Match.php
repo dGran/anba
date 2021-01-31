@@ -266,41 +266,20 @@ class Match extends Model
             ->first();
     }
 
-    public function localTeam_totals()
+    public function localTeam_playerTotals()
     {
         $team_id = $this->localTeam->id;
-        return $top = PlayerStat::
+        return $data = PlayerStat::
             where('match_id', $this->id)
             ->whereIn('player_id', function($query) use ($team_id) {
                $query->select('id')->from('players')->where('team_id', '=', $team_id);
             })
             ->select(
-                // \DB::raw('AVG(PTS) as AVG_PTS'),
                 \DB::raw('SUM(PTS) AS PTS'),
                 \DB::raw('SUM(REB) AS REB'),
                 \DB::raw('SUM(AST) AS AST'),
                 \DB::raw('SUM(BLK) AS BLK'),
                 \DB::raw('SUM(STL) AS STL'),
-            )
-            ->first();
-    }
-
-    public function visitorTeam_totals()
-    {
-        $team_id = $this->visitorTeam->id;
-        return $top = PlayerStat::
-            where('match_id', $this->id)
-            ->whereIn('player_id', function($query) use ($team_id) {
-               $query->select('id')->from('players')->where('team_id', '=', $team_id);
-            })
-            ->select(
-                // \DB::raw('AVG(PTS) as AVG_PTS'),
-                \DB::raw('SUM(PTS) AS PTS'),
-                \DB::raw('SUM(REB) AS REB'),
-                \DB::raw('SUM(AST) AS AST'),
-                \DB::raw('SUM(BLK) AS BLK'),
-                \DB::raw('SUM(STL) AS STL'),
-
                 \DB::raw('SUM(FGM) AS FGM'),
                 \DB::raw('SUM(FGA) AS FGA'),
                 \DB::raw('(SUM(FGA) / SUM(FGM)) * 100  AS FGAVG'),
@@ -310,10 +289,54 @@ class Match extends Model
                 \DB::raw('SUM(FTM) AS FTM'),
                 \DB::raw('SUM(FTA) AS FTA'),
                 \DB::raw('(SUM(FTA) / SUM(FTM)) * 100  AS FTAVG'),
-
                 \DB::raw('SUM(ORB) AS ORB'),
                 \DB::raw('SUM(PF) AS PF'),
             )
+            ->first();
+    }
+
+    public function visitorTeam_playerTotals()
+    {
+        $team_id = $this->visitorTeam->id;
+        return $data = PlayerStat::
+            where('match_id', $this->id)
+            ->whereIn('player_id', function($query) use ($team_id) {
+               $query->select('id')->from('players')->where('team_id', '=', $team_id);
+            })
+            ->select(
+                \DB::raw('SUM(PTS) AS PTS'),
+                \DB::raw('SUM(REB) AS REB'),
+                \DB::raw('SUM(AST) AS AST'),
+                \DB::raw('SUM(BLK) AS BLK'),
+                \DB::raw('SUM(STL) AS STL'),
+                \DB::raw('SUM(FGM) AS FGM'),
+                \DB::raw('SUM(FGA) AS FGA'),
+                \DB::raw('(SUM(FGA) / SUM(FGM)) * 100  AS FGAVG'),
+                \DB::raw('SUM(TPM) AS TPM'),
+                \DB::raw('SUM(TPA) AS TPA'),
+                \DB::raw('(SUM(TPA) / SUM(TPM)) * 100  AS TPAVG'),
+                \DB::raw('SUM(FTM) AS FTM'),
+                \DB::raw('SUM(FTA) AS FTA'),
+                \DB::raw('(SUM(FTA) / SUM(FTM)) * 100  AS FTAVG'),
+                \DB::raw('SUM(ORB) AS ORB'),
+                \DB::raw('SUM(PF) AS PF'),
+            )
+            ->first();
+    }
+
+    public function localTeam_teamTotals()
+    {
+        return $data = TeamStat::
+            where('match_id', $this->id)
+            ->where('season_team_id', $this->localTeam->id)
+            ->first();
+    }
+
+    public function visitorTeam_teamTotals()
+    {
+        return $data = TeamStat::
+            where('match_id', $this->id)
+            ->where('season_team_id', $this->visitorTeam->id)
             ->first();
     }
 
@@ -438,8 +461,10 @@ class Match extends Model
 
     public function userIsParticipant()
     {
-        if (($this->localTeam->team->user && $this->localTeam->team->user->id == auth()->user()->id) || ($this->visitorTeam->team->user && $this->visitorTeam->team->user->id == auth()->user()->id)) {
-            return true;
+        if (auth() && $this->localTeam->team->user && $this->visitorTeam->team->user) {
+            if (($this->localTeam->team->user && $this->localTeam->team->user->id == auth()->user()->id) || ($this->visitorTeam->team->user && $this->visitorTeam->team->user->id == auth()->user()->id)) {
+                return true;
+            }
         }
         return false;
     }

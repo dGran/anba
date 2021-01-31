@@ -40,7 +40,7 @@ class CreatePlayersStatsTable extends Migration
             $table->integer('TPA')->nullable(); // triples intentados
             $table->integer('FTM')->nullable(); // tiros libres anotados
             $table->integer('FTA')->nullable(); // tiros libres intentados
-            $table->integer('OR')->nullable(); // rebotes ofensivos
+            $table->integer('ORB')->nullable(); // rebotes ofensivos
             $table->integer('PF')->nullable(); // faltas personales
             $table->integer('ML')->nullable(); // +/-
             $table->boolean('headline')->default(0);

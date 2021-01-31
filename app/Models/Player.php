@@ -171,20 +171,35 @@ class Player extends Model
     {
         switch ($this->position) {
             case 'pg':
-                return "Point guard";
+                return "Base";
                 break;
             case 'sg':
-                return "Shooting guard";
+                return "Escolta";
                 break;
             case 'sf':
-                return "Small forward";
+                return "Alero";
                 break;
             case 'pf':
-                return "Power forward";
+                return "Ala-Pivot";
                 break;
             case 'c':
-                return "Center";
+                return "Pivot";
                 break;
+            // case 'pg':
+            //     return "Point guard";
+            //     break;
+            // case 'sg':
+            //     return "Shooting guard";
+            //     break;
+            // case 'sf':
+            //     return "Small forward";
+            //     break;
+            // case 'pf':
+            //     return "Power forward";
+            //     break;
+            // case 'c':
+            //     return "Center";
+            //     break;
         }
     }
 

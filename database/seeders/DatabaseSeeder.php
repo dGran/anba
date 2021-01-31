@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
     {
     	$this->call(UserSeeder::class);
         $this->call(ScoreHeaderSeeder::class);
+        $this->call(InjuriesSeeder::class);
         // \App\Models\User::factory(10)->create();
     }
 }

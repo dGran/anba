@@ -3,11 +3,14 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
+use Illuminate\Support\Collection;
 use App\Models\MatchPoll;
 
 class Match extends Component
 {
 	public $match;
+
+	public $players_stats;
 
 	public function pollVote($match_id, $vote)
 	{
@@ -26,6 +29,68 @@ class Match extends Component
 		}
 	}
 
+    protected function makeComparer($criteria)
+    {
+        $comparer = function ($first, $second) use ($criteria) {
+            foreach ($criteria as $key => $orderType) {
+                // normalize sort direction
+                $orderType = strtolower($orderType);
+                if ($first[$key] < $second[$key]) {
+                    return $orderType === "asc" ? -1 : 1;
+                } else if ($first[$key] > $second[$key]) {
+                    return $orderType === "asc" ? 1 : -1;
+                }
+            }
+            // all elements were equal
+            return 0;
+        };
+        return $comparer;
+    }
+
+	protected function loadStats()
+	{
+    	$players_stats = Collection::make();
+		foreach ($this->match->playerStats as $ps) {
+			$player_stat['player_id'] = $ps->player->id;
+			$player_stat['player_img'] = $ps->player->getImg();
+			$player_stat['player_name'] = $ps->player->name;
+			$player_stat['player_pos'] = $ps->player->position;
+			$player_stat['player_position'] = $ps->player->getPosition();
+			$player_stat['player_injury'] = false;
+			$player_stat['team_id'] = $ps->player->team_id;
+			$player_stat['season_team_id'] = $ps->season_team_id;
+			$player_stat['MIN'] = $ps->MIN;
+			$player_stat['PTS'] = $ps->PTS;
+			$player_stat['REB'] = $ps->REB;
+			$player_stat['AST'] = $ps->AST;
+			$player_stat['STL'] = $ps->STL;
+			$player_stat['BLK'] = $ps->BLK;
+			$player_stat['LOS'] = $ps->LOS;
+			$player_stat['FGM'] = $ps->FGM;
+			$player_stat['FGA'] = $ps->FGA;
+			$player_stat['TPM'] = $ps->TPM;
+			$player_stat['TPA'] = $ps->TPA;
+			$player_stat['FTM'] = $ps->FTM;
+			$player_stat['FTA'] = $ps->FTA;
+			$player_stat['ORB'] = $ps->ORB;
+			$player_stat['PF'] = $ps->PF;
+			$player_stat['ML'] = $ps->ML;
+			$player_stat['headline'] = $ps->headline;
+
+
+			$players_stats->push($player_stat);
+		}
+
+		$criteria = [
+		            "headline" => "desc",
+		            "MIN" => "desc",
+		            "player_position" => "asc",
+		        ];
+        $comparer = $this->makeComparer($criteria);
+        $sorted = $players_stats->sort($comparer);
+        $this->players_stats = $sorted->values()->toArray();
+	}
+
 	public function mount($match)
 	{
 		$this->match = $match;
@@ -33,6 +98,7 @@ class Match extends Component
 
     public function render()
     {
+    	$this->loadStats();
         return view('match.index', []);
     }
 }

@@ -26,9 +26,16 @@ class CreateTeamsStatsTable extends Migration
                 ->onDelete('cascade');
             $table->integer('counterattack')->nullable(); // puntos al contraataque
             $table->integer('zone')->nullable(); // puntos en la zona
-            $table->integer('2nd')->nullable(); // puntos en segunda oportunidad
+            $table->integer('second_oportunity')->nullable(); // puntos en segunda oportunidad
             $table->integer('substitute')->nullable(); // puntos de los suplentes
             $table->integer('advantage')->nullable(); // ventaja maxima
+            $table->integer('AST')->nullable(); // asistencias
+            $table->integer('DRB')->nullable(); // rebotes defensivos
+            $table->integer('ORB')->nullable(); // rebotes ofensivos
+            $table->integer('STL')->nullable(); // robos
+            $table->integer('BLK')->nullable(); // tapones
+            $table->integer('LOS')->nullable(); // pérdidas
+            $table->integer('PF')->nullable(); // faltas personales
             $table->timestamps();
         });
     }

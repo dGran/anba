@@ -15,9 +15,7 @@ class CreateInjuriesTable extends Migration
     {
         Schema::create('injuries', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->string('description')->nullable();
-            $table->timestamps();
+            $table->string('name')->unique();
         });
     }
 

@@ -6,9 +6,7 @@
 		<div class="mb-8">
 			@if (!$match->played())
 				@include('match.reports')
-
 				@include('match.players_info')
-
 				@include('match.last_matches')
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 					<div class="bg-white dark:bg-gray-750 shadow-md rounded mx-3 md:mx-0">
@@ -30,6 +28,7 @@
 						@include('match.game_tops')
 					</div>
 				</div>
+				@include('match.boxscore')
 			@endif
 		</div>
 	</div>

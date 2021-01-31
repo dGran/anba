@@ -9,7 +9,7 @@
 				</div>
 				<img src="{{ $match->localTeam->team->getImg() }}" alt="{{ $match->localTeam->team->short_name }}" class="w-10 h-10">
 			</div>
-			<div class="mx-6">
+			<div class="mx-6 font-bold text-xl">
 				{{ $match->lastClashes_wins()['local'] }} - {{ $match->lastClashes_wins()['visitor'] }}
 			</div>
 			<div class="flex-1 flex items-center">

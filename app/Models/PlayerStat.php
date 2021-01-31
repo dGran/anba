@@ -40,6 +40,11 @@ class PlayerStat extends Model
         return $this->belongsTo('App\Models\Match');
     }
 
+    public function season()
+    {
+        return $this->belongsTo('App\Models\Season');
+    }
+
     public function player()
     {
         return $this->belongsTo('App\Models\Player');
