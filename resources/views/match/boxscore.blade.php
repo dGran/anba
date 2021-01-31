@@ -47,7 +47,7 @@
 	                                            <img src="{{ $player['player_img'] }}" alt="{{ $player['player_name'] }}" class="rounded-full border border-gray-150 dark:border-gray-650 w-8 h-8 object-cover">
 	                                            <div class="flex-1 truncate ml-2">
 	                                                <span class="truncate">{{ $player['player_name'] }}</span>
-	                                                <span class="truncate block text-gray-500 dark:text-gray-400 uppercase text-xxs">{{ $player['player_position'] }}</span>
+	                                                <span class="truncate block text-gray-500 dark:text-gray-400 uppercase text-xxs">{{ $player['player_pos'] }} - {{ $player['player_position'] }}</span>
 	                                            </div>
 	                                        </div>
 	                                    </td>
@@ -132,7 +132,7 @@
 	                                            <img src="{{ $player['player_img'] }}" alt="{{ $player['player_name'] }}" class="rounded-full border border-gray-150 dark:border-gray-650 w-8 h-8 object-cover">
 	                                            <div class="flex-1 truncate ml-2">
 	                                                <span class="truncate">{{ $player['player_name'] }}</span>
-	                                                <span class="truncate block text-gray-500 dark:text-gray-400 uppercase text-xxs">{{ $player['player_position'] }}</span>
+	                                                <span class="truncate block text-gray-500 dark:text-gray-400 uppercase text-xxs">{{ $player['player_pos'] }} - {{ $player['player_position'] }}</span>
 	                                            </div>
 	                                        </div>
 	                                    </td>

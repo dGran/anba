@@ -54,9 +54,10 @@ class Match extends Component
 			$player_stat['player_id'] = $ps->player->id;
 			$player_stat['player_img'] = $ps->player->getImg();
 			$player_stat['player_name'] = $ps->player->name;
+			$player_stat['player_pos_ordered'] = $ps->player->getPositionOrdered();
 			$player_stat['player_pos'] = $ps->player->position;
 			$player_stat['player_position'] = $ps->player->getPosition();
-			$player_stat['player_injury'] = false;
+			$player_stat['player_injury'] = $ps->player->injury ? true : false;
 			$player_stat['team_id'] = $ps->player->team_id;
 			$player_stat['season_team_id'] = $ps->season_team_id;
 			$player_stat['MIN'] = $ps->MIN;
@@ -82,10 +83,11 @@ class Match extends Component
 		}
 
 		$criteria = [
-		            "headline" => "desc",
-		            "MIN" => "desc",
-		            "player_position" => "asc",
-		        ];
+			"player_injury" => "asc",
+            "headline" => "desc",
+            "MIN" => "desc",
+            "player_pos_ordered" => "asc",
+        ];
         $comparer = $this->makeComparer($criteria);
         $sorted = $players_stats->sort($comparer);
         $this->players_stats = $sorted->values()->toArray();

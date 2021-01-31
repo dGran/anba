@@ -33,6 +33,11 @@ class Player extends Model
         return $this->belongsTo('App\Models\Team');
     }
 
+    public function injury()
+    {
+        return $this->belongsTo('App\Models\Injury');
+    }
+
     public function scopeName($query, $value)
     {
         if (trim($value) != "") {
@@ -200,6 +205,27 @@ class Player extends Model
             // case 'c':
             //     return "Center";
             //     break;
+        }
+    }
+
+    public function getPositionOrdered()
+    {
+        switch ($this->position) {
+            case 'pg':
+                return 1;
+                break;
+            case 'sg':
+                return 2;
+                break;
+            case 'sf':
+                return 3;
+                break;
+            case 'pf':
+                return 4;
+                break;
+            case 'c':
+                return 5;
+                break;
         }
     }
 
