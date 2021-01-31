@@ -28,7 +28,7 @@ class CreateRoundsClashesTable extends Migration
                 ->constrained('seasons_teams')
                 ->onDelete('cascade');
             $table->foreignId('clash_destiny_id')
-                ->constrained()
+                ->constrained('rounds_clashes')
                 ->onDelete('cascade');
             $table->string('stadium')->nullable();
             $table->timestamps();
