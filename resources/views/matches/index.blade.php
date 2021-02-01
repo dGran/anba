@@ -32,6 +32,5 @@
 	</div>
 
 	@include('matches.forecasts')
-	@include('matches.boxscore')
 
 </div>

@@ -1,4 +1,4 @@
-<div class="bg-white dark:bg-gray-750 shadow-md rounded mx-3 md:mx-0 my-6">
+<div class="bg-white dark:bg-gray-750 border border-gray-150 dark:border-transparent shadow-md rounded mx-3 md:mx-0 my-6">
 
 	<div class="px-4 py-3">
 
@@ -44,9 +44,9 @@
 	                                <tr class="border-t border-gray-150 dark:border-gray-650">
 	                                    <td style="width: 275px; min-width: 200px; max-width: 275px; left: 0px; position: sticky; position: -webkit-sticky;" class="truncate bg-white dark:bg-gray-750">
 	                                        <div class="flex items-center justify-between my-1 border-r border-gray-150 dark:border-gray-650">
-	                                            <img src="{{ $player['player_img'] }}" alt="{{ $player['player_name'] }}" class="rounded-full border border-gray-150 dark:border-gray-650 w-8 h-8 object-cover">
+	                                            <img src="{{ $player['player_img'] }}" alt="{{ $player['player_name'] }}" class="rounded-full border border-gray-150 dark:border-gray-650 w-8 h-8 object-cover" style="{{ $player['player_injury'] ? 'filter: grayscale(100%)' : '' }}">
 	                                            <div class="flex-1 truncate ml-2">
-	                                                <span class="truncate">{{ $player['player_name'] }}</span>
+	                                                <span class="truncate {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}">{{ $player['player_name'] }}</span>
 	                                                <span class="truncate block text-gray-500 dark:text-gray-400 uppercase text-xxs">{{ $player['player_pos'] }} - {{ $player['player_position'] }}</span>
 	                                            </div>
 	                                        </div>
@@ -59,26 +59,26 @@
 											@endif
 											@if ($player['player_injury'])
 												<span class="rounded-full w-6 h-6 border border-transparent text-sm flex flex-wrap justify-center content-center bg-pretty-red">
-													<i class="fas fa-briefcase-medical"></i>
+													<i class="fas fa-briefcase-medical text-white pb-0.5"></i>
 												</span>
 	                                    	@endif
 	                                    </td>
-	                                    <td class="text-center w-14" style="min-width: 2.5rem"><span>{{ $player['MIN'] }}</span></td>
-	                                    <td class="text-center w-14" style="min-width: 2.5rem"><span>{{ $player['PTS'] }}</span></td>
-	                                    <td class="text-center w-14" style="min-width: 2.5rem"><span>{{ $player['REB'] }}</span></td>
-	                                    <td class="text-center w-14" style="min-width: 2.5rem"><span>{{ $player['AST'] }}</span></td>
-	                                    <td class="text-center w-14" style="min-width: 2.5rem"><span>{{ $player['STL'] }}</span></td>
-	                                    <td class="text-center w-14" style="min-width: 2.5rem"><span>{{ $player['BLK'] }}</span></td>
-	                                    <td class="text-center w-14" style="min-width: 2.5rem"><span>{{ $player['LOS'] }}</span></td>
-	                                    <td class="text-center w-14" style="min-width: 2.5rem"><span>{{ $player['FGM'] }}</span></td>
-	                                    <td class="text-center w-14" style="min-width: 2.5rem"><span>{{ $player['FGA'] }}</span></td>
-	                                    <td class="text-center w-14" style="min-width: 2.5rem"><span>{{ $player['TPM'] }}</span></td>
-	                                    <td class="text-center w-14" style="min-width: 2.5rem"><span>{{ $player['TPA'] }}</span></td>
-	                                    <td class="text-center w-14" style="min-width: 2.5rem"><span>{{ $player['FTM'] }}</span></td>
-	                                    <td class="text-center w-14" style="min-width: 2.5rem"><span>{{ $player['FTA'] }}</span></td>
-	                                    <td class="text-center w-14" style="min-width: 2.5rem"><span>{{ $player['ORB'] }}</span></td>
-	                                    <td class="text-center w-14" style="min-width: 2.5rem"><span>{{ $player['PF'] }}</span></td>
-	                                    <td class="text-center w-14" style="min-width: 2.5rem"><span>{{ $player['ML'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['MIN'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['PTS'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['REB'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['AST'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['STL'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['BLK'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['LOS'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['FGM'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['FGA'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['TPM'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['TPA'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['FTM'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['FTA'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['ORB'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['PF'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['ML'] }}</span></td>
 	                                </tr>
 	                            @endif
 	                        @endforeach
@@ -129,9 +129,9 @@
 	                                <tr class="border-t border-gray-150 dark:border-gray-650">
 	                                    <td style="width: 275px; min-width: 200px; max-width: 275px; left: 0px; position: sticky; position: -webkit-sticky;" class="truncate bg-white dark:bg-gray-750">
 	                                        <div class="flex items-center justify-between my-1 border-r border-gray-150 dark:border-gray-650">
-	                                            <img src="{{ $player['player_img'] }}" alt="{{ $player['player_name'] }}" class="rounded-full border border-gray-150 dark:border-gray-650 w-8 h-8 object-cover">
+	                                            <img src="{{ $player['player_img'] }}" alt="{{ $player['player_name'] }}" class="rounded-full border border-gray-150 dark:border-gray-650 w-8 h-8 object-cover" style="{{ $player['player_injury'] ? 'filter: grayscale(100%)' : '' }}">
 	                                            <div class="flex-1 truncate ml-2">
-	                                                <span class="truncate">{{ $player['player_name'] }}</span>
+	                                                <span class="truncate {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}">{{ $player['player_name'] }}</span>
 	                                                <span class="truncate block text-gray-500 dark:text-gray-400 uppercase text-xxs">{{ $player['player_pos'] }} - {{ $player['player_position'] }}</span>
 	                                            </div>
 	                                        </div>
@@ -144,26 +144,26 @@
 											@endif
 											@if ($player['player_injury'])
 												<span class="rounded-full w-6 h-6 border border-transparent text-sm flex flex-wrap justify-center content-center bg-pretty-red">
-													<i class="fas fa-briefcase-medical"></i>
+													<i class="fas fa-briefcase-medical text-white pb-0.5"></i>
 												</span>
 	                                    	@endif
 	                                    </td>
-	                                    <td class="text-center w-14" style="min-width: 2.5rem"><span>{{ $player['MIN'] }}</span></td>
-	                                    <td class="text-center w-14" style="min-width: 2.5rem"><span>{{ $player['PTS'] }}</span></td>
-	                                    <td class="text-center w-14" style="min-width: 2.5rem"><span>{{ $player['REB'] }}</span></td>
-	                                    <td class="text-center w-14" style="min-width: 2.5rem"><span>{{ $player['AST'] }}</span></td>
-	                                    <td class="text-center w-14" style="min-width: 2.5rem"><span>{{ $player['STL'] }}</span></td>
-	                                    <td class="text-center w-14" style="min-width: 2.5rem"><span>{{ $player['BLK'] }}</span></td>
-	                                    <td class="text-center w-14" style="min-width: 2.5rem"><span>{{ $player['LOS'] }}</span></td>
-	                                    <td class="text-center w-14" style="min-width: 2.5rem"><span>{{ $player['FGM'] }}</span></td>
-	                                    <td class="text-center w-14" style="min-width: 2.5rem"><span>{{ $player['FGA'] }}</span></td>
-	                                    <td class="text-center w-14" style="min-width: 2.5rem"><span>{{ $player['TPM'] }}</span></td>
-	                                    <td class="text-center w-14" style="min-width: 2.5rem"><span>{{ $player['TPA'] }}</span></td>
-	                                    <td class="text-center w-14" style="min-width: 2.5rem"><span>{{ $player['FTM'] }}</span></td>
-	                                    <td class="text-center w-14" style="min-width: 2.5rem"><span>{{ $player['FTA'] }}</span></td>
-	                                    <td class="text-center w-14" style="min-width: 2.5rem"><span>{{ $player['ORB'] }}</span></td>
-	                                    <td class="text-center w-14" style="min-width: 2.5rem"><span>{{ $player['PF'] }}</span></td>
-	                                    <td class="text-center w-14" style="min-width: 2.5rem"><span>{{ $player['ML'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['MIN'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['PTS'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['REB'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['AST'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['STL'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['BLK'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['LOS'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['FGM'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['FGA'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['TPM'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['TPA'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['FTM'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['FTA'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['ORB'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['PF'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['ML'] }}</span></td>
 	                                </tr>
 	                            @endif
 	                        @endforeach

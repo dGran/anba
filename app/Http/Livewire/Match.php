@@ -5,11 +5,11 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use Illuminate\Support\Collection;
 use App\Models\MatchPoll;
+use App\Models\Player;
 
 class Match extends Component
 {
 	public $match;
-
 	public $players_stats;
 
 	public function pollVote($match_id, $vote)
@@ -57,7 +57,7 @@ class Match extends Component
 			$player_stat['player_pos_ordered'] = $ps->player->getPositionOrdered();
 			$player_stat['player_pos'] = $ps->player->position;
 			$player_stat['player_position'] = $ps->player->getPosition();
-			$player_stat['player_injury'] = $ps->player->injury ? true : false;
+			$player_stat['player_injury'] = $ps->injury ? true : false;
 			$player_stat['team_id'] = $ps->player->team_id;
 			$player_stat['season_team_id'] = $ps->season_team_id;
 			$player_stat['MIN'] = $ps->MIN;
@@ -101,6 +101,20 @@ class Match extends Component
     public function render()
     {
     	$this->loadStats();
-        return view('match.index', []);
+
+        return view('match.index', [
+        	'localInjuries' => $this->getLocalInjuries(),
+        	'visitorInjuries' => $this->getVisitorInjuries(),
+        ]);
+    }
+
+    public function getLocalInjuries()
+    {
+    	return $injuries = Player::whereNotNull('injury_id')->where('team_id', $this->match->localTeam->team->id)->get();
+    }
+
+    public function getVisitorInjuries()
+    {
+    	return $injuries = Player::whereNotNull('injury_id')->where('team_id', $this->match->visitorTeam->team->id)->get();
     }
 }

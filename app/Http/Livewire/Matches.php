@@ -10,18 +10,19 @@ use App\Models\SeasonTeam;
 use App\Models\SeasonConference;
 use App\Models\SeasonDivision;
 use Livewire\withPagination;
+use Illuminate\Support\Collection;
 
 class Matches extends Component
 {
 	use WithPagination;
 
 	//boxscore
-	public $scores, $players_stats, $teams_stats;
+	public $scores;
 	public $teams_table_data;
 
 	public $regEdit;
 	public $forecastsModal = false;
-	public $boxscoreModal = false;
+
 
 	//filters
 	public $season;
@@ -84,18 +85,6 @@ class Matches extends Component
 		if ($this->regEdit = Match::find($match_id)) {
 			$this->forecastsModal = true;
 		}
-	}
-
-	public function openBoxscoreModal($match_id)
-	{
-		if ($this->regEdit = Match::find($match_id)) {
-			$this->boxscoreModal = true;
-		}
-	}
-
-	public function viewMatch($match_id)
-	{
-		return redirect()->route('match', $match_id);
 	}
 
 	public function mount()

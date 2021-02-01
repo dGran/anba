@@ -1,4 +1,4 @@
-<div class="bg-white dark:bg-gray-750 border-b md:border-b-0 border-gray-150 dark:border-gray-900 md:shadow-md md:rounded md:mt-8">
+<div class="bg-white dark:bg-gray-750 border-b md:border border-gray-150 dark:border-transparent shadow-md md:rounded md:mt-8">
 	<div class="flex items-center justify-center px-4 py-4">
 		<div class="flex-1">
 			<img src="{{ $match->localTeam->team->getImg() }}" alt="{{ $match->localTeam->team->short_name }}" class="mx-auto w-24 h-24 md:w-44 md:h-44 lg:w-60 lg:h-60">

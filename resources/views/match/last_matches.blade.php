@@ -1,4 +1,4 @@
-<div class="bg-white dark:bg-gray-750 shadow-md rounded mx-3 md:mx-0 my-6">
+<div class="bg-white dark:bg-gray-750 border border-gray-150 dark:border-transparent shadow-md rounded mx-3 md:mx-0 my-6">
 	<div class="px-4 py-3">
 		<p class="uppercase text-sm font-bold tracking-wider pb-3">últimos partidos</p>
 

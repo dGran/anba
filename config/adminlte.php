@@ -276,6 +276,11 @@ return [
             'route'       => 'admin.posts',
             'icon'        => 'bx bx-news',
         ],
+        [
+            'text'        => 'Enfermería',
+            'route'       => 'admin.posts',
+            'icon'        => 'fas fa-briefcase-medical',
+        ],
         ['header' => 'TABLAS GENERALES'],
         [
             'text'        => 'Jugadores',

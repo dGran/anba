@@ -15,6 +15,7 @@ class PlayerStat extends Model
         'match_id',
         'season_id',
         'player_id',
+        'injury_id',
         'season_team_id',
         'MIN',
         'PTS',
@@ -48,6 +49,11 @@ class PlayerStat extends Model
     public function player()
     {
         return $this->belongsTo('App\Models\Player');
+    }
+
+    public function injury()
+    {
+        return $this->belongsTo('App\Models\Injury');
     }
 
     public function seasonTeam()

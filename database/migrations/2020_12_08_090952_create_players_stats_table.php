@@ -24,6 +24,10 @@ class CreatePlayersStatsTable extends Migration
             $table->foreignId('player_id')
                 ->constrained()
                 ->onDelete('cascade');
+            $table->foreignId('injury_id')
+                ->nullable()
+                ->constrained('injuries')
+                ->onDelete('cascade');
             $table->foreignId('season_team_id')
                 ->constrained('seasons_teams')
                 ->onDelete('cascade');

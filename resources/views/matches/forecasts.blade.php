@@ -1,5 +1,5 @@
 @if ($forecastsModal && $regEdit)
-	<x-modals.dialog maxWidth="md" wire:model="forecastsModal" >
+	<x-modals.dialog maxWidth="" wire:model="forecastsModal" >
 	    <x-slot name="title">
 			<div class="p-4">
 				<p class="uppercase text-sm font-bold tracking-wider">PRONOSTICOS</p>

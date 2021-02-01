@@ -1,4 +1,4 @@
-<div class="score w-full md:w-1/2">
+<div class="w-full md:w-1/2">
 	<div class="flex justify-between items-center py-3 lg:py-8">
 		<div class="flex-1">
 			<img src="{{ $reg->localTeam->team->getImg() }}" alt="{{ $reg->localTeam->team->short_name }}" style="width: 52px; height: 52px" class="mb-3 mx-auto">
@@ -15,7 +15,7 @@
 		    		{{ $reg->scores->first()->getUpdatedAt() }}
 		    	@else
 	    			<div class="text-xs">
-		                <x-buttons.primary class="lg:hidden uppercase text-xs px-2 py-0 leading-6 block mx-auto mb-1" wire:click.stop="openForecastsModal({{ $reg->id }})">
+		                <x-buttons.primary class="lg:hidden uppercase text-xs px-2 py-0 leading-6 block mx-auto mb-1" wire:click.prevent="openForecastsModal({{ $reg->id }})">
 							Pronósticos
 		                </x-buttons.primary>
 	    				@if ($reg->votes()['local'] > 0 || $reg->votes()['visitor'] > 0)
@@ -39,9 +39,11 @@
 	<div class="border-t border-gray-200 dark:border-gray-650 px-4 h-16">
 		<div class="h-full flex items-center justify-center">
 			@if ($reg->played())
-                <x-buttons.primary-outline class="w-24 uppercase text-xs px-2 py-0.5 leading-5 transform hover:scale-125 focus:scale-125 transition duration-300 ease-in-out" wire:click.stop="openBoxscoreModal({{ $reg->id }})">
-                    boxscore
-                </x-buttons.primary-outline>
+				<a href="{{ route('match', $reg->id) }}" class="transform hover:scale-125 focus:scale-125 transition duration-300 ease-in-out || text-blue-500 dark:text-dark-link rounded focus:outline-none border border-blue-500 dark:border-dark-link hover:bg-blue-500 focus:bg-blue-500 dark:hover:bg-blue-300 dark:focus:bg-blue-300 hover:text-white focus:text-white dark:hover:text-gray-900 dark:focus:text-gray-900 transition duration-150 ease-in-out">
+	                <span class="uppercase text-xs px-3 py-0.5 leading-5">
+	                    ficha del partido
+	                </span>
+                </a>
 			@else
 				@auth
 					@if ($reg->userIsParticipant())
