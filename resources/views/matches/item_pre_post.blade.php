@@ -1,6 +1,6 @@
 @if (!$reg->played())
 	<div class="px-4 py-2">
-		<p class="uppercase py-2 text-sm font-bold tracking-wider">PRONOSTICOS</p>
+		<p class="uppercase py-2 text-sm font-bold tracking-wider">PRONÓSTICOS</p>
 
 		<div class="flex mb-4 mt-2">
 			<div class="flex-1 border-r border-gray-200 dark:border-gray-650 py-1">

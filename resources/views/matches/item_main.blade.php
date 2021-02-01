@@ -15,9 +15,9 @@
 		    		{{ $reg->scores->first()->getUpdatedAt() }}
 		    	@else
 	    			<div class="text-xs">
-		                <x-buttons.primary class="lg:hidden uppercase text-xs px-2 py-0 leading-6 block mx-auto mb-1" wire:click.prevent="openForecastsModal({{ $reg->id }})">
+		                <span class="lg:hidden uppercase font-bold underline text-xs px-2 py-0 hover:text-blue-600 focus:text-blue-600 dark:hover:text-dark-link dark:focus:text-dark-link block mx-auto mb-1 cursor-pointer focus:outline-none" wire:click.prevent="openForecastsModal({{ $reg->id }})">
 							Pronósticos
-		                </x-buttons.primary>
+		                </span>
 	    				@if ($reg->votes()['local'] > 0 || $reg->votes()['visitor'] > 0)
 		    				<p class="hidden lg:block font-bold uppercase">Pronósticos</p>
 		    				<span>{{ $reg->votes()['local'] ? number_format($reg->votesPercent()['local'], 2) : '0' }}%</span>
@@ -38,29 +38,17 @@
 
 	<div class="border-t border-gray-200 dark:border-gray-650 px-4 h-16">
 		<div class="h-full flex items-center justify-center">
-			@if ($reg->played())
-				<a href="{{ route('match', $reg->id) }}" class="transform hover:scale-125 focus:scale-125 transition duration-300 ease-in-out || text-blue-500 dark:text-dark-link rounded focus:outline-none border border-blue-500 dark:border-dark-link hover:bg-blue-500 focus:bg-blue-500 dark:hover:bg-blue-300 dark:focus:bg-blue-300 hover:text-white focus:text-white dark:hover:text-gray-900 dark:focus:text-gray-900 transition duration-150 ease-in-out">
-	                <span class="uppercase text-xs px-3 py-0.5 leading-5">
-	                    ficha del partido
-	                </span>
-                </a>
-			@else
-				@auth
-					@if ($reg->userIsParticipant())
-		                <x-buttons.primary class="uppercase text-xs px-2 py-0.5 leading-6">
-							reportar resultado
-		                </x-buttons.primary>
-		                <x-buttons.primary class="ml-3 uppercase text-xs px-2 py-0.5 leading-6">
-							reportar estadisticas
-		                </x-buttons.primary>
-		            @else
-		            	<span class="text-md uppercase light:text-gray-500 dark:text-gray-400 font-bold lg:tracking-wider">Partido no disputado</span>
-					@endif
-	            @endauth
-	            @guest
-	            	<span class="text-md uppercase light:text-gray-500 dark:text-gray-400 font-bold lg:tracking-wider">Partido no disputado</span>
-	            @endguest
-			@endif
+			<a href="{{ route('match', $reg->id) }}">
+				@if ($reg->played())
+	                <x-buttons.primary class="uppercase text-xs px-2.5 py-0.5 leading-6">
+						ficha del partido
+	                </x-buttons.primary>
+	            @else
+	                <x-buttons.primary-outline class="uppercase text-xs px-2.5 py-0.5 leading-6">
+						informe pre-partido
+	                </x-buttons.primary-outline>
+				@endif
+            </a>
 		</div>
 	</div>
 </div>
