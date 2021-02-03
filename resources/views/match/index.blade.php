@@ -19,6 +19,7 @@
 			@endif
 
 			@if ($match->played())
+				@include('match.boxscore')
 				@include('match.match_info')
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-6">
 					<div class="bg-white dark:bg-gray-750 border border-gray-150 dark:border-transparent shadow-md rounded mx-3 md:mx-0">
@@ -28,7 +29,6 @@
 						@include('match.game_tops')
 					</div>
 				</div>
-				@include('match.boxscore')
 			@endif
 		</div>
 	</div>
