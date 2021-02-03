@@ -466,7 +466,7 @@ class Match extends Model
 
     public function userIsParticipant()
     {
-        if (auth()) {
+        if (auth()->user()) {
             if (($this->localTeam->team->user && $this->localTeam->team->user->id == auth()->user()->id) || ($this->visitorTeam->team->user && $this->visitorTeam->team->user->id == auth()->user()->id)) {
                 return true;
             }
