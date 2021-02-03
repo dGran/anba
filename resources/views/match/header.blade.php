@@ -6,7 +6,7 @@
 				<span class="sm:hidden">{{ $match->localTeam->team->medium_name }}</span>
 				<span class="hidden sm:block">{{ $match->localTeam->team->name }}</span>
 			</div>
-			<div class="text-sm md:text-base lg:text-xl text-center light:text-gray-500 dark:text-gray-300">{{ $match->localTeam->team->user ? $match->localTeam->team->user->name : 'sin manager' }}</div>
+			<div class="text-sm md:text-base lg:text-xl text-center light:text-gray-500 dark:text-gray-300">{{ $match->localManager ? $match->localManager->name : 'sin manager' }}</div>
 		</div>
 		<div class="flex-initial px-3 md:px-6">
 			<p class="text-center font-bold text-3xl md:text-5xl lg:text-6xl">{{ $match->score() }}</p>
@@ -25,7 +25,7 @@
 				<span class="sm:hidden">{{ $match->visitorTeam->team->medium_name }}</span>
 				<span class="hidden sm:block">{{ $match->visitorTeam->team->name }}</span>
 			</div>
-			<div class="text-sm md:text-base lg:text-xl text-center light:text-gray-500 dark:text-gray-300">{{ $match->visitorTeam->team->user ? $match->visitorTeam->team->user->name : 'sin manager' }}</div>
+			<div class="text-sm md:text-base lg:text-xl text-center light:text-gray-500 dark:text-gray-300">{{ $match->visitorManager ? $match->visitorManager->name : 'sin manager' }}</div>
 		</div>
 	</div>
 	@if ($match->played())

@@ -94,10 +94,12 @@ class Matches extends Component
 		} else {
 			$this->blank_view = true;
 		}
+		// dd('mount');
 	}
 
     public function render()
     {
+    	// dd('render');
     	if (!$this->blank_view) {
     		$current_season = Season::where('slug', $this->season)->first();
     		$seasons = Season::orderBy('id', 'desc')->get();

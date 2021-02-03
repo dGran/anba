@@ -53,6 +53,11 @@ class Match extends Model
         return $this->hasMany('App\Models\PlayerStat');
     }
 
+    public function teamStats()
+    {
+        return $this->hasMany('App\Models\TeamStat');
+    }
+
     public function scopeSeason($query, $value)
     {
         if ($value != 'all') {

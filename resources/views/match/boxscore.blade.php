@@ -63,22 +63,22 @@
 												</span>
 	                                    	@endif
 	                                    </td>
-	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['MIN'] }}</span></td>
-	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['PTS'] }}</span></td>
-	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['REB'] }}</span></td>
-	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['AST'] }}</span></td>
-	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['STL'] }}</span></td>
-	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['BLK'] }}</span></td>
-	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['LOS'] }}</span></td>
-	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['FGM'] }}</span></td>
-	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['FGA'] }}</span></td>
-	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['TPM'] }}</span></td>
-	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['TPA'] }}</span></td>
-	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['FTM'] }}</span></td>
-	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['FTA'] }}</span></td>
-	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['ORB'] }}</span></td>
-	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['PF'] }}</span></td>
-	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['ML'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['MIN'] ?: '-' }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['PTS'] ?: '-' }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['REB'] ?: '-' }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['AST'] ?: '-' }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['STL'] ?: '-' }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['BLK'] ?: '-' }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['LOS'] ?: '-' }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['FGM'] ?: '-' }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['FGA'] ?: '-' }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['TPM'] ?: '-' }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['TPA'] ?: '-' }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['FTM'] ?: '-' }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['FTA'] ?: '-' }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['ORB'] ?: '-' }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['PF'] ?: '-' }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['ML'] ?: '- '}}</span></td>
 	                                </tr>
 	                            @endif
 	                        @endforeach
@@ -148,22 +148,22 @@
 												</span>
 	                                    	@endif
 	                                    </td>
-	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['MIN'] }}</span></td>
-	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['PTS'] }}</span></td>
-	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['REB'] }}</span></td>
-	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['AST'] }}</span></td>
-	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['STL'] }}</span></td>
-	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['BLK'] }}</span></td>
-	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['LOS'] }}</span></td>
-	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['FGM'] }}</span></td>
-	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['FGA'] }}</span></td>
-	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['TPM'] }}</span></td>
-	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['TPA'] }}</span></td>
-	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['FTM'] }}</span></td>
-	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['FTA'] }}</span></td>
-	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['ORB'] }}</span></td>
-	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['PF'] }}</span></td>
-	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['ML'] }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['MIN'] ?: '-' }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['PTS'] ?: '-' }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['REB'] ?: '-' }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['AST'] ?: '-' }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['STL'] ?: '-' }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['BLK'] ?: '-' }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['LOS'] ?: '-' }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['FGM'] ?: '-' }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['FGA'] ?: '-' }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['TPM'] ?: '-' }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['TPA'] ?: '-' }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['FTM'] ?: '-' }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['FTA'] ?: '-' }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['ORB'] ?: '-' }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['PF'] ?: '-' }}</span></td>
+	                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem"><span>{{ $player['ML'] ?: '- '}}</span></td>
 	                                </tr>
 	                            @endif
 	                        @endforeach

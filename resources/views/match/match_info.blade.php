@@ -106,23 +106,23 @@
 			</div>
 			<div class="flex flex-col py-0.5 md:py-1.5 border-b border-gray-150 dark:border-gray-650">
 				<div class="flex items-center">
+					<p class="w-10 md:w-12 lg:w-16 text-left md:pl-3 text-sm md:text-base lg:text-xl font-bold {{ $match->localTeam_teamTotals()->DRB + $match->localTeam_teamTotals()->ORB > $match->visitorTeam_teamTotals()->DRB + $match->visitorTeam_teamTotals()->ORB ? 'text-black dark:text-yellow-400' : 'text-gray-500 dark:text-gray-300' }}">
+						{{ $match->localTeam_teamTotals()->DRB + $match->localTeam_teamTotals()->ORB ?: '0' }}
+					</p>
+					<p class="flex-1 text-center px-3 uppercase font-bold text-sm md:text-base lg:text-xl text-gray-500 dark:text-gray-300">rebotes</p>
+					<p class="w-10 md:w-12 lg:w-16 text-right md:pr-3 text-sm md:text-base lg:text-xl font-bold {{ $match->visitorTeam_teamTotals()->DRB + $match->visitorTeam_teamTotals()->ORB > $match->localTeam_teamTotals()->DRB + $match->visitorTeam_teamTotals()->ORB ? 'text-black dark:text-yellow-400' : 'text-gray-500 dark:text-gray-300' }}">
+						{{ $match->visitorTeam_teamTotals()->DRB + $match->visitorTeam_teamTotals()->ORB ?: '0' }}
+					</p>
+				</div>
+			</div>
+			<div class="flex flex-col py-0.5 md:py-1.5 border-b border-gray-150 dark:border-gray-650">
+				<div class="flex items-center">
 					<p class="w-10 md:w-12 lg:w-16 text-left md:pl-3 text-sm md:text-base lg:text-xl font-bold {{ $match->localTeam_teamTotals()->ORB > $match->visitorTeam_teamTotals()->ORB ? 'text-black dark:text-yellow-400' : 'text-gray-500 dark:text-gray-300' }}">
 						{{ $match->localTeam_teamTotals()->ORB ?: '0' }}
 					</p>
 					<p class="flex-1 text-center px-3 uppercase font-bold text-sm md:text-base lg:text-xl text-gray-500 dark:text-gray-300">rebotes ofensivos</p>
 					<p class="w-10 md:w-12 lg:w-16 text-right md:pr-3 text-sm md:text-base lg:text-xl font-bold {{ $match->visitorTeam_teamTotals()->ORB > $match->localTeam_teamTotals()->ORB ? 'text-black dark:text-yellow-400' : 'text-gray-500 dark:text-gray-300' }}">
 						{{ $match->visitorTeam_teamTotals()->ORB ?: '0' }}
-					</p>
-				</div>
-			</div>
-			<div class="flex flex-col py-0.5 md:py-1.5 border-b border-gray-150 dark:border-gray-650">
-				<div class="flex items-center">
-					<p class="w-10 md:w-12 lg:w-16 text-left md:pl-3 text-sm md:text-base lg:text-xl font-bold {{ $match->localTeam_teamTotals()->DRB > $match->visitorTeam_teamTotals()->DRB ? 'text-black dark:text-yellow-400' : 'text-gray-500 dark:text-gray-300' }}">
-						{{ $match->localTeam_teamTotals()->DRB ?: '0' }}
-					</p>
-					<p class="flex-1 text-center px-3 uppercase font-bold text-sm md:text-base lg:text-xl text-gray-500 dark:text-gray-300">rebotes defensivos</p>
-					<p class="w-10 md:w-12 lg:w-16 text-right md:pr-3 text-sm md:text-base lg:text-xl font-bold {{ $match->visitorTeam_teamTotals()->DRB > $match->localTeam_teamTotals()->DRB ? 'text-black dark:text-yellow-400' : 'text-gray-500 dark:text-gray-300' }}">
-						{{ $match->visitorTeam_teamTotals()->DRB ?: '0' }}
 					</p>
 				</div>
 			</div>
@@ -154,7 +154,7 @@
 						{{ $match->localTeam_teamTotals()->LOS ?: '0' }}
 					</p>
 					<p class="flex-1 text-center px-3 uppercase font-bold text-sm md:text-base lg:text-xl text-gray-500 dark:text-gray-300">pérdidas</p>
-					<p class="w-10 md:w-12 lg:w-16 text-right md:pr-3 text-sm md:text-base lg:text-xl font-bold {{ $match->visitorTeam_teamTotals()->LOS > $match->localTeam_teamTotals()->LOS ? 'text-black dark:text-yellow-400' : 'text-gray-500 dark:text-gray-300' }}">
+					<p class="w-10 md:w-12 lg:w-16 text-right md:pr-3 text-sm md:text-base lg:text-xl font-bold {{ $match->visitorTeam_teamTotals()->LOS < $match->localTeam_teamTotals()->LOS ? 'text-black dark:text-yellow-400' : 'text-gray-500 dark:text-gray-300' }}">
 						{{ $match->visitorTeam_teamTotals()->LOS ?: '0' }}
 					</p>
 				</div>
@@ -165,7 +165,7 @@
 						{{ $match->localTeam_teamTotals()->PF ?: '0' }}
 					</p>
 					<p class="flex-1 text-center px-3 uppercase font-bold text-sm md:text-base lg:text-xl text-gray-500 dark:text-gray-300">faltas equipo</p>
-					<p class="w-10 md:w-12 lg:w-16 text-right md:pr-3 text-sm md:text-base lg:text-xl font-bold {{ $match->visitorTeam_teamTotals()->PF > $match->localTeam_teamTotals()->PF ? 'text-black dark:text-yellow-400' : 'text-gray-500 dark:text-gray-300' }}">
+					<p class="w-10 md:w-12 lg:w-16 text-right md:pr-3 text-sm md:text-base lg:text-xl font-bold {{ $match->visitorTeam_teamTotals()->PF < $match->localTeam_teamTotals()->PF ? 'text-black dark:text-yellow-400' : 'text-gray-500 dark:text-gray-300' }}">
 						{{ $match->visitorTeam_teamTotals()->PF ?: '0' }}
 					</p>
 				</div>
