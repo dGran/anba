@@ -43,6 +43,11 @@ class Match extends Model
         return $this->hasMany('App\Models\Score');
     }
 
+    public function season()
+    {
+        return $this->belongsTo('App\Models\Season');
+    }
+
     public function poll()
     {
         return $this->hasOne('App\Models\MatchPoll');
