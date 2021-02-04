@@ -539,8 +539,8 @@ class MatchCrud extends Component
 	            	$counter++;
 	                $reg = $original->replicate();
 	                //set de current managers
-	                $reg->local_manager_id = $original->localTeam->team->user->id;
-	                $reg->visitor_manager_id = $original->visitorTeam->team->user->id;
+	                $reg->local_manager_id = $original->localTeam->team->user ? $original->localTeam->team->user->id : '';
+	                $reg->visitor_manager_id = $original->visitorTeam->team->user ? $original->visitorTeam->team->user->id : '';
 	                $reg->save();
 	                //replicate scores
 	            	event(new TableWasUpdated($reg, 'insert', $reg->toJson(JSON_PRETTY_PRINT), 'Registro duplicado'));
@@ -555,8 +555,8 @@ class MatchCrud extends Component
             if ($original = Match::find(reset($this->regsSelectedArray))) {
                 $reg = $original->replicate();
                 //set de current managers
-                $reg->local_manager_id = $original->localTeam->team->user->id;
-                $reg->visitor_manager_id = $original->visitorTeam->team->user->id;
+                $reg->local_manager_id = $original->localTeam->team->user ? $original->localTeam->team->user->id : '';
+                $reg->visitor_manager_id = $original->visitorTeam->team->user ? $original->visitorTeam->team->user->id : '';
                 $reg->save();
                 //replicate scores
             	event(new TableWasUpdated($reg, 'insert', $reg->toJson(JSON_PRETTY_PRINT), 'Registro duplicado'));
