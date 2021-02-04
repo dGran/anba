@@ -19,13 +19,13 @@
                             <p class="d-block m-0 pt-2 text-center text-sm">{{ $regView->localTeam->team->medium_name }}</p>
                             <p class="d-block m-0 text-center text-xs text-muted">{{ $regView->localManager ? $regView->localManager->name : 'Sin manager' }}</p>
                         </div>
-                        <div class="result mx-3 text-center font-weight-bold text-2xl">
-                            <div class="d-inline-block text-right" style="min-width: 32px">
-                                {{ $total_scores['local'] }}
+                        <div class="result mx-3 text-center font-weight-bold text-2xl border rounded px-2 py-1 bg-light" style="min-width: 120px">
+                            <div class="d-inline-block">
+                                {{ $total_scores['local'] ?: '' }}
                             </div>
                             <div class="d-inline-block">-</div>
-                            <div class="d-inline-block text-left" style="min-width: 32px">
-                                {{ $total_scores['visitor'] }}
+                            <div class="d-inline-block">
+                                {{ $total_scores['visitor'] ?: '' }}
                             </div>
                         </div>
                         <div class="visitor">
@@ -42,15 +42,17 @@
                         <p class="text-danger font-weight-bold text-center">Los puntos de los jugadores no coinciden con los del resultado</p>
                     @endif --}}
 
-                    <div class="form-row d-flex align-items-end justify-content-center py-2">
-                        @foreach ($scores as $key => $score)
-                            <div class="form-group col-2">
-                                <label>{{ $score['seasons_scores_headers_name'] }}</label>
-                                <input type="number" min="0" class="form-control numericInput px-2" placeholder="0" wire:model="scores.{{ $key }}.local_score">
-                                <input type="number" min="0" class="mt-2 form-control numericInput px-2" placeholder="0" wire:model="scores.{{ $key }}.visitor_score">
-                            </div>
-                        @endforeach
-                    </div>
+                    @if (!$regView->played())
+                        <div class="form-row d-flex align-items-end justify-content-center py-2">
+                            @foreach ($scores as $key => $score)
+                                <div class="form-group col-2">
+                                    <label>{{ $score['seasons_scores_headers_name'] }}</label>
+                                    <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2" placeholder="-" wire:model="scores.{{ $key }}.local_score">
+                                    <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="mt-2 form-control numericInput px-2" placeholder="-" wire:model="scores.{{ $key }}.visitor_score">
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
 
                     @if ($regView->local_manager_id != $regView->localTeam->team->manager_id || $regView->visitor_manager_id != $regView->visitorTeam->team->manager_id)
                         <div class="border rounded p-3 mb-3">
@@ -94,51 +96,51 @@
                             <div class="d-inline-flex">
                                 <div class="d-flex flex-column pr-3" style="width: 135px">
                                     <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">pts. contra</label>
-                                    <input type="number" min="0" placeholder="0" class="form-control text-base {{ !$teams_stats[0]['counterattack'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 0 }}.counterattack">
+                                    <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ !$teams_stats[0]['counterattack'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 0 }}.counterattack">
                                 </div>
                                 <div class="d-flex flex-column pr-3" style="width: 135px">
                                     <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">pts. Zona</label>
-                                    <input type="number" min="0" placeholder="0" class="form-control text-base {{ !$teams_stats[0]['zone'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 0 }}.zone">
+                                    <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ !$teams_stats[0]['zone'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 0 }}.zone">
                                 </div>
                                 <div class="d-flex flex-column pr-3" style="width: 135px">
                                     <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">pts. 2da</label>
-                                    <input type="number" min="0" placeholder="0" class="form-control text-base {{ !$teams_stats[0]['second_oportunity'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 0 }}.second_oportunity">
+                                    <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ !$teams_stats[0]['second_oportunity'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 0 }}.second_oportunity">
                                 </div>
                                 <div class="d-flex flex-column pr-3" style="width: 135px">
                                     <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">pts. Suplentes</label>
-                                    <input type="number" min="0" placeholder="0" class="form-control text-base {{ !$teams_stats[0]['substitute'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 0 }}.substitute">
+                                    <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ !$teams_stats[0]['substitute'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 0 }}.substitute">
                                 </div>
                                 <div class="d-flex flex-column pr-3" style="width: 135px">
                                     <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">Asistencias</label>
-                                    <input type="number" min="0" placeholder="0" class="form-control text-base {{ !$teams_stats[0]['AST'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 0 }}.AST">
+                                    <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ !$teams_stats[0]['AST'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 0 }}.AST">
                                 </div>
                                 <div class="d-flex flex-column pr-3" style="width: 135px">
                                     <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">rebotes OF</label>
-                                    <input type="number" min="0" placeholder="0" class="form-control text-base {{ !$teams_stats[0]['ORB'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 0 }}.ORB">
+                                    <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ !$teams_stats[0]['ORB'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 0 }}.ORB">
                                 </div>
                                 <div class="d-flex flex-column pr-3" style="width: 135px">
                                     <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">rebotes DEF</label>
-                                    <input type="number" min="0" placeholder="0" class="form-control text-base {{ !$teams_stats[0]['DRB'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 0 }}.DRB">
+                                    <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ !$teams_stats[0]['DRB'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 0 }}.DRB">
                                 </div>
                                 <div class="d-flex flex-column pr-3" style="width: 135px">
                                     <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">robos</label>
-                                    <input type="number" min="0" placeholder="0" class="form-control text-base {{ !$teams_stats[0]['STL'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 0 }}.STL">
+                                    <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ !$teams_stats[0]['STL'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 0 }}.STL">
                                 </div>
                                 <div class="d-flex flex-column pr-3" style="width: 135px">
                                     <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">tapones</label>
-                                    <input type="number" min="0" placeholder="0" class="form-control text-base {{ !$teams_stats[0]['BLK'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 0 }}.BLK">
+                                    <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ !$teams_stats[0]['BLK'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 0 }}.BLK">
                                 </div>
                                 <div class="d-flex flex-column pr-3" style="width: 135px">
                                     <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">pérdidas</label>
-                                    <input type="number" min="0" placeholder="0" class="form-control text-base {{ !$teams_stats[0]['LOS'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 0 }}.LOS">
+                                    <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ !$teams_stats[0]['LOS'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 0 }}.LOS">
                                 </div>
                                 <div class="d-flex flex-column pr-3" style="width: 135px">
                                     <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">faltas</label>
-                                    <input type="number" min="0" placeholder="0" class="form-control text-base {{ !$teams_stats[0]['PF'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 0 }}.PF">
+                                    <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ !$teams_stats[0]['PF'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 0 }}.PF">
                                 </div>
-                                <div class="d-flex flex-column pr-3" style="width: 135px">
-                                    <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">Máx. ventaja</label>
-                                    <input type="number" min="0" placeholder="0" class="form-control text-base {{ !$teams_stats[0]['advantage'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 0 }}.advantage">
+                                <div class="d-flex flex-column" style="width: 135px">
+                                    <label class="text-gray-600 text-uppercase mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">Máx. ventaja</label>
+                                    <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ !$teams_stats[0]['advantage'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 0 }}.advantage">
                                 </div>
                             </div>
                         </div>
@@ -190,22 +192,54 @@
                                                             <i class="fas fa-briefcase-medical text-danger mr-2"></i>{{ $player['injury_name'] }}
                                                         </td>
                                                     @else
-                                                        <td style="width: 90px; min-width: 90px"><input type="number" min="0" class="form-control numericInput px-2 {{ !$players_stats[$key]['MIN'] == null ?: 'bg-light' }}" placeholder="0" wire:model="players_stats.{{ $key }}.MIN"></td>
-                                                        <td style="width: 90px; min-width: 90px"><input type="number" min="0" class="form-control numericInput px-2 {{ !$players_stats[$key]['PTS'] == null ?: 'bg-light' }}" placeholder="0" wire:model="players_stats.{{ $key }}.PTS"></td>
-                                                        <td style="width: 90px; min-width: 90px"><input type="number" min="0" class="form-control numericInput px-2 {{ !$players_stats[$key]['REB'] == null ?: 'bg-light' }}" placeholder="0" wire:model="players_stats.{{ $key }}.REB"></td>
-                                                        <td style="width: 90px; min-width: 90px"><input type="number" min="0" class="form-control numericInput px-2 {{ !$players_stats[$key]['AST'] == null ?: 'bg-light' }}" placeholder="0" wire:model="players_stats.{{ $key }}.AST"></td>
-                                                        <td style="width: 90px; min-width: 90px"><input type="number" min="0" class="form-control numericInput px-2 {{ !$players_stats[$key]['STL'] == null ?: 'bg-light' }}" placeholder="0" wire:model="players_stats.{{ $key }}.STL"></td>
-                                                        <td style="width: 90px; min-width: 90px"><input type="number" min="0" class="form-control numericInput px-2 {{ !$players_stats[$key]['BLK'] == null ?: 'bg-light' }}" placeholder="0" wire:model="players_stats.{{ $key }}.BLK"></td>
-                                                        <td style="width: 90px; min-width: 90px"><input type="number" min="0" class="form-control numericInput px-2 {{ !$players_stats[$key]['LOS'] == null ?: 'bg-light' }}" placeholder="0" wire:model="players_stats.{{ $key }}.LOS"></td>
-                                                        <td style="width: 90px; min-width: 90px"><input type="number" min="0" class="form-control numericInput px-2 {{ !$players_stats[$key]['FGM'] == null ?: 'bg-light' }}" placeholder="0" wire:model="players_stats.{{ $key }}.FGM"></td>
-                                                        <td style="width: 90px; min-width: 90px"><input type="number" min="0" class="form-control numericInput px-2 {{ !$players_stats[$key]['FGA'] == null ?: 'bg-light' }}" placeholder="0" wire:model="players_stats.{{ $key }}.FGA"></td>
-                                                        <td style="width: 90px; min-width: 90px"><input type="number" min="0" class="form-control numericInput px-2 {{ !$players_stats[$key]['TPM'] == null ?: 'bg-light' }}" placeholder="0" wire:model="players_stats.{{ $key }}.TPM"></td>
-                                                        <td style="width: 90px; min-width: 90px"><input type="number" min="0" class="form-control numericInput px-2 {{ !$players_stats[$key]['TPA'] == null ?: 'bg-light' }}" placeholder="0" wire:model="players_stats.{{ $key }}.TPA"></td>
-                                                        <td style="width: 90px; min-width: 90px"><input type="number" min="0" class="form-control numericInput px-2 {{ !$players_stats[$key]['FTM'] == null ?: 'bg-light' }}" placeholder="0" wire:model="players_stats.{{ $key }}.FTM"></td>
-                                                        <td style="width: 90px; min-width: 90px"><input type="number" min="0" class="form-control numericInput px-2 {{ !$players_stats[$key]['FTA'] == null ?: 'bg-light' }}" placeholder="0" wire:model="players_stats.{{ $key }}.FTA"></td>
-                                                        <td style="width: 90px; min-width: 90px"><input type="number" min="0" class="form-control numericInput px-2 {{ !$players_stats[$key]['ORB'] == null ?: 'bg-light' }}" placeholder="0" wire:model="players_stats.{{ $key }}.ORB"></td>
-                                                        <td style="width: 90px; min-width: 90px"><input type="number" min="0" class="form-control numericInput px-2 {{ !$players_stats[$key]['PF'] == null ?: 'bg-light' }}" placeholder="0" wire:model="players_stats.{{ $key }}.PF"></td>
-                                                        <td style="width: 90px; min-width: 90px"><input type="number" min="0" class="form-control numericInput px-2 {{ !$players_stats[$key]['ML'] == null ?: 'bg-light' }}" placeholder="0" wire:model="players_stats.{{ $key }}.ML"></td>
+                                                        <td style="width: 90px; min-width: 90px">
+                                                            <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2 {{ !$players_stats[$key]['MIN'] == null ?: 'bg-light' }}" placeholder="-" wire:model="players_stats.{{ $key }}.MIN">
+                                                        </td>
+                                                        <td style="width: 90px; min-width: 90px">
+                                                            <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2 {{ !$players_stats[$key]['PTS'] == null ?: 'bg-light' }}" placeholder="-" wire:model="players_stats.{{ $key }}.PTS">
+                                                        </td>
+                                                        <td style="width: 90px; min-width: 90px">
+                                                            <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2 {{ !$players_stats[$key]['REB'] == null ?: 'bg-light' }}" placeholder="-" wire:model="players_stats.{{ $key }}.REB">
+                                                        </td>
+                                                        <td style="width: 90px; min-width: 90px">
+                                                            <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2 {{ !$players_stats[$key]['AST'] == null ?: 'bg-light' }}" placeholder="-" wire:model="players_stats.{{ $key }}.AST">
+                                                        </td>
+                                                        <td style="width: 90px; min-width: 90px">
+                                                            <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2 {{ !$players_stats[$key]['STL'] == null ?: 'bg-light' }}" placeholder="-" wire:model="players_stats.{{ $key }}.STL">
+                                                        </td>
+                                                        <td style="width: 90px; min-width: 90px">
+                                                            <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2 {{ !$players_stats[$key]['BLK'] == null ?: 'bg-light' }}" placeholder="-" wire:model="players_stats.{{ $key }}.BLK">
+                                                        </td>
+                                                        <td style="width: 90px; min-width: 90px">
+                                                            <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2 {{ !$players_stats[$key]['LOS'] == null ?: 'bg-light' }}" placeholder="-" wire:model="players_stats.{{ $key }}.LOS">
+                                                        </td>
+                                                        <td style="width: 90px; min-width: 90px">
+                                                            <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2 {{ !$players_stats[$key]['FGM'] == null ?: 'bg-light' }}" placeholder="-" wire:model="players_stats.{{ $key }}.FGM">
+                                                        </td>
+                                                        <td style="width: 90px; min-width: 90px">
+                                                            <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2 {{ !$players_stats[$key]['FGA'] == null ?: 'bg-light' }}" placeholder="-" wire:model="players_stats.{{ $key }}.FGA">
+                                                        </td>
+                                                        <td style="width: 90px; min-width: 90px">
+                                                            <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2 {{ !$players_stats[$key]['TPM'] == null ?: 'bg-light' }}" placeholder="-" wire:model="players_stats.{{ $key }}.TPM">
+                                                        </td>
+                                                        <td style="width: 90px; min-width: 90px">
+                                                            <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2 {{ !$players_stats[$key]['TPA'] == null ?: 'bg-light' }}" placeholder="-" wire:model="players_stats.{{ $key }}.TPA">
+                                                        </td>
+                                                        <td style="width: 90px; min-width: 90px">
+                                                            <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2 {{ !$players_stats[$key]['FTM'] == null ?: 'bg-light' }}" placeholder="-" wire:model="players_stats.{{ $key }}.FTM">
+                                                        </td>
+                                                        <td style="width: 90px; min-width: 90px">
+                                                            <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2 {{ !$players_stats[$key]['FTA'] == null ?: 'bg-light' }}" placeholder="-" wire:model="players_stats.{{ $key }}.FTA">
+                                                        </td>
+                                                        <td style="width: 90px; min-width: 90px">
+                                                            <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2 {{ !$players_stats[$key]['ORB'] == null ?: 'bg-light' }}" placeholder="-" wire:model="players_stats.{{ $key }}.ORB">
+                                                        </td>
+                                                        <td style="width: 90px; min-width: 90px">
+                                                            <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2 {{ !$players_stats[$key]['PF'] == null ?: 'bg-light' }}" placeholder="-" wire:model="players_stats.{{ $key }}.PF">
+                                                        </td>
+                                                        <td style="width: 90px; min-width: 90px">
+                                                            <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2 {{ !$players_stats[$key]['ML'] == null ?: 'bg-light' }}" placeholder="-" wire:model="players_stats.{{ $key }}.ML">
+                                                        </td>
                                                         <td style="width: 90px; min-width: 90px">
                                                             <div class="pretty p-svg p-curve m-0 p-jelly p-has-focus">
                                                                 <input type="checkbox" wire:model="players_stats.{{ $key }}.headline">
@@ -249,51 +283,51 @@
                             <div class="d-inline-flex">
                                 <div class="d-flex flex-column pr-3" style="width: 135px">
                                     <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">pts. contra</label>
-                                    <input type="number" min="0" placeholder="0" class="form-control text-base {{ !$teams_stats[1]['counterattack'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 1 }}.counterattack">
+                                    <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ !$teams_stats[1]['counterattack'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 1 }}.counterattack">
                                 </div>
                                 <div class="d-flex flex-column pr-3" style="width: 135px">
                                     <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">pts. Zona</label>
-                                    <input type="number" min="0" placeholder="0" class="form-control text-base {{ !$teams_stats[1]['zone'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 1 }}.zone">
+                                    <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ !$teams_stats[1]['zone'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 1 }}.zone">
                                 </div>
                                 <div class="d-flex flex-column pr-3" style="width: 135px">
                                     <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">pts. 2da</label>
-                                    <input type="number" min="0" placeholder="0" class="form-control text-base {{ !$teams_stats[1]['second_oportunity'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 1 }}.second_oportunity">
+                                    <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ !$teams_stats[1]['second_oportunity'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 1 }}.second_oportunity">
                                 </div>
                                 <div class="d-flex flex-column pr-3" style="width: 135px">
                                     <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">pts. Suplentes</label>
-                                    <input type="number" min="0" placeholder="0" class="form-control text-base {{ !$teams_stats[1]['substitute'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 1 }}.substitute">
+                                    <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ !$teams_stats[1]['substitute'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 1 }}.substitute">
                                 </div>
                                 <div class="d-flex flex-column pr-3" style="width: 135px">
                                     <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">Asistencias</label>
-                                    <input type="number" min="0" placeholder="0" class="form-control text-base {{ !$teams_stats[1]['AST'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 1 }}.AST">
+                                    <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ !$teams_stats[1]['AST'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 1 }}.AST">
                                 </div>
                                 <div class="d-flex flex-column pr-3" style="width: 135px">
                                     <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">rebotes OF</label>
-                                    <input type="number" min="0" placeholder="0" class="form-control text-base {{ !$teams_stats[1]['ORB'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 1 }}.ORB">
+                                    <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ !$teams_stats[1]['ORB'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 1 }}.ORB">
                                 </div>
                                 <div class="d-flex flex-column pr-3" style="width: 135px">
                                     <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">rebotes DEF</label>
-                                    <input type="number" min="0" placeholder="0" class="form-control text-base {{ !$teams_stats[1]['DRB'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 1 }}.DRB">
+                                    <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ !$teams_stats[1]['DRB'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 1 }}.DRB">
                                 </div>
                                 <div class="d-flex flex-column pr-3" style="width: 135px">
                                     <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">robos</label>
-                                    <input type="number" min="0" placeholder="0" class="form-control text-base {{ !$teams_stats[1]['STL'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 1 }}.STL">
+                                    <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ !$teams_stats[1]['STL'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 1 }}.STL">
                                 </div>
                                 <div class="d-flex flex-column pr-3" style="width: 135px">
                                     <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">tapones</label>
-                                    <input type="number" min="0" placeholder="0" class="form-control text-base {{ !$teams_stats[1]['BLK'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 1 }}.BLK">
+                                    <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ !$teams_stats[1]['BLK'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 1 }}.BLK">
                                 </div>
                                 <div class="d-flex flex-column pr-3" style="width: 135px">
                                     <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">pérdidas</label>
-                                    <input type="number" min="0" placeholder="0" class="form-control text-base {{ !$teams_stats[1]['LOS'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 1 }}.LOS">
+                                    <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ !$teams_stats[1]['LOS'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 1 }}.LOS">
                                 </div>
                                 <div class="d-flex flex-column pr-3" style="width: 135px">
                                     <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">faltas</label>
-                                    <input type="number" min="0" placeholder="0" class="form-control text-base {{ !$teams_stats[1]['PF'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 1 }}.PF">
+                                    <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ !$teams_stats[1]['PF'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 1 }}.PF">
                                 </div>
-                                <div class="d-flex flex-column pr-3" style="width: 135px">
-                                    <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">Máx. ventaja</label>
-                                    <input type="number" min="0" placeholder="0" class="form-control text-base {{ !$teams_stats[1]['advantage'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 1 }}.advantage">
+                                <div class="d-flex flex-column" style="width: 135px">
+                                    <label class="text-gray-600 text-uppercase mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">Máx. ventaja</label>
+                                    <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ !$teams_stats[1]['advantage'] == null ?: 'bg-light' }}" wire:model="teams_stats.{{ 1 }}.advantage">
                                 </div>
                             </div>
                         </div>
@@ -345,22 +379,54 @@
                                                             <i class="fas fa-briefcase-medical text-danger mr-2"></i>{{ $player['injury_name'] }}
                                                         </td>
                                                     @else
-                                                        <td style="width: 90px; min-width: 90px"><input type="number" min="0" class="form-control numericInput px-2 {{ !$players_stats[$key]['MIN'] == null ?: 'bg-light' }}" placeholder="0" wire:model="players_stats.{{ $key }}.MIN"></td>
-                                                        <td style="width: 90px; min-width: 90px"><input type="number" min="0" class="form-control numericInput px-2 {{ !$players_stats[$key]['PTS'] == null ?: 'bg-light' }}" placeholder="0" wire:model="players_stats.{{ $key }}.PTS"></td>
-                                                        <td style="width: 90px; min-width: 90px"><input type="number" min="0" class="form-control numericInput px-2 {{ !$players_stats[$key]['REB'] == null ?: 'bg-light' }}" placeholder="0" wire:model="players_stats.{{ $key }}.REB"></td>
-                                                        <td style="width: 90px; min-width: 90px"><input type="number" min="0" class="form-control numericInput px-2 {{ !$players_stats[$key]['AST'] == null ?: 'bg-light' }}" placeholder="0" wire:model="players_stats.{{ $key }}.AST"></td>
-                                                        <td style="width: 90px; min-width: 90px"><input type="number" min="0" class="form-control numericInput px-2 {{ !$players_stats[$key]['STL'] == null ?: 'bg-light' }}" placeholder="0" wire:model="players_stats.{{ $key }}.STL"></td>
-                                                        <td style="width: 90px; min-width: 90px"><input type="number" min="0" class="form-control numericInput px-2 {{ !$players_stats[$key]['BLK'] == null ?: 'bg-light' }}" placeholder="0" wire:model="players_stats.{{ $key }}.BLK"></td>
-                                                        <td style="width: 90px; min-width: 90px"><input type="number" min="0" class="form-control numericInput px-2 {{ !$players_stats[$key]['LOS'] == null ?: 'bg-light' }}" placeholder="0" wire:model="players_stats.{{ $key }}.LOS"></td>
-                                                        <td style="width: 90px; min-width: 90px"><input type="number" min="0" class="form-control numericInput px-2 {{ !$players_stats[$key]['FGM'] == null ?: 'bg-light' }}" placeholder="0" wire:model="players_stats.{{ $key }}.FGM"></td>
-                                                        <td style="width: 90px; min-width: 90px"><input type="number" min="0" class="form-control numericInput px-2 {{ !$players_stats[$key]['FGA'] == null ?: 'bg-light' }}" placeholder="0" wire:model="players_stats.{{ $key }}.FGA"></td>
-                                                        <td style="width: 90px; min-width: 90px"><input type="number" min="0" class="form-control numericInput px-2 {{ !$players_stats[$key]['TPM'] == null ?: 'bg-light' }}" placeholder="0" wire:model="players_stats.{{ $key }}.TPM"></td>
-                                                        <td style="width: 90px; min-width: 90px"><input type="number" min="0" class="form-control numericInput px-2 {{ !$players_stats[$key]['TPA'] == null ?: 'bg-light' }}" placeholder="0" wire:model="players_stats.{{ $key }}.TPA"></td>
-                                                        <td style="width: 90px; min-width: 90px"><input type="number" min="0" class="form-control numericInput px-2 {{ !$players_stats[$key]['FTM'] == null ?: 'bg-light' }}" placeholder="0" wire:model="players_stats.{{ $key }}.FTM"></td>
-                                                        <td style="width: 90px; min-width: 90px"><input type="number" min="0" class="form-control numericInput px-2 {{ !$players_stats[$key]['FTA'] == null ?: 'bg-light' }}" placeholder="0" wire:model="players_stats.{{ $key }}.FTA"></td>
-                                                        <td style="width: 90px; min-width: 90px"><input type="number" min="0" class="form-control numericInput px-2 {{ !$players_stats[$key]['ORB'] == null ?: 'bg-light' }}" placeholder="0" wire:model="players_stats.{{ $key }}.ORB"></td>
-                                                        <td style="width: 90px; min-width: 90px"><input type="number" min="0" class="form-control numericInput px-2 {{ !$players_stats[$key]['PF'] == null ?: 'bg-light' }}" placeholder="0" wire:model="players_stats.{{ $key }}.PF"></td>
-                                                        <td style="width: 90px; min-width: 90px"><input type="number" min="0" class="form-control numericInput px-2 {{ !$players_stats[$key]['ML'] == null ?: 'bg-light' }}" placeholder="0" wire:model="players_stats.{{ $key }}.ML"></td>
+                                                        <td style="width: 90px; min-width: 90px">
+                                                            <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2 {{ !$players_stats[$key]['MIN'] == null ?: 'bg-light' }}" placeholder="-" wire:model="players_stats.{{ $key }}.MIN">
+                                                        </td>
+                                                        <td style="width: 90px; min-width: 90px">
+                                                            <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2 {{ !$players_stats[$key]['PTS'] == null ?: 'bg-light' }}" placeholder="-" wire:model="players_stats.{{ $key }}.PTS">
+                                                        </td>
+                                                        <td style="width: 90px; min-width: 90px">
+                                                            <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2 {{ !$players_stats[$key]['REB'] == null ?: 'bg-light' }}" placeholder="-" wire:model="players_stats.{{ $key }}.REB">
+                                                        </td>
+                                                        <td style="width: 90px; min-width: 90px">
+                                                            <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2 {{ !$players_stats[$key]['AST'] == null ?: 'bg-light' }}" placeholder="-" wire:model="players_stats.{{ $key }}.AST">
+                                                        </td>
+                                                        <td style="width: 90px; min-width: 90px">
+                                                            <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2 {{ !$players_stats[$key]['STL'] == null ?: 'bg-light' }}" placeholder="-" wire:model="players_stats.{{ $key }}.STL">
+                                                        </td>
+                                                        <td style="width: 90px; min-width: 90px">
+                                                            <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2 {{ !$players_stats[$key]['BLK'] == null ?: 'bg-light' }}" placeholder="-" wire:model="players_stats.{{ $key }}.BLK">
+                                                        </td>
+                                                        <td style="width: 90px; min-width: 90px">
+                                                            <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2 {{ !$players_stats[$key]['LOS'] == null ?: 'bg-light' }}" placeholder="-" wire:model="players_stats.{{ $key }}.LOS">
+                                                        </td>
+                                                        <td style="width: 90px; min-width: 90px">
+                                                            <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2 {{ !$players_stats[$key]['FGM'] == null ?: 'bg-light' }}" placeholder="-" wire:model="players_stats.{{ $key }}.FGM">
+                                                        </td>
+                                                        <td style="width: 90px; min-width: 90px">
+                                                            <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2 {{ !$players_stats[$key]['FGA'] == null ?: 'bg-light' }}" placeholder="-" wire:model="players_stats.{{ $key }}.FGA">
+                                                        </td>
+                                                        <td style="width: 90px; min-width: 90px">
+                                                            <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2 {{ !$players_stats[$key]['TPM'] == null ?: 'bg-light' }}" placeholder="-" wire:model="players_stats.{{ $key }}.TPM">
+                                                        </td>
+                                                        <td style="width: 90px; min-width: 90px">
+                                                            <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2 {{ !$players_stats[$key]['TPA'] == null ?: 'bg-light' }}" placeholder="-" wire:model="players_stats.{{ $key }}.TPA">
+                                                        </td>
+                                                        <td style="width: 90px; min-width: 90px">
+                                                            <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2 {{ !$players_stats[$key]['FTM'] == null ?: 'bg-light' }}" placeholder="-" wire:model="players_stats.{{ $key }}.FTM">
+                                                        </td>
+                                                        <td style="width: 90px; min-width: 90px">
+                                                            <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2 {{ !$players_stats[$key]['FTA'] == null ?: 'bg-light' }}" placeholder="-" wire:model="players_stats.{{ $key }}.FTA">
+                                                        </td>
+                                                        <td style="width: 90px; min-width: 90px">
+                                                            <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2 {{ !$players_stats[$key]['ORB'] == null ?: 'bg-light' }}" placeholder="-" wire:model="players_stats.{{ $key }}.ORB">
+                                                        </td>
+                                                        <td style="width: 90px; min-width: 90px">
+                                                            <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2 {{ !$players_stats[$key]['PF'] == null ?: 'bg-light' }}" placeholder="-" wire:model="players_stats.{{ $key }}.PF">
+                                                        </td>
+                                                        <td style="width: 90px; min-width: 90px">
+                                                            <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2 {{ !$players_stats[$key]['ML'] == null ?: 'bg-light' }}" placeholder="-" wire:model="players_stats.{{ $key }}.ML">
+                                                        </td>
                                                         <td style="width: 90px; min-width: 90px">
                                                             <div class="pretty p-svg p-curve m-0 p-jelly p-has-focus">
                                                                 <input type="checkbox" wire:model="players_stats.{{ $key }}.headline">
@@ -393,9 +459,6 @@
                         Cancelar
                     </button>
                     @if ($editBoxscoreMode)
-                        <button type="button" class="btn btn-danger ml-2 text-xs text-uppercase tracking-widest" wire:click="resetResult">
-                            Reset
-                        </button>
                         <button type="button" class="btn btn-primary ml-2 text-xs text-uppercase tracking-widest" wire:click="updateResult({{ $regView->id }})">
                             Actualizar
                         </button>

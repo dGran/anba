@@ -58,6 +58,7 @@ class Match extends Component
 			$player_stat['player_pos'] = $ps->player->position;
 			$player_stat['player_position'] = $ps->player->getPosition();
 			$player_stat['player_injury'] = $ps->injury ? true : false;
+			$player_stat['injury_name'] = $ps->injury ? $ps->injury->name : '';
 			$player_stat['team_id'] = $ps->player->team_id;
 			$player_stat['season_team_id'] = $ps->season_team_id;
 			$player_stat['MIN'] = $ps->MIN;

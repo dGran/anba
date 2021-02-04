@@ -37,6 +37,10 @@
 
 	            <div class="dropdown-divider"></div>
 
+				<a class="dropdown-item d-flex align-items-center red" wire:click="confirmResetScore"><i class='bx bx-reset mr-2'></i>Resetear {{ $regsSelected->count() == 1 ? 'resultado' : 'resultados' }}</a>
+
+				<a class="dropdown-item d-flex align-items-center red" wire:click="confirmResetMatch"><i class='bx bx-reset mr-2'></i>Resetear {{ $regsSelected->count() == 1 ? 'partido' : 'partidos' }}</a>
+
 	            <a class="dropdown-item d-flex align-items-center red" wire:click="confirmDestroy"><i class='bx bxs-trash-alt mr-2'></i>Eliminar</a>
 
 	            <div class="dropdown-divider"></div>

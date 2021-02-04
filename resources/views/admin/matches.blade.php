@@ -45,6 +45,8 @@
     @include('admin.matches.modals.filters')
     @include('admin.matches.modals.view')
     @include('admin.matches.modals.boxscore')
+    @include('admin.matches.modals.resetMatch')
+    @include('admin.matches.modals.resetScore')
 
     @include('admin.partials.modals.destroy')
     @include('admin.partials.modals.duplicate')

@@ -7,7 +7,7 @@
                         <img src="{{ $post->match->visitorTeam->team->getImg() }}" alt="{{ $post->getName() }}" class="absolute bottom-0 right-0 m-0.5 w-14 h-14 md:w-16 md:h-16 object-cover">
                         <img src="{{ $post->match->localTeam->team->getImg() }}" alt="{{ $post->getName() }}" class="absolute top-0 left-0 m-0.5 w-14 h-14 md:w-16 md:h-16 object-cover">
                     @else
-                        <img src="{{ $post->getImg() }}" alt="{{ $post->getName() }}" class="h-full w-auto rounded-md object-cover">
+                        <img src="{{ $post->getImg() }}" alt="{{ $post->getName() }}" class="h-full w-auto rounded-md object-cover mx-auto">
                     @endif
                 </figure>
                 <div class="flex-1 flex flex-col ml-5 truncate">
