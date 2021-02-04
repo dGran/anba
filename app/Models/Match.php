@@ -133,8 +133,8 @@ class Match extends Model
     public function score()
     {
         if ($this->played()) {
-            $local = 0;
-            $visitor = 0;
+            $local = null;
+            $visitor = null;
             foreach ($this->scores as $score) {
                 $local += $score->local_score;
                 $visitor += $score->visitor_score;
