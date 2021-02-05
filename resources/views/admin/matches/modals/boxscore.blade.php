@@ -11,9 +11,8 @@
                     </button>
                 </div>
 
-
                 <div class="modal-body p-3">
-                    <div class="d-flex align-items-center justify-content-center">
+                    <div class="d-flex align-items-center justify-content-center mb-3">
                         <div class="local">
                             <img src="{{ $regView->localTeam->team->getImg() }}" alt="{{ $regView->localTeam->team->short_name }}" style="width: 72px; height: 72px" class="ml-1">
                             <p class="d-block m-0 pt-2 text-center text-sm">{{ $regView->localTeam->team->medium_name }}</p>
@@ -55,7 +54,7 @@
                     @endif
 
                     @if ($regView->local_manager_id != $regView->localTeam->team->manager_id || $regView->visitor_manager_id != $regView->visitorTeam->team->manager_id)
-                        <div class="border rounded p-3 mb-3">
+                        <div class="border rounded p-3 my-3">
                             <h5 class="text-danger font-bold">Atención!</h5>
                             <ul class="list-group">
                                 @if ($regView->local_manager_id != $regView->localTeam->team->manager_id)
@@ -79,7 +78,7 @@
                         </div>
                     @endif
 
-                    @if ($total_scores['local'] > 0 && $total_scores['visitor'] > 0)
+                    @if ($total_scores['local'] > 0 && $total_scores['visitor'] > 0 || $regView->playerStats->count() > 0 || $regView->teamStats->count() > 0)
                         <div class="mt-2 pt-2 text-sm border-top">
                             <div class="text-center py-2 d-flex align-items-center">
                                 <img src="{{ $regView->localTeam->team->getImg() }}" alt="{{ $regView->localTeam->team->name }}" class="mr-2" style="width: 40px; height: 40px; object-fit: cover;">
@@ -461,11 +460,11 @@
                         Cancelar
                     </button>
                     @if ($editBoxscoreMode)
-                        <button type="button" class="btn btn-primary ml-2 text-xs text-uppercase tracking-widest" wire:click="updateResult({{ $regView->id }})">
+                        <button type="button" class="btn btn-primary ml-2 text-xs text-uppercase tracking-widest" wire:click="updateMatch({{ $regView->id }})">
                             Actualizar
                         </button>
                     @else
-                        <button type="button" class="btn btn-primary ml-2 text-xs text-uppercase tracking-widest" wire:click="storeResult">
+                        <button type="button" class="btn btn-primary ml-2 text-xs text-uppercase tracking-widest" wire:click="storeMatch">
                             Guardar
                         </button>
                     @endif

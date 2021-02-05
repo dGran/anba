@@ -16,7 +16,11 @@
 				    </div>
 					<div class="pl-2">
 						<div class="name d-flex align-items-center" wire:click.stop="boxscore({{ $reg->id }})">
-							<span>{{ $reg->getName() }}</span>
+							{{-- FALTA COMPROBAR SI TODAS LAS STATS SON NULAS PARA MOSTRAR VERDE O ROJO, O ALGUN VALIDADOR MAS POTENTE, CON MAS COMPROBACIONES --}}
+							<span class="rounded-circle border text-xs text-center {{ $reg->scores->count() > 0 ? 'bg-success' : 'bg-danger' }}" style="width: 21px; height: 21px">R</span>
+							<span class="rounded-circle border ml-1 text-xs text-center {{ $reg->teamStats->count() > 0 ? 'bg-success' : 'bg-danger' }}" style="width: 21px; height: 21px">E</span>
+							<span class="rounded-circle border ml-1 text-xs text-center {{ $reg->playerStats->count() > 0 ? 'bg-success' : 'bg-danger' }}" style="width: 21px; height: 21px">J</span>
+							<spa class="ml-2">{{ $reg->getName() }}</span>
 						</div>
 						<p class="{{-- {{ !$reg->active ?: 'text-muted' }} --}} text-xxs m-0">
 							<strong class="mr-1">ID:</strong>

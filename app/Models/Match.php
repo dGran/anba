@@ -479,6 +479,24 @@ class Match extends Model
         return false;
     }
 
+    public function checkTeamStats()
+    {
+        if ($this->teamStats->count() > 0) {
+            foreach ($this->teamStats as $stat) {
+                # code...
+            }
+        }
+    }
+
+    public function checkPlayerStats()
+    {
+        if ($this->playerStats->count() > 0) {
+            foreach ($this->playerStats as $stat) {
+                # code...
+            }
+        }
+    }
+
     public function canDestroy()
     {
         // apply logic

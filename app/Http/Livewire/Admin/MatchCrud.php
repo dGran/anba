@@ -510,14 +510,28 @@ class MatchCrud extends Component
 
     	if ($this->regView->scores->count() > 0 || $this->regView->teamStats->count() > 0 || $this->regView->playerStats->count() > 0) {
     		$this->update_match_managers = false;
-    		$this->loadScores();
-    		$this->loadStats();
+    		if ($this->regView->scores->count() > 0) {
+    			$this->loadScores();
+    		} else {
+    			$this->initializeScores();
+    		}
+    		if ($this->regView->playerStats->count() > 0) {
+    			$this->loadPlayerStats();
+    		} else {
+    			$this->initializePlayerStats();
+    		}
+    		if ($this->regView->teamStats->count() > 0) {
+    			$this->loadTeamStats();
+    		} else {
+    			$this->initializeTeamStats();
+    		}
 			$this->editBoxscoreMode = true;
 
     	} else {
     		$this->update_match_managers = false;
     		$this->initializeScores();
-    		$this->initializeStats();
+    		$this->initializePlayerStats();
+    		$this->initializeTeamStats();
 			$this->editBoxscoreMode = false;
     	}
 
@@ -905,96 +919,139 @@ class MatchCrud extends Component
         $this->total_scores['visitor'] = $total_visitor_scores;
 	}
 
-	public function storeResult()
+	public function storeMatch()
 	{
-		// $total_score = $this->scores->sum('local_score') + $this->scores->sum('visitor_score');
-		// if ($total_score == $this->players_stats->sum('PTS')) {
-			foreach ($this->scores as $key => $score_temp) {
-				$score = Score::create([
-					'match_id' => $this->regView->id,
-					'seasons_scores_headers_id' => $score_temp['seasons_scores_headers_id'],
-					'local_score' => $score_temp['local_score'],
-					'visitor_score' => $score_temp['visitor_score'],
-					'order' => $key+1,
-				]);
-			}
+		$this->storeResult();
+		$this->storePlayerStats();
+		$this->storeTeamStats();
 
-			foreach ($this->players_stats as $key => $player_stat) {
-				$playerStat = PlayerStat::create([
-					'match_id' => $this->regView->id,
-					'season_id' => $this->regView->season_id,
-					'player_id' => $player_stat['player_id'],
-					'injury_id' => $player_stat['injury_id'],
-					'season_team_id' => $player_stat['season_team_id'],
-					'MIN' 		=> $player_stat['MIN'] == null ? null : $player_stat['MIN'],
-					'PTS' 		=> $player_stat['PTS'] == null ? null : $player_stat['PTS'],
-					'REB' 		=> $player_stat['REB'] == null ? null : $player_stat['REB'],
-					'AST' 		=> $player_stat['AST'] == null ? null : $player_stat['AST'],
-					'STL' 		=> $player_stat['STL'] == null ? null : $player_stat['STL'],
-					'BLK' 		=> $player_stat['BLK'] == null ? null : $player_stat['BLK'],
-					'LOS' 		=> $player_stat['LOS'] == null ? null : $player_stat['LOS'],
-					'FGM' 		=> $player_stat['FGM'] == null ? null : $player_stat['FGM'],
-					'FGA' 		=> $player_stat['FGA'] == null ? null : $player_stat['FGA'],
-					'TPM' 		=> $player_stat['TPM'] == null ? null : $player_stat['TPM'],
-					'TPA' 		=> $player_stat['TPA'] == null ? null : $player_stat['TPA'],
-					'FTM' 		=> $player_stat['FTM'] == null ? null : $player_stat['FTM'],
-					'FTA' 		=> $player_stat['FTA'] == null ? null : $player_stat['FTA'],
-					'ORB' 		=> $player_stat['ORB'] == null ? null : $player_stat['ORB'],
-					'PF' 		=> $player_stat['PF'] == null ? null : $player_stat['PF'],
-					'ML' 		=> $player_stat['ML'] == null ? null : $player_stat['ML'],
-					'headline' 	=> $player_stat['headline'],
-				]);
-			}
+		//update local and visitor manager_id
+		if ($this->update_match_managers) {
+			$match = Match::find($this->regView->id);
+			$match->local_manager_id = $match->localTeam->team->manager_id;
+			$match->visitor_manager_id = $match->visitorTeam->team->manager_id;
+			$match->save();
+		}
 
-			foreach ($this->teams_stats as $key => $team_stat) {
-				$teamStat = TeamStat::create([
-					'match_id' 			=> $this->regView->id,
-					'season_id' 		=> $this->regView->season_id,
-					'season_team_id' 	=> $team_stat['season_team_id'] == null ? null : $team_stat['season_team_id'],
-					'counterattack'  	=> $team_stat['counterattack'] == null ? null : $team_stat['counterattack'],
-					'zone' 			 	=> $team_stat['zone'] == null ? null : $team_stat['zone'],
-					'second_oportunity' => $team_stat['second_oportunity'] == null ? null : $team_stat['second_oportunity'],
-					'substitute' 		=> $team_stat['substitute'] == null ? null : $team_stat['substitute'],
-					'advantage' 		=> $team_stat['advantage'] == null ? null : $team_stat['advantage'],
-					'AST' 				=> $team_stat['AST'] == null ? null : $team_stat['AST'],
-					'DRB' 				=> $team_stat['DRB'] == null ? null : $team_stat['DRB'],
-					'ORB' 				=> $team_stat['ORB'] == null ? null : $team_stat['ORB'],
-					'STL' 				=> $team_stat['STL'] == null ? null : $team_stat['STL'],
-					'BLK' 				=> $team_stat['BLK'] == null ? null : $team_stat['BLK'],
-					'LOS' 				=> $team_stat['LOS'] == null ? null : $team_stat['LOS'],
-					'PF' 				=> $team_stat['PF'] == null ? null : $team_stat['PF'],
-				]);
-			}
+		$this->createMatchPosts($this->regView->id);
 
-			if ($this->update_match_managers) {
-				//update local and visitor manager_id
-				$match = Match::find($this->regView->id);
-				$match->local_manager_id = $match->localTeam->team->manager_id;
-				$match->visitor_manager_id = $match->visitorTeam->team->manager_id;
-				$match->save();
-			}
-
-			$this->createMatchPosts($this->regView->id);
-
-	    	session()->flash('success', 'BoxScore guardado correctamente.');
-	        $this->emit('closeBoxscoreModal');
-	        $this->closeAnyModal();
-		// } else {
-		// 	session()->flash('error', 'El resultado no coincide con los puntos registrados de los jugadores.');
-		// }
+    	session()->flash('success', 'BoxScore guardado correctamente.');
+        $this->emit('closeBoxscoreModal');
+        $this->closeAnyModal();
 	}
 
-	public function updateResult($id)
+	public function storeResult()
+	{
+		foreach ($this->scores as $key => $score_temp) {
+			$score = Score::create([
+				'match_id' => $this->regView->id,
+				'seasons_scores_headers_id' => $score_temp['seasons_scores_headers_id'],
+				'local_score' => $score_temp['local_score'],
+				'visitor_score' => $score_temp['visitor_score'],
+				'order' => $key+1,
+			]);
+		}
+	}
+
+	public function storePlayerStats()
+	{
+		foreach ($this->players_stats as $key => $player_stat) {
+			$playerStat = PlayerStat::create([
+				'match_id' => $this->regView->id,
+				'season_id' => $this->regView->season_id,
+				'player_id' => $player_stat['player_id'],
+				'injury_id' => $player_stat['injury_id'],
+				'season_team_id' => $player_stat['season_team_id'],
+				'MIN' 		=> $player_stat['MIN'] == null ? null : $player_stat['MIN'],
+				'PTS' 		=> $player_stat['PTS'] == null ? null : $player_stat['PTS'],
+				'REB' 		=> $player_stat['REB'] == null ? null : $player_stat['REB'],
+				'AST' 		=> $player_stat['AST'] == null ? null : $player_stat['AST'],
+				'STL' 		=> $player_stat['STL'] == null ? null : $player_stat['STL'],
+				'BLK' 		=> $player_stat['BLK'] == null ? null : $player_stat['BLK'],
+				'LOS' 		=> $player_stat['LOS'] == null ? null : $player_stat['LOS'],
+				'FGM' 		=> $player_stat['FGM'] == null ? null : $player_stat['FGM'],
+				'FGA' 		=> $player_stat['FGA'] == null ? null : $player_stat['FGA'],
+				'TPM' 		=> $player_stat['TPM'] == null ? null : $player_stat['TPM'],
+				'TPA' 		=> $player_stat['TPA'] == null ? null : $player_stat['TPA'],
+				'FTM' 		=> $player_stat['FTM'] == null ? null : $player_stat['FTM'],
+				'FTA' 		=> $player_stat['FTA'] == null ? null : $player_stat['FTA'],
+				'ORB' 		=> $player_stat['ORB'] == null ? null : $player_stat['ORB'],
+				'PF' 		=> $player_stat['PF'] == null ? null : $player_stat['PF'],
+				'ML' 		=> $player_stat['ML'] == null ? null : $player_stat['ML'],
+				'headline' 	=> $player_stat['headline'],
+			]);
+		}
+	}
+
+	public function storeTeamStats()
+	{
+		foreach ($this->teams_stats as $key => $team_stat) {
+			$teamStat = TeamStat::create([
+				'match_id' 			=> $this->regView->id,
+				'season_id' 		=> $this->regView->season_id,
+				'season_team_id' 	=> $team_stat['season_team_id'] == null ? null : $team_stat['season_team_id'],
+				'counterattack'  	=> $team_stat['counterattack'] == null ? null : $team_stat['counterattack'],
+				'zone' 			 	=> $team_stat['zone'] == null ? null : $team_stat['zone'],
+				'second_oportunity' => $team_stat['second_oportunity'] == null ? null : $team_stat['second_oportunity'],
+				'substitute' 		=> $team_stat['substitute'] == null ? null : $team_stat['substitute'],
+				'advantage' 		=> $team_stat['advantage'] == null ? null : $team_stat['advantage'],
+				'AST' 				=> $team_stat['AST'] == null ? null : $team_stat['AST'],
+				'DRB' 				=> $team_stat['DRB'] == null ? null : $team_stat['DRB'],
+				'ORB' 				=> $team_stat['ORB'] == null ? null : $team_stat['ORB'],
+				'STL' 				=> $team_stat['STL'] == null ? null : $team_stat['STL'],
+				'BLK' 				=> $team_stat['BLK'] == null ? null : $team_stat['BLK'],
+				'LOS' 				=> $team_stat['LOS'] == null ? null : $team_stat['LOS'],
+				'PF' 				=> $team_stat['PF'] == null ? null : $team_stat['PF'],
+			]);
+		}
+	}
+
+	public function updateMatch($id)
 	{
 		$match = Match::find($id);
 
+		if ($match->scores->count() > 0) {
+			$this->updateResult($match);
+		} else {
+			$this->storeResult();
+		}
+
+		if ($match->playerStats->count() > 0) {
+			$this->updatePlayerStats($match);
+		} else {
+			$this->storePlayerStats();
+		}
+
+		if ($match->teamStats->count() > 0) {
+			$this->updateTeamStats($match);
+		} else {
+			$this->storeTeamStats();
+		}
+
+		//update local and visitor manager_id
+		if ($this->update_match_managers) {
+			$match->local_manager_id = $match->localTeam->team->manager_id;
+			$match->visitor_manager_id = $match->visitorTeam->team->manager_id;
+			$match->save();
+		}
+
+    	session()->flash('success', 'BoxScore actualizado correctamente.');
+    	$this->emit('closeBoxscoreModal');
+        $this->closeAnyModal();
+	}
+
+	public function updateResult($match)
+	{
 		foreach ($this->scores as $key => $score_temp) {
 			$score = Score::where('match_id', $match->id)->where('seasons_scores_headers_id', $score_temp['seasons_scores_headers_id'])->first();
 			$score->local_score = $score_temp['local_score'] ?: 0;
 			$score->visitor_score = $score_temp['visitor_score'] ?: 0;
 			$score->save();
 		}
+	}
 
+	public function updatePlayerStats($match)
+	{
 		foreach ($this->players_stats as $key => $player_stat) {
 			$playerStat = PlayerStat::where('match_id', $match->id)->where('player_id', $player_stat['player_id'])->first();
 			$playerStat->injury_id = $player_stat['injury_id'];
@@ -1017,7 +1074,10 @@ class MatchCrud extends Component
 			$playerStat->headline = $player_stat['headline'];
 			$playerStat->save();
 		}
+	}
 
+	public function updateTeamStats($match)
+	{
 		foreach ($this->teams_stats as $key => $team_stat) {
 			$teamStat = TeamStat::where('match_id', $match->id)->where('season_team_id', $team_stat['season_team_id'])->first();
 			$teamStat->counterattack = $team_stat['counterattack'] == null ? null : $team_stat['counterattack'];
@@ -1034,17 +1094,6 @@ class MatchCrud extends Component
 			$teamStat->PF = $team_stat['PF'] == null ? null : $team_stat['counterattack'];
 			$teamStat->save();
 		}
-
-		//update local and visitor manager_id
-		if ($this->update_match_managers) {
-			$match->local_manager_id = $match->localTeam->team->manager_id;
-			$match->visitor_manager_id = $match->visitorTeam->team->manager_id;
-			$match->save();
-		}
-
-    	session()->flash('success', 'BoxScore actualizado correctamente.');
-    	$this->emit('closeBoxscoreModal');
-        $this->closeAnyModal();
 	}
 
     public function confirmResetMatch()
@@ -1133,10 +1182,11 @@ class MatchCrud extends Component
 		}
 	}
 
-	protected function initializeStats()
+	protected function initializePlayerStats()
 	{
     	$players_stats = Collection::make();
 
+    	// local players
     	$local_players = Player::where('team_id', $this->regView->localTeam->team->id)->where('retired', false)->orderBy('name', 'asc')->get();
 		foreach ($local_players as $player) {
 			$player_stat['player_id'] = $player->id;
@@ -1168,6 +1218,7 @@ class MatchCrud extends Component
 
 			$players_stats->push($player_stat);
 		}
+		// visitor players
 		$visitor_players = Player::where('team_id', $this->regView->visitorTeam->team->id)->where('retired', false)->orderBy('name', 'asc')->get();
 		foreach ($visitor_players as $player) {
 			$player_stat['player_id'] = $player->id;
@@ -1209,7 +1260,10 @@ class MatchCrud extends Component
         $comparer = $this->makeComparer($criteria);
         $sorted = $players_stats->sort($comparer);
         $this->players_stats = $sorted->values()->toArray();
+	}
 
+	protected function initializeTeamStats()
+	{
     	$this->teams_stats = Collection::make();
 
 		$team_stat['season_team_id'] = $this->regView->localTeam->id;
@@ -1257,7 +1311,7 @@ class MatchCrud extends Component
 		}
 	}
 
-	protected function loadStats()
+	protected function loadPlayerStats()
 	{
     	$players_stats = Collection::make();
 		foreach ($this->regView->playerStats as $ps) {
@@ -1300,8 +1354,10 @@ class MatchCrud extends Component
         $comparer = $this->makeComparer($criteria);
         $sorted = $players_stats->sort($comparer);
         $this->players_stats = $sorted->values()->toArray();
+	}
 
-
+	protected function loadTeamStats()
+	{
     	$this->teams_stats = Collection::make();
 		foreach ($this->regView->teamStats as $ts) {
 			$team_stat['season_team_id'] = $ts->season_team_id;
