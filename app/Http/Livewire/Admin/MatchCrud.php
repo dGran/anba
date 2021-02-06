@@ -949,6 +949,7 @@ class MatchCrud extends Component
 				'local_score' => $score_temp['local_score'],
 				'visitor_score' => $score_temp['visitor_score'],
 				'order' => $key+1,
+				'updated_user_id' => auth()->user()->id,
 			]);
 		}
 	}
@@ -956,29 +957,65 @@ class MatchCrud extends Component
 	public function storePlayerStats()
 	{
 		foreach ($this->players_stats as $key => $player_stat) {
+			if ($player_stat['MIN'] > 0) {
+				$PTS = $player_stat['PTS'] == null && $player_stat['PTS'] !== 0 ? null : $player_stat['PTS'];
+				$REB = $player_stat['REB'] == null && $player_stat['REB'] !== 0 ? null : $player_stat['REB'];
+				$AST = $player_stat['AST'] == null && $player_stat['AST'] !== 0 ? null : $player_stat['AST'];
+				$STL = $player_stat['STL'] == null && $player_stat['STL'] !== 0 ? null : $player_stat['STL'];
+				$BLK = $player_stat['BLK'] == null && $player_stat['BLK'] !== 0 ? null : $player_stat['BLK'];
+				$LOS = $player_stat['LOS'] == null && $player_stat['LOS'] !== 0 ? null : $player_stat['LOS'];
+				$FGM = $player_stat['FGM'] == null && $player_stat['FGM'] !== 0 ? null : $player_stat['FGM'];
+				$FGA = $player_stat['FGA'] == null && $player_stat['FGA'] !== 0 ? null : $player_stat['FGA'];
+				$TPM = $player_stat['TPM'] == null && $player_stat['TPM'] !== 0 ? null : $player_stat['TPM'];
+				$TPA = $player_stat['TPA'] == null && $player_stat['TPA'] !== 0 ? null : $player_stat['TPA'];
+				$FTM = $player_stat['FTM'] == null && $player_stat['FTM'] !== 0 ? null : $player_stat['FTM'];
+				$FTA = $player_stat['FTA'] == null && $player_stat['FTA'] !== 0 ? null : $player_stat['FTA'];
+				$ORB = $player_stat['ORB'] == null && $player_stat['ORB'] !== 0 ? null : $player_stat['ORB'];
+				$PF = $player_stat['PF'] == null && $player_stat['PF'] !== 0 ? null : $player_stat['PF'];
+				$ML = $player_stat['ML'] == null && $player_stat['ML'] !== 0 ? null : $player_stat['ML'];
+				$headline = $player_stat['headline'];
+			} else {
+				$PTS = null;
+				$REB = null;
+				$AST = null;
+				$STL = null;
+				$BLK = null;
+				$LOS = null;
+				$FGM = null;
+				$FGA = null;
+				$TPM = null;
+				$TPA = null;
+				$FTM = null;
+				$FTA = null;
+				$ORB = null;
+				$PF = null;
+				$ML = null;
+				$headline = 0;
+			}
 			$playerStat = PlayerStat::create([
 				'match_id' => $this->regView->id,
 				'season_id' => $this->regView->season_id,
 				'player_id' => $player_stat['player_id'],
 				'injury_id' => $player_stat['injury_id'],
 				'season_team_id' => $player_stat['season_team_id'],
-				'MIN' 		=> $player_stat['MIN'] == null ? null : $player_stat['MIN'],
-				'PTS' 		=> $player_stat['PTS'] == null ? null : $player_stat['PTS'],
-				'REB' 		=> $player_stat['REB'] == null ? null : $player_stat['REB'],
-				'AST' 		=> $player_stat['AST'] == null ? null : $player_stat['AST'],
-				'STL' 		=> $player_stat['STL'] == null ? null : $player_stat['STL'],
-				'BLK' 		=> $player_stat['BLK'] == null ? null : $player_stat['BLK'],
-				'LOS' 		=> $player_stat['LOS'] == null ? null : $player_stat['LOS'],
-				'FGM' 		=> $player_stat['FGM'] == null ? null : $player_stat['FGM'],
-				'FGA' 		=> $player_stat['FGA'] == null ? null : $player_stat['FGA'],
-				'TPM' 		=> $player_stat['TPM'] == null ? null : $player_stat['TPM'],
-				'TPA' 		=> $player_stat['TPA'] == null ? null : $player_stat['TPA'],
-				'FTM' 		=> $player_stat['FTM'] == null ? null : $player_stat['FTM'],
-				'FTA' 		=> $player_stat['FTA'] == null ? null : $player_stat['FTA'],
-				'ORB' 		=> $player_stat['ORB'] == null ? null : $player_stat['ORB'],
-				'PF' 		=> $player_stat['PF'] == null ? null : $player_stat['PF'],
-				'ML' 		=> $player_stat['ML'] == null ? null : $player_stat['ML'],
-				'headline' 	=> $player_stat['headline'],
+				'MIN' 		=> $player_stat['MIN'] == null && $player_stat['MIN'] !== 0 ? null : $player_stat['MIN'],
+				'PTS' 		=> $PTS,
+				'REB' 		=> $REB,
+				'AST' 		=> $AST,
+				'STL' 		=> $STL,
+				'BLK' 		=> $BLK,
+				'LOS' 		=> $LOS,
+				'FGM' 		=> $FGM,
+				'FGA' 		=> $FGA,
+				'TPM' 		=> $TPM,
+				'TPA' 		=> $TPA,
+				'FTM' 		=> $FTM,
+				'FTA' 		=> $FTA,
+				'ORB' 		=> $ORB,
+				'PF' 		=> $PF,
+				'ML' 		=> $ML,
+				'headline' 	=> $headline,
+				'updated_user_id' => auth()->user()->id,
 			]);
 		}
 	}
@@ -989,19 +1026,20 @@ class MatchCrud extends Component
 			$teamStat = TeamStat::create([
 				'match_id' 			=> $this->regView->id,
 				'season_id' 		=> $this->regView->season_id,
-				'season_team_id' 	=> $team_stat['season_team_id'] == null ? null : $team_stat['season_team_id'],
-				'counterattack'  	=> $team_stat['counterattack'] == null ? null : $team_stat['counterattack'],
-				'zone' 			 	=> $team_stat['zone'] == null ? null : $team_stat['zone'],
-				'second_oportunity' => $team_stat['second_oportunity'] == null ? null : $team_stat['second_oportunity'],
-				'substitute' 		=> $team_stat['substitute'] == null ? null : $team_stat['substitute'],
-				'advantage' 		=> $team_stat['advantage'] == null ? null : $team_stat['advantage'],
-				'AST' 				=> $team_stat['AST'] == null ? null : $team_stat['AST'],
-				'DRB' 				=> $team_stat['DRB'] == null ? null : $team_stat['DRB'],
-				'ORB' 				=> $team_stat['ORB'] == null ? null : $team_stat['ORB'],
-				'STL' 				=> $team_stat['STL'] == null ? null : $team_stat['STL'],
-				'BLK' 				=> $team_stat['BLK'] == null ? null : $team_stat['BLK'],
-				'LOS' 				=> $team_stat['LOS'] == null ? null : $team_stat['LOS'],
-				'PF' 				=> $team_stat['PF'] == null ? null : $team_stat['PF'],
+				'season_team_id' 	=> $team_stat['season_team_id'] == null && $team_stat['season_team_id'] !== 0 ? null : $team_stat['season_team_id'],
+				'counterattack'  	=> $team_stat['counterattack'] == null && $team_stat['counterattack'] !== 0 ? null : $team_stat['counterattack'],
+				'zone' 			 	=> $team_stat['zone'] == null && $team_stat['zone'] !== 0 ? null : $team_stat['zone'],
+				'second_oportunity' => $team_stat['second_oportunity'] == null && $team_stat['second_oportunity'] !== 0 ? null : $team_stat['second_oportunity'],
+				'substitute' 		=> $team_stat['substitute'] == null && $team_stat['substitute'] !== 0 ? null : $team_stat['substitute'],
+				'advantage' 		=> $team_stat['advantage'] == null && $team_stat['advantage'] !== 0 ? null : $team_stat['advantage'],
+				'AST' 				=> $team_stat['AST'] == null && $team_stat['AST'] !== 0 ? null : $team_stat['AST'],
+				'DRB' 				=> $team_stat['DRB'] == null && $team_stat['DRB'] !== 0 ? null : $team_stat['DRB'],
+				'ORB' 				=> $team_stat['ORB'] == null && $team_stat['ORB'] !== 0 ? null : $team_stat['ORB'],
+				'STL' 				=> $team_stat['STL'] == null && $team_stat['STL'] !== 0 ? null : $team_stat['STL'],
+				'BLK' 				=> $team_stat['BLK'] == null && $team_stat['BLK'] !== 0 ? null : $team_stat['BLK'],
+				'LOS' 				=> $team_stat['LOS'] == null && $team_stat['LOS'] !== 0 ? null : $team_stat['LOS'],
+				'PF' 				=> $team_stat['PF'] == null && $team_stat['PF'] !== 0 ? null : $team_stat['PF'],
+				'updated_user_id' 	=> auth()->user()->id,
 			]);
 		}
 	}
@@ -1046,6 +1084,7 @@ class MatchCrud extends Component
 			$score = Score::where('match_id', $match->id)->where('seasons_scores_headers_id', $score_temp['seasons_scores_headers_id'])->first();
 			$score->local_score = $score_temp['local_score'] ?: 0;
 			$score->visitor_score = $score_temp['visitor_score'] ?: 0;
+			$score->updated_user_id = auth()->user()->id;
 			$score->save();
 		}
 	}
@@ -1055,23 +1094,43 @@ class MatchCrud extends Component
 		foreach ($this->players_stats as $key => $player_stat) {
 			$playerStat = PlayerStat::where('match_id', $match->id)->where('player_id', $player_stat['player_id'])->first();
 			$playerStat->injury_id = $player_stat['injury_id'];
-			$playerStat->MIN = $player_stat['MIN'] == null ? null : $player_stat['MIN'];
-			$playerStat->PTS = $player_stat['PTS'] == null ? null : $player_stat['PTS'];
-			$playerStat->REB = $player_stat['REB'] == null ? null : $player_stat['REB'];
-			$playerStat->AST = $player_stat['AST'] == null ? null : $player_stat['AST'];
-			$playerStat->STL = $player_stat['STL'] == null ? null : $player_stat['STL'];
-			$playerStat->BLK = $player_stat['BLK'] == null ? null : $player_stat['BLK'];
-			$playerStat->LOS = $player_stat['LOS'] == null ? null : $player_stat['LOS'];
-			$playerStat->FGM = $player_stat['FGM'] == null ? null : $player_stat['FGM'];
-			$playerStat->FGA = $player_stat['FGA'] == null ? null : $player_stat['FGA'];
-			$playerStat->TPM = $player_stat['TPM'] == null ? null : $player_stat['TPM'];
-			$playerStat->TPA = $player_stat['TPA'] == null ? null : $player_stat['TPA'];
-			$playerStat->FTM = $player_stat['FTM'] == null ? null : $player_stat['FTM'];
-			$playerStat->FTA = $player_stat['FTA'] == null ? null : $player_stat['FTA'];
-			$playerStat->ORB = $player_stat['ORB'] == null ? null : $player_stat['ORB'];
-			$playerStat->PF = $player_stat['PF'] == null ? null : $player_stat['PF'];
-			$playerStat->ML = $player_stat['ML'] == null ? null : $player_stat['ML'];
-			$playerStat->headline = $player_stat['headline'];
+			$playerStat->MIN = $player_stat['MIN'] == null && $player_stat['MIN'] !== 0 ? null : $player_stat['MIN'];
+			if ($player_stat['MIN'] > 0) {
+				$playerStat->PTS = $player_stat['PTS'] == null && $player_stat['PTS'] !== 0 ? null : $player_stat['PTS'];
+				$playerStat->REB = $player_stat['REB'] == null && $player_stat['REB'] !== 0 ? null : $player_stat['REB'];
+				$playerStat->AST = $player_stat['AST'] == null && $player_stat['AST'] !== 0 ? null : $player_stat['AST'];
+				$playerStat->STL = $player_stat['STL'] == null && $player_stat['STL'] !== 0 ? null : $player_stat['STL'];
+				$playerStat->BLK = $player_stat['BLK'] == null && $player_stat['BLK'] !== 0 ? null : $player_stat['BLK'];
+				$playerStat->LOS = $player_stat['LOS'] == null && $player_stat['LOS'] !== 0 ? null : $player_stat['LOS'];
+				$playerStat->FGM = $player_stat['FGM'] == null && $player_stat['FGM'] !== 0 ? null : $player_stat['FGM'];
+				$playerStat->FGA = $player_stat['FGA'] == null && $player_stat['FGA'] !== 0 ? null : $player_stat['FGA'];
+				$playerStat->TPM = $player_stat['TPM'] == null && $player_stat['TPM'] !== 0 ? null : $player_stat['TPM'];
+				$playerStat->TPA = $player_stat['TPA'] == null && $player_stat['TPA'] !== 0 ? null : $player_stat['TPA'];
+				$playerStat->FTM = $player_stat['FTM'] == null && $player_stat['FTM'] !== 0 ? null : $player_stat['FTM'];
+				$playerStat->FTA = $player_stat['FTA'] == null && $player_stat['FTA'] !== 0 ? null : $player_stat['FTA'];
+				$playerStat->ORB = $player_stat['ORB'] == null && $player_stat['ORB'] !== 0 ? null : $player_stat['ORB'];
+				$playerStat->PF = $player_stat['PF'] == null && $player_stat['PF'] !== 0 ? null : $player_stat['PF'];
+				$playerStat->ML = $player_stat['ML'] == null && $player_stat['ML'] !== 0 ? null : $player_stat['ML'];
+				$playerStat->headline = $player_stat['headline'];
+			} else {
+				$playerStat->PTS = null;
+				$playerStat->REB = null;
+				$playerStat->AST = null;
+				$playerStat->STL = null;
+				$playerStat->BLK = null;
+				$playerStat->LOS = null;
+				$playerStat->FGM = null;
+				$playerStat->FGA = null;
+				$playerStat->TPM = null;
+				$playerStat->TPA = null;
+				$playerStat->FTM = null;
+				$playerStat->FTA = null;
+				$playerStat->ORB = null;
+				$playerStat->PF = null;
+				$playerStat->ML = null;
+				$playerStat->headline = 0;
+			}
+			$playerStat->updated_user_id = auth()->user()->id;
 			$playerStat->save();
 		}
 	}
@@ -1080,18 +1139,19 @@ class MatchCrud extends Component
 	{
 		foreach ($this->teams_stats as $key => $team_stat) {
 			$teamStat = TeamStat::where('match_id', $match->id)->where('season_team_id', $team_stat['season_team_id'])->first();
-			$teamStat->counterattack = $team_stat['counterattack'] == null ? null : $team_stat['counterattack'];
-			$teamStat->zone = $team_stat['zone'] == null ? null : $team_stat['counterattack'];
-			$teamStat->second_oportunity = $team_stat['second_oportunity'] == null ? null : $team_stat['counterattack'];
-			$teamStat->substitute = $team_stat['substitute'] == null ? null : $team_stat['counterattack'];
-			$teamStat->advantage = $team_stat['advantage'] == null ? null : $team_stat['counterattack'];
-			$teamStat->AST = $team_stat['AST'] == null ? null : $team_stat['counterattack'];
-			$teamStat->DRB = $team_stat['DRB'] == null ? null : $team_stat['counterattack'];
-			$teamStat->ORB = $team_stat['ORB'] == null ? null : $team_stat['counterattack'];
-			$teamStat->STL = $team_stat['STL'] == null ? null : $team_stat['counterattack'];
-			$teamStat->BLK = $team_stat['BLK'] == null ? null : $team_stat['counterattack'];
-			$teamStat->LOS = $team_stat['LOS'] == null ? null : $team_stat['counterattack'];
-			$teamStat->PF = $team_stat['PF'] == null ? null : $team_stat['counterattack'];
+			$teamStat->counterattack = $team_stat['counterattack'] == null && $team_stat['counterattack'] !== 0 ? null : $team_stat['counterattack'];
+			$teamStat->zone = $team_stat['zone'] == null && $team_stat['zone'] !== 0 ? null : $team_stat['zone'];
+			$teamStat->second_oportunity = $team_stat['second_oportunity'] == null && $team_stat['second_oportunity'] !== 0 ? null : $team_stat['second_oportunity'];
+			$teamStat->substitute = $team_stat['substitute'] == null && $team_stat['substitute'] !== 0 ? null : $team_stat['substitute'];
+			$teamStat->advantage = $team_stat['advantage'] == null && $team_stat['advantage'] !== 0 ? null : $team_stat['advantage'];
+			$teamStat->AST = $team_stat['AST'] == null && $team_stat['AST'] !== 0 ? null : $team_stat['AST'];
+			$teamStat->DRB = $team_stat['DRB'] == null && $team_stat['DRB'] !== 0 ? null : $team_stat['DRB'];
+			$teamStat->ORB = $team_stat['ORB'] == null && $team_stat['ORB'] !== 0 ? null : $team_stat['ORB'];
+			$teamStat->STL = $team_stat['STL'] == null && $team_stat['STL'] !== 0 ? null : $team_stat['STL'];
+			$teamStat->BLK = $team_stat['BLK'] == null && $team_stat['BLK'] !== 0 ? null : $team_stat['BLK'];
+			$teamStat->LOS = $team_stat['LOS'] == null && $team_stat['LOS'] !== 0 ? null : $team_stat['LOS'];
+			$teamStat->PF = $team_stat['PF'] == null && $team_stat['PF'] !== 0 ? null : $team_stat['PF'];
+			$teamStat->updated_user_id = auth()->user()->id;
 			$teamStat->save();
 		}
 	}
@@ -1114,6 +1174,7 @@ class MatchCrud extends Component
 					$reg->scores()->delete();
 					$reg->playerStats()->delete();
 					$reg->teamStats()->delete();
+					$reg->posts()->delete();
 					$regs_reset++;
 					// event(new TableWasUpdated($reg, 'update', $reg->toJson(JSON_PRETTY_PRINT), $before));
 					$this->createResetMatchPosts($reg->id);
@@ -1150,6 +1211,11 @@ class MatchCrud extends Component
 			if ($reg = Match::find($reg)) {
 				if ($reg->scores()->count() > 0) {
 					$reg->scores()->delete();
+					foreach ($reg->posts as $post) {
+						if ($post->type == "resultados" || ($post->type == "records" && $post->team_id > 0) || $post->type == "rachas") {
+							$post->delete();
+						}
+					}
 					$regs_reset++;
 					// event(new TableWasUpdated($reg, 'update', $reg->toJson(JSON_PRETTY_PRINT), $before));
 					$this->createResetScorePosts($reg->id);

@@ -15,7 +15,8 @@ class Score extends Model
         'seasons_scores_headers_id',
         'local_score',
         'visitor_score',
-        'order'
+        'order',
+        'updated_user_id',
     ];
 
     public function season_score_headers()

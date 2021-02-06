@@ -24,6 +24,10 @@ class CreateScoresTable extends Migration
             $table->integer('local_score')->nullable();
             $table->integer('visitor_score')->nullable();
             $table->integer('order')->default(1);
+            $table->foreignId('updated_user_id')
+                ->nullable()
+                ->constrained('users')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }

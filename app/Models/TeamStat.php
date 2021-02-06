@@ -26,7 +26,8 @@ class TeamStat extends Model
         'STL',
         'BLK',
         'LOS',
-        'PF'
+        'PF',
+        'updated_user_id',
     ];
 
     public function match()

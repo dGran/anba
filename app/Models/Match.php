@@ -63,6 +63,11 @@ class Match extends Model
         return $this->hasMany('App\Models\TeamStat');
     }
 
+    public function posts()
+    {
+        return $this->hasMany('App\Models\Post');
+    }
+
     public function scopeSeason($query, $value)
     {
         if ($value != 'all') {
@@ -233,10 +238,12 @@ class Match extends Model
     {
         return $top = PlayerStat::
             where('match_id', $this->id)
+            ->select('*', \DB::raw('PTS + REB + AST as TOTAL'))
+            ->where('MIN', '>', 0)
+            ->where('PTS', '>', 0)
             // ->whereIn('player_id', function($query) use ($team_id) {
             //    $query->select('id')->from('players')->where('team_id', '=', $team_id);
             // })
-            ->select('*', \DB::raw('PTS + REB + AST as TOTAL'))
             ->orderBy('TOTAL', 'desc')
             ->orderBy('PTS', 'desc')
             ->orderBy('REB', 'desc')
@@ -292,13 +299,13 @@ class Match extends Model
                 \DB::raw('SUM(STL) AS STL'),
                 \DB::raw('SUM(FGM) AS FGM'),
                 \DB::raw('SUM(FGA) AS FGA'),
-                \DB::raw('(SUM(FGA) / SUM(FGM)) * 100  AS FGAVG'),
+                \DB::raw('(SUM(FGM) / SUM(FGA)) * 100  AS FGAVG'),
                 \DB::raw('SUM(TPM) AS TPM'),
                 \DB::raw('SUM(TPA) AS TPA'),
-                \DB::raw('(SUM(TPA) / SUM(TPM)) * 100  AS TPAVG'),
+                \DB::raw('(SUM(TPM) / SUM(TPA)) * 100  AS TPAVG'),
                 \DB::raw('SUM(FTM) AS FTM'),
                 \DB::raw('SUM(FTA) AS FTA'),
-                \DB::raw('(SUM(FTA) / SUM(FTM)) * 100  AS FTAVG'),
+                \DB::raw('(SUM(FTM) / SUM(FTA)) * 100  AS FTAVG'),
                 \DB::raw('SUM(ORB) AS ORB'),
                 \DB::raw('SUM(PF) AS PF'),
             )
@@ -483,17 +490,43 @@ class Match extends Model
     {
         if ($this->teamStats->count() > 0) {
             foreach ($this->teamStats as $stat) {
-                # code...
+                if ($stat->counterattack == null && $stat->zone == null && $stat->second_oportunity == null && $stat->substitute == null && $stat->advantage == null && $stat->AST == null && $stat->DRB == null  && $stat->ORB == null  && $stat->STL == null && $stat->BLK == null && $stat->LOS == null && $stat->PF == null) {
+                    return false;
+                }
             }
+            return true;
         }
+        return false;
     }
 
     public function checkPlayerStats()
     {
+        $success = 0;
+        $warning = 0;
+        $error = 0;
         if ($this->playerStats->count() > 0) {
             foreach ($this->playerStats as $stat) {
-                # code...
+                if ($stat->MIN > 0) {
+                    // first check
+                    if ($stat->PTS != null || $stat->REB != null || $stat->AST != null || $stat->STL != null || $stat->BLK != null || $stat->LOS != null || $stat->FGM != null || $stat->FGA != null || $stat->TPM != null || $stat->TPA != null || $stat->FTM != null || $stat->FTA != null || $stat->ORB != null || $stat->PF != null || $stat->ML != null) {
+                        $success++;
+                    } else {
+                        $warning++;
+                    }
+                    // more checks PENDING
+                    // ...
+                }
             }
+        } else {
+            return "error";
+        }
+
+        if ($error > 0) { return "error"; }
+        if ($warning > 0) { return "warning"; }
+        if ($success > 0) {
+            return "success";
+        } else {
+            return "error";
         }
     }
 

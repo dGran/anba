@@ -28,6 +28,14 @@ class CreatePostsTable extends Migration
                 ->nullable()
                 ->constrained()
                 ->onDelete('cascade');
+            $table->foreignId('player_id')
+                ->nullable()
+                ->constrained()
+                ->onDelete('cascade');
+            $table->foreignId('team_id')
+                ->nullable()
+                ->constrained()
+                ->onDelete('cascade');
             $table->string('category');
             $table->string('title');
             $table->string('description');

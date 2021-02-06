@@ -37,6 +37,7 @@ class CreatePlayersTable extends Migration
                 ->onDelete('cascade');
             $table->integer('injury_matches')->nullable();
             $table->integer('injury_days')->nullable();
+            $table->boolean('injury_playable')->default(0);
             $table->string('slug');
             $table->timestamps();
         });

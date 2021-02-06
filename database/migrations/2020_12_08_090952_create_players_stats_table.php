@@ -48,6 +48,10 @@ class CreatePlayersStatsTable extends Migration
             $table->integer('PF')->nullable(); // faltas personales
             $table->integer('ML')->nullable(); // +/-
             $table->boolean('headline')->default(0);
+            $table->foreignId('updated_user_id')
+                ->nullable()
+                ->constrained('users')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }

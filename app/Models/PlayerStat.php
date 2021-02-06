@@ -34,6 +34,7 @@ class PlayerStat extends Model
         'PF',
         'ML',
         'headline',
+        'updated_user_id',
     ];
 
     public function match()

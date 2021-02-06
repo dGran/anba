@@ -36,6 +36,10 @@ class CreateTeamsStatsTable extends Migration
             $table->integer('BLK')->nullable(); // tapones
             $table->integer('LOS')->nullable(); // pérdidas
             $table->integer('PF')->nullable(); // faltas personales
+            $table->foreignId('updated_user_id')
+                ->nullable()
+                ->constrained('users')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }
