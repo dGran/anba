@@ -972,7 +972,7 @@ class MatchCrud extends Component
 			]);
 		}
 
-		$this->regView->extra_times = $this->extra_times;
+		$this->regView->extra_times = $this->extra_times ?: 0;
 		$this->regView->save();
 	}
 
@@ -1130,7 +1130,7 @@ class MatchCrud extends Component
 			$score->save();
 		}
 
-		$match->extra_times = $this->extra_times;
+		$match->extra_times = $this->extra_times ?: 0;
 		$match->save();
 	}
 
