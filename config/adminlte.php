@@ -1,6 +1,6 @@
 <?php
 
-$currentSeason = \App\Models\Season::where('current', 1)->first();
+// $currentSeason = \App\Models\Season::where('current', 1)->first();
 
 return [
 
@@ -261,12 +261,12 @@ return [
             'route'       => 'admin.seasons',
             'icon'        => 'fas fa-calendar',
         ],
-        ['header' => $currentSeason->name],
-        [
-            'text'        => 'Liga regular',
-            'url'         => 'admin/temporadas/' . $currentSeason->slug . '/partidos',
-            'icon'        => 'fas fa-basketball-ball',
-        ],
+        // ['header' => $currentSeason->name],
+        // [
+        //     'text'        => 'Liga regular',
+        //     'url'         => 'admin/temporadas/' . $currentSeason->slug . '/partidos',
+        //     'icon'        => 'fas fa-basketball-ball',
+        // ],
         [
             'text'        => 'Playoffs',
             'route'       => 'home',
