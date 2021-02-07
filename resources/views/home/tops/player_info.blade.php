@@ -1,4 +1,4 @@
-<img src="{{ $top->player->getImg() }}" alt="" class="hidden xs:block h-14 w-14 rounded-md shadow-md object-cover rounded-full border border-gray-300 dark:border-gray-650">
+<img src="{{ $top->player->getImg() }}" alt="" class="hidden xs:block h-14 w-14 rounded-md shadow-md object-cover rounded-full border border-gray-300 dark:border-gray-650" style="background-color: {{ $top->seasonTeam ? $top->seasonTeam->team->color : '' }}">
 <div class="flex-1 flex flex-col ml-2">
 
 	<div class="flex items-center">

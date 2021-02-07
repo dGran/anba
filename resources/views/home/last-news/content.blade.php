@@ -2,17 +2,23 @@
     @if ($posts->count() > 0)
         @foreach ($posts as $post)
             <div class="flex justify-between p-4 border-b border-gray-200 dark:border-gray-650" wire:loading.class="opacity-50">
-                <figure class="h-20 w-20 md:h-24 md:w-24 rounded-md shadow-md p-0.5 border border-gray-200 dark:border-gray-650 relative" style="{{ $post->team ? 'background-color: ' . $post->team->color : '' }}">
-                    @if ($post->type == "resultados" && $post->match)
+
+                @if ($post->type == "resultados" && $post->match)
+                    <figure class="h-20 w-20 md:h-24 md:w-24 rounded-md shadow-md p-0.5 border border-gray-200 dark:border-gray-650 relative" style="background-color: {{ $post->match->winner()->team->color }}">
                         <img src="{{ $post->match->visitorTeam->team->getImg() }}" alt="{{ $post->getName() }}" class="absolute bottom-0 right-0 m-0.5 w-14 h-14 md:w-16 md:h-16 object-cover">
                         <img src="{{ $post->match->localTeam->team->getImg() }}" alt="{{ $post->getName() }}" class="absolute top-0 left-0 m-0.5 w-14 h-14 md:w-16 md:h-16 object-cover">
-                    @elseif ($post->type == "lesiones" && $post->team)
+                    </figure>
+                @elseif ($post->type == "lesiones" && $post->team)
+                    <figure class="h-20 w-20 md:h-24 md:w-24 rounded-md shadow-md p-0.5 border border-gray-200 dark:border-gray-650 relative" style="{{ $post->team ? 'background-color: ' . $post->team->color : '' }}">
                         <img src="{{ $post->getImg() }}" alt="{{ $post->getName() }}" class="h-full w-auto rounded-md object-cover mx-auto">
                         <img src="{{ $post->team->getImg() }}" alt="{{ $post->team->getName() }}" class="absolute top-0 left-0 -m-0.5 w-7 h-7 md:w-8 md:h-8 object-cover">
-                    @else
+                    </figure>
+                @else
+                    <figure class="h-20 w-20 md:h-24 md:w-24 rounded-md shadow-md p-0.5 border border-gray-200 dark:border-gray-650 relative">
                         <img src="{{ $post->getImg() }}" alt="{{ $post->getName() }}" class="h-full w-auto rounded-md object-cover mx-auto">
-                    @endif
-                </figure>
+                    </figure>
+                @endif
+
                 <div class="flex-1 flex flex-col ml-5 truncate">
                     <div class="flex items-center justify-between leading-3 pb-1 md:pb-2">
                         <p class="text-pretty-red uppercase text-xxs md:text-xs font-bold">{{ $post->category }}</p>
