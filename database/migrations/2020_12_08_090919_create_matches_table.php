@@ -37,6 +37,7 @@ class CreateMatchesTable extends Migration
                 ->constrained('users')
                 ->onDelete('cascade');
             $table->string('stadium')->nullable();
+            $table->integer('extra_times')->nullable();
             $table->timestamps();
         });
     }

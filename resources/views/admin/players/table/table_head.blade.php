@@ -20,6 +20,15 @@
 				@endif
 		    </div>
 		</th>
+		<th class="{{ $colState ?: 'd-none' }}">
+			@if ($order == 'injury_name')
+				<span class="d-inline-block cursor-pointer" wire:click="order('injury_name_desc')">Estado<i class="fas fa-sort-alpha-up pl-1"></i></span>
+			@elseif ($order == 'injury_name_desc')
+				<span class="d-inline-block cursor-pointer" wire:click="order('injury_name')">Estado<i class="fas fa-sort-alpha-down pl-1"></i></span>
+			@else
+				<span class="d-inline-block cursor-pointer" wire:click="order('injury_name')">Estado</span>
+			@endif
+		</th>
 		<th class="{{ $colTeam ?: 'd-none' }}">
 			@if ($order == 'team')
 				<span class="d-inline-block cursor-pointer" wire:click="order('team_desc')">Equipo<i class="fas fa-sort-alpha-up pl-1"></i></span>

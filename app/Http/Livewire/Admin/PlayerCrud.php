@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Admin;
 
 use App\Models\Player;
 use App\Models\Team;
+use App\Models\Injury;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\withPagination;
@@ -13,12 +14,16 @@ use App\Imports\PlayersImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 
+use App\Http\Traits\PostTrait;
+
 use App\Events\TableWasUpdated;
+use App\Events\PostStored;
 
 class PlayerCrud extends Component
 {
 	use WithPagination;
 	use WithFileUploads;
+	use PostTrait;
 
 	public $firstRender = true;
 
@@ -30,6 +35,8 @@ class PlayerCrud extends Component
 
 	//fields
 	public $reg_id, $name, $nickname, $team_id, $img, $reg_img, $reg_img_formated, $position, $height, $weight, $college, $birthdate, $nation_name, $draft_year, $average, $retired;
+	// state fields
+	public $injury_id, $injury_matches, $injury_days, $injury_playable;
 
 	//filters
 	public $search = "";
@@ -50,6 +57,7 @@ class PlayerCrud extends Component
 	public $fixedFirstColumn;
 	public $showTableImages;
 	public $showNicknames;
+	public $colState;
 	public $colTeam;
 	public $colPosition;
 	public $colNation;
@@ -98,6 +106,7 @@ class PlayerCrud extends Component
 			'players.fixedFirstColumn' => $this->fixedFirstColumn ? 'on' : 'off',
 			'players.striped' => $this->striped ? 'on' : 'off',
 			'players.showNicknames' => $this->showNicknames ? 'on' : 'off',
+			'players.colState' => $this->colState ? 'on' : 'off',
 			'players.colTeam' => $this->colTeam ? 'on' : 'off',
 			'players.colPosition' => $this->colPosition ? 'on' : 'off',
 			'players.colNation' => $this->colNation ? 'on' : 'off',
@@ -108,7 +117,7 @@ class PlayerCrud extends Component
 			'players.colCollege' => $this->colCollege ? 'on' : 'off'
 		]);
 
-		if (!$this->colTeam && !$this->colPosition && !$this->colNation && !$this->colAge && !$this->colHeight && !$this->colWeight && !$this->colDraftYear && !$this->colCollege) {
+		if (!$this->colState && !$this->colTeam && !$this->colPosition && !$this->colNation && !$this->colAge && !$this->colHeight && !$this->colWeight && !$this->colDraftYear && !$this->colCollege) {
 			session(['players.fixedFirstColumn' => 'off']);
 		}
 	}
@@ -134,6 +143,11 @@ class PlayerCrud extends Component
 			$this->showNicknames = session()->get('players.showNicknames') == 'on' ? true : false;
 		} else {
 			$this->showNicknames = true;
+		}
+		if (session()->get('players.colState')) {
+			$this->colState = session()->get('players.colState') == 'on' ? true : false;
+		} else {
+			$this->colState = true;
 		}
 		if (session()->get('players.colTeam')) {
 			$this->colTeam = session()->get('players.colTeam') == 'on' ? true : false;
@@ -198,6 +212,11 @@ class PlayerCrud extends Component
 			'players.draft_year' => $this->draft_year,
 			'players.average' => $this->average,
 			'players.retired' => $this->retired,
+			'players.injury_id' => $this->injury_id,
+			'players.injury_matches' => $this->injury_matches,
+			'players.injury_days' => $this->injury_days,
+			'players.injury_playable' => $this->injury_playable,
+
 			//filters
 			'players.search' => $this->search,
 			'players.perPage' => $this->perPage,
@@ -243,6 +262,10 @@ class PlayerCrud extends Component
 		if (session()->get('players.draft_year')) { $this->draft_year = session()->get('players.draft_year'); }
 		if (session()->get('players.average')) { $this->average = session()->get('players.average'); }
 		if (session()->get('players.retired')) { $this->retired = session()->get('players.retired'); }
+		if (session()->get('players.injury_id')) { $this->injury_id = session()->get('players.injury_id'); }
+		if (session()->get('players.injury_matches')) { $this->injury_matches = session()->get('players.injury_matches'); }
+		if (session()->get('players.injury_days')) { $this->injury_days = session()->get('players.injury_days'); }
+		if (session()->get('players.injury_playable')) { $this->injury_playable = session()->get('players.injury_playable'); }
 		//filters
 		if (session()->get('players.search')) { $this->search = session()->get('players.search'); }
 		if (session()->get('players.perPage')) { $this->perPage = session()->get('players.perPage'); }
@@ -448,6 +471,14 @@ class PlayerCrud extends Component
 		$this->retired = 0;
     }
 
+    protected function resetStateFields()
+    {
+		$this->injury_id = null;
+		$this->injury_matches = 1;
+		$this->injury_days = 1;
+		$this->injury_playable = 0;
+    }
+
     public function resetImg()
     {
     	$this->img = null;
@@ -615,6 +646,132 @@ class PlayerCrud extends Component
 
         $this->cancelSelection();
 		$this->resetFields();
+    }
+
+	// Edit & Update
+    public function editState($id)
+    {
+    	$this->resetStateFields();
+		$this->resetValidation();
+
+    	$reg = Player::find($id);
+		$this->reg_id = $reg->id;
+    	$this->injury_id = $reg->injury_id;
+    	$this->injury_matches = $reg->injury_matches ?: 1;
+    	$this->injury_days = $reg->injury_days ?: 1;
+		$this->injury_playable = $reg->injury_playable;
+
+    	$this->emit('openEditStateModal');
+    	$this->setCurrentModal('editStateModal');
+    }
+
+    public function updateState()
+    {
+    	$reg = Player::find($this->reg_id);
+    	$before = $reg->toJson(JSON_PRETTY_PRINT);
+    	$suspension_id = Injury::where('name', 'Suspensión')->first()->id;
+
+    	if ($this->injury_id) {
+		    $validatedData['injury_id'] = $this->injury_id;
+		    $validatedData['injury_matches'] = $this->injury_matches ?: 0;
+			$validatedData['injury_days'] = $this->injury_days ?: 0;
+			$validatedData['injury_playable'] = $this->injury_id != $suspension_id ? $this->injury_playable : 0;
+    	} else {
+		    $validatedData['injury_id'] = null;
+		    $validatedData['injury_matches'] = null;
+			$validatedData['injury_days'] = null;
+			$validatedData['injury_playable'] = 0;
+    	}
+
+		$reg->fill($validatedData);
+
+        if ($reg->isDirty()) {
+            if ($reg->update()) {
+
+            	// injury post
+		    	if ($reg->injury_id) {
+		    		if ($reg->injury_id == $suspension_id) {
+						$cat_name = 'Supensión';
+		    			if ($reg->injury_matches == 1) {
+							$title = $reg->name . ' suspendido el siguiente partido.';
+		    			} else {
+		    				$title = $reg->injury_matches . ' partidos de suspensión para ' . $reg->name . '.';
+		    			}
+		    			$description = '';
+		    		} else {
+		    			$cat_name = 'Lesión';
+			    		$description = $reg->injury->name;
+			    		if ($reg->injury_playable) {
+			    			$title = $reg->name . ' sufre una leve lesión';
+			    			$description .= ', que no le impedirá estar disponible para el siguiente partido.';
+			    		} else {
+			    			if ($reg->injury_matches == 1) {
+								$title = $reg->name . ' lesionado para el siguiente partido.';
+			    			} else {
+			    				$title = $reg->name . ' lesionado para los próximos ' . $reg->injury_matches . ' partidos.';
+			    			}
+			    			$description .= '. Le apartará de las canchas durante ' . $reg->injury_days;
+			    			$description .= $reg->injury_days == 1 ? ' día.' : ' días.';
+			    		}
+		    		}
+		    		$cat_name .= ' | ' . $reg->name;
+		    		if ($reg->team) {
+		    			$cat_name .= ' | ' . $reg->team->short_name;
+		    		}
+
+			    	$post = $this->storePost(
+						'lesiones',
+						null,
+						null,
+						null,
+						$reg->id,
+						$reg->team ? $reg->team->id : null,
+						$cat_name,
+						$title,
+						$description,
+						$reg->getImg(),
+			    	);
+			    	event(new PostStored($post));
+		    	}
+
+            	event(new TableWasUpdated($reg, 'update', $reg->toJson(JSON_PRETTY_PRINT), $before));
+            	session()->flash('success', 'Registro actualizado correctamente.');
+            } else {
+            	session()->flash('error', 'Se ha producido un error y no se han podido actualizar los datos.');
+            }
+        } else {
+        	session()->flash('info', 'No se han detectado cambios en el registro.');
+        }
+
+        $this->emit('closeEditStateModal');
+        $this->closeAnyModal();
+
+        $this->cancelSelection();
+		$this->resetFields();
+    }
+
+    public function confirmRestoreStates()
+    {
+		$this->emit('openRestoreStateModal');
+    }
+
+    public function restoreStateAll()
+    {
+    	$players_injuries = Player::where('injury_id', '>', 0)->get();
+    	foreach ($players_injuries as $injury) {
+    		$before = $injury->toJson(JSON_PRETTY_PRINT);
+
+		    $injury->injury_id = null;
+		    $injury->injury_matches = null;
+			$injury->injury_days = null;
+			$injury->injury_playable = 0;
+			$injury->save();
+
+        	event(new TableWasUpdated($injury, 'update', $injury->toJson(JSON_PRETTY_PRINT), $before));
+    	}
+
+    	session()->flash('success', 'Se ha recuperado el estado de todos los jugadores.');
+		$this->emit('closeRestoreStateModal');
     }
 
     // Destroy
@@ -861,6 +1018,10 @@ class PlayerCrud extends Component
     	if ($retired) {
     		$reg->retired = 1;
     		$reg->team_id = null;
+		    $reg->injury_id = null;
+		    $reg->injury_matches = null;
+			$reg->injury_days = null;
+			$reg->injury_playable = 0;
     	} else {
     		$reg->retired = 0;
     	}
@@ -901,6 +1062,7 @@ class PlayerCrud extends Component
     	$teams = Team::orderBy('name', 'asc')->get();
     	$nations = Player::select('nation_name')->distinct()->whereNotNull('nation_name')->orderBy('nation_name', 'asc')->get();
     	$colleges = Player::select('college')->distinct()->whereNotNull('college')->orderBy('college', 'asc')->get();
+    	$injuries = Injury::orderBy('name', 'asc')->get();
 
         return view('admin.players', [
         			'regs' => $this->getData(),
@@ -908,6 +1070,7 @@ class PlayerCrud extends Component
         			'teams' => $teams,
         			'nations' => $nations,
         			'colleges' => $colleges,
+        			'injuries' => $injuries,
         			'filterTeamName' => $this->filterTeamName(),
         			'filterRetiredName' => $this->filterRetiredName(),
         			'firstRenderSaved' => $firstRenderSaved,

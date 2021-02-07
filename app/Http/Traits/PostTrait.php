@@ -7,12 +7,14 @@ use Illuminate\Support\Str;
 
 trait PostTrait {
 
-    public function storePost($type, $match_id, $statement_id, $transfer_id, $category, $title, $description, $img) {
+    public function storePost($type, $match_id, $statement_id, $transfer_id, $player_id, $team_id, $category, $title, $description, $img) {
     	$post = Post::create([
 	    	'type' => $type,
 	    	'match_id' => $match_id,
 	    	'statement_id' => $statement_id,
 	    	'transfer_id' => $transfer_id,
+	    	'player_id' => $player_id,
+	    	'team_id' => $team_id,
 	    	'category' => $category,
 	    	'title' => $title,
 	    	'description' => $description,

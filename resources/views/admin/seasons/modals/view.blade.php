@@ -25,6 +25,22 @@
                             <div class="col-7 text-right text-sm">{{ $regView->name ?: 'N/D' }}</div>
                         </li>
                         <li class="d-flex align-items-center p-2" style="border-bottom: 1px solid #e9ecef" onmouseover="this.style.background='#F9FAFB';" onmouseout="this.style.background='';">
+                            <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold text-xs">Direct Playoff Start</div>
+                            <div class="col-7 text-right text-sm">{{ $regView->direct_playoffs_start ?: 'N/D' }}</div>
+                        </li>
+                        <li class="d-flex align-items-center p-2" style="border-bottom: 1px solid #e9ecef" onmouseover="this.style.background='#F9FAFB';" onmouseout="this.style.background='';">
+                            <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold text-xs">Direct Playoff End</div>
+                            <div class="col-7 text-right text-sm">{{ $regView->direct_playoffs_end ?: 'N/D' }}</div>
+                        </li>
+                        <li class="d-flex align-items-center p-2" style="border-bottom: 1px solid #e9ecef" onmouseover="this.style.background='#F9FAFB';" onmouseout="this.style.background='';">
+                            <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold text-xs">Play-in Start</div>
+                            <div class="col-7 text-right text-sm">{{ $regView->play_in_start ?: 'N/D' }}</div>
+                        </li>
+                        <li class="d-flex align-items-center p-2" style="border-bottom: 1px solid #e9ecef" onmouseover="this.style.background='#F9FAFB';" onmouseout="this.style.background='';">
+                            <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold text-xs">Play-in End</div>
+                            <div class="col-7 text-right text-sm">{{ $regView->play_in_end ?: 'N/D' }}</div>
+                        </li>
+                        <li class="d-flex align-items-center p-2" style="border-bottom: 1px solid #e9ecef" onmouseover="this.style.background='#F9FAFB';" onmouseout="this.style.background='';">
                             <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold text-xs">Temporada activa</div>
                             <div class="col-7 text-right text-sm {{ $regView->current ? 'text-success' : 'text-danger' }}">{{ $regView->current ? 'Activa' : 'Inactiva' }}</div>
                         </li>

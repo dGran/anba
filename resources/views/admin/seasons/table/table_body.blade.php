@@ -29,6 +29,9 @@
                 <a wire:click.stop href="{{ route('admin.matches', $reg) }}" class="btn btn-primary text-xs text-uppercase tracking-widest text-white">
                     Liga regular
                 </a>
+                <a wire:click.stop="playoffs" class="ml-2 btn btn-primary text-xs text-uppercase tracking-widest text-white">
+                    Playoffs
+                </a>
 			</td>
 		</tr>
 

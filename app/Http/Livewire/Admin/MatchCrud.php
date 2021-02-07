@@ -43,7 +43,7 @@ class MatchCrud extends Component
 
 	//fields
 	public $season;
-	public $reg_id, $season_id, $local_team_id, $local_manager_id, $visitor_team_id, $visitor_manager_id, $stadium;
+	public $reg_id, $season_id, $local_team_id, $local_manager_id, $visitor_team_id, $visitor_manager_id, $stadium, $extra_times;
 	//boxscore
 	public $scores, $players_stats, $teams_stats, $update_match_managers;
 	public $total_scores = [];
@@ -159,6 +159,7 @@ class MatchCrud extends Component
 			'matches.visitor_team_id' => $this->visitor_team_id,
 			'matches.visitor_manager_id' => $this->visitor_manager_id,
 			'matches.stadium' => $this->stadium,
+			'matches.extra_times' => $this->extra_times,
 			//filters
 			'matches.search' => $this->search,
 			'matches.perPage' => $this->perPage,
@@ -187,6 +188,7 @@ class MatchCrud extends Component
 		if (session()->get('matches.visitor_team_id')) { $this->visitor_team_id = session()->get('matches.visitor_team_id'); }
 		if (session()->get('matches.visitor_manager_id')) { $this->visitor_manager_id = session()->get('matches.visitor_manager_id'); }
 		if (session()->get('matches.stadium')) { $this->stadium = session()->get('matches.stadium'); }
+		if (session()->get('matches.extra_times')) { $this->extra_times = session()->get('matches.extra_times'); }
 		//filters
 		if (session()->get('matches.search')) { $this->search = session()->get('matches.search'); }
 		if (session()->get('matches.perPage')) { $this->perPage = session()->get('matches.perPage'); }
@@ -339,6 +341,7 @@ class MatchCrud extends Component
 		$this->visitor_team_id = $firstTeam;
 		$this->visitor_manager_id = null;
 		$this->stadium = null;
+		$this->extra_times = null;
     }
 
     public function add()
@@ -412,6 +415,7 @@ class MatchCrud extends Component
     	$this->visitor_team_id = $reg->visitor_team_id;
     	$this->visitor_manager_id = $reg->visitor_manager_id;
 		$this->stadium = $reg->stadium;
+		$this->extra_times = $reg->extra_times;
 
     	$this->emit('openEditModal');
     	$this->setCurrentModal('editModal');
@@ -475,6 +479,21 @@ class MatchCrud extends Component
 		foreach ($this->regsSelectedArray as $reg) {
 			if ($reg = Match::find($reg)) {
 				if ($reg->canDestroy()) {
+					//restore injuries
+					foreach ($reg->playerStats as $player_stat) {
+						if ($player_stat->injury_id > 0) {
+							$player = Player::find($player_stat->player_id);
+							$before = $player->toJson(JSON_PRETTY_PRINT);
+
+							$player->injury_id = $player_stat->injury_id;
+							$player->injury_matches = $player_stat->injury_matches;
+							$player->injury_days = $player_stat->injury_days;
+							$player->injury_playable = $player_stat->injury_playable;
+
+							$player->save();
+							event(new TableWasUpdated($player, 'update', $player->toJson(JSON_PRETTY_PRINT), $before));
+						}
+					}
 					event(new TableWasUpdated($reg, 'delete'));
 					if ($reg->delete()) {
 						$regs_deleted++;
@@ -952,6 +971,9 @@ class MatchCrud extends Component
 				'updated_user_id' => auth()->user()->id,
 			]);
 		}
+
+		$this->regView->extra_times = $this->extra_times;
+		$this->regView->save();
 	}
 
 	public function storePlayerStats()
@@ -997,6 +1019,9 @@ class MatchCrud extends Component
 				'season_id' => $this->regView->season_id,
 				'player_id' => $player_stat['player_id'],
 				'injury_id' => $player_stat['injury_id'],
+				'injury_matches' => $player_stat['injury_matches'],
+				'injury_days' => $player_stat['injury_days'],
+				'injury_playable' => $player_stat['injury_playable'],
 				'season_team_id' => $player_stat['season_team_id'],
 				'MIN' 		=> $player_stat['MIN'] == null && $player_stat['MIN'] !== 0 ? null : $player_stat['MIN'],
 				'PTS' 		=> $PTS,
@@ -1017,6 +1042,23 @@ class MatchCrud extends Component
 				'headline' 	=> $headline,
 				'updated_user_id' => auth()->user()->id,
 			]);
+
+			if ($player_stat['injury_id'] > 0) {
+				$player = Player::find($player_stat['player_id']);
+
+				$before = $player->toJson(JSON_PRETTY_PRINT);
+				if ($player->injury_matches == 1) {
+					$player->injury_id = null;
+					$player->injury_matches = null;
+					$player->injury_days = null;
+					$player->injury_playable = 0;
+				} else {
+					$player->injury_matches = $player->injury_matches - 1;
+				}
+				$player->save();
+
+				event(new TableWasUpdated($player, 'update', $player->toJson(JSON_PRETTY_PRINT), $before));
+			}
 		}
 	}
 
@@ -1087,6 +1129,9 @@ class MatchCrud extends Component
 			$score->updated_user_id = auth()->user()->id;
 			$score->save();
 		}
+
+		$match->extra_times = $this->extra_times;
+		$match->save();
 	}
 
 	public function updatePlayerStats($match)
@@ -1094,6 +1139,9 @@ class MatchCrud extends Component
 		foreach ($this->players_stats as $key => $player_stat) {
 			$playerStat = PlayerStat::where('match_id', $match->id)->where('player_id', $player_stat['player_id'])->first();
 			$playerStat->injury_id = $player_stat['injury_id'];
+			$playerStat->injury_matches = $player_stat['injury_matches'];
+			$playerStat->injury_days = $player_stat['injury_days'];
+			$playerStat->injury_playable = $player_stat['injury_playable'];
 			$playerStat->MIN = $player_stat['MIN'] == null && $player_stat['MIN'] !== 0 ? null : $player_stat['MIN'];
 			if ($player_stat['MIN'] > 0) {
 				$playerStat->PTS = $player_stat['PTS'] == null && $player_stat['PTS'] !== 0 ? null : $player_stat['PTS'];
@@ -1172,6 +1220,21 @@ class MatchCrud extends Component
 			if ($reg = Match::find($reg)) {
 				if ($reg->scores()->count() > 0 || $reg->playerStats()->count() > 0 || $reg->teamStats()->count() > 0) {
 					$reg->scores()->delete();
+					//restore injuries
+					foreach ($reg->playerStats as $player_stat) {
+						if ($player_stat->injury_id > 0) {
+							$player = Player::find($player_stat->player_id);
+							$before = $player->toJson(JSON_PRETTY_PRINT);
+
+							$player->injury_id = $player_stat->injury_id;
+							$player->injury_matches = $player_stat->injury_matches;
+							$player->injury_days = $player_stat->injury_days;
+							$player->injury_playable = $player_stat->injury_playable;
+
+							$player->save();
+							event(new TableWasUpdated($player, 'update', $player->toJson(JSON_PRETTY_PRINT), $before));
+						}
+					}
 					$reg->playerStats()->delete();
 					$reg->teamStats()->delete();
 					$reg->posts()->delete();
@@ -1212,7 +1275,7 @@ class MatchCrud extends Component
 				if ($reg->scores()->count() > 0) {
 					$reg->scores()->delete();
 					foreach ($reg->posts as $post) {
-						if ($post->type == "resultados" || ($post->type == "records" && $post->team_id > 0) || $post->type == "rachas") {
+						if ($post->type == "resultados" || ($post->type == "records" && $post->team_id > 0) || ($post->type == "rachas" && $post->team_id > 0) || ($post->type == "destacados" && $post->team_id > 0)) {
 							$post->delete();
 						}
 					}
@@ -1246,6 +1309,8 @@ class MatchCrud extends Component
 			$score['visitor_score'] = null;
 			$this->scores->push($score);
 		}
+
+		$this->extra_times = null;
 	}
 
 	protected function initializePlayerStats()
@@ -1260,8 +1325,15 @@ class MatchCrud extends Component
 			$player_stat['player_name'] = $player->name;
 			$player_stat['player_pos_ordered'] = $player->getPositionOrdered();
 			$player_stat['player_pos'] = $player->getPosition();
-			$player_stat['injury_id'] = $player->injury_id ?: null;
+			$player_stat['injury_id'] = $player->injury_id;
+			$player_stat['injury_matches'] = $player->injury_matches;
+			$player_stat['injury_days'] = $player->injury_days;
+			$player_stat['injury_playable'] = $player->injury_playable;
 			$player_stat['injury_name'] = $player->injury ? $player->injury->name : '';
+			$player_stat['injuried'] = 0;
+			if ($player->injury_id > 0 && !$player->injury_playable) {
+				$player_stat['injuried'] = 1;
+			}
 			$player_stat['team_id'] = $this->regView->localTeam->team->id;
 			$player_stat['season_team_id'] = $this->regView->localTeam->id;
 			$player_stat['MIN'] = null;
@@ -1292,8 +1364,15 @@ class MatchCrud extends Component
 			$player_stat['player_name'] = $player->name;
 			$player_stat['player_pos_ordered'] = $player->getPositionOrdered();
 			$player_stat['player_pos'] = $player->getPosition();
-			$player_stat['injury_id'] = $player->injury_id ?: null;
+			$player_stat['injury_id'] = $player->injury_id;
+			$player_stat['injury_matches'] = $player->injury_matches;
+			$player_stat['injury_days'] = $player->injury_days;
+			$player_stat['injury_playable'] = $player->injury_playable;
 			$player_stat['injury_name'] = $player->injury ? $player->injury->name : '';
+			$player_stat['injuried'] = 0;
+			if ($player->injury_id > 0 && !$player->injury_playable) {
+				$player_stat['injuried'] = 1;
+			}
 			$player_stat['team_id'] = $this->regView->visitorTeam->team->id;
 			$player_stat['season_team_id'] = $this->regView->visitorTeam->id;
 			$player_stat['MIN'] = null;
@@ -1318,7 +1397,7 @@ class MatchCrud extends Component
 		}
 
 		$criteria = [
-			"injury_id" => "asc",
+			"injuried" => "asc",
             "headline" => "desc",
             "MIN" => "desc",
             "player_pos_ordered" => "asc",
@@ -1375,6 +1454,8 @@ class MatchCrud extends Component
 
 			$this->scores->push($score);
 		}
+
+		$this->extra_times = $this->regView->extra_times;
 	}
 
 	protected function loadPlayerStats()
@@ -1387,7 +1468,14 @@ class MatchCrud extends Component
 			$player_stat['player_pos_ordered'] = $ps->player->getPositionOrdered();
 			$player_stat['player_pos'] = $ps->player->getPosition();
 			$player_stat['injury_id'] = $ps->injury_id;
+			$player_stat['injury_matches'] = $ps->injury_matches;
+			$player_stat['injury_days'] = $ps->injury_days;
+			$player_stat['injury_playable'] = $ps->injury_playable;
 			$player_stat['injury_name'] = $ps->injury ? $ps->injury->name : '';
+			$player_stat['injuried'] = 0;
+			if ($ps->injury_id > 0 && !$ps->injury_playable) {
+				$player_stat['injuried'] = 1;
+			}
 			$player_stat['team_id'] = $ps->seasonTeam->team_id;
 			$player_stat['season_team_id'] = $ps->season_team_id;
 			$player_stat['MIN'] = $ps->MIN;
@@ -1412,7 +1500,7 @@ class MatchCrud extends Component
 		}
 
 		$criteria = [
-			"injury_id" => "asc",
+			"injuried" => "asc",
             "headline" => "desc",
             "MIN" => "desc",
             "player_pos_ordered" => "asc",
@@ -1464,6 +1552,8 @@ class MatchCrud extends Component
 			$match->id,
 			null,
 			null,
+			null,
+			null,
 			$match->localTeam->team->short_name . ' | ' . $match->visitorTeam->team->short_name,
 			$match->localTeam->team->medium_name . '  ' . $match->score() . '  ' . $match->visitorTeam->team->medium_name,
 			'La administración ha reseteado el resultado y estadísticas del partido.',
@@ -1479,6 +1569,8 @@ class MatchCrud extends Component
     	$post = $this->storePost(
 			'general',
 			$match->id,
+			null,
+			null,
 			null,
 			null,
 			$match->localTeam->team->short_name . ' | ' . $match->visitorTeam->team->short_name,
@@ -1504,6 +1596,8 @@ class MatchCrud extends Component
     	$post = $this->storePost(
 			'resultados',
 			$match->id,
+			null,
+			null,
 			null,
 			null,
 			$match->localTeam->team->short_name . ' | ' . $match->visitorTeam->team->short_name,
@@ -1536,6 +1630,8 @@ class MatchCrud extends Component
 					$match->id,
 					null,
 					null,
+					null,
+					$match->winner()->team->id,
 					'pronósticos' . ' | ' . $match->winner()->team->short_name,
 					'Los ' . $match->winner()->team->medium_name . ' contra todo pronóstico',
 					$description,

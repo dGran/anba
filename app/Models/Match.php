@@ -15,7 +15,8 @@ class Match extends Model
         'local_manager_id',
         'visitor_team_id',
         'visitor_manager_id',
-        'stadium'
+        'stadium',
+        'extra_times',
     ];
 
     public function localTeam()
@@ -328,13 +329,13 @@ class Match extends Model
                 \DB::raw('SUM(STL) AS STL'),
                 \DB::raw('SUM(FGM) AS FGM'),
                 \DB::raw('SUM(FGA) AS FGA'),
-                \DB::raw('(SUM(FGA) / SUM(FGM)) * 100  AS FGAVG'),
+                \DB::raw('(SUM(FGM) / SUM(FGA)) * 100  AS FGAVG'),
                 \DB::raw('SUM(TPM) AS TPM'),
                 \DB::raw('SUM(TPA) AS TPA'),
-                \DB::raw('(SUM(TPA) / SUM(TPM)) * 100  AS TPAVG'),
+                \DB::raw('(SUM(TPM) / SUM(TPA)) * 100  AS TPAVG'),
                 \DB::raw('SUM(FTM) AS FTM'),
                 \DB::raw('SUM(FTA) AS FTA'),
-                \DB::raw('(SUM(FTA) / SUM(FTM)) * 100  AS FTAVG'),
+                \DB::raw('(SUM(FTM) / SUM(FTA)) * 100  AS FTAVG'),
                 \DB::raw('SUM(ORB) AS ORB'),
                 \DB::raw('SUM(PF) AS PF'),
             )
@@ -488,15 +489,45 @@ class Match extends Model
 
     public function checkTeamStats()
     {
+        $success = 0;
+        $warning = 0;
+        $error = 0;
         if ($this->teamStats->count() > 0) {
             foreach ($this->teamStats as $stat) {
-                if ($stat->counterattack == null && $stat->zone == null && $stat->second_oportunity == null && $stat->substitute == null && $stat->advantage == null && $stat->AST == null && $stat->DRB == null  && $stat->ORB == null  && $stat->STL == null && $stat->BLK == null && $stat->LOS == null && $stat->PF == null) {
-                    return false;
+                if (
+                    ($stat->counterattack === 0 || $stat->counterattack > 0)
+                    && ($stat->zone === 0 || $stat->zone > 0)
+                    && ($stat->second_oportunity === 0 || $stat->second_oportunity > 0)
+                    && ($stat->substitute === 0 || $stat->substitute > 0)
+                    && ($stat->advantage === 0 || $stat->advantage > 0)
+                    && ($stat->AST === 0 || $stat->AST > 0)
+                    && ($stat->DRB === 0 || $stat->DRB > 0)
+                    && ($stat->ORB === 0 || $stat->ORB > 0)
+                    && ($stat->STL === 0 || $stat->STL > 0)
+                    && ($stat->BLK === 0 || $stat->BLK > 0)
+                    && ($stat->LOS === 0 || $stat->LOS > 0)
+                    && ($stat->PF === 0 || $stat->PF > 0)
+                ) {
+                    if ($stat->zone > 200 || $stat->second_oportunity > 150 || $stat->substitute > 200 || $stat->advantage > 200 || $stat->AST > 60 || $stat->DRB + $stat->ORB > 150 || $stat->STL > 60 || $stat->BLK > 50 || $stat->LOS > 125) {
+                        $warning++;
+                    } else {
+                        $success++;
+                    }
+                } else {
+                    return "error";
                 }
             }
-            return true;
+        } else {
+            return "error";
         }
-        return false;
+
+        if ($error > 0) { return "error"; }
+        if ($warning > 0) { return "warning"; }
+        if ($success > 0) {
+            return "success";
+        } else {
+            return "error";
+        }
     }
 
     public function checkPlayerStats()
@@ -508,13 +539,31 @@ class Match extends Model
             foreach ($this->playerStats as $stat) {
                 if ($stat->MIN > 0) {
                     // first check
-                    if ($stat->PTS != null || $stat->REB != null || $stat->AST != null || $stat->STL != null || $stat->BLK != null || $stat->LOS != null || $stat->FGM != null || $stat->FGA != null || $stat->TPM != null || $stat->TPA != null || $stat->FTM != null || $stat->FTA != null || $stat->ORB != null || $stat->PF != null || $stat->ML != null) {
+                    if (
+                        ($stat->PTS === 0 || $stat->PTS > 0)
+                        && ($stat->REB === 0 || $stat->REB > 0)
+                        && ($stat->AST === 0 || $stat->AST > 0)
+                        && ($stat->STL === 0 || $stat->STL > 0)
+                        && ($stat->BLK === 0 || $stat->BLK > 0)
+                        && ($stat->LOS === 0 || $stat->LOS > 0)
+                        && ($stat->FGM === 0 || $stat->FGM > 0)
+                        && ($stat->FGA === 0 || $stat->FGA > 0)
+                        && ($stat->TPM === 0 || $stat->TPM > 0)
+                        && ($stat->TPA === 0 || $stat->TPA > 0)
+                        && ($stat->FTM === 0 || $stat->FTM > 0)
+                        && ($stat->FTA === 0 || $stat->FTA > 0)
+                        && ($stat->ORB === 0 || $stat->ORB > 0)
+                        && ($stat->PF === 0 || $stat->PF > 0)
+                        && ($stat->ML === 0 || $stat->ML > 0)
+                    ) {
                         $success++;
                     } else {
                         $warning++;
                     }
-                    // more checks PENDING
-                    // ...
+
+                    if ($stat->FGM > $stat->FGA || $stat->TPM > $stat->TPA || $stat->FTM > $stat->FTA || $stat->PTS > 150 || $stat->REB > 75 || $stat->AST > 55 || $stat->STL > 30 || $stat->BLK > 25 || ($stat->FGM + $stat->TPM + $stat->FTM > 99) || ($stat->FGA + $stat->TPA + $stat->FTA > 99) || $stat->LOS > 50 || $stat->ML > 150) {
+                        $warning++;
+                    }
                 }
             }
         } else {

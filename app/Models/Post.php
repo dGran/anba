@@ -16,6 +16,8 @@ class Post extends Model
     	'match_id',
     	'statement_id',
     	'transfer_id',
+        'player_id',
+        'team_id',
     	'category',
     	'title',
     	'description',
@@ -36,6 +38,16 @@ class Post extends Model
     public function transfer()
     {
         return $this->belongsTo('App\Models\Transfer');
+    }
+
+    public function player()
+    {
+        return $this->belongsTo('App\Models\Player');
+    }
+
+    public function team()
+    {
+        return $this->belongsTo('App\Models\Team');
     }
 
     public function scopeName($query, $value)

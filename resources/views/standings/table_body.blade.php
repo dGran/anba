@@ -57,7 +57,11 @@
 	@endif
 </td>
 <td style="min-width: 60px; width: 80px" class="text-center tracking-tight">
-	0-0
+	@if ($position['w'] > 0 || $position['l'] > 0)
+		{{ $position['ot_w'] }}-{{ $position['ot_l'] }}
+	@else
+		<span>-</span>
+	@endif
 </td>
 <td style="min-width: 60px; width: 80px" class="text-center tracking-tight">
 	@if ($position['w'] > 0 || $position['l'] > 0)

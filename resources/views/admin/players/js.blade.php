@@ -37,4 +37,19 @@
         $('#transfersModal').modal('hide');
     });
 
+    window.livewire.on('openEditStateModal', () => {
+        $('#editStateModal').modal('show');
+    });
+    window.livewire.on('closeEditStateModal', () => {
+        $('#editStateModal').modal('hide');
+    });
+
+    window.livewire.on('openRestoreStateModal', () => {
+        $('#restoreStatesModal').modal('show');
+    });
+    window.livewire.on('closeRestoreStateModal', () => {
+        $('#restoreStatesModal').modal('hide');
+    });
+
+
 </script>

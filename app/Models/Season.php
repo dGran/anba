@@ -12,6 +12,10 @@ class Season extends Model
 
     protected $fillable = [
         'name',
+        'direct_playoffs_start',
+        'direct_playoffs_end',
+        'play_in_start',
+        'play_in_end',
         'current',
         'slug'
     ];
@@ -200,6 +204,26 @@ class Season extends Model
                     "team_name" => "asc"
                 ];
                 break;
+            case 'ot':
+                return $criteria = [
+                    "ot_percent" => "desc",
+                    "ot_w" => "desc",
+                    "wavg" => "desc",
+                    "w" => "desc",
+                    "l" => "asc",
+                    "team_name" => "asc"
+                ];
+                break;
+            case 'ot_desc':
+                return $criteria = [
+                    "ot_percent" => "asc",
+                    "ot_w" => "asc",
+                    "wavg" => "asc",
+                    "w" => "asc",
+                    "l" => "desc",
+                    "team_name" => "asc"
+                ];
+                break;
             case 'conf':
                 return $criteria = [
                     "conf_percent" => "desc",
@@ -281,7 +305,9 @@ class Season extends Model
             "road_w" => 0,
             "road_l" => 0,
             "road_percent" => 0,
-            // ot
+            "ot_w" => 0,
+            "ot_l" => 0,
+            "ot_percent" => 0,
             "last10_w" => 0,
             "last10_l" => 0,
             "last10_percent" => 0,
@@ -304,17 +330,20 @@ class Season extends Model
                 $visitor_score = $match->scores->sum('visitor_score');
                 $same_conf = $match->localTeam->seasonDivision->seasonConference->id == $match->visitorTeam->seasonDivision->seasonConference->id ? true : false;
                 $same_div = $match->localTeam->seasonDivision->id == $match->visitorTeam->seasonDivision->id ? true : false;
+                $extra_times = $match->extra_times > 0 ? true : false;
                 if ($team_id == $match->local_team_id) {
                     if ($local_score > $visitor_score) {
                         $data['w'] += 1;
                         if ($same_conf) { $data['conf_w'] += 1; }
                         if ($same_div) { $data['div_w'] += 1; }
+                        if ($extra_times) { $data['ot_w'] += 1; }
                         $data['home_w'] += 1;
                         if ($key < 10) { $data['last10_w'] += 1; }
                     } else {
                         $data['l'] += 1;
                         if ($same_conf) { $data['conf_l'] += 1; }
                         if ($same_div) { $data['div_l'] += 1; }
+                        if ($extra_times) { $data['ot_l'] += 1; }
                         $data['home_l'] += 1;
                         if ($key < 10) { $data['last10_l'] += 1; }
                     }
@@ -323,12 +352,14 @@ class Season extends Model
                         $data['l'] += 1;
                         if ($same_conf) { $data['conf_l'] += 1; }
                         if ($same_div) { $data['div_l'] += 1; }
+                        if ($extra_times) { $data['ot_l'] += 1; }
                         $data['road_l'] += 1;
                         if ($key < 10) { $data['last10_l'] += 1; }
                     } else {
                         $data['w'] += 1;
                         if ($same_conf) { $data['conf_w'] += 1; }
                         if ($same_div) { $data['div_w'] += 1; }
+                        if ($extra_times) { $data['ot_w'] += 1; }
                         $data['road_w'] += 1;
                         if ($key < 10) { $data['last10_w'] += 1; }
                     }
@@ -390,6 +421,8 @@ class Season extends Model
         $data['conf_percent'] = $conf_played > 0 ? ($data['conf_w'] / $conf_played) * 100 : 0;
         $div_played = $data['div_w'] + $data['div_l'];
         $data['div_percent'] = $div_played > 0 ? ($data['div_w'] / $div_played) * 100 : 0;
+        $ot_played = $data['ot_w'] + $data['ot_l'];
+        $data['ot_percent'] = $ot_played > 0 ? ($data['ot_w'] / $ot_played) * 100 : 0;
         $home_played = $data['home_w'] + $data['home_l'];
         $data['home_percent'] = $home_played > 0 ? ($data['home_w'] / $home_played) * 100 : 0;
         $road_played = $data['road_w'] + $data['road_l'];
@@ -485,7 +518,9 @@ class Season extends Model
                 'road_w' => $data['road_w'],
                 'road_l' => $data['road_l'],
                 'road_percent' => $data['road_percent'],
-                //ot
+                'ot_w' => $data['ot_w'],
+                'ot_l' => $data['ot_l'],
+                'ot_percent' => $data['ot_percent'],
                 'last10_w' => $data['last10_w'],
                 'last10_l' => $data['last10_l'],
                 'last10_percent' => $data['last10_percent'],

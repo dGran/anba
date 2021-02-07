@@ -61,9 +61,9 @@ module.exports = {
     },
 
     variants: {
-        textColor: ['dark', 'responsive', 'hover', 'focus'],
-        backgroundColor: ['dark', 'responsive', 'hover', 'focus'],
-        borderColor: ['dark', 'responsive', 'hover', 'focus'],
+        textColor: ['dark', 'responsive', 'hover', 'focus', 'group-hover'],
+        backgroundColor: ['dark', 'responsive', 'hover', 'focus', 'group-hover'],
+        borderColor: ['dark', 'responsive', 'hover', 'focus', 'group-hover'],
         opacity: ['responsive', 'hover', 'focus', 'disabled'],
     },
 

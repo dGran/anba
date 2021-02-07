@@ -34,7 +34,7 @@ class SeasonCrud extends Component
 	public $modelHasImg = false;
 
 	//fields
-	public $reg_id, $name, $current;
+	public $reg_id, $name, $current, $direct_playoffs_start, $direct_playoffs_end, $play_in_start, $play_in_end;
 
 	//filters
 	public $search = "";
@@ -91,6 +91,10 @@ class SeasonCrud extends Component
 			//fields
 			'seasons.reg_id' => $this->reg_id,
 			'seasons.name' => $this->name,
+            'seasons.direct_playoffs_start' => $this->direct_playoffs_start,
+            'seasons.direct_playoffs_end' => $this->direct_playoffs_end,
+            'seasons.play_in_start' => $this->play_in_start,
+            'seasons.play_in_end' => $this->play_in_end,
 			'seasons.current' => $this->current,
 			//filters
 			'seasons.search' => $this->search,
@@ -113,6 +117,10 @@ class SeasonCrud extends Component
 		//fields
 		if (session()->get('seasons.reg_id')) { $this->reg_id = session()->get('seasons.reg_id'); }
 		if (session()->get('seasons.name')) { $this->name = session()->get('seasons.name'); }
+        if (session()->get('seasons.direct_playoffs_start')) { $this->direct_playoffs_start = session()->get('seasons.direct_playoffs_start'); }
+        if (session()->get('seasons.direct_playoffs_end')) { $this->direct_playoffs_end = session()->get('seasons.direct_playoffs_end'); }
+        if (session()->get('seasons.play_in_start')) { $this->play_in_start = session()->get('seasons.play_in_start'); }
+        if (session()->get('seasons.play_in_end')) { $this->play_in_end = session()->get('seasons.play_in_end'); }
 		if (session()->get('seasons.current')) { $this->current = session()->get('seasons.current'); }
 		//filters
 		if (session()->get('seasons.search')) { $this->search = session()->get('seasons.search'); }
@@ -238,6 +246,10 @@ class SeasonCrud extends Component
     protected function resetFields()
     {
 		$this->name = null;
+        $this->direct_playoffs_start = null;
+        $this->direct_playoffs_end = null;
+        $this->play_in_start = null;
+        $this->play_in_end = null;
 		$this->img = null;
 		$this->current = 0;
     }
@@ -272,6 +284,10 @@ class SeasonCrud extends Component
         } else {
         	$validatedData['current'] = 1;
         }
+        $validatedData['direct_playoffs_start'] = $this->direct_playoffs_start ?: null;
+        $validatedData['direct_playoffs_end'] = $this->direct_playoffs_end ?: null;
+        $validatedData['play_in_start'] = $this->play_in_start ?: null;
+        $validatedData['play_in_end'] = $this->play_in_end ?: null;
         $validatedData['slug'] = Str::slug($this->name, '-');
 
         $reg = Season::create($validatedData);
@@ -340,6 +356,10 @@ class SeasonCrud extends Component
     	$reg = Season::find($id);
 		$this->reg_id = $reg->id;
     	$this->name = $reg->name;
+        $this->direct_playoffs_start = $reg->direct_playoffs_start;
+        $this->direct_playoffs_end = $reg->direct_playoffs_end;
+        $this->play_in_start = $reg->play_in_start;
+        $this->play_in_end = $reg->play_in_end;
 		$this->current = $reg->current;
 
     	$this->emit('openEditModal');
@@ -373,6 +393,10 @@ class SeasonCrud extends Component
         } else {
         	$validatedData['current'] = 1;
         }
+        $validatedData['direct_playoffs_start'] = $this->direct_playoffs_start ?: null;
+        $validatedData['direct_playoffs_end'] = $this->direct_playoffs_end ?: null;
+        $validatedData['play_in_start'] = $this->play_in_start ?: null;
+        $validatedData['play_in_end'] = $this->play_in_end ?: null;
         $validatedData['slug'] = Str::slug($this->name, '-');
 
 		$reg->fill($validatedData);
@@ -680,4 +704,9 @@ class SeasonCrud extends Component
 	{
 		$this->currentModal = '';
 	}
+
+    public function playoffs()
+    {
+        session()->flash('info', 'Desarrollo pendiente...');
+    }
 }

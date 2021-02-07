@@ -29,7 +29,7 @@ class SeasonsExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            'id', 'name', 'current'
+            'id', 'name', 'direct_playoffs_start', 'direct_playoffs_end', 'play_in_start', 'play_in_end', 'current'
         ];
     }
 }

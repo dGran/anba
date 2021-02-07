@@ -31,7 +31,22 @@
 					</div>
 				</div>
 			</td>
-			<td class="{{ $colTeam ?: 'd-none' }}" style="width: 300px; min-width: 300px; min-width: 300px">
+			<td class="{{ $colState ?: 'd-none' }}" style="width: 100px; max-width: 300px">
+				<div class="d-flex align-items-center">
+					@if ($reg->injury_id)
+						<div class="d-flex flex-column truncate">
+							<p class="m-0 truncate"><i class="fas fa-briefcase-medical {{ $reg->injury_playable ? 'text-warning' : 'text-danger' }} mr-2"></i> {{ $reg->injury->name }}</p>
+							<span class="text-xs leading-4">
+								{{ $reg->injury_matches }} {{ $reg->injury_matches == 1 ? 'partido' : 'partidos' }} | {{ $reg->injury_days }} {{ $reg->injury_days == 1 ? 'día' : 'días' }}
+							</span>
+
+						</div>
+					@else
+						<i class="fas fa-check text-xl text-success"></i>
+					@endif
+				</div>
+			</td>
+			<td class="{{ $colTeam ?: 'd-none' }}" style="width: 300px; min-width: 300px; max-width: 300px">
 				<div class="d-flex align-items-center">
 					@if (!$reg->retired)
 						@if ($showTableImages)
@@ -47,7 +62,7 @@
 					@endif
 				</div>
 			</td>
-			<td class="{{ $colPosition ?: 'd-none' }}" style="width: 175px; min-width: 175px; min-width: 175px">
+			<td class="{{ $colPosition ?: 'd-none' }}" style="width: 175px; min-width: 175px; max-width: 175px">
 				<div class="d-flex align-items-center">
 					<div class="mr-2 d-inline-block text-xs font-weight-bold text-uppercase" style="width: 20px">{{ $reg->position }}</div>{{ $reg->getPosition() }}
 				</div>
@@ -57,17 +72,17 @@
 					{{ $reg->nation_name }}
 				</span>
 			</td>
-			<td class="text-center {{ $colAge ?: 'd-none' }}" style="width: 90px; min-width: 90px; min-width: 90px">
+			<td class="text-center {{ $colAge ?: 'd-none' }}" style="width: 90px; min-width: 90px; max-width: 90px">
 				<span>
 					{{ $reg->age() }}
 				</span>
 			</td>
-			<td class="text-center {{ $colHeight ?: 'd-none' }}" style="width: 100px; min-width: 100px">
+			<td class="text-center {{ $colHeight ?: 'd-none' }}" style="width: 100px; max-width: 100px">
 				<span>
 					{{ $reg->height ? $reg->getHeight() . ' ft' : '' }}
 				</span>
 			</td>
-			<td class="text-center {{ $colWeight ?: 'd-none' }}" style="width: 90px; min-width: 90px; min-width: 90px">
+			<td class="text-center {{ $colWeight ?: 'd-none' }}" style="width: 90px; min-width: 90px; max-width: 90px">
 				<span>
 					{{ $reg->weight ? $reg->weight . ' lbs' : '' }}
 				</span>

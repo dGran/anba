@@ -2,10 +2,13 @@
     @if ($posts->count() > 0)
         @foreach ($posts as $post)
             <div class="flex justify-between p-4 border-b border-gray-200 dark:border-gray-650" wire:loading.class="opacity-50">
-                <figure class="h-20 w-20 md:h-24 md:w-24 rounded-md shadow-md p-0.5 border border-gray-200 dark:border-gray-650 relative">
+                <figure class="h-20 w-20 md:h-24 md:w-24 rounded-md shadow-md p-0.5 border border-gray-200 dark:border-gray-650 relative" style="{{ $post->team ? 'background-color: ' . $post->team->color : '' }}">
                     @if ($post->type == "resultados" && $post->match)
                         <img src="{{ $post->match->visitorTeam->team->getImg() }}" alt="{{ $post->getName() }}" class="absolute bottom-0 right-0 m-0.5 w-14 h-14 md:w-16 md:h-16 object-cover">
                         <img src="{{ $post->match->localTeam->team->getImg() }}" alt="{{ $post->getName() }}" class="absolute top-0 left-0 m-0.5 w-14 h-14 md:w-16 md:h-16 object-cover">
+                    @elseif ($post->type == "lesiones" && $post->team)
+                        <img src="{{ $post->getImg() }}" alt="{{ $post->getName() }}" class="h-full w-auto rounded-md object-cover mx-auto">
+                        <img src="{{ $post->team->getImg() }}" alt="{{ $post->team->getName() }}" class="absolute top-0 left-0 -m-0.5 w-7 h-7 md:w-8 md:h-8 object-cover">
                     @else
                         <img src="{{ $post->getImg() }}" alt="{{ $post->getName() }}" class="h-full w-auto rounded-md object-cover mx-auto">
                     @endif

@@ -28,6 +28,9 @@ class CreatePlayersStatsTable extends Migration
                 ->nullable()
                 ->constrained('injuries')
                 ->onDelete('cascade');
+            $table->integer('injury_matches')->nullable();
+            $table->integer('injury_days')->nullable();
+            $table->boolean('injury_playable')->default(0);
             $table->foreignId('season_team_id')
                 ->constrained('seasons_teams')
                 ->onDelete('cascade');

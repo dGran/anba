@@ -16,36 +16,36 @@
 			<div class="flex flex-col py-0.5 md:py-1.5 border-b border-gray-150 dark:border-gray-650">
 				<div class="flex items-center">
 					<p class="w-24 md:w-36 lg:w-40 text-left md:pl-3 text-sm md:text-base lg:text-xl font-bold {{ $match->localTeam_playerTotals()->FGAVG > $match->visitorTeam_playerTotals()->FGAVG ? 'text-black dark:text-yellow-400' : 'text-gray-500 dark:text-gray-300' }}">
-						{{ isset($match->localTeam_playerTotals()->FGM) ? $match->localTeam_playerTotals()->FGM : '-' }}/{{ isset($match->localTeam_playerTotals()->FGA) ? $match->localTeam_playerTotals()->FGA : '-' }} ({{ isset($match->localTeam_playerTotals()->FGAVG) ? number_format($match->localTeam_playerTotals()->FGAVG, 0) : '-' }}%)
+						{{ isset($match->localTeam_playerTotals()->FGM) ? $match->localTeam_playerTotals()->FGM : '-' }}/{{ isset($match->localTeam_playerTotals()->FGA) ? $match->localTeam_playerTotals()->FGA : '-' }} {{ isset($match->localTeam_playerTotals()->FGAVG) ? '(' . number_format($match->localTeam_playerTotals()->FGAVG, 0) . '%)' : '' }}
 					</p>
 					<p class="flex-1 text-center px-3 uppercase font-bold text-sm md:text-base lg:text-xl text-gray-500 dark:text-gray-300">
 						<span class="hidden sm:block">tiros de campo</span>
 						<span class="sm:hidden">tiros campo</span>
 					</p>
 					<p class="w-24 md:w-36 lg:w-40 text-right md:pr-3 text-sm md:text-base lg:text-xl font-bold {{ $match->visitorTeam_playerTotals()->FGAVG > $match->localTeam_playerTotals()->FGAVG ? 'text-black dark:text-yellow-400' : 'text-gray-500 dark:text-gray-300' }}">
-						{{ isset($match->visitorTeam_playerTotals()->FGM) ? $match->visitorTeam_playerTotals()->FGM : '-' }}/{{ isset($match->visitorTeam_playerTotals()->FGA) ? $match->visitorTeam_playerTotals()->FGA : '-' }} ({{ isset($match->visitorTeam_playerTotals()->FGAVG) ? number_format($match->visitorTeam_playerTotals()->FGAVG, 0) : '-' }}%)
+						{{ isset($match->visitorTeam_playerTotals()->FGM) ? $match->visitorTeam_playerTotals()->FGM : '-' }}/{{ isset($match->visitorTeam_playerTotals()->FGA) ? $match->visitorTeam_playerTotals()->FGA : '-' }} {{ isset($match->visitorTeam_playerTotals()->FGAVG) ? '(' . number_format($match->visitorTeam_playerTotals()->FGAVG, 0) . '%)' : '' }}
 					</p>
 				</div>
 			</div>
 			<div class="flex flex-col py-0.5 md:py-1.5 border-b border-gray-150 dark:border-gray-650">
 				<div class="flex items-center">
 					<p class="w-24 md:w-36 lg:w-40 text-left md:pl-3 text-sm md:text-base lg:text-xl font-bold {{ $match->localTeam_playerTotals()->TPAVG > $match->visitorTeam_playerTotals()->TPAVG ? 'text-black dark:text-yellow-400' : 'text-gray-500 dark:text-gray-300' }}">
-						{{ isset($match->localTeam_playerTotals()->TPM) ? $match->localTeam_playerTotals()->TPM : '-' }}/{{ isset($match->localTeam_playerTotals()->TPA) ? $match->localTeam_playerTotals()->TPA : '-' }} ({{ isset($match->localTeam_playerTotals()->TPAVG) ? number_format($match->localTeam_playerTotals()->TPAVG, 0) : '-' }}%)
+						{{ isset($match->localTeam_playerTotals()->TPM) ? $match->localTeam_playerTotals()->TPM : '-' }}/{{ isset($match->localTeam_playerTotals()->TPA) ? $match->localTeam_playerTotals()->TPA : '-' }} {{ isset($match->localTeam_playerTotals()->TPAVG) ? '(' . number_format($match->localTeam_playerTotals()->TPAVG, 0) . '%)' : '' }}
 					</p>
 					<p class="flex-1 text-center px-3 uppercase font-bold text-sm md:text-base lg:text-xl text-gray-500 dark:text-gray-300">triples</p>
 					<p class="w-24 md:w-36 lg:w-40 text-right md:pr-3 text-sm md:text-base lg:text-xl font-bold {{ $match->visitorTeam_playerTotals()->TPAVG > $match->localTeam_playerTotals()->TPAVG ? 'text-black dark:text-yellow-400' : 'text-gray-500 dark:text-gray-300' }}">
-						{{ isset($match->visitorTeam_playerTotals()->TPM) ? $match->visitorTeam_playerTotals()->TPM : '-' }}/{{ isset($match->visitorTeam_playerTotals()->TPA) ? $match->visitorTeam_playerTotals()->TPA : '-' }} ({{ isset($match->visitorTeam_playerTotals()->TPAVG) ? number_format($match->visitorTeam_playerTotals()->TPAVG, 0) : '-' }}%)
+						{{ isset($match->visitorTeam_playerTotals()->TPM) ? $match->visitorTeam_playerTotals()->TPM : '-' }}/{{ isset($match->visitorTeam_playerTotals()->TPA) ? $match->visitorTeam_playerTotals()->TPA : '-' }} {{ isset($match->visitorTeam_playerTotals()->TPAVG) ? '(' . number_format($match->visitorTeam_playerTotals()->TPAVG, 0) . '%)' : '' }}
 					</p>
 				</div>
 			</div>
 			<div class="flex flex-col py-0.5 md:py-1.5 border-b border-gray-150 dark:border-gray-650">
 				<div class="flex items-center">
 					<p class="w-24 md:w-36 lg:w-40 text-left md:pl-3 text-sm md:text-base lg:text-xl font-bold {{ $match->localTeam_playerTotals()->FTAVG > $match->visitorTeam_playerTotals()->FTAVG ? 'text-black dark:text-yellow-400' : 'text-gray-500 dark:text-gray-300' }}">
-						{{ isset($match->localTeam_playerTotals()->FTM) ? $match->localTeam_playerTotals()->FTM : '-' }}/{{ isset($match->localTeam_playerTotals()->FTA) ? $match->localTeam_playerTotals()->FTA : '-' }} ({{ isset($match->localTeam_playerTotals()->FTAVG) ? number_format($match->localTeam_playerTotals()->FTAVG, 0) : '-' }}%)
+						{{ isset($match->localTeam_playerTotals()->FTM) ? $match->localTeam_playerTotals()->FTM : '-' }}/{{ isset($match->localTeam_playerTotals()->FTA) ? $match->localTeam_playerTotals()->FTA : '-' }} {{ isset($match->localTeam_playerTotals()->FTAVG) ? '(' . number_format($match->localTeam_playerTotals()->FTAVG, 0) . '%)' : '' }}
 					</p>
 					<p class="flex-1 text-center px-3 uppercase font-bold text-sm md:text-base lg:text-xl text-gray-500 dark:text-gray-300">tiros libres</p>
 					<p class="w-24 md:w-36 lg:w-40 text-right md:pr-3 text-sm md:text-base lg:text-xl font-bold {{ $match->visitorTeam_playerTotals()->FTAVG > $match->localTeam_playerTotals()->FTAVG ? 'text-black dark:text-yellow-400' : 'text-gray-500 dark:text-gray-300' }}">
-						{{ isset($match->visitorTeam_playerTotals()->FTM) ? $match->visitorTeam_playerTotals()->FTM : '-' }}/{{ isset($match->visitorTeam_playerTotals()->FTA) ? $match->visitorTeam_playerTotals()->FTA : '-' }} ({{ isset($match->visitorTeam_playerTotals()->FTAVG) ? number_format($match->visitorTeam_playerTotals()->FTAVG, 0) : '-' }}%)
+						{{ isset($match->visitorTeam_playerTotals()->FTM) ? $match->visitorTeam_playerTotals()->FTM : '-' }}/{{ isset($match->visitorTeam_playerTotals()->FTA) ? $match->visitorTeam_playerTotals()->FTA : '-' }} {{ isset($match->visitorTeam_playerTotals()->FTAVG) ? '(' . number_format($match->visitorTeam_playerTotals()->FTAVG, 0) . '%)' : '' }}
 					</p>
 				</div>
 			</div>

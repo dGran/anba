@@ -1,5 +1,7 @@
 <?php
 
+$currentSeason = \App\Models\Season::where('current', 1)->first();
+
 return [
 
     /*
@@ -259,28 +261,44 @@ return [
             'route'       => 'admin.seasons',
             'icon'        => 'fas fa-calendar',
         ],
-        // [
-        //     'text'        => 'Partidos',
-        //     'route'       => 'admin.matches',
-        //     'icon'        => 'fas fa-basketball-ball',
-        // ],
+        ['header' => $currentSeason->name],
         [
-            'text'        => 'Reportes',
+            'text'        => 'Liga regular',
+            'url'         => 'admin/temporadas/' . $currentSeason->slug . '/partidos',
+            'icon'        => 'fas fa-basketball-ball',
+        ],
+        [
+            'text'        => 'Playoffs',
             'route'       => 'home',
-            'icon'        => 'fas fa-tasks',
+            'icon'        => 'fas fa-basketball-ball',
             'label'       => 'PENDING',
             'label_color' => 'warning',
         ],
+        // [
+        //     'text'        => 'Reportes',
+        //     'route'       => 'home',
+        //     'icon'        => 'fas fa-tasks',
+        //     'label'       => 'PENDING',
+        //     'label_color' => 'warning',
+        // ],
+        ['header' => 'CONTENIDOS'],
         [
             'text'        => 'Noticias',
             'route'       => 'admin.posts',
             'icon'        => 'bx bx-news',
         ],
         [
-            'text'        => 'Enfermería',
-            'route'       => 'admin.posts',
-            'icon'        => 'fas fa-briefcase-medical',
+            'text'        => 'Declaraciones',
+            'route'       => 'home',
+            'icon'        => 'fas fa-microphone-alt',
+            'label'       => 'PENDING',
+            'label_color' => 'warning',
         ],
+        // [
+        //     'text'        => 'Enfermería',
+        //     'route'       => 'admin.posts',
+        //     'icon'        => 'fas fa-briefcase-medical',
+        // ],
         ['header' => 'TABLAS GENERALES'],
         [
             'text'        => 'Jugadores',

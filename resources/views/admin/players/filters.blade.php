@@ -20,6 +20,11 @@
 		            <a class="dropdown-item d-flex align-items-center" wire:click="edit({{ $regsSelected->first()->id }})">
 		            	<i class='bx bxs-edit-alt mr-2'></i>Editar
 		            </a>
+		            @if (!$regsSelected->first()->retired)
+			            <a class="dropdown-item d-flex align-items-center" wire:click="editState({{ $regsSelected->first()->id }})">
+			            	<i class='fas fa-briefcase-medical mr-2'></i>Editar estado
+			            </a>
+		            @endif
 	            @endif
 	            @if ($regsSelected->count() == 1)
 		            <a class="dropdown-item d-flex align-items-center" wire:click="view({{ $regsSelected->first()->id }})">
@@ -76,6 +81,7 @@
 				<div class="dropdown-menu dropdown-menu-right">
 		            <h6 class="dropdown-header">Opciones de tabla</h6>
 		            <div class="dropdown-divider"></div>
+		            <a class="dropdown-item d-flex align-items-center {{ $regs->count() == 0 ? 'disabled' : '' }}" wire:click="confirmRestoreStates"><i class="bx bxs-file-import mr-2"></i>Recuperar estado</a>
 		            <a class="dropdown-item d-flex align-items-center" wire:click="confirmImport"><i class="bx bxs-file-import mr-2"></i>Importar</a>
 		            <div class="dropdown-divider"></div>
 		            <a class="dropdown-item d-flex align-items-center {{ $regs->count() == 0 ? 'disabled' : '' }}" wire:click="confirmExportTable('xls')"><i class="bx bxs-file-export mr-2"></i>Exportar (.xls)</a>

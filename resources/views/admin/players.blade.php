@@ -43,9 +43,11 @@
     {{-- modals --}}
     @include('admin.players.modals.add')
     @include('admin.players.modals.edit')
+    @include('admin.players.modals.edit_state')
     @include('admin.players.modals.filters')
     @include('admin.players.modals.transfer')
     @include('admin.players.modals.view')
+    @include('admin.players.modals.restore_states')
 
     @include('admin.partials.modals.destroy')
     @include('admin.partials.modals.duplicate')

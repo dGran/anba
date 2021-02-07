@@ -84,7 +84,15 @@
 			<span class="d-inline-block cursor-pointer" wire:click="setOrder('road')">Vis</span>
 		@endif
 	</th>
-	<th class="text-center">ot</th>
+	<th class="text-center">
+		@if ($order == 'ot')
+			<span class="d-inline-block cursor-pointer" wire:click="setOrder('ot_desc')">OT<i class="fas fa-sort pl-1"></i></span>
+		@elseif ($order == 'ot_desc')
+			<span class="d-inline-block cursor-pointer" wire:click="setOrder('ot')">OT<i class="fas fa-sort pl-1"></i></span>
+		@else
+			<span class="d-inline-block cursor-pointer" wire:click="setOrder('ot')">OT</span>
+		@endif
+	</th>
 	<th class="text-center">
 		@if ($order == 'last10')
 			<span class="d-inline-block cursor-pointer" wire:click="setOrder('last10_desc')">Ult 10<i class="fas fa-sort pl-1"></i></span>

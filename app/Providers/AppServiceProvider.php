@@ -31,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
         view()->share('usersOnline', $usersOnline);
         $visitorsOnline = \App\Models\Session::whereNull('user_id')->distinct('ip_address')->count('ip_address');
         view()->share('visitorsOnline', $visitorsOnline);
-        $currentSeason = \App\Models\Season::orderBy('id', 'desc')->first();
+        $currentSeason = \App\Models\Season::where('current', 1)->first();
         view()->share('currentSeason', $currentSeason);
 
         VerifyEmail::toMailUsing(function ($notifiable, $url) {

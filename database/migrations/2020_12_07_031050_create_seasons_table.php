@@ -16,6 +16,10 @@ class CreateSeasonsTable extends Migration
         Schema::create('seasons', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
+            $table->integer('direct_playoffs_start')->nullable();
+            $table->integer('direct_playoffs_end')->nullable();
+            $table->integer('play_in_start')->nullable();
+            $table->integer('play_in_end')->nullable();
             $table->boolean('current')->default(0);
             $table->string('slug');
             $table->timestamps();

@@ -6,7 +6,30 @@
             <p class="text-xs pt-1 m-0">{{ $message }}</p>
         @enderror
     </div>
+</div>
 
+<div class="form-row">
+    <div class="form-group col-md-6 mb-1">
+        <label class="text-sm text-uppercase tracking-wide">Direct PlayOffs Start</label>
+        <input type="number" class="form-control text-sm" wire:model="direct_playoffs_start">
+    </div>
+    <div class="form-group col-md-6 mb-1">
+        <label class="text-sm text-uppercase tracking-wide">Direct PlayOffs End</label>
+        <input type="number" class="form-control text-sm" wire:model="direct_playoffs_end">
+    </div>
+    <p class="col-md-12 text-sm text-info">Posiciones (desde/hasta) de clasificación directa a Playoffs</p>
+</div>
+
+<div class="form-row">
+    <div class="form-group col-md-6 mb-1">
+        <label class="text-sm text-uppercase tracking-wide">Play-in Start</label>
+        <input type="number" class="form-control text-sm" wire:model="play_in_start">
+    </div>
+    <div class="form-group col-md-6 mb-1">
+        <label class="text-sm text-uppercase tracking-wide">Play-in End</label>
+        <input type="number" class="form-control text-sm" wire:model="play_in_end">
+    </div>
+    <p class="col-md-12 text-sm text-info">Posiciones (desde/hasta) de clasificación a Play-in</p>
 </div>
 
 <div class="form-row mt-2">

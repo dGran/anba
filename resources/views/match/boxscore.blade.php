@@ -2,7 +2,10 @@
 
 	<div class="px-4 py-3">
 
-		<p class="uppercase text-sm md:text-2xl font-bold tracking-wider border-b border-gray-150 dark:border-gray-650 pb-2">boxscore</p>
+		<div class="flex items-center justify-between border-b border-gray-150 dark:border-gray-650 pb-2">
+			<p class="uppercase text-sm md:text-2xl font-bold tracking-wider">boxscore</p>
+			<button class="text-sm focus:outline-none hover:underline focus:underline" wire:click="setOrder('default')">Orden por defecto</button>
+		</div>
 
 		@if ($players_stats)
 
@@ -20,22 +23,214 @@
 	                        <tr>
 	                            <th class="text-left py-1.5 bg-white dark:bg-gray-750" style="width: 275px; min-width: 200px; max-width: 275px; left: 0px; position: sticky; position: -webkit-sticky;">JUGADOR</th>
 	                            <th class="text-center"></th>
-	                            <th class="text-center w-14">MIN</th>
-	                            <th class="text-center w-14">PTS</th>
-	                            <th class="text-center w-14">REB</th>
-	                            <th class="text-center w-14">AST</th>
-	                            <th class="text-center w-14">ROB</th>
-	                            <th class="text-center w-14">TAP</th>
-	                            <th class="text-center w-14">PER</th>
-	                            <th class="text-center w-14">FGM</th>
-	                            <th class="text-center w-14">FGA</th>
-	                            <th class="text-center w-14">3PM</th>
-	                            <th class="text-center w-14">3PA</th>
-	                            <th class="text-center w-14">TLM</th>
-	                            <th class="text-center w-14">TLA</th>
-	                            <th class="text-center w-14">RO</th>
-	                            <th class="text-center w-14">FP</th>
-	                            <th class="text-center w-14">+/-</th>
+	                            <th class="text-center w-14 select-none">
+									@if ($boxscore_order == 'MIN')
+								    	<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('MIN_desc')">MIN<i class="fas fa-sort-amount-up-alt pl-1 text-xs"></i></span>
+										</div>
+									@elseif ($boxscore_order == 'MIN_desc')
+										<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('MIN')">MIN<i class="fas fa-sort-amount-down pl-1 text-xs"></i></span>
+										</div>
+									@else
+										<span class="cursor-pointer" wire:click="setOrder('MIN_desc')">MIN</span>
+									@endif
+	                            </th>
+	                            <th class="text-center w-14 select-none">
+									@if ($boxscore_order == 'PTS')
+								    	<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('PTS_desc')">PTS<i class="fas fa-sort-amount-up-alt pl-1 text-xs"></i></span>
+										</div>
+									@elseif ($boxscore_order == 'PTS_desc')
+										<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('PTS')">PTS<i class="fas fa-sort-amount-down pl-1 text-xs"></i></span>
+										</div>
+									@else
+										<span class="cursor-pointer" wire:click="setOrder('PTS_desc')">PTS</span>
+									@endif
+	                            </th>
+	                            <th class="text-center w-14 select-none">
+									@if ($boxscore_order == 'REB')
+								    	<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('REB_desc')">REB<i class="fas fa-sort-amount-up-alt pl-1 text-xs"></i></span>
+										</div>
+									@elseif ($boxscore_order == 'REB_desc')
+										<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('REB')">REB<i class="fas fa-sort-amount-down pl-1 text-xs"></i></span>
+										</div>
+									@else
+										<span class="cursor-pointer" wire:click="setOrder('REB_desc')">REB</span>
+									@endif
+	                            </th>
+	                            <th class="text-center w-14 select-none">
+									@if ($boxscore_order == 'AST')
+								    	<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('AST_desc')">AST<i class="fas fa-sort-amount-up-alt pl-1 text-xs"></i></span>
+										</div>
+									@elseif ($boxscore_order == 'AST_desc')
+										<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('AST')">AST<i class="fas fa-sort-amount-down pl-1 text-xs"></i></span>
+										</div>
+									@else
+										<span class="cursor-pointer" wire:click="setOrder('AST_desc')">AST</span>
+									@endif
+	                            </th>
+	                            <th class="text-center w-14 select-none">
+									@if ($boxscore_order == 'ROB')
+								    	<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('ROB_desc')">ROB<i class="fas fa-sort-amount-up-alt pl-1 text-xs"></i></span>
+										</div>
+									@elseif ($boxscore_order == 'ROB_desc')
+										<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('ROB')">ROB<i class="fas fa-sort-amount-down pl-1 text-xs"></i></span>
+										</div>
+									@else
+										<span class="cursor-pointer" wire:click="setOrder('ROB_desc')">ROB</span>
+									@endif
+	                            </th>
+	                            <th class="text-center w-14 select-none">
+									@if ($boxscore_order == 'TAP')
+								    	<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('TAP_desc')">TAP<i class="fas fa-sort-amount-up-alt pl-1 text-xs"></i></span>
+										</div>
+									@elseif ($boxscore_order == 'TAP_desc')
+										<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('TAP')">TAP<i class="fas fa-sort-amount-down pl-1 text-xs"></i></span>
+										</div>
+									@else
+										<span class="cursor-pointer" wire:click="setOrder('TAP_desc')">TAP</span>
+									@endif
+	                            </th>
+	                            <th class="text-center w-14 select-none">
+									@if ($boxscore_order == 'PER')
+								    	<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('PER_desc')">PER<i class="fas fa-sort-amount-up-alt pl-1 text-xs"></i></span>
+										</div>
+									@elseif ($boxscore_order == 'PER_desc')
+										<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('PER')">PER<i class="fas fa-sort-amount-down pl-1 text-xs"></i></span>
+										</div>
+									@else
+										<span class="cursor-pointer" wire:click="setOrder('PER_desc')">PER</span>
+									@endif
+	                            </th>
+	                            <th class="text-center w-14 select-none">
+									@if ($boxscore_order == 'FGM')
+								    	<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('FGM_desc')">FGM<i class="fas fa-sort-amount-up-alt pl-1 text-xs"></i></span>
+										</div>
+									@elseif ($boxscore_order == 'FGM_desc')
+										<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('FGM')">FGM<i class="fas fa-sort-amount-down pl-1 text-xs"></i></span>
+										</div>
+									@else
+										<span class="cursor-pointer" wire:click="setOrder('FGM_desc')">FGM</span>
+									@endif
+	                            </th>
+	                            <th class="text-center w-14 select-none">
+									@if ($boxscore_order == 'FGA')
+								    	<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('FGA_desc')">FGA<i class="fas fa-sort-amount-up-alt pl-1 text-xs"></i></span>
+										</div>
+									@elseif ($boxscore_order == 'FGA_desc')
+										<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('FGA')">FGA<i class="fas fa-sort-amount-down pl-1 text-xs"></i></span>
+										</div>
+									@else
+										<span class="cursor-pointer" wire:click="setOrder('FGA_desc')">FGA</span>
+									@endif
+	                            </th>
+	                            <th class="text-center w-14 select-none">
+									@if ($boxscore_order == '3PM')
+								    	<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('3PM_desc')">3PM<i class="fas fa-sort-amount-up-alt pl-1 text-xs"></i></span>
+										</div>
+									@elseif ($boxscore_order == '3PM_desc')
+										<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('3PM')">3PM<i class="fas fa-sort-amount-down pl-1 text-xs"></i></span>
+										</div>
+									@else
+										<span class="cursor-pointer" wire:click="setOrder('3PM_desc')">3PM</span>
+									@endif
+	                            </th>
+	                            <th class="text-center w-14 select-none">
+									@if ($boxscore_order == '3PA')
+								    	<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('3PA_desc')">3PA<i class="fas fa-sort-amount-up-alt pl-1 text-xs"></i></span>
+										</div>
+									@elseif ($boxscore_order == '3PA_desc')
+										<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('3PA')">3PA<i class="fas fa-sort-amount-down pl-1 text-xs"></i></span>
+										</div>
+									@else
+										<span class="cursor-pointer" wire:click="setOrder('3PA_desc')">3PA</span>
+									@endif
+	                            </th>
+	                            <th class="text-center w-14 select-none">
+									@if ($boxscore_order == 'TLM')
+								    	<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('TLM_desc')">TLM<i class="fas fa-sort-amount-up-alt pl-1 text-xs"></i></span>
+										</div>
+									@elseif ($boxscore_order == 'TLM_desc')
+										<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('TLM')">TLM<i class="fas fa-sort-amount-down pl-1 text-xs"></i></span>
+										</div>
+									@else
+										<span class="cursor-pointer" wire:click="setOrder('TLM_desc')">TLM</span>
+									@endif
+	                            </th>
+	                            <th class="text-center w-14 select-none">
+									@if ($boxscore_order == 'TLA')
+								    	<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('TLA_desc')">TLA<i class="fas fa-sort-amount-up-alt pl-1 text-xs"></i></span>
+										</div>
+									@elseif ($boxscore_order == 'TLA_desc')
+										<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('TLA')">TLA<i class="fas fa-sort-amount-down pl-1 text-xs"></i></span>
+										</div>
+									@else
+										<span class="cursor-pointer" wire:click="setOrder('TLA_desc')">TLA</span>
+									@endif
+	                            </th>
+	                            <th class="text-center w-14 select-none">
+									@if ($boxscore_order == 'RO')
+								    	<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('RO_desc')">RO<i class="fas fa-sort-amount-up-alt pl-1 text-xs"></i></span>
+										</div>
+									@elseif ($boxscore_order == 'RO_desc')
+										<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('RO')">RO<i class="fas fa-sort-amount-down pl-1 text-xs"></i></span>
+										</div>
+									@else
+										<span class="cursor-pointer" wire:click="setOrder('RO_desc')">RO</span>
+									@endif
+	                            </th>
+	                            <th class="text-center w-14 select-none">
+									@if ($boxscore_order == 'FP')
+								    	<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('FP_desc')">FP<i class="fas fa-sort-amount-up-alt pl-1 text-xs"></i></span>
+										</div>
+									@elseif ($boxscore_order == 'FP_desc')
+										<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('FP')">FP<i class="fas fa-sort-amount-down pl-1 text-xs"></i></span>
+										</div>
+									@else
+										<span class="cursor-pointer" wire:click="setOrder('FP_desc')">FP</span>
+									@endif
+	                            </th>
+	                            <th class="text-center w-14 select-none">
+									@if ($boxscore_order == '+/-')
+								    	<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('+/-_desc')">+/-<i class="fas fa-sort-amount-up-alt pl-1 text-xs"></i></span>
+										</div>
+									@elseif ($boxscore_order == '+/-_desc')
+										<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('+/-')">+/-<i class="fas fa-sort-amount-down pl-1 text-xs"></i></span>
+										</div>
+									@else
+										<span class="cursor-pointer" wire:click="setOrder('+/-_desc')">+/-</span>
+									@endif
+	                            </th>
 	                        </tr>
 	                    </thead>
 	                    <tbody>
@@ -44,11 +239,16 @@
 	                                <tr class="border-t border-gray-150 dark:border-gray-650">
 	                                    <td style="width: 275px; min-width: 200px; max-width: 275px; left: 0px; position: sticky; position: -webkit-sticky;" class="truncate bg-white dark:bg-gray-750">
 	                                        <div class="flex items-center justify-between my-1 border-r border-gray-150 dark:border-gray-650">
-	                                            <img src="{{ $player['player_img'] }}" alt="{{ $player['player_name'] }}" class="rounded-full border border-gray-150 dark:border-gray-650 w-8 h-8 object-cover" style="{{ $player['player_injury'] ? 'filter: grayscale(100%)' : '' }}">
+	                                            <img src="{{ $player['player_img'] }}" alt="{{ $player['player_name'] }}" class="rounded-full border border-gray-150 dark:border-gray-650 w-8 h-8 object-cover" style="{{ $player['injury_id'] && !$player['injury_playable'] ? 'filter: grayscale(100%)' : '' }}">
 	                                            <div class="flex-1 truncate ml-2">
-	                                                <span class="truncate {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}">{{ $player['player_name'] }}</span>
+	                                                <span class="truncate {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}">{{ $player['player_name'] }}</span>
 	                                                <span class="truncate block text-gray-500 dark:text-gray-400 uppercase text-xxs">{{ $player['player_pos'] }} - {{ $player['player_position'] }}</span>
 	                                            </div>
+												@if ($player['injury_id'] && $player['injury_playable'])
+													<span class="mr-3 rounded-full w-6 h-6 border border-transparent text-sm flex flex-wrap justify-center content-center bg-yellow-300">
+														<i class="fas fa-briefcase-medical text-white pb-0.5"></i>
+													</span>
+		                                    	@endif
 	                                        </div>
 	                                    </td>
 	                                    <td class="pl-3">
@@ -57,63 +257,63 @@
 													T
 												</span>
 											@endif
-											@if ($player['player_injury'])
+											@if ($player['injury_id'] && !$player['injury_playable'])
 												<span class="rounded-full w-6 h-6 border border-transparent text-sm flex flex-wrap justify-center content-center bg-pretty-red">
 													<i class="fas fa-briefcase-medical text-white pb-0.5"></i>
 												</span>
 	                                    	@endif
 	                                    </td>
-	                                    @if ($player['player_injury'])
-	                                    	<td colspan="99">
+	                                    @if ($player['injury_id'] && !$player['injury_playable'])
+	                                    	<td colspan="99" class="px-3 text-gray-500 dark:text-gray-400">
 	                                    		{{ $player['injury_name'] }}
 	                                    	</td>
 	                                    @else
-		                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
+		                                    <td class="text-center w-14 {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
 		                                    	<span>{{ isset($player['MIN']) ? $player['MIN'] : '-' }}</span>
 		                                    </td>
-		                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
+		                                    <td class="text-center w-14 {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
 		                                    	<span>{{ isset($player['PTS']) ? $player['PTS'] : '-' }}</span>
 		                                    </td>
-		                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
+		                                    <td class="text-center w-14 {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
 		                                    	<span>{{ isset($player['REB']) ? $player['REB'] : '-' }}</span>
 		                                    </td>
-		                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
+		                                    <td class="text-center w-14 {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
 		                                    	<span>{{ isset($player['AST']) ? $player['AST'] : '-' }}</span>
 		                                    </td>
-		                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
+		                                    <td class="text-center w-14 {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
 		                                    	<span>{{ isset($player['STL']) ? $player['STL'] : '-' }}</span>
 		                                    </td>
-		                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
+		                                    <td class="text-center w-14 {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
 		                                    	<span>{{ isset($player['BLK']) ? $player['BLK'] : '-' }}</span>
 		                                    </td>
-		                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
+		                                    <td class="text-center w-14 {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
 		                                    	<span>{{ isset($player['LOS']) ? $player['LOS'] : '-' }}</span>
 		                                    </td>
-		                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
+		                                    <td class="text-center w-14 {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
 		                                    	<span>{{ isset($player['FGM']) ? $player['FGM'] : '-' }}</span>
 		                                    </td>
-		                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
+		                                    <td class="text-center w-14 {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
 		                                    	<span>{{ isset($player['FGA']) ? $player['FGA'] : '-' }}</span>
 		                                    </td>
-		                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
+		                                    <td class="text-center w-14 {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
 		                                    	<span>{{ isset($player['TPM']) ? $player['TPM'] : '-' }}</span>
 		                                    </td>
-		                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
+		                                    <td class="text-center w-14 {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
 		                                    	<span>{{ isset($player['TPA']) ? $player['TPA'] : '-' }}</span>
 		                                    </td>
-		                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
+		                                    <td class="text-center w-14 {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
 		                                    	<span>{{ isset($player['FTM']) ? $player['FTM'] : '-' }}</span>
 		                                    </td>
-		                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
+		                                    <td class="text-center w-14 {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
 		                                    	<span>{{ isset($player['FTA']) ? $player['FTA'] : '-' }}</span>
 		                                    </td>
-		                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
+		                                    <td class="text-center w-14 {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
 		                                    	<span>{{ isset($player['ORB']) ? $player['ORB'] : '-' }}</span>
 		                                    </td>
-		                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
+		                                    <td class="text-center w-14 {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
 		                                    	<span>{{ isset($player['PF']) ? $player['PF'] : '-' }}</span>
 		                                    </td>
-		                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
+		                                    <td class="text-center w-14 {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
 		                                    	<span>{{ isset($player['ML']) ? $player['ML'] : '- '}}</span>
 		                                    </td>
 	                                    @endif
@@ -143,22 +343,214 @@
 	                        <tr>
 	                            <th class="text-left py-1.5 bg-white dark:bg-gray-750" style="width: 275px; min-width: 200px; max-width: 275px; left: 0px; position: sticky; position: -webkit-sticky;">JUGADOR</th>
 	                            <th class="text-center"></th>
-	                            <th class="text-center w-14">MIN</th>
-	                            <th class="text-center w-14">PTS</th>
-	                            <th class="text-center w-14">REB</th>
-	                            <th class="text-center w-14">AST</th>
-	                            <th class="text-center w-14">ROB</th>
-	                            <th class="text-center w-14">TAP</th>
-	                            <th class="text-center w-14">PER</th>
-	                            <th class="text-center w-14">FGM</th>
-	                            <th class="text-center w-14">FGA</th>
-	                            <th class="text-center w-14">3PM</th>
-	                            <th class="text-center w-14">3PA</th>
-	                            <th class="text-center w-14">TLM</th>
-	                            <th class="text-center w-14">TLA</th>
-	                            <th class="text-center w-14">RO</th>
-	                            <th class="text-center w-14">FP</th>
-	                            <th class="text-center w-14">+/-</th>
+	                            <th class="text-center w-14 select-none">
+									@if ($boxscore_order == 'MIN')
+								    	<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('MIN_desc')">MIN<i class="fas fa-sort-amount-up-alt pl-1 text-xs"></i></span>
+										</div>
+									@elseif ($boxscore_order == 'MIN_desc')
+										<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('MIN')">MIN<i class="fas fa-sort-amount-down pl-1 text-xs"></i></span>
+										</div>
+									@else
+										<span class="cursor-pointer" wire:click="setOrder('MIN_desc')">MIN</span>
+									@endif
+	                            </th>
+	                            <th class="text-center w-14 select-none">
+									@if ($boxscore_order == 'PTS')
+								    	<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('PTS_desc')">PTS<i class="fas fa-sort-amount-up-alt pl-1 text-xs"></i></span>
+										</div>
+									@elseif ($boxscore_order == 'PTS_desc')
+										<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('PTS')">PTS<i class="fas fa-sort-amount-down pl-1 text-xs"></i></span>
+										</div>
+									@else
+										<span class="cursor-pointer" wire:click="setOrder('PTS_desc')">PTS</span>
+									@endif
+	                            </th>
+	                            <th class="text-center w-14 select-none">
+									@if ($boxscore_order == 'REB')
+								    	<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('REB_desc')">REB<i class="fas fa-sort-amount-up-alt pl-1 text-xs"></i></span>
+										</div>
+									@elseif ($boxscore_order == 'REB_desc')
+										<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('REB')">REB<i class="fas fa-sort-amount-down pl-1 text-xs"></i></span>
+										</div>
+									@else
+										<span class="cursor-pointer" wire:click="setOrder('REB_desc')">REB</span>
+									@endif
+	                            </th>
+	                            <th class="text-center w-14 select-none">
+									@if ($boxscore_order == 'AST')
+								    	<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('AST_desc')">AST<i class="fas fa-sort-amount-up-alt pl-1 text-xs"></i></span>
+										</div>
+									@elseif ($boxscore_order == 'AST_desc')
+										<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('AST')">AST<i class="fas fa-sort-amount-down pl-1 text-xs"></i></span>
+										</div>
+									@else
+										<span class="cursor-pointer" wire:click="setOrder('AST_desc')">AST</span>
+									@endif
+	                            </th>
+	                            <th class="text-center w-14 select-none">
+									@if ($boxscore_order == 'ROB')
+								    	<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('ROB_desc')">ROB<i class="fas fa-sort-amount-up-alt pl-1 text-xs"></i></span>
+										</div>
+									@elseif ($boxscore_order == 'ROB_desc')
+										<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('ROB')">ROB<i class="fas fa-sort-amount-down pl-1 text-xs"></i></span>
+										</div>
+									@else
+										<span class="cursor-pointer" wire:click="setOrder('ROB_desc')">ROB</span>
+									@endif
+	                            </th>
+	                            <th class="text-center w-14 select-none">
+									@if ($boxscore_order == 'TAP')
+								    	<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('TAP_desc')">TAP<i class="fas fa-sort-amount-up-alt pl-1 text-xs"></i></span>
+										</div>
+									@elseif ($boxscore_order == 'TAP_desc')
+										<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('TAP')">TAP<i class="fas fa-sort-amount-down pl-1 text-xs"></i></span>
+										</div>
+									@else
+										<span class="cursor-pointer" wire:click="setOrder('TAP_desc')">TAP</span>
+									@endif
+	                            </th>
+	                            <th class="text-center w-14 select-none">
+									@if ($boxscore_order == 'PER')
+								    	<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('PER_desc')">PER<i class="fas fa-sort-amount-up-alt pl-1 text-xs"></i></span>
+										</div>
+									@elseif ($boxscore_order == 'PER_desc')
+										<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('PER')">PER<i class="fas fa-sort-amount-down pl-1 text-xs"></i></span>
+										</div>
+									@else
+										<span class="cursor-pointer" wire:click="setOrder('PER_desc')">PER</span>
+									@endif
+	                            </th>
+	                            <th class="text-center w-14 select-none">
+									@if ($boxscore_order == 'FGM')
+								    	<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('FGM_desc')">FGM<i class="fas fa-sort-amount-up-alt pl-1 text-xs"></i></span>
+										</div>
+									@elseif ($boxscore_order == 'FGM_desc')
+										<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('FGM')">FGM<i class="fas fa-sort-amount-down pl-1 text-xs"></i></span>
+										</div>
+									@else
+										<span class="cursor-pointer" wire:click="setOrder('FGM_desc')">FGM</span>
+									@endif
+	                            </th>
+	                            <th class="text-center w-14 select-none">
+									@if ($boxscore_order == 'FGA')
+								    	<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('FGA_desc')">FGA<i class="fas fa-sort-amount-up-alt pl-1 text-xs"></i></span>
+										</div>
+									@elseif ($boxscore_order == 'FGA_desc')
+										<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('FGA')">FGA<i class="fas fa-sort-amount-down pl-1 text-xs"></i></span>
+										</div>
+									@else
+										<span class="cursor-pointer" wire:click="setOrder('FGA_desc')">FGA</span>
+									@endif
+	                            </th>
+	                            <th class="text-center w-14 select-none">
+									@if ($boxscore_order == '3PM')
+								    	<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('3PM_desc')">3PM<i class="fas fa-sort-amount-up-alt pl-1 text-xs"></i></span>
+										</div>
+									@elseif ($boxscore_order == '3PM_desc')
+										<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('3PM')">3PM<i class="fas fa-sort-amount-down pl-1 text-xs"></i></span>
+										</div>
+									@else
+										<span class="cursor-pointer" wire:click="setOrder('3PM_desc')">3PM</span>
+									@endif
+	                            </th>
+	                            <th class="text-center w-14 select-none">
+									@if ($boxscore_order == '3PA')
+								    	<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('3PA_desc')">3PA<i class="fas fa-sort-amount-up-alt pl-1 text-xs"></i></span>
+										</div>
+									@elseif ($boxscore_order == '3PA_desc')
+										<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('3PA')">3PA<i class="fas fa-sort-amount-down pl-1 text-xs"></i></span>
+										</div>
+									@else
+										<span class="cursor-pointer" wire:click="setOrder('3PA_desc')">3PA</span>
+									@endif
+	                            </th>
+	                            <th class="text-center w-14 select-none">
+									@if ($boxscore_order == 'TLM')
+								    	<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('TLM_desc')">TLM<i class="fas fa-sort-amount-up-alt pl-1 text-xs"></i></span>
+										</div>
+									@elseif ($boxscore_order == 'TLM_desc')
+										<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('TLM')">TLM<i class="fas fa-sort-amount-down pl-1 text-xs"></i></span>
+										</div>
+									@else
+										<span class="cursor-pointer" wire:click="setOrder('TLM_desc')">TLM</span>
+									@endif
+	                            </th>
+	                            <th class="text-center w-14 select-none">
+									@if ($boxscore_order == 'TLA')
+								    	<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('TLA_desc')">TLA<i class="fas fa-sort-amount-up-alt pl-1 text-xs"></i></span>
+										</div>
+									@elseif ($boxscore_order == 'TLA_desc')
+										<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('TLA')">TLA<i class="fas fa-sort-amount-down pl-1 text-xs"></i></span>
+										</div>
+									@else
+										<span class="cursor-pointer" wire:click="setOrder('TLA_desc')">TLA</span>
+									@endif
+	                            </th>
+	                            <th class="text-center w-14 select-none">
+									@if ($boxscore_order == 'RO')
+								    	<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('RO_desc')">RO<i class="fas fa-sort-amount-up-alt pl-1 text-xs"></i></span>
+										</div>
+									@elseif ($boxscore_order == 'RO_desc')
+										<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('RO')">RO<i class="fas fa-sort-amount-down pl-1 text-xs"></i></span>
+										</div>
+									@else
+										<span class="cursor-pointer" wire:click="setOrder('RO_desc')">RO</span>
+									@endif
+	                            </th>
+	                            <th class="text-center w-14 select-none">
+									@if ($boxscore_order == 'FP')
+								    	<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('FP_desc')">FP<i class="fas fa-sort-amount-up-alt pl-1 text-xs"></i></span>
+										</div>
+									@elseif ($boxscore_order == 'FP_desc')
+										<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('FP')">FP<i class="fas fa-sort-amount-down pl-1 text-xs"></i></span>
+										</div>
+									@else
+										<span class="cursor-pointer" wire:click="setOrder('FP_desc')">FP</span>
+									@endif
+	                            </th>
+	                            <th class="text-center w-14 select-none">
+									@if ($boxscore_order == '+/-')
+								    	<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('+/-_desc')">+/-<i class="fas fa-sort-amount-up-alt pl-1 text-xs"></i></span>
+										</div>
+									@elseif ($boxscore_order == '+/-_desc')
+										<div class="w-14 flex items-center justify-center">
+											<span class="cursor-pointer" wire:click="setOrder('+/-')">+/-<i class="fas fa-sort-amount-down pl-1 text-xs"></i></span>
+										</div>
+									@else
+										<span class="cursor-pointer" wire:click="setOrder('+/-_desc')">+/-</span>
+									@endif
+	                            </th>
 	                        </tr>
 	                    </thead>
 	                    <tbody>
@@ -167,11 +559,16 @@
 	                                <tr class="border-t border-gray-150 dark:border-gray-650">
 	                                    <td style="width: 275px; min-width: 200px; max-width: 275px; left: 0px; position: sticky; position: -webkit-sticky;" class="truncate bg-white dark:bg-gray-750">
 	                                        <div class="flex items-center justify-between my-1 border-r border-gray-150 dark:border-gray-650">
-	                                            <img src="{{ $player['player_img'] }}" alt="{{ $player['player_name'] }}" class="rounded-full border border-gray-150 dark:border-gray-650 w-8 h-8 object-cover" style="{{ $player['player_injury'] ? 'filter: grayscale(100%)' : '' }}">
+	                                            <img src="{{ $player['player_img'] }}" alt="{{ $player['player_name'] }}" class="rounded-full border border-gray-150 dark:border-gray-650 w-8 h-8 object-cover" style="{{ $player['injury_id'] && !$player['injury_playable'] ? 'filter: grayscale(100%)' : '' }}">
 	                                            <div class="flex-1 truncate ml-2">
-	                                                <span class="truncate {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}">{{ $player['player_name'] }}</span>
+	                                                <span class="truncate {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}">{{ $player['player_name'] }}</span>
 	                                                <span class="truncate block text-gray-500 dark:text-gray-400 uppercase text-xxs">{{ $player['player_pos'] }} - {{ $player['player_position'] }}</span>
 	                                            </div>
+												@if ($player['injury_id'] && $player['injury_playable'])
+													<span class="mr-3 rounded-full w-6 h-6 border border-transparent text-sm flex flex-wrap justify-center content-center bg-yellow-300">
+														<i class="fas fa-briefcase-medical text-white pb-0.5"></i>
+													</span>
+		                                    	@endif
 	                                        </div>
 	                                    </td>
 	                                    <td class="pl-3">
@@ -180,63 +577,63 @@
 													T
 												</span>
 											@endif
-											@if ($player['player_injury'])
+											@if ($player['injury_id'] && !$player['injury_playable'])
 												<span class="rounded-full w-6 h-6 border border-transparent text-sm flex flex-wrap justify-center content-center bg-pretty-red">
 													<i class="fas fa-briefcase-medical text-white pb-0.5"></i>
 												</span>
 	                                    	@endif
 	                                    </td>
-	                                    @if ($player['player_injury'])
+	                                    @if ($player['injury_id'] && !$player['injury_playable'])
 	                                    	<td colspan="99" class="px-3 text-gray-500 dark:text-gray-400">
 	                                    		{{ $player['injury_name'] }}
 	                                    	</td>
 	                                    @else
-		                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
+		                                    <td class="text-center w-14 {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
 		                                    	<span>{{ isset($player['MIN']) ? $player['MIN'] : '-' }}</span>
 		                                    </td>
-		                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
+		                                    <td class="text-center w-14 {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
 		                                    	<span>{{ isset($player['PTS']) ? $player['PTS'] : '-' }}</span>
 		                                    </td>
-		                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
+		                                    <td class="text-center w-14 {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
 		                                    	<span>{{ isset($player['REB']) ? $player['REB'] : '-' }}</span>
 		                                    </td>
-		                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
+		                                    <td class="text-center w-14 {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
 		                                    	<span>{{ isset($player['AST']) ? $player['AST'] : '-' }}</span>
 		                                    </td>
-		                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
+		                                    <td class="text-center w-14 {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
 		                                    	<span>{{ isset($player['STL']) ? $player['STL'] : '-' }}</span>
 		                                    </td>
-		                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
+		                                    <td class="text-center w-14 {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
 		                                    	<span>{{ isset($player['BLK']) ? $player['BLK'] : '-' }}</span>
 		                                    </td>
-		                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
+		                                    <td class="text-center w-14 {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
 		                                    	<span>{{ isset($player['LOS']) ? $player['LOS'] : '-' }}</span>
 		                                    </td>
-		                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
+		                                    <td class="text-center w-14 {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
 		                                    	<span>{{ isset($player['FGM']) ? $player['FGM'] : '-' }}</span>
 		                                    </td>
-		                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
+		                                    <td class="text-center w-14 {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
 		                                    	<span>{{ isset($player['FGA']) ? $player['FGA'] : '-' }}</span>
 		                                    </td>
-		                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
+		                                    <td class="text-center w-14 {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
 		                                    	<span>{{ isset($player['TPM']) ? $player['TPM'] : '-' }}</span>
 		                                    </td>
-		                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
+		                                    <td class="text-center w-14 {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
 		                                    	<span>{{ isset($player['TPA']) ? $player['TPA'] : '-' }}</span>
 		                                    </td>
-		                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
+		                                    <td class="text-center w-14 {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
 		                                    	<span>{{ isset($player['FTM']) ? $player['FTM'] : '-' }}</span>
 		                                    </td>
-		                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
+		                                    <td class="text-center w-14 {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
 		                                    	<span>{{ isset($player['FTA']) ? $player['FTA'] : '-' }}</span>
 		                                    </td>
-		                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
+		                                    <td class="text-center w-14 {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
 		                                    	<span>{{ isset($player['ORB']) ? $player['ORB'] : '-' }}</span>
 		                                    </td>
-		                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
+		                                    <td class="text-center w-14 {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
 		                                    	<span>{{ isset($player['PF']) ? $player['PF'] : '-' }}</span>
 		                                    </td>
-		                                    <td class="text-center w-14 {{ $player['player_injury'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
+		                                    <td class="text-center w-14 {{ $player['injury_id'] && !$player['injury_playable'] ? 'text-gray-500 dark:text-gray-400' : '' }}" style="min-width: 2.5rem">
 		                                    	<span>{{ isset($player['ML']) ? $player['ML'] : '- '}}</span>
 		                                    </td>
 										@endif

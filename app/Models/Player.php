@@ -25,6 +25,10 @@ class Player extends Model
         'draft_year',
         'average',
         'retired',
+        'injury_id',
+        'injury_matches',
+        'injury_days',
+        'injury_playable',
         'slug'
     ];
 
