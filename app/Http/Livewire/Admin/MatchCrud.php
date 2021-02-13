@@ -614,7 +614,7 @@ class MatchCrud extends Component
     {
     	$this->emit('closeExportTableModal');
 
-    	$filename = $this->filenameExportTable ?: 'divisiones';
+    	$filename = $this->filenameExportTable ?: 'partidos';
 
     	$regs = Match::
    			leftjoin('seasons_teams', function($join){
@@ -652,7 +652,7 @@ class MatchCrud extends Component
     {
     	$this->emit('closeExportSelectedModal');
 
-    	$filename = $this->filenameExportSelected ?: 'divisiones_seleccionadas';
+    	$filename = $this->filenameExportSelected ?: 'partidos_seleccionados';
 
     	$regs = Match::
    			leftjoin('seasons_teams', function($join){
@@ -692,6 +692,44 @@ class MatchCrud extends Component
         	session()->flash('error', 'Ningún archivo seleccionado.');
         }
     	$this->emit('closeImportModal');
+    }
+
+    public function confirmCheckMatches()
+    {
+		$this->emit('openCheckMatchesModal');
+    }
+
+    public function checkMatches()
+    {
+    	$matches = Match::where('matches.season_id', $this->season->id)->get();
+    	$counter = 0;
+    	foreach ($matches as $match) {
+    		if (!$match->played()) {
+    			$before = $match->toJson(JSON_PRETTY_PRINT);
+				$local_team = SeasonTeam::find($match->local_team_id);
+				$visitor_team = SeasonTeam::find($match->visitor_team_id);
+
+				$validatedData['local_manager_id'] = $local_team->team->manager_id;
+				$validatedData['visitor_manager_id'] = $visitor_team->team->manager_id;
+				$validatedData['stadium'] = $local_team->team->stadium;
+
+				$match->fill($validatedData);
+
+		        if ($match->isDirty()) {
+		            if ($match->update()) {
+		            	event(new TableWasUpdated($match, 'update', $match->toJson(JSON_PRETTY_PRINT), $before));
+						$counter++;
+		            }
+		        }
+    		}
+    	}
+
+		if ($counter > 0) {
+			session()->flash('success', 'Registros editados correctamente!.');
+		} else {
+			session()->flash('info', 'No se han detectado cambios en los registros.');
+		}
+    	$this->emit('closeCheckMatchesModal');
     }
 
     // Pagination

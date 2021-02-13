@@ -54,7 +54,7 @@
 
                     <div class="form-row d-flex align-items-end justify-content-center py-2">
                     <div class="form-group col-2">
-                        <label>Prórrogas</label>
+                        <label>Num. Prórrogas</label>
                         <input type="number" min="0" max="99" maxlength = "2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control numericInput px-2" placeholder="-" wire:model="extra_times">
                     </div>
                 </div>

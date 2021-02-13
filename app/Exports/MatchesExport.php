@@ -29,7 +29,7 @@ class MatchesExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            'id', 'season_id', 'local_team_id', 'local_manager_id', 'visitor_team_id', 'visitor_manager_id', 'stadium'
+            'id', 'season_id', 'round_id', 'local_team_id', 'local_manager_id', 'visitor_team_id', 'visitor_manager_id', 'stadium', 'extra_times'
         ];
     }
 }

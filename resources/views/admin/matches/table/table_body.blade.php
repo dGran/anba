@@ -47,6 +47,9 @@
 					</div>
 					<div class="mx-3 text-center" style="min-width: 90px">
 	                	{{ $reg->score() }}
+	                	@if ($reg->extra_times > 0)
+	                		<p class="m-0 text-xs text-muted">*{{ $reg->extra_times }} {{ $reg->extra_times == 1 ? 'Prórroga' : 'Prórrogas' }}</p>
+	                	@endif
 					</div>
 	                <div>
 						<img src="{{ $reg->visitorTeam->team->getImg() }}" alt="{{ $reg->visitorTeam->team->short_name }}" style="width: 32px; height: 32px" class="rounded-circle border mr-1">

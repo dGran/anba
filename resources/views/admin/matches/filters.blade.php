@@ -58,6 +58,10 @@
 				<div class="dropdown-menu dropdown-menu-right">
 		            <h6 class="dropdown-header">Opciones de tabla</h6>
 		            <div class="dropdown-divider"></div>
+		            @if ($regs->count() > 0)
+		            	<a class="dropdown-item d-flex align-items-center" wire:click="confirmCheckMatches"><i class="bx bxs-file-import mr-2"></i>Chequear partidos</a>
+		            	<div class="dropdown-divider"></div>
+		            @endif
 		            <a class="dropdown-item d-flex align-items-center" wire:click="confirmImport"><i class="bx bxs-file-import mr-2"></i>Importar</a>
 		            <div class="dropdown-divider"></div>
 		            <a class="dropdown-item d-flex align-items-center {{ $regs->count() == 0 ? 'disabled' : '' }}" wire:click="confirmExportTable('xls')"><i class="bx bxs-file-export mr-2"></i>Exportar (.xls)</a>

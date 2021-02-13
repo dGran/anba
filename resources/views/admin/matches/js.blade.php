@@ -23,6 +23,14 @@
         $('#resetScoreModal').modal('hide');
     });
 
+    window.livewire.on('openCheckMatchesModal', () => {
+        $('.modal').modal('hide');
+        $('#checkMatchesModal').modal('show');
+    });
+    window.livewire.on('closeCheckMatchesModal', () => {
+        $('#checkMatchesModal').modal('hide');
+    });
+
     // $("numericInput").keydown(function(){
     //    if ($(this).val() === null) {
     //        $(this).val(0);
