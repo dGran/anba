@@ -1,45 +1,25 @@
-{{-- <style>
-    select {
-        background-image:
-        linear-gradient(45deg, transparent 50%, #B8BEC5 60%),
-        linear-gradient(135deg, #B8BEC5 40%, transparent 50%) !important;
-        background-position: calc(100% - 10px) 14px, calc(100% - 20px) 14px, 100% 0;
-        background-size: 5px 5px, 5px 5px;
-        background-repeat: no-repeat;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-    }
-</style> --}}
-
-
-<div wire:ignore.self class="modal fade" tabindex="-1" role="dialog" id="filterModal">
+<div wire:ignore.self class="modal fade" tabindex="-1" role="dialog" id="filtersModal" data-keyboard="true" data-backdrop="static">
     <div class="modal-dialog modal-dialog-scrollable non-selectable" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title text-base text-uppercase font-medium tracking-wide">
                     <span>Filtros</span>
                 </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="closeAnyModal">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
 
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="text-sm text-uppercase tracking-wide">Estado</label>
-                            {{-- <div wire:ignore> --}}
-                                <select class="form-control custom-select text-sm" wire:model="state">
-                                    <option value="all">Todos</option>
-                                    <option value="active">Activos</option>
-                                    <option value="inactive">Inactivos</option>
-                                </select>
-                            {{-- </div> --}}
-                        </div>
-                        <!-- /.form-group -->
+                    <div class="form-group col-md-6">
+                        <label class="text-sm text-uppercase tracking-wide">Estado</label>
+                        <select class="form-control custom-select text-sm" wire:model="filterActive">
+                            <option value="all">Todos los estados</option>
+                            <option value="active">Activas</option>
+                            <option value="inactive">Inactivas</option>
+                        </select>
                     </div>
-                    <!-- /.col -->
                 </div>
 
             	<div class="row">
@@ -49,8 +29,9 @@
 							{{-- <div wire:ignore> --}}
 								<select class="form-control custom-select text-sm" wire:model="order">
 									<option value="id">ID</option>
+                                    <option value="id_desc">ID (desc)</option>
 									<option value="name">Nombre</option>
-									<option value="created_at">Fecha registro</option>
+                                    <option value="name_desc">Nombre (desc)</option>
 								</select>
 							{{-- </div> --}}
             			</div>
@@ -81,7 +62,7 @@
                 <button type="button" class="btn btn-danger ml-2 text-xs text-uppercase tracking-widest" wire:click="clearAllFilters" wire:loading.attr="disabled">
                     Reset
                 </button>
-                <button type="button" class="btn btn-borderless ml-2 text-xs text-uppercase tracking-widest" data-dismiss="modal" wire:loading.attr="disabled">
+                <button type="button" class="btn btn-borderless ml-2 text-xs text-uppercase tracking-widest" data-dismiss="modal" wire:loading.attr="disabled" wire:click="closeAnyModal">
                     cerrar
                 </button>
             </div>

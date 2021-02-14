@@ -15,7 +15,7 @@ use App\Http\Livewire\Admin\ConferenceCrud;
 use App\Http\Livewire\Admin\DivisionCrud;
 use App\Http\Livewire\Admin\TeamCrud;
 use App\Http\Livewire\Admin\PlayerCrud;
-use App\Http\Livewire\Admin\UsersCrud;
+use App\Http\Livewire\Admin\UserCrud;
 use App\Http\Livewire\Admin\PostCrud;
 use App\Http\Livewire\Admin\ConfigNotificationsCrud;
 
@@ -62,7 +62,7 @@ Route::get('/reglamento', function () {
 // 	->name('teams');
 
 Route::middleware(['auth:sanctum', 'verified', 'role:super-admin|admin', 'password.confirm'])->prefix('admin')->group(function() {
-	Route::get('usuarios', UsersCrud::class)->name('admin.users');
+	Route::get('usuarios', UserCrud::class)->name('admin.users');
 
 	Route::get('/', Dashboard::class)->name('admin');
 	//good

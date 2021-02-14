@@ -26,7 +26,7 @@ class UserSeeder extends Seeder
         $role = Role::create(['name' => 'manager']);
 
         $user = User::create([
-            'name' => 'Carlos',
+            'name' => 'darthielo',
             'email' => 'darth0@gmail.com',
             'password' => Hash::make('password'),
             'email_verified_at' => now(),
@@ -45,17 +45,17 @@ class UserSeeder extends Seeder
         ]);
         $user->assignRole('admin');
 
-        for ($i=1; $i < 50; $i++) {
-            $name = 'user_test_' . $i;
-            $user = User::create([
-                'name' => $name,
-                'email' => $name . '@gmail.com',
-                'password' => Hash::make('secret'),
-                'email_verified_at' => now(),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-            $user->assignRole('guest');
-        }
+        // for ($i=1; $i < 50; $i++) {
+        //     $name = 'user_test_' . $i;
+        //     $user = User::create([
+        //         'name' => $name,
+        //         'email' => $name . '@gmail.com',
+        //         'password' => Hash::make('secret'),
+        //         'email_verified_at' => now(),
+        //         'created_at' => now(),
+        //         'updated_at' => now(),
+        //     ]);
+        //     $user->assignRole('guest');
+        // }
     }
 }

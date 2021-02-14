@@ -1,7 +1,9 @@
-@section('title', 'Usuarios')
+@section('title', 'Conferencias')
 
 @section('content_header')
-    <h1>Usuarios</h1>
+    <h5 class="content-header-name">
+        Usuarios
+    </h5>
 @stop
 
 @section('css')
@@ -13,9 +15,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mousetrap/1.6.3/mousetrap.min.js"></script>
     {{-- Toastr --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA==" crossorigin="anonymous" />
+    {{-- Bootstrap Datepicker --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" />
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css" integrity="sha512-ARJR74swou2y0Q2V9k0GbzQ/5vJ2RBSoCWokg4zkfM29Fb3vZEQyv0iWBMW/yvKgyHSR/7D64pFMmU8nYmbRkg==" crossorigin="anonymous" />
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
 @stop
@@ -23,27 +25,21 @@
 @section('js')
     {{-- Toastr --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js" integrity="sha512-yDlE7vpGDP7o2eftkCiPZ+yuUyEcaBwoJoIhdXv71KZWugFqEphIS3PU60lEkFaz8RxaVsMpSvQxMBaKVwA5xg==" crossorigin="anonymous"></script>
-    @include('admin.partials.js')
 
-    <script>
-        $(function () {
-            $('select').selectpicker();
-        });
-    </script>
+    @include('admin.partials.js')
 @stop
 
-{{-- @section('plugins.Sweetalert2', true) --}}
-
 <div class="py-2"> {{-- slot --}}
+
+    @include('admin.partials.session_messages')
     @include('admin.users.filters')
     @include('admin.users.table')
-    @include('admin.partials.table.table-footer')
 
     {{-- modals --}}
     @include('admin.users.modals.add')
     @include('admin.users.modals.edit')
     @include('admin.users.modals.filters')
+    @include('admin.users.modals.view')
 
     @include('admin.partials.modals.destroy')
     @include('admin.partials.modals.duplicate')
@@ -51,4 +47,12 @@
     @include('admin.partials.modals.export_table')
     @include('admin.partials.modals.export_selected')
     @include('admin.partials.modals.selected')
+
+    {{-- right-sidebar --}}
+    @if (config('adminlte.right_sidebar'))
+        <aside class="control-sidebar control-sidebar-{{ config('adminlte.right_sidebar_theme') }} shadow overflow-auto">
+            @include('admin.users.right-sidebar')
+        </aside>
+    @endif
+
 </div> {{-- end-slot --}}

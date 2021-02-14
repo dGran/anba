@@ -1,12 +1,17 @@
-<div class="admin-crud-table-wrapper shadow-sm">
+<div class="admin-crud-table-wrapper shadow-sm mt-2">
 	@if ($regs->count()>0)
-		<table class="admin-crud-table">
-			@include('admin.users.table.table-head')
-			@include('admin.users.table.table-body')
+		<table class="admin-crud-table {{ !$striped ?: 'striped' }}">
+			@include('admin.users.table.table_head')
+			@include('admin.users.table.table_body')
 		</table>
 	@else
 		<div class="p-3">
-			No hay resultados para la búsqueda <span class="text-primary">"{{ $search }}"</span>
+			No existen resultados
+			@if ($search || $filterActive != "all" || $perPage != "10")
+				con los filtros aplicados
+			@endif
 		</div>
 	@endif
 </div>
+
+@include('admin.partials.table.table_footer')
