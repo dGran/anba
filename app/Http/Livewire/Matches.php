@@ -9,7 +9,7 @@ use App\Models\Season;
 use App\Models\SeasonTeam;
 use App\Models\SeasonConference;
 use App\Models\SeasonDivision;
-use Livewire\withPagination;
+use Livewire\WithPagination;
 use Illuminate\Support\Collection;
 
 class Matches extends Component
