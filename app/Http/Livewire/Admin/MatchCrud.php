@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Livewire\Component;
-use Livewire\withPagination;
+use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use App\Exports\MatchesExport;
 use App\Imports\MatchesImport;

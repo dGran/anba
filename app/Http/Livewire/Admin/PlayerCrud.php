@@ -7,7 +7,7 @@ use App\Models\Team;
 use App\Models\Injury;
 use Illuminate\Support\Str;
 use Livewire\Component;
-use Livewire\withPagination;
+use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use App\Exports\PlayersExport;
 use App\Imports\PlayersImport;

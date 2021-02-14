@@ -6,7 +6,7 @@ use App\Models\Division;
 use App\Models\Conference;
 use Illuminate\Support\Str;
 use Livewire\Component;
-use Livewire\withPagination;
+use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use App\Exports\DivisionsExport;
 use App\Imports\DivisionsImport;

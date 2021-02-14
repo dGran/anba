@@ -5,7 +5,7 @@ namespace App\Http\Livewire\Admin;
 use App\Models\Post;
 use Illuminate\Support\Str;
 use Livewire\Component;
-use Livewire\withPagination;
+use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use App\Exports\PostsExport;
 use App\Imports\PostsImport;

@@ -5,7 +5,7 @@ namespace App\Http\Livewire\Admin;
 use App\Models\AdminLog;
 use App\Models\User;
 use Livewire\Component;
-use Livewire\withPagination;
+use Livewire\WithPagination;
 use App\Exports\AdminLogsExport;
 use Maatwebsite\Excel\Facades\Excel;
 

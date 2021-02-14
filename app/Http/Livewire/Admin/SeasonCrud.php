@@ -12,7 +12,7 @@ use App\Models\SeasonScoreHeader;
 
 use Illuminate\Support\Str;
 use Livewire\Component;
-use Livewire\withPagination;
+use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use App\Exports\SeasonsExport;
 use App\Imports\SeasonsImport;
