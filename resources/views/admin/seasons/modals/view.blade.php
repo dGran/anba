@@ -64,7 +64,7 @@
                             <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold text-xs">Equipos</div>
                             <div class="col-7 d-flex flex-column">
                                 @foreach ($regView->teams->sortBy(function ($team) { return $team->team->name; }) as $team)
-                                    <div class="flex-fill text-right text-sm">{{ $team->team->name }}</div>
+                                    <div class="flex-fill text-right text-sm">{{ $team->team->name }} - ID: {{ $team->id }}</div>
                                 @endforeach
                             </div>
                         </li>
