@@ -1605,8 +1605,11 @@ class MatchCrud extends Component
 
 	protected function loadTeamStats()
 	{
+
     	$this->teams_stats = Collection::make();
-		foreach ($this->regView->teamStats as $ts) {
+
+    	$ts = $this->regView->localTeam_teamTotals();
+    	if ($ts) {
 			$team_stat['season_team_id'] = $ts->season_team_id;
 			$team_stat['counterattack'] = $ts->counterattack;
 			$team_stat['zone'] = $ts->zone;
@@ -1622,7 +1625,74 @@ class MatchCrud extends Component
 			$team_stat['PF'] = $ts->PF;
 
 			$this->teams_stats->push($team_stat);
-		}
+    	} else {
+			$team_stat['season_team_id'] = $this->regView->localTeam->id;
+			$team_stat['counterattack'] = null;
+			$team_stat['zone'] = null;
+			$team_stat['second_oportunity'] = null;
+			$team_stat['substitute'] = null;
+			$team_stat['advantage'] = null;
+			$team_stat['AST'] = null;
+			$team_stat['DRB'] = null;
+			$team_stat['ORB'] = null;
+			$team_stat['STL'] = null;
+			$team_stat['BLK'] = null;
+			$team_stat['LOS'] = null;
+			$team_stat['PF'] = null;
+			$this->teams_stats->push($team_stat);
+    	}
+
+    	$ts = $this->regView->visitorTeam_teamTotals();
+    	if ($ts) {
+			$team_stat['season_team_id'] = $ts->season_team_id;
+			$team_stat['counterattack'] = $ts->counterattack;
+			$team_stat['zone'] = $ts->zone;
+			$team_stat['second_oportunity'] = $ts->second_oportunity;
+			$team_stat['substitute'] = $ts->substitute;
+			$team_stat['advantage'] = $ts->advantage;
+			$team_stat['AST'] = $ts->AST;
+			$team_stat['DRB'] = $ts->DRB;
+			$team_stat['ORB'] = $ts->ORB;
+			$team_stat['STL'] = $ts->STL;
+			$team_stat['BLK'] = $ts->BLK;
+			$team_stat['LOS'] = $ts->LOS;
+			$team_stat['PF'] = $ts->PF;
+
+			$this->teams_stats->push($team_stat);
+    	} else {
+			$team_stat['season_team_id'] = $this->regView->visitorTeam->id;
+			$team_stat['counterattack'] = null;
+			$team_stat['zone'] = null;
+			$team_stat['second_oportunity'] = null;
+			$team_stat['substitute'] = null;
+			$team_stat['advantage'] = null;
+			$team_stat['AST'] = null;
+			$team_stat['DRB'] = null;
+			$team_stat['ORB'] = null;
+			$team_stat['STL'] = null;
+			$team_stat['BLK'] = null;
+			$team_stat['LOS'] = null;
+			$team_stat['PF'] = null;
+			$this->teams_stats->push($team_stat);
+    	}
+
+		// foreach ($this->regView->teamStats as $ts) {
+		// 	$team_stat['season_team_id'] = $ts->season_team_id;
+		// 	$team_stat['counterattack'] = $ts->counterattack;
+		// 	$team_stat['zone'] = $ts->zone;
+		// 	$team_stat['second_oportunity'] = $ts->second_oportunity;
+		// 	$team_stat['substitute'] = $ts->substitute;
+		// 	$team_stat['advantage'] = $ts->advantage;
+		// 	$team_stat['AST'] = $ts->AST;
+		// 	$team_stat['DRB'] = $ts->DRB;
+		// 	$team_stat['ORB'] = $ts->ORB;
+		// 	$team_stat['STL'] = $ts->STL;
+		// 	$team_stat['BLK'] = $ts->BLK;
+		// 	$team_stat['LOS'] = $ts->LOS;
+		// 	$team_stat['PF'] = $ts->PF;
+
+		// 	$this->teams_stats->push($team_stat);
+		// }
 	}
 
 	protected function createMatchPosts($match_id)

@@ -307,7 +307,7 @@
                                 Estadísticas de equipo
                             </div>
 
-                            @if ($teams_stats[1])
+{{--                             @if ($teams_stats[1])
                                 <div class="admin-crud-team-stats-wrapper">
                                     <div class="d-inline-flex">
                                         @php
@@ -365,7 +365,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endif
+                            @endif --}}
 
 
                             <div class="text-sm text-uppercase tracking-wide pt-3 pb-2 px-1">
