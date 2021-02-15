@@ -65,7 +65,7 @@
                             @auth
                                 @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                                     <button class="group flex text-sm rounded-full focus:outline-none border border-transparent">
-                                        <img class="h-9 w-9 rounded-full object-cover transform group-hover:scale-110 group-focus:scale-110 transition duration-150 ease-in-out" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                                        <img class="h-10 w-10 border border-gray-500 dark:border-gray-700 rounded-full object-cover transform group-hover:scale-110 group-focus:scale-110 transition duration-150 ease-in-out" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
                                     </button>
                                 @else
                                     <button class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
@@ -81,7 +81,7 @@
                             @endauth
                             @guest
                                 <button class="group flex text-sm rounded-full focus:outline-none border border-transparent">
-                                    <img class="h-9 w-9 bg-gray-100 p-0.5 rounded-full object-cover transform group-hover:scale-110 group-focus:scale-110 transition duration-200 ease-in-out" src="{{ asset('img/guest.png') }}" alt="Invitado"/>
+                                    <img class="h-10 w-10 bg-gray-100 p-0.5 rounded-full object-cover transform group-hover:scale-110 group-focus:scale-110 transition duration-200 ease-in-out" src="{{ asset('img/guest.png') }}" alt="Invitado"/>
                                 </button>
                             @endguest
                         </div>
