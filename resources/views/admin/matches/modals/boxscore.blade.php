@@ -98,65 +98,63 @@
                                 Estadísticas de equipo
                             </div>
 
-                            @if ($teams_stats[0])
-                                <div class="admin-crud-team-stats-wrapper">
-                                    <div class="d-inline-flex">
-                                        @php
-                                            $total_reb = 0;
-                                            $total_reb += $teams_stats[0]['DRB'] ?: 0;
-                                            $total_reb += $teams_stats[0]['ORB'] ?: 0;
-                                        @endphp
-                                        <div class="d-flex flex-column pr-3" style="width: 135px">
-                                            <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">pts. contra</label>
-                                            <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[0]['counterattack'] == null && $teams_stats[0]['counterattack'] !== 0) ? 'border-danger' : '' }} {{ $teams_stats[0]['counterattack'] == null && $teams_stats[0]['counterattack'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 0 }}.counterattack">
-                                        </div>
-                                        <div class="d-flex flex-column pr-3" style="width: 135px">
-                                            <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">pts. Zona</label>
-                                            <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[0]['zone'] == null && $teams_stats[0]['zone'] !== 0) || $teams_stats[0]['zone'] > 200 ? 'border-danger' : '' }} {{ $teams_stats[0]['zone'] == null && $teams_stats[0]['zone'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 0 }}.zone">
-                                        </div>
-                                        <div class="d-flex flex-column pr-3" style="width: 135px">
-                                            <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">pts. 2da</label>
-                                            <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[0]['second_oportunity'] == null && $teams_stats[0]['second_oportunity'] !== 0) || $teams_stats[0]['second_oportunity'] > 150 ? 'border-danger' : '' }} {{ $teams_stats[0]['second_oportunity'] == null && $teams_stats[0]['second_oportunity'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 0 }}.second_oportunity">
-                                        </div>
-                                        <div class="d-flex flex-column pr-3" style="width: 135px">
-                                            <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">pts. Suplentes</label>
-                                            <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[0]['substitute'] == null && $teams_stats[0]['substitute'] !== 0) || $teams_stats[0]['substitute'] > 200 ? 'border-danger' : '' }} {{ $teams_stats[0]['substitute'] == null && $teams_stats[0]['substitute'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 0 }}.substitute">
-                                        </div>
-                                        <div class="d-flex flex-column pr-3" style="width: 135px">
-                                            <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">Asistencias</label>
-                                            <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[0]['AST'] == null && $teams_stats[0]['AST'] !== 0) || $teams_stats[0]['AST'] > 60 ? 'border-danger' : '' }} {{ $teams_stats[0]['AST'] == null && $teams_stats[0]['AST'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 0 }}.AST">
-                                        </div>
-                                        <div class="d-flex flex-column pr-3" style="width: 135px">
-                                            <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">rebotes OF</label>
-                                            <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[0]['ORB'] == null && $teams_stats[0]['ORB'] !== 0) || $total_reb > 150 ? 'border-danger' : '' }} {{ $teams_stats[0]['ORB'] == null && $teams_stats[0]['ORB'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 0 }}.ORB">
-                                        </div>
-                                        <div class="d-flex flex-column pr-3" style="width: 135px">
-                                            <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">rebotes DEF</label>
-                                            <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[0]['DRB'] == null && $teams_stats[0]['DRB'] !== 0) || $total_reb > 150 ? 'border-danger' : '' }} {{ $teams_stats[0]['DRB'] == null && $teams_stats[0]['DRB'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 0 }}.DRB">
-                                        </div>
-                                        <div class="d-flex flex-column pr-3" style="width: 135px">
-                                            <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">robos</label>
-                                            <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[0]['STL'] == null && $teams_stats[0]['STL'] !== 0) || $teams_stats[0]['STL'] > 60 ? 'border-danger' : '' }} {{ $teams_stats[0]['STL'] == null && $teams_stats[0]['STL'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 0 }}.STL">
-                                        </div>
-                                        <div class="d-flex flex-column pr-3" style="width: 135px">
-                                            <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">tapones</label>
-                                            <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[0]['BLK'] == null && $teams_stats[0]['BLK'] !== 0) || $teams_stats[0]['BLK'] > 50 ? 'border-danger' : '' }} {{ $teams_stats[0]['BLK'] == null && $teams_stats[0]['BLK'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 0 }}.BLK">
-                                        </div>
-                                        <div class="d-flex flex-column pr-3" style="width: 135px">
-                                            <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">pérdidas</label>
-                                            <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[0]['LOS'] == null && $teams_stats[0]['LOS'] !== 0) || $teams_stats[0]['LOS'] > 125 ? 'border-danger' : '' }} {{ $teams_stats[0]['LOS'] == null && $teams_stats[0]['LOS'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 0 }}.LOS">
-                                        </div>
-                                        <div class="d-flex flex-column pr-3" style="width: 135px">
-                                            <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">faltas</label>
-                                            <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[0]['PF'] == null && $teams_stats[0]['PF'] !== 0) ? 'border-danger' : '' }} {{ $teams_stats[0]['PF'] == null && $teams_stats[0]['PF'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 0 }}.PF">
-                                        </div>
-                                        <div class="d-flex flex-column" style="width: 135px">
-                                            <label class="text-gray-600 text-uppercase mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">Máx. ventaja</label>
-                                            <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[0]['advantage'] == null && $teams_stats[0]['advantage'] !== 0) || $teams_stats[0]['advantage'] > 200 ? 'border-danger' : '' }} {{ $teams_stats[0]['advantage'] == null && $teams_stats[0]['advantage'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 0 }}.advantage">
-                                        </div>
+                            <div class="admin-crud-team-stats-wrapper">
+                                <div class="d-inline-flex">
+                                    @php
+                                        $total_reb = 0;
+                                        $total_reb += $teams_stats[0]['DRB'] ?: 0;
+                                        $total_reb += $teams_stats[0]['ORB'] ?: 0;
+                                    @endphp
+                                    <div class="d-flex flex-column pr-3" style="width: 135px">
+                                        <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">pts. contra</label>
+                                        <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[0]['counterattack'] == null && $teams_stats[0]['counterattack'] !== 0) ? 'border-danger' : '' }} {{ $teams_stats[0]['counterattack'] == null && $teams_stats[0]['counterattack'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 0 }}.counterattack">
+                                    </div>
+                                    <div class="d-flex flex-column pr-3" style="width: 135px">
+                                        <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">pts. Zona</label>
+                                        <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[0]['zone'] == null && $teams_stats[0]['zone'] !== 0) || $teams_stats[0]['zone'] > 200 ? 'border-danger' : '' }} {{ $teams_stats[0]['zone'] == null && $teams_stats[0]['zone'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 0 }}.zone">
+                                    </div>
+                                    <div class="d-flex flex-column pr-3" style="width: 135px">
+                                        <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">pts. 2da</label>
+                                        <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[0]['second_oportunity'] == null && $teams_stats[0]['second_oportunity'] !== 0) || $teams_stats[0]['second_oportunity'] > 150 ? 'border-danger' : '' }} {{ $teams_stats[0]['second_oportunity'] == null && $teams_stats[0]['second_oportunity'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 0 }}.second_oportunity">
+                                    </div>
+                                    <div class="d-flex flex-column pr-3" style="width: 135px">
+                                        <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">pts. Suplentes</label>
+                                        <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[0]['substitute'] == null && $teams_stats[0]['substitute'] !== 0) || $teams_stats[0]['substitute'] > 200 ? 'border-danger' : '' }} {{ $teams_stats[0]['substitute'] == null && $teams_stats[0]['substitute'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 0 }}.substitute">
+                                    </div>
+                                    <div class="d-flex flex-column pr-3" style="width: 135px">
+                                        <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">Asistencias</label>
+                                        <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[0]['AST'] == null && $teams_stats[0]['AST'] !== 0) || $teams_stats[0]['AST'] > 60 ? 'border-danger' : '' }} {{ $teams_stats[0]['AST'] == null && $teams_stats[0]['AST'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 0 }}.AST">
+                                    </div>
+                                    <div class="d-flex flex-column pr-3" style="width: 135px">
+                                        <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">rebotes OF</label>
+                                        <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[0]['ORB'] == null && $teams_stats[0]['ORB'] !== 0) || $total_reb > 150 ? 'border-danger' : '' }} {{ $teams_stats[0]['ORB'] == null && $teams_stats[0]['ORB'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 0 }}.ORB">
+                                    </div>
+                                    <div class="d-flex flex-column pr-3" style="width: 135px">
+                                        <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">rebotes DEF</label>
+                                        <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[0]['DRB'] == null && $teams_stats[0]['DRB'] !== 0) || $total_reb > 150 ? 'border-danger' : '' }} {{ $teams_stats[0]['DRB'] == null && $teams_stats[0]['DRB'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 0 }}.DRB">
+                                    </div>
+                                    <div class="d-flex flex-column pr-3" style="width: 135px">
+                                        <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">robos</label>
+                                        <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[0]['STL'] == null && $teams_stats[0]['STL'] !== 0) || $teams_stats[0]['STL'] > 60 ? 'border-danger' : '' }} {{ $teams_stats[0]['STL'] == null && $teams_stats[0]['STL'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 0 }}.STL">
+                                    </div>
+                                    <div class="d-flex flex-column pr-3" style="width: 135px">
+                                        <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">tapones</label>
+                                        <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[0]['BLK'] == null && $teams_stats[0]['BLK'] !== 0) || $teams_stats[0]['BLK'] > 50 ? 'border-danger' : '' }} {{ $teams_stats[0]['BLK'] == null && $teams_stats[0]['BLK'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 0 }}.BLK">
+                                    </div>
+                                    <div class="d-flex flex-column pr-3" style="width: 135px">
+                                        <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">pérdidas</label>
+                                        <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[0]['LOS'] == null && $teams_stats[0]['LOS'] !== 0) || $teams_stats[0]['LOS'] > 125 ? 'border-danger' : '' }} {{ $teams_stats[0]['LOS'] == null && $teams_stats[0]['LOS'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 0 }}.LOS">
+                                    </div>
+                                    <div class="d-flex flex-column pr-3" style="width: 135px">
+                                        <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">faltas</label>
+                                        <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[0]['PF'] == null && $teams_stats[0]['PF'] !== 0) ? 'border-danger' : '' }} {{ $teams_stats[0]['PF'] == null && $teams_stats[0]['PF'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 0 }}.PF">
+                                    </div>
+                                    <div class="d-flex flex-column" style="width: 135px">
+                                        <label class="text-gray-600 text-uppercase mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">Máx. ventaja</label>
+                                        <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[0]['advantage'] == null && $teams_stats[0]['advantage'] !== 0) || $teams_stats[0]['advantage'] > 200 ? 'border-danger' : '' }} {{ $teams_stats[0]['advantage'] == null && $teams_stats[0]['advantage'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 0 }}.advantage">
                                     </div>
                                 </div>
-                            @endif
+                            </div>
 
                             <div class="text-sm text-uppercase tracking-wide pt-3 pb-2 px-1">
                                 Estadísticas de jugadores
@@ -307,65 +305,63 @@
                                 Estadísticas de equipo
                             </div>
 
-{{--                             @if ($teams_stats[1])
-                                <div class="admin-crud-team-stats-wrapper">
-                                    <div class="d-inline-flex">
-                                        @php
-                                            $total_reb = 0;
-                                            $total_reb += $teams_stats[1]['DRB'] ?: 0;
-                                            $total_reb += $teams_stats[1]['ORB'] ?: 0;
-                                        @endphp
-                                        <div class="d-flex flex-column pr-3" style="width: 135px">
-                                            <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">pts. contra</label>
-                                            <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[1]['counterattack'] == null && $teams_stats[1]['counterattack'] !== 0) ? 'border-danger' : '' }} {{ $teams_stats[1]['counterattack'] == null && $teams_stats[1]['counterattack'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 1 }}.counterattack">
-                                        </div>
-                                        <div class="d-flex flex-column pr-3" style="width: 135px">
-                                            <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">pts. Zona</label>
-                                            <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[1]['zone'] == null && $teams_stats[1]['zone'] !== 0) || $teams_stats[1]['zone'] > 200 ? 'border-danger' : '' }} {{ $teams_stats[1]['zone'] == null && $teams_stats[1]['zone'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 1 }}.zone">
-                                        </div>
-                                        <div class="d-flex flex-column pr-3" style="width: 135px">
-                                            <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">pts. 2da</label>
-                                            <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[1]['second_oportunity'] == null && $teams_stats[1]['second_oportunity'] !== 0) || $teams_stats[1]['second_oportunity'] > 150 ? 'border-danger' : '' }} {{ $teams_stats[1]['second_oportunity'] == null && $teams_stats[1]['second_oportunity'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 1 }}.second_oportunity">
-                                        </div>
-                                        <div class="d-flex flex-column pr-3" style="width: 135px">
-                                            <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">pts. Suplentes</label>
-                                            <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[1]['substitute'] == null && $teams_stats[1]['substitute'] !== 0) || $teams_stats[1]['substitute'] > 200 ? 'border-danger' : '' }} {{ $teams_stats[1]['substitute'] == null && $teams_stats[1]['substitute'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 1 }}.substitute">
-                                        </div>
-                                        <div class="d-flex flex-column pr-3" style="width: 135px">
-                                            <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">Asistencias</label>
-                                            <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[1]['AST'] == null && $teams_stats[1]['AST'] !== 0) || $teams_stats[1]['AST'] > 60 ? 'border-danger' : '' }} {{ $teams_stats[1]['AST'] == null && $teams_stats[1]['AST'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 1 }}.AST">
-                                        </div>
-                                        <div class="d-flex flex-column pr-3" style="width: 135px">
-                                            <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">rebotes OF</label>
-                                            <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[1]['ORB'] == null && $teams_stats[1]['ORB'] !== 0) || $total_reb > 150 ? 'border-danger' : '' }} {{ $teams_stats[1]['ORB'] == null && $teams_stats[1]['ORB'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 1 }}.ORB">
-                                        </div>
-                                        <div class="d-flex flex-column pr-3" style="width: 135px">
-                                            <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">rebotes DEF</label>
-                                            <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[1]['DRB'] == null && $teams_stats[1]['DRB'] !== 0) || $total_reb > 150 ? 'border-danger' : '' }} {{ $teams_stats[1]['DRB'] == null && $teams_stats[1]['DRB'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 1 }}.DRB">
-                                        </div>
-                                        <div class="d-flex flex-column pr-3" style="width: 135px">
-                                            <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">robos</label>
-                                            <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[1]['STL'] == null && $teams_stats[1]['STL'] !== 0) || $teams_stats[1]['STL'] > 60 ? 'border-danger' : '' }} {{ $teams_stats[1]['STL'] == null && $teams_stats[1]['STL'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 1 }}.STL">
-                                        </div>
-                                        <div class="d-flex flex-column pr-3" style="width: 135px">
-                                            <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">tapones</label>
-                                            <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[1]['BLK'] == null && $teams_stats[1]['BLK'] !== 0) || $teams_stats[1]['BLK'] > 50 ? 'border-danger' : '' }} {{ $teams_stats[1]['BLK'] == null && $teams_stats[1]['BLK'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 1 }}.BLK">
-                                        </div>
-                                        <div class="d-flex flex-column pr-3" style="width: 135px">
-                                            <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">pérdidas</label>
-                                            <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[1]['LOS'] == null && $teams_stats[1]['LOS'] !== 0) || $teams_stats[1]['LOS'] > 125 ? 'border-danger' : '' }} {{ $teams_stats[1]['LOS'] == null && $teams_stats[1]['LOS'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 1 }}.LOS">
-                                        </div>
-                                        <div class="d-flex flex-column pr-3" style="width: 135px">
-                                            <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">faltas</label>
-                                            <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[1]['PF'] == null && $teams_stats[1]['PF'] !== 0) ? 'border-danger' : '' }} {{ $teams_stats[1]['PF'] == null && $teams_stats[1]['PF'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 1 }}.PF">
-                                        </div>
-                                        <div class="d-flex flex-column" style="width: 135px">
-                                            <label class="text-gray-600 text-uppercase mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">Máx. ventaja</label>
-                                            <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[1]['advantage'] == null && $teams_stats[1]['advantage'] !== 0) || $teams_stats[1]['advantage'] > 200 ? 'border-danger' : '' }} {{ $teams_stats[1]['advantage'] == null && $teams_stats[1]['advantage'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 1 }}.advantage">
-                                        </div>
+                            <div class="admin-crud-team-stats-wrapper">
+                                <div class="d-inline-flex">
+                                    @php
+                                        $total_reb = 0;
+                                        $total_reb += $teams_stats[1]['DRB'] ?: 0;
+                                        $total_reb += $teams_stats[1]['ORB'] ?: 0;
+                                    @endphp
+                                    <div class="d-flex flex-column pr-3" style="width: 135px">
+                                        <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">pts. contra</label>
+                                        <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[1]['counterattack'] == null && $teams_stats[1]['counterattack'] !== 0) ? 'border-danger' : '' }} {{ $teams_stats[1]['counterattack'] == null && $teams_stats[1]['counterattack'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 1 }}.counterattack">
+                                    </div>
+                                    <div class="d-flex flex-column pr-3" style="width: 135px">
+                                        <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">pts. Zona</label>
+                                        <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[1]['zone'] == null && $teams_stats[1]['zone'] !== 0) || $teams_stats[1]['zone'] > 200 ? 'border-danger' : '' }} {{ $teams_stats[1]['zone'] == null && $teams_stats[1]['zone'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 1 }}.zone">
+                                    </div>
+                                    <div class="d-flex flex-column pr-3" style="width: 135px">
+                                        <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">pts. 2da</label>
+                                        <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[1]['second_oportunity'] == null && $teams_stats[1]['second_oportunity'] !== 0) || $teams_stats[1]['second_oportunity'] > 150 ? 'border-danger' : '' }} {{ $teams_stats[1]['second_oportunity'] == null && $teams_stats[1]['second_oportunity'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 1 }}.second_oportunity">
+                                    </div>
+                                    <div class="d-flex flex-column pr-3" style="width: 135px">
+                                        <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">pts. Suplentes</label>
+                                        <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[1]['substitute'] == null && $teams_stats[1]['substitute'] !== 0) || $teams_stats[1]['substitute'] > 200 ? 'border-danger' : '' }} {{ $teams_stats[1]['substitute'] == null && $teams_stats[1]['substitute'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 1 }}.substitute">
+                                    </div>
+                                    <div class="d-flex flex-column pr-3" style="width: 135px">
+                                        <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">Asistencias</label>
+                                        <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[1]['AST'] == null && $teams_stats[1]['AST'] !== 0) || $teams_stats[1]['AST'] > 60 ? 'border-danger' : '' }} {{ $teams_stats[1]['AST'] == null && $teams_stats[1]['AST'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 1 }}.AST">
+                                    </div>
+                                    <div class="d-flex flex-column pr-3" style="width: 135px">
+                                        <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">rebotes OF</label>
+                                        <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[1]['ORB'] == null && $teams_stats[1]['ORB'] !== 0) || $total_reb > 150 ? 'border-danger' : '' }} {{ $teams_stats[1]['ORB'] == null && $teams_stats[1]['ORB'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 1 }}.ORB">
+                                    </div>
+                                    <div class="d-flex flex-column pr-3" style="width: 135px">
+                                        <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">rebotes DEF</label>
+                                        <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[1]['DRB'] == null && $teams_stats[1]['DRB'] !== 0) || $total_reb > 150 ? 'border-danger' : '' }} {{ $teams_stats[1]['DRB'] == null && $teams_stats[1]['DRB'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 1 }}.DRB">
+                                    </div>
+                                    <div class="d-flex flex-column pr-3" style="width: 135px">
+                                        <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">robos</label>
+                                        <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[1]['STL'] == null && $teams_stats[1]['STL'] !== 0) || $teams_stats[1]['STL'] > 60 ? 'border-danger' : '' }} {{ $teams_stats[1]['STL'] == null && $teams_stats[1]['STL'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 1 }}.STL">
+                                    </div>
+                                    <div class="d-flex flex-column pr-3" style="width: 135px">
+                                        <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">tapones</label>
+                                        <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[1]['BLK'] == null && $teams_stats[1]['BLK'] !== 0) || $teams_stats[1]['BLK'] > 50 ? 'border-danger' : '' }} {{ $teams_stats[1]['BLK'] == null && $teams_stats[1]['BLK'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 1 }}.BLK">
+                                    </div>
+                                    <div class="d-flex flex-column pr-3" style="width: 135px">
+                                        <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">pérdidas</label>
+                                        <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[1]['LOS'] == null && $teams_stats[1]['LOS'] !== 0) || $teams_stats[1]['LOS'] > 125 ? 'border-danger' : '' }} {{ $teams_stats[1]['LOS'] == null && $teams_stats[1]['LOS'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 1 }}.LOS">
+                                    </div>
+                                    <div class="d-flex flex-column pr-3" style="width: 135px">
+                                        <label class="text-gray-600 text-uppercase mr-3 mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">faltas</label>
+                                        <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[1]['PF'] == null && $teams_stats[1]['PF'] !== 0) ? 'border-danger' : '' }} {{ $teams_stats[1]['PF'] == null && $teams_stats[1]['PF'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 1 }}.PF">
+                                    </div>
+                                    <div class="d-flex flex-column" style="width: 135px">
+                                        <label class="text-gray-600 text-uppercase mb-1 pl-1" style="font-size: .9em; font-weight: 500; letter-spacing: 0.05em;">Máx. ventaja</label>
+                                        <input type="number" min="0" max="999" maxlength = "3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="-" class="form-control text-base {{ ($teams_stats[1]['advantage'] == null && $teams_stats[1]['advantage'] !== 0) || $teams_stats[1]['advantage'] > 200 ? 'border-danger' : '' }} {{ $teams_stats[1]['advantage'] == null && $teams_stats[1]['advantage'] !== 0 ? 'bg-light': '' }}" wire:model="teams_stats.{{ 1 }}.advantage">
                                     </div>
                                 </div>
-                            @endif --}}
+                            </div>
 
 
                             <div class="text-sm text-uppercase tracking-wide pt-3 pb-2 px-1">
