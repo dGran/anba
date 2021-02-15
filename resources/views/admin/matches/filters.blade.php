@@ -61,6 +61,10 @@
 		            @if ($regs->count() > 0)
 		            	<a class="dropdown-item d-flex align-items-center" wire:click="confirmCheckMatches"><i class="bx bxs-file-import mr-2"></i>Chequear partidos</a>
 		            	<div class="dropdown-divider"></div>
+		            	<a class="dropdown-item d-flex align-items-center" wire:click="confirmImportScores"><i class="bx bxs-file-import mr-2"></i>Importar resultados</a>
+		            	<a class="dropdown-item d-flex align-items-center" wire:click="confirmImportTeamStats"><i class="bx bxs-file-import mr-2"></i>Importar stats de equipo</a>
+		            	<a class="dropdown-item d-flex align-items-center" wire:click="confirmImportPlayerStats"><i class="bx bxs-file-import mr-2"></i>Importar stats de jugadores</a>
+		            	<div class="dropdown-divider"></div>
 		            @endif
 		            <a class="dropdown-item d-flex align-items-center" wire:click="confirmImport"><i class="bx bxs-file-import mr-2"></i>Importar</a>
 		            <div class="dropdown-divider"></div>

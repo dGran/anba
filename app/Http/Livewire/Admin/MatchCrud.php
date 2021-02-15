@@ -20,6 +20,9 @@ use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use App\Exports\MatchesExport;
 use App\Imports\MatchesImport;
+use App\Imports\MatchesScoresImport;
+use App\Imports\MatchesTeamStatsImport;
+use App\Imports\MatchesPlayerStatsImport;
 use Maatwebsite\Excel\Facades\Excel;
 
 use App\Http\Traits\PostTrait;
@@ -730,6 +733,58 @@ class MatchCrud extends Component
 			session()->flash('info', 'No se han detectado cambios en los registros.');
 		}
     	$this->emit('closeCheckMatchesModal');
+    }
+
+    public function confirmImportScores()
+    {
+    	$this->fileImport = null;
+		$this->emit('openImportScoresModal');
+    }
+
+    public function importScores()
+    {
+        if ($this->fileImport != null) {
+        	Excel::import(new MatchesScoresImport, $this->fileImport);
+        	// (new TeamsImport)->queue($this->fileImport);
+    		session()->flash('success', 'Registros importados correctamente!.');
+        } else {
+        	session()->flash('error', 'Ningún archivo seleccionado.');
+        }
+    	$this->emit('closeImportScoresModal');
+    }
+
+    public function confirmImportTeamStats()
+    {
+    	$this->fileImport = null;
+		$this->emit('openImportTeamStatsModal');
+    }
+
+    public function importTeamStats()
+    {
+        if ($this->fileImport != null) {
+        	Excel::import(new MatchesTeamStatsImport, $this->fileImport);
+    		session()->flash('success', 'Registros importados correctamente!.');
+        } else {
+        	session()->flash('error', 'Ningún archivo seleccionado.');
+        }
+    	$this->emit('closeImportTeamStatsModal');
+    }
+
+    public function confirmImportPlayerStats()
+    {
+    	$this->fileImport = null;
+		$this->emit('openImportPlayerStatsModal');
+    }
+
+    public function importPlayerStats()
+    {
+        if ($this->fileImport != null) {
+        	Excel::import(new MatchesPlayerStatsImport, $this->fileImport);
+    		session()->flash('success', 'Registros importados correctamente!.');
+        } else {
+        	session()->flash('error', 'Ningún archivo seleccionado.');
+        }
+    	$this->emit('closeImportPlayerStatsModal');
     }
 
     // Pagination

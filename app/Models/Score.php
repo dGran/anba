@@ -19,6 +19,11 @@ class Score extends Model
         'updated_user_id',
     ];
 
+    public function match()
+    {
+        return $this->belongsTo('App\Models\Match');
+    }
+
     public function season_score_headers()
     {
         return $this->belongsTo('App\Models\SeasonScoreHeader', 'seasons_scores_headers_id', 'id');
@@ -29,6 +34,11 @@ class Score extends Model
         $date = Carbon::parse($this->created_at)->locale(app()->getLocale());
         // return $date->isoFormat("D MMMM YYYY - kk[:]mm");
         return $date->diffForHumans();
+    }
+
+    public function getName()
+    {
+        return "Resultado partido " . $this->match->getName();
     }
 
 }

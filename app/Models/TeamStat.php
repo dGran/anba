@@ -44,4 +44,9 @@ class TeamStat extends Model
     {
         return $this->belongsTo('App\Models\SeasonTeam', 'season_team_id', 'id');
     }
+
+    public function getName()
+    {
+        return "Estadísticas " . $this->seasonTeam->team->medium_name . ", partido " . $this->match->getName();
+    }
 }

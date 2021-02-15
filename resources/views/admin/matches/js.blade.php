@@ -31,6 +31,30 @@
         $('#checkMatchesModal').modal('hide');
     });
 
+    window.livewire.on('openImportScoresModal', () => {
+        $('.modal').modal('hide');
+        $('#importScoresModal').modal('show');
+    });
+    window.livewire.on('closeImportScoresModal', () => {
+        $('#importScoresModal').modal('hide');
+    });
+
+    window.livewire.on('openImportTeamStatsModal', () => {
+        $('.modal').modal('hide');
+        $('#importTeamStatsModal').modal('show');
+    });
+    window.livewire.on('closeImportTeamStatsModal', () => {
+        $('#importTeamStatsModal').modal('hide');
+    });
+
+    window.livewire.on('openImportPlayerStatsModal', () => {
+        $('.modal').modal('hide');
+        $('#importPlayerStatsModal').modal('show');
+    });
+    window.livewire.on('closeImportPlayerStatsModal', () => {
+        $('#importPlayerStatsModal').modal('hide');
+    });
+
     // $("numericInput").keydown(function(){
     //    if ($(this).val() === null) {
     //        $(this).val(0);

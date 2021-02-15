@@ -5,7 +5,7 @@
 		<p class="truncate">
 			<span class="hidden md:block">{{ $position['team']->team->name }}</span>
 			<span class="md:hidden">{{ $position['team']->team->medium_name }}</span>
-			<span class="block text-xs leading-4 truncate {{ $position['team']->team->user ? 'text-gray-500 dark:text-gray-300' : 'text-gray-300 dark:text-gray-500 uppercase text-xs' }}">
+			<span class="block text-xs leading-4 truncate {{ $position['team']->team->user ? 'text-gray-500 dark:text-gray-300 dark:group-hover:text-gray-700' : 'text-gray-300 dark:text-gray-500 uppercase text-xs dark:group-hover:text-gray-600' }}">
 				{{ $position['team']->team->user ? $position['team']->team->user->name : 'Sin manager' }}
 			</span>
 		</p>
