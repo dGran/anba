@@ -26,6 +26,7 @@ class MatchesPlayerStatsImport implements ToModel, WithHeadingRow
         if ($match && $player && $season_team && ($season_team->id == $match->local_team_id || $season_team->id == $match->visitor_team_id)) {
             $regs = PlayerStat::where('match_id', $match->id)->where('player_id', $player->id)->get();
             foreach ($regs as $reg) {
+                event(new TableWasUpdated($reg, 'delete'));
                 $reg->delete();
             }
             $reg = PlayerStat::create([

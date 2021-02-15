@@ -22,7 +22,11 @@ class MatchesScoresImport implements ToModel, WithHeadingRow
         $match = Match::find($row['match_id']);
         $score_header = SeasonScoreHeader::find($row['seasons_scores_headers_id']);
         if ($match && $score_header) {
-            $match->scores()->delete();
+            $regs = Score::where('match_id', $match->id)->get();
+            foreach ($regs as $reg) {
+                event(new TableWasUpdated($reg, 'delete'));
+                $reg->delete();
+            }
             $reg = Score::create([
                 'match_id'                  => $row['match_id'],
                 'seasons_scores_headers_id' => $row['seasons_scores_headers_id'],
