@@ -290,9 +290,10 @@ class Match extends Model
         $team_id = $this->localTeam->id;
         return $data = PlayerStat::
             where('match_id', $this->id)
-            ->whereIn('player_id', function($query) use ($team_id) {
-               $query->select('id')->from('players')->where('team_id', '=', $team_id);
-            })
+            // ->whereIn('player_id', function($query) use ($team_id) {
+            //    $query->select('id')->from('players')->where('team_id', '=', $team_id);
+            // })
+            ->where('season_team_id', $team_id)
             ->select(
                 \DB::raw('SUM(PTS) AS PTS'),
                 \DB::raw('SUM(REB) AS REB'),
@@ -319,9 +320,10 @@ class Match extends Model
         $team_id = $this->visitorTeam->id;
         return $data = PlayerStat::
             where('match_id', $this->id)
-            ->whereIn('player_id', function($query) use ($team_id) {
-               $query->select('id')->from('players')->where('team_id', '=', $team_id);
-            })
+            // ->whereIn('player_id', function($query) use ($team_id) {
+            //    $query->select('id')->from('players')->where('team_id', '=', $team_id);
+            // })
+            ->where('season_team_id', $team_id)
             ->select(
                 \DB::raw('SUM(PTS) AS PTS'),
                 \DB::raw('SUM(REB) AS REB'),
