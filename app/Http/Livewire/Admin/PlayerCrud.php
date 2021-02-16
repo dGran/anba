@@ -993,7 +993,9 @@ class PlayerCrud extends Component
 			}
 		} else {
             $reg = Player::find(reset($this->regsSelectedArray));
-            $before = $reg->toJson(JSON_PRETTY_PRINT);
+            if ($reg) {
+            	$before = $reg->toJson(JSON_PRETTY_PRINT);
+            }
             $reg->team_id = $this->teamTransfer;
             $reg->save();
             event(new TableWasUpdated($reg, 'update', $reg->toJson(JSON_PRETTY_PRINT), $before));
