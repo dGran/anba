@@ -82,7 +82,7 @@
 			@if ($stat->PTS > 0)
 				<div class="flex justify-between text-sm items-center border-b border-gray-200 dark:border-gray-650 py-0.5">
 					<div class="flex items-center">
-						<img src="{{ $stat->player->team->getImg() }}" alt="{{ $stat->player->team->short_name }}" style="width: 32px; height: 32px" class="mr-2">
+						<img src="{{ $stat->seasonTeam->team->getImg() }}" alt="{{ $stat->seasonTeam->team->short_name }}" style="width: 32px; height: 32px" class="mr-2">
 						<span class="uppercase font-bold light:text-gray-600 dark:text-gray-200 text-center" style="width: 20px">{{ $stat->player->position }}</span>
 						<span class="ml-2">{{ $stat->player->name }}</span>
 					</div>
@@ -97,7 +97,7 @@
 			@if ($stat->REB > 0)
 				<div class="flex justify-between text-sm items-center border-b border-gray-200 dark:border-gray-650 py-0.5">
 					<div class="flex items-center">
-						<img src="{{ $stat->player->team->getImg() }}" alt="{{ $stat->player->team->short_name }}" style="width: 32px; height: 32px" class="mr-2">
+						<img src="{{ $stat->seasonTeam->team->getImg() }}" alt="{{ $stat->seasonTeam->team->short_name }}" style="width: 32px; height: 32px" class="mr-2">
 						<span class="uppercase font-bold light:text-gray-600 dark:text-gray-200 text-center" style="width: 20px">{{ $stat->player->position }}</span>
 						<span class="ml-2">{{ $stat->player->name }}</span>
 					</div>
@@ -112,7 +112,7 @@
 			@if ($stat->AST > 0)
 				<div class="flex justify-between text-sm items-center border-b border-gray-200 dark:border-gray-650 py-0.5">
 					<div class="flex items-center">
-						<img src="{{ $stat->player->team->getImg() }}" alt="{{ $stat->player->team->short_name }}" style="width: 32px; height: 32px" class="mr-2">
+						<img src="{{ $stat->seasonTeam->team->getImg() }}" alt="{{ $stat->seasonTeam->team->short_name }}" style="width: 32px; height: 32px" class="mr-2">
 						<span class="uppercase font-bold light:text-gray-600 dark:text-gray-200 text-center" style="width: 20px">{{ $stat->player->position }}</span>
 						<span class="ml-2">{{ $stat->player->name }}</span>
 					</div>
@@ -127,7 +127,7 @@
 			@if ($stat->STL > 0)
 				<div class="flex justify-between text-sm items-center border-b border-gray-200 dark:border-gray-650 py-0.5">
 					<div class="flex items-center">
-						<img src="{{ $stat->player->team->getImg() }}" alt="{{ $stat->player->team->short_name }}" style="width: 32px; height: 32px" class="mr-2">
+						<img src="{{ $stat->seasonTeam->team->getImg() }}" alt="{{ $stat->seasonTeam->team->short_name }}" style="width: 32px; height: 32px" class="mr-2">
 						<span class="uppercase font-bold light:text-gray-600 dark:text-gray-200 text-center" style="width: 20px">{{ $stat->player->position }}</span>
 						<span class="ml-2">{{ $stat->player->name }}</span>
 					</div>
@@ -142,7 +142,7 @@
 			@if ($stat->BLK > 0)
 				<div class="flex justify-between text-sm items-center">
 					<div class="flex items-center">
-						<img src="{{ $stat->player->team->getImg() }}" alt="{{ $stat->player->team->short_name }}" style="width: 32px; height: 32px" class="mr-2">
+						<img src="{{ $stat->seasonTeam->team->getImg() }}" alt="{{ $stat->seasonTeam->team->short_name }}" style="width: 32px; height: 32px" class="mr-2">
 						<span class="uppercase font-bold light:text-gray-600 dark:text-gray-200 text-center" style="width: 20px">{{ $stat->player->position }}</span>
 						<span class="ml-2">{{ $stat->player->name }}</span>
 					</div>
