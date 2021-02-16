@@ -52,11 +52,11 @@
 			<div class="flex flex-col py-0.5 md:py-1.5 border-b border-gray-150 dark:border-gray-650">
 				<div class="flex items-center">
 					<p class="w-10 md:w-12 lg:w-16 text-left md:pl-3 text-sm md:text-base lg:text-xl font-bold {{ $match->localTeam_teamTotals() && $match->localTeam_teamTotals()->counterattack > $match->visitorTeam_teamTotals()->counterattack ? 'text-black dark:text-yellow-400' : 'text-gray-500 dark:text-gray-300' }}">
-						{{ isset($match->localTeam_teamTotals()->counterattack) ? $match->localTeam_teamTotals()->counterattack : '-' }}
+						{{ $match->localTeam_teamTotals() && isset($match->localTeam_teamTotals()->counterattack) ? $match->localTeam_teamTotals()->counterattack : '-' }}
 					</p>
 					<p class="flex-1 text-center px-3 uppercase font-bold text-sm md:text-base lg:text-xl text-gray-500 dark:text-gray-300">pts. contraataque</p>
 					<p class="w-10 md:w-12 lg:w-16 text-right md:pr-3 text-sm md:text-base lg:text-xl font-bold {{ $match->visitorTeam_teamTotals() && $match->visitorTeam_teamTotals()->counterattack > $match->localTeam_teamTotals()->counterattack ? 'text-black dark:text-yellow-400' : 'text-gray-500 dark:text-gray-300' }}">
-						{{ isset($match->visitorTeam_teamTotals()->counterattack) ? $match->visitorTeam_teamTotals()->counterattack : '-' }}
+						{{ $match->visitorTeam_teamTotals() && isset($match->visitorTeam_teamTotals()->counterattack) ? $match->visitorTeam_teamTotals()->counterattack : '-' }}
 					</p>
 				</div>
 			</div>
