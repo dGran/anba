@@ -258,9 +258,10 @@ class Match extends Model
         $team_id = $this->localTeam->team->id;
         return $top = PlayerStat::
             where('match_id', $this->id)
-            ->whereIn('player_id', function($query) use ($team_id) {
-               $query->select('id')->from('players')->where('team_id', '=', $team_id);
-            })
+            // ->whereIn('player_id', function($query) use ($team_id) {
+            //    $query->select('id')->from('players')->where('team_id', '=', $team_id);
+            // })
+            ->where('season_team_id', $team_id)
             ->select('*', \DB::raw('PTS + REB + AST as TOTAL'))
             ->orderBy('TOTAL', 'desc')
             ->orderBy('PTS', 'desc')
@@ -274,9 +275,10 @@ class Match extends Model
         $team_id = $this->visitorTeam->team->id;
         return $top = PlayerStat::
             where('match_id', $this->id)
-            ->whereIn('player_id', function($query) use ($team_id) {
-               $query->select('id')->from('players')->where('team_id', '=', $team_id);
-            })
+            // ->whereIn('player_id', function($query) use ($team_id) {
+            //    $query->select('id')->from('players')->where('team_id', '=', $team_id);
+            // })
+            ->where('season_team_id', $team_id)
             ->select('*', \DB::raw('PTS + REB + AST as TOTAL'))
             ->orderBy('TOTAL', 'desc')
             ->orderBy('PTS', 'desc')
