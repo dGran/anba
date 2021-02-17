@@ -186,7 +186,7 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($players_stats as $key => $player)
-                                                @if ($player['team_id'] == $regView->localTeam->team->id)
+                                                @if ($player['season_team_id'] == $regView->localTeam->id)
                                                     @php
                                                         $field_shots_M = 0;
                                                         $field_shots_M += $players_stats[$key]['FGM'] ?: 0;
@@ -394,7 +394,7 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($players_stats as $key => $player)
-                                                @if ($player['team_id'] == $regView->visitorTeam->team->id)
+                                                @if ($player['season_team_id'] == $regView->visitorTeam->team->id)
                                                     @php
                                                         $field_shots_M = 0;
                                                         $field_shots_M += $players_stats[$key]['FGM'] ?: 0;
