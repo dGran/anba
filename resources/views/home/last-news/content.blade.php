@@ -4,12 +4,10 @@
             <div class="flex justify-between p-4 border-b border-gray-200 dark:border-gray-650" wire:loading.class="opacity-50">
 
                 @if ($post->type == "resultados" && $post->match)
-                <div class="relative">
-                    <figure class="h-20 w-20 md:h-24 md:w-24 rounded-md shadow-md p-0.5 bg-gray-50 dark:bg-gray-650 border-1 border-gray-200 dark:border-gray-650" style="filter: contrast(1.15) brightness(0.85); background-color: {{ $post->match->winner()->team->color }};">
+                    <figure class="h-20 w-20 md:h-24 md:w-24 rounded-md shadow-md p-1 dark:bg-gray-750 border border-gray-200 dark:border-gray-650 relative" {{-- style="border-color: {{ $post->match->winner()->team->color }};" --}}>
+                        <img src="{{ $post->match->visitorTeam->team->getImg() }}" alt="{{ $post->getName() }}" class="absolute bottom-0 right-0 m-0.5 w-14 h-14 md:w-16 md:h-16 object-cover">
+                        <img src="{{ $post->match->localTeam->team->getImg() }}" alt="{{ $post->getName() }}" class="absolute top-0 left-0 m-0.5 w-14 h-14 md:w-16 md:h-16 object-cover">
                     </figure>
-                    <img src="{{ $post->match->visitorTeam->team->getImg() }}" alt="{{ $post->getName() }}" class="absolute bottom-0 right-0 m-0.5 w-14 h-14 md:w-16 md:h-16 object-cover" style="filter: contrast(0.85) brightness(1.15);">
-                    <img src="{{ $post->match->localTeam->team->getImg() }}" alt="{{ $post->getName() }}" class="absolute top-0 left-0 m-0.5 w-14 h-14 md:w-16 md:h-16 object-cover" style="filter: contrast(0.85) brightness(1.15);">
-                </div>
                 @elseif ($post->type == "lesiones" && $post->team)
                     <figure class="h-20 w-20 md:h-24 md:w-24 rounded-md shadow-md p-0.5 border border-gray-200 dark:border-gray-650 relative" style="{{ $post->team ? 'background-color: ' . $post->team->color : '' }}">
                         <img src="{{ $post->getImg() }}" alt="{{ $post->getName() }}" class="h-full w-auto rounded-md object-cover mx-auto">
