@@ -410,6 +410,7 @@
                                                             <div class="d-flex align-items-center">
                                                                 <img src="{{ $player['player_img'] }}" alt="{{ $player['player_name'] }}" class="rounded-circle border mr-2" style="width: 32px; height: 32px; object-fit: cover; {{ $player['injury_id'] > 0 && !$player['injury_playable'] ? 'filter: grayscale(100%)' : '' }}">
                                                                 <div class="truncate">
+                                                                    {{ $player['season_team_id'] }} - {{ $regView->visitorTeam->team->id }}
                                                                     <span class="truncate {{ $player['injury_id'] > 0 && !$player['injury_playable'] ? 'text-gray-500' : '' }}">
                                                                         {{ $player['player_name'] }}
                                                                         <i class="fas fa-briefcase-medical text-warning ml-2 {{ $player['injury_id'] > 0 && $player['injury_playable'] ? 'd-inline-block' : 'd-none' }}"></i>
