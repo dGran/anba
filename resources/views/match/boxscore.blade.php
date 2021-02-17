@@ -235,7 +235,7 @@
 	                    </thead>
 	                    <tbody>
 	                        @foreach ($players_stats as $key => $player)
-	                            @if ($player['team_id'] == $match->localTeam->team->id)
+	                            @if ($player['season_team_id'] == $match->localTeam->id)
 	                                <tr class="border-t border-gray-150 dark:border-gray-650">
 	                                    <td style="width: 275px; min-width: 200px; max-width: 275px; left: 0px; position: sticky; position: -webkit-sticky;" class="truncate bg-white dark:bg-gray-750">
 	                                        <div class="flex items-center justify-between my-1 border-r border-gray-150 dark:border-gray-650">
@@ -555,7 +555,7 @@
 	                    </thead>
 	                    <tbody>
 	                        @foreach ($players_stats as $key => $player)
-	                            @if ($player['team_id'] == $match->visitorTeam->team->id)
+	                            @if ($player['season_team_id'] == $match->visitorTeam->id)
 	                                <tr class="border-t border-gray-150 dark:border-gray-650">
 	                                    <td style="width: 275px; min-width: 200px; max-width: 275px; left: 0px; position: sticky; position: -webkit-sticky;" class="truncate bg-white dark:bg-gray-750">
 	                                        <div class="flex items-center justify-between my-1 border-r border-gray-150 dark:border-gray-650">
