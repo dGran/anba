@@ -255,7 +255,7 @@ class Match extends Model
 
     public function top_local_player()
     {
-        $team_id = $this->localTeam->team->id;
+        $team_id = $this->localTeam->id;
         return $top = PlayerStat::
             where('match_id', $this->id)
             // ->whereIn('player_id', function($query) use ($team_id) {
@@ -272,7 +272,7 @@ class Match extends Model
 
     public function top_visitor_player()
     {
-        $team_id = $this->visitorTeam->team->id;
+        $team_id = $this->visitorTeam->id;
         return $top = PlayerStat::
             where('match_id', $this->id)
             // ->whereIn('player_id', function($query) use ($team_id) {
