@@ -11,7 +11,7 @@
             </div>
             <form wire:submit.prevent="store" enctype="multipart/form-data">
                 <div class="modal-body">
-                    @include('admin.conferences.forms.form')
+                    @include('admin.users.forms.form')
                 </div>
                 <div class="modal-footer" style="background: #F9FAFB">
                     <div class="d-sm-flex align-items-center w-100">

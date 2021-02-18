@@ -30,7 +30,7 @@ class Standings extends Component
 	public function mount()
 	{
 		if ($season = Season::where('current', 1)->first()) {
-			$this->season = $season->slug;
+			$this->season = $season;
 		} else {
 			$this->blank_view = true;
 		}
@@ -39,7 +39,7 @@ class Standings extends Component
     public function render()
     {
     	if (!$this->blank_view) {
-    		$current_season = Season::where('slug', $this->season)->first();
+    		$current_season = Season::where('slug', $this->season->slug)->first();
     		$seasons = Season::orderBy('id', 'desc')->get();
 	    	$seasons_conferences = SeasonConference::
 	    		leftJoin('conferences', 'conferences.id', 'seasons_conferences.conference_id')

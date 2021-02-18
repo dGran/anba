@@ -20,6 +20,14 @@
                     <p>¿Estás seguro que deseas eliminar {{ $modelGender = 'male' ? 'los' : 'las' }} {{ $regsSelected->count() }} {{ $modelPlural }} seleccionados?</p>
                 @endif
                 <p class="font-weight-bold text-danger m-0 mb-1">Esta acción será irreversible</p>
+
+                <div class="text-left">
+                    @if ($regsSelected->count() == 1)
+                        <p class="m-0 mt-4 mb-1 text-sm font-italic border-top pt-3 text-muted">*Si {{ $modelGender = 'male' ? 'el' : 'la' }} {{ $modelSingular }} tiene registrada cualquier actividad relevante para el funcionamiento general no será {{ $modelGender = 'male' ? 'eliminado' : 'eliminada' }}</p>
+                    @else
+                        <p class="m-0 mt-4 mb-1 text-sm font-italic border-top pt-3 text-muted">*{{ $modelGender = 'male' ? 'Los' : 'Las' }} {{ $modelPlural }} con actividad registrada relevante para el funcionamiento general no serán {{ $modelGender = 'male' ? 'eliminados' : 'eliminadas' }}</p>
+                    @endif
+                </div>
             </div>
             <div class="modal-footer" style="background: #F9FAFB">
                 <button type="button" class="btn btn-borderless ml-2 text-xs text-uppercase tracking-widest" data-dismiss="modal" wire:loading.attr="disabled" wire:click="closeAnyModal">

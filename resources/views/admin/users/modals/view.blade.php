@@ -3,7 +3,7 @@
         <div class="modal-dialog modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header pb-0" style="background: #F9FAFB; position: relative; overflow: hidden;">
-                    <img class="object-cover ml-3" src="{{ $regView->getImg() }}" alt="{{ $regView->name }}" style="width: auto; height: 75px">
+                    <img class="object-cover ml-3 mb-3 rounded-circle" src="{{ $regView->getImg() }}" alt="{{ $regView->name }}" style="width: auto; height: 75px">
                     <h5 class="modal-title text-base text-uppercase font-medium tracking-wide py-3 ml-3">
                         <span>{{ $regView->getName() }}</span>
                     </h5>
@@ -25,9 +25,13 @@
                             <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold text-xs">Nombre</div>
                             <div class="col-7 text-right text-sm">{{ $regView->name ?: 'N/D' }}</div>
                         </li>
+                        <li class="d-flex align-items-center p-2" style="border-bottom: 1px solid #e9ecef" onmouseover="this.style.background='#F9FAFB';" onmouseout="this.style.background='';">
+                            <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold text-xs">Email</div>
+                            <div class="col-7 text-right text-sm">{{ $regView->email ?: 'N/D' }}</div>
+                        </li>
                         <li class="d-flex align-items-center p-2 rounded-bottom" onmouseover="this.style.background='#F9FAFB';" onmouseout="this.style.background='';">
                             <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold text-xs">Estado</div>
-                            <div class="col-7 text-right text-sm {{ $regView->active ? 'text-success' : 'text-danger' }}">{{ $regView->active ? 'Activa' : 'Inactiva' }}</div>
+                            <div class="col-7 text-right text-sm {{ $regView->email_verified_at ? 'text-success' : 'text-danger' }}">{{ $regView->email_verified_at ? 'Cuenta verificada' : 'Cuenta no verificada' }}</div>
                         </li>
                     </ul>
                 </div>

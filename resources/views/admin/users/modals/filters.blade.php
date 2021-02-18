@@ -14,10 +14,10 @@
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label class="text-sm text-uppercase tracking-wide">Estado</label>
-                        <select class="form-control custom-select text-sm" wire:model="filterActive">
+                        <select class="form-control custom-select text-sm" wire:model="filterState">
                             <option value="all">Todos los estados</option>
-                            <option value="active">Activas</option>
-                            <option value="inactive">Inactivas</option>
+                            <option value="verified">Verificados</option>
+                            <option value="desactivated">No verificados</option>
                         </select>
                     </div>
                 </div>

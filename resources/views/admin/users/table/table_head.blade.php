@@ -20,5 +20,14 @@
 				@endif
 		    </div>
 		</th>
+		<th class="{{ $colEmail ?: 'd-none' }}">
+			@if ($order == 'email')
+				<span class="d-inline-block cursor-pointer" wire:click="order('email_desc')">E-Mail<i class="fas fa-sort-alpha-up pl-1"></i></span>
+			@elseif ($order == 'email_desc')
+				<span class="d-inline-block cursor-pointer" wire:click="order('email')">E-Mail<i class="fas fa-sort-alpha-down pl-1"></i></span>
+			@else
+				<span class="d-inline-block cursor-pointer" wire:click="order('email')">E-Mail</span>
+			@endif
+		</th>
 	</tr>
 </thead>

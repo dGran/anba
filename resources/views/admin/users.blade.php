@@ -42,7 +42,6 @@
     @include('admin.users.modals.view')
 
     @include('admin.partials.modals.destroy')
-    @include('admin.partials.modals.duplicate')
     @include('admin.partials.modals.import_table')
     @include('admin.partials.modals.export_table')
     @include('admin.partials.modals.export_selected')

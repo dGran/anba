@@ -11,7 +11,7 @@
             </div>
             <form wire:submit.prevent="update">
                 <div class="modal-body">
-                    @include('admin.conferences.forms.form')
+                    @include('admin.users.forms.form')
                 </div>
                 <div class="modal-footer" style="background: #F9FAFB">
                     <button type="button" class="btn btn-borderless ml-2 text-xs text-uppercase tracking-widest" data-dismiss="modal" wire:click="closeAnyModal">

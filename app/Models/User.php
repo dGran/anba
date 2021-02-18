@@ -30,6 +30,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
+        "profile_photo_path",
+        'email_verified_at'
     ];
 
     /**
@@ -62,19 +64,15 @@ class User extends Authenticatable implements MustVerifyEmail
         'profile_photo_url',
     ];
 
-    public function scopeName($query, $name)
+    public function scopeName($query, $value)
     {
-        return $query->where('name', 'LIKE', "%{$name}%");
-    }
-
-    public function scopeEmail($query, $email)
-    {
-        return $query->where('email', 'LIKE', "%{$email}%");
-    }
-
-    public function scopeOrEmail($query, $email)
-    {
-        return $query->OrWhere('email', 'LIKE', "%{$email}%");
+        if (trim($value) != "") {
+            return $query->where(function($q) use ($value) {
+                        $q->where('users.name', 'LIKE', "%{$value}%")
+                            ->orWhere('users.id', 'LIKE', "%{$value}%")
+                            ->orWhere('users.email', 'LIKE', "%{$value}%");
+                        });
+        }
     }
 
     public function scopeState($query, $state)
@@ -126,5 +124,20 @@ class User extends Authenticatable implements MustVerifyEmail
     public function adminlte_profile_url()
     {
         return "user/profile";
+    }
+
+    public function canDestroy()
+    {
+        // apply logic
+        if (Team::where('manager_id', $this->id)->count() > 0) { return false; }
+        if (Statement::where('manager_id', $this->id)->count() > 0) { return false; }
+        if (Match::where('local_manager_id', $this->id)->orWhere('visitor_manager_id', $this->id)->count() > 0) { return false; }
+        if (MatchPoll::where('user_id', $this->id)->count() > 0) { return false; }
+        if (Score::where('updated_user_id', $this->id)->count() > 0) { return false; }
+        if (TeamStat::where('updated_user_id', $this->id)->count() > 0) { return false; }
+        if (PlayerStat::where('updated_user_id', $this->id)->count() > 0) { return false; }
+        if (AdminLog::where('user_id', $this->id)->count() > 0) { return false; }
+
+        return true;
     }
 }

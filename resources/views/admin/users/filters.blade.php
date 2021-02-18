@@ -26,18 +26,17 @@
             			<i class='bx bxs-show mr-2'></i>Ver
 		            </a>
 		        @endif
-		        <a class="dropdown-item d-flex align-items-center" wire:click="confirmDuplicate"><i class='bx bxs-copy mr-2'></i>Duplicar</a>
 
 
 		        @if ($regsSelected->count() == 1)
             		<div class="dropdown-divider"></div>
-	            	@if ($regsSelected->first()->active)
-			            <a class="dropdown-item d-flex align-items-center" wire:click="active({{ $regsSelected->first()->id }}, 0)">
-			            	<i class='bx bx-toggle-left mr-2'></i></i>Desactivar
+	            	@if ($regsSelected->first()->email_verified_at)
+			            <a class="dropdown-item d-flex align-items-center" wire:click="verify({{ $regsSelected->first()->id }}, 0)">
+			            	<i class='bx bx-toggle-left mr-2'></i></i>Desactivar cuenta
 			            </a>
 			        @else
-			            <a class="dropdown-item d-flex align-items-center" wire:click="active({{ $regsSelected->first()->id }}, 1)">
-			            	<i class='bx bxs-toggle-right mr-2'></i></i>Activar
+			            <a class="dropdown-item d-flex align-items-center" wire:click="verify({{ $regsSelected->first()->id }}, 1)">
+			            	<i class='bx bxs-toggle-right mr-2'></i></i>Verificar cuenta
 			            </a>
 	            	@endif
 	            @endif
@@ -80,7 +79,7 @@
 			<i class="fas fa-filter"></i>
 		</button>
 
-		<button type="button" class="btn btn-white {{ $order != "id_desc" || $search || $filterActive != "all" || $perPage != "10" ?: 'disabled' }}" wire:click="clearAllFilters">
+		<button type="button" class="btn btn-white {{ $order != "id_desc" || $search || $filterState != "all" || $perPage != "10" ?: 'disabled' }}" wire:click="clearAllFilters">
 			<i class="fas fa-eraser"></i>
 		</button>
 	</div>
@@ -88,7 +87,7 @@
 </div> {{-- filters --}}
 
 
-@if ($search || $filterActive != "all" || $perPage != "10")
+@if ($search || $filterState != "all" || $perPage != "10")
 	<ul class="list-inline my-2">
 		@if ($search)
 			<li class="list-inline-item mr-1">
@@ -97,10 +96,10 @@
 				<a>
 			</li>
 		@endif
-		@if ($filterActive != "all")
+		@if ($filterState != "all")
 			<li class="list-inline-item mr-1">
-				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterActive">
-					{{ $filterActiveName }}<i class="fas fa-times ml-2"></i>
+				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterState">
+					{{ $filterStateName }}<i class="fas fa-times ml-2"></i>
 				<a>
 			</li>
 		@endif

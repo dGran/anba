@@ -329,10 +329,8 @@ return [
         ],
         [
             'text'        => 'Usuarios',
-            'route'       => 'home',
+            'route'       => 'admin.users',
             'icon'        => 'bx bxs-data',
-            'label'       => 'REFACT',
-            'label_color' => 'danger',
         ],
         [
             'text'        => 'Roles',
