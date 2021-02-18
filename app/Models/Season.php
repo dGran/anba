@@ -316,6 +316,10 @@ class Season extends Model
 
         $matches = Match::leftJoin('scores', 'scores.match_id', 'matches.id')
             ->select('matches.*')
+            ->with('season')
+            ->with('localTeam')
+            ->with('visitorTeam')
+            ->with('scores')
             ->where('season_id', $this->id)
             ->where(function($q) use ($team_id) {
                 $q->where('local_team_id', $team_id)
@@ -371,6 +375,10 @@ class Season extends Model
             // loop for streak
             $matches = Match::leftJoin('scores', 'scores.match_id', 'matches.id')
                 ->select('matches.*')
+                ->with('season')
+                ->with('localTeam')
+                ->with('visitorTeam')
+                ->with('scores')
                 ->where('season_id', $this->id)
                 ->where(function($q) use ($team_id) {
                     $q->where('local_team_id', $team_id)
@@ -487,6 +495,8 @@ class Season extends Model
                 $teams = SeasonTeam::
                     leftJoin('seasons_divisions', 'seasons_divisions.id', 'seasons_teams.season_division_id')
                     ->leftJoin('seasons_conferences', 'seasons_conferences.id', 'seasons_divisions.season_conference_id')
+                    ->with('team')
+                    ->with('seasonDivision')
                     ->select('seasons_teams.*')
                     ->where('seasons_divisions.season_conference_id', $conference_id)
                     ->get();
@@ -494,6 +504,8 @@ class Season extends Model
             case 'division':
                 $teams = SeasonTeam::
                     leftJoin('seasons_divisions', 'seasons_divisions.id', 'seasons_teams.season_division_id')
+                   ->with('team')
+                    ->with('seasonDivision')
                     ->select('seasons_teams.*')
                     ->where('seasons_teams.season_division_id', $division_id)
                     ->get();
