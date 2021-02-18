@@ -20,8 +20,6 @@ use App\Http\Livewire\Admin\PostCrud;
 use App\Http\Livewire\Admin\ConfigNotificationsCrud;
 
 Route::get('/', function () {
-	$usersOnline = \App\Models\Session::whereNotNull('user_id')->distinct('user_id')->count('user_id');
-	$visitorsOnline = \App\Models\Session::whereNull('user_id')->count();
     return view('home');
 })->name('home');
 
@@ -56,10 +54,6 @@ Route::get('/reglamento', function () {
 })->name('rules');
 
 // admin routes
-
-// Route::middleware(['auth:sanctum', 'verified'])
-// 	->get('/equipos', UsersCrud::class)
-// 	->name('teams');
 
 Route::middleware(['auth:sanctum', 'verified', 'role:super-admin|admin', 'password.confirm'])->prefix('admin')->group(function() {
 	Route::get('usuarios', UserCrud::class)->name('admin.users');
