@@ -287,7 +287,7 @@ class Season extends Model
         }
     }
 
-    public function get_table_data_team($team_id)
+    public function get_table_data_team($team_id, $streak)
     {
         $data = [
             "w" => 0,
@@ -367,47 +367,49 @@ class Season extends Model
             }
         }
 
-        // loop for streak
-        $matches = Match::leftJoin('scores', 'scores.match_id', 'matches.id')
-            ->select('matches.*')
-            ->where('season_id', $this->id)
-            ->where(function($q) use ($team_id) {
-                $q->where('local_team_id', $team_id)
-                    ->orWhere('visitor_team_id', $team_id);
-                })
-            ->orderBy('scores.created_at', 'asc')
-            ->get();
+        if ($streak) {
+            // loop for streak
+            $matches = Match::leftJoin('scores', 'scores.match_id', 'matches.id')
+                ->select('matches.*')
+                ->where('season_id', $this->id)
+                ->where(function($q) use ($team_id) {
+                    $q->where('local_team_id', $team_id)
+                        ->orWhere('visitor_team_id', $team_id);
+                    })
+                ->orderBy('scores.created_at', 'asc')
+                ->get();
 
-        foreach ($matches as $key => $match) {
-            if ($match->played()) {
-                $local_score = $match->scores->sum('local_score');
-                $visitor_score = $match->scores->sum('visitor_score');
-                if ($team_id == $match->local_team_id) {
-                    if ($local_score > $visitor_score) {
-                        if ($data['streak'] > 0) {
-                            $data['streak'] += 1;
+            foreach ($matches as $key => $match) {
+                if ($match->played()) {
+                    $local_score = $match->scores->sum('local_score');
+                    $visitor_score = $match->scores->sum('visitor_score');
+                    if ($team_id == $match->local_team_id) {
+                        if ($local_score > $visitor_score) {
+                            if ($data['streak'] > 0) {
+                                $data['streak'] += 1;
+                            } else {
+                                $data['streak'] = 1;
+                            }
                         } else {
-                            $data['streak'] = 1;
+                            if ($data['streak'] < 0) {
+                                $data['streak'] -= 1;
+                            } else {
+                                $data['streak'] = -1;
+                            }
                         }
                     } else {
-                        if ($data['streak'] < 0) {
-                            $data['streak'] -= 1;
+                        if ($local_score > $visitor_score) {
+                            if ($data['streak'] < 0) {
+                                $data['streak'] -= 1;
+                            } else {
+                                $data['streak'] = -1;
+                            }
                         } else {
-                            $data['streak'] = -1;
-                        }
-                    }
-                } else {
-                    if ($local_score > $visitor_score) {
-                        if ($data['streak'] < 0) {
-                            $data['streak'] -= 1;
-                        } else {
-                            $data['streak'] = -1;
-                        }
-                    } else {
-                        if ($data['streak'] > 0) {
-                            $data['streak'] += 1;
-                        } else {
-                            $data['streak'] = 1;
+                            if ($data['streak'] > 0) {
+                                $data['streak'] += 1;
+                            } else {
+                                $data['streak'] = 1;
+                            }
                         }
                     }
                 }
@@ -474,7 +476,7 @@ class Season extends Model
         return $data;
     }
 
-    public function generateTable($type, $order, $conference_id, $division_id)
+    public function generateTable($type, $order, $conference_id, $division_id, $streak)
     {
         $table_teams = collect();
         switch ($type) {
@@ -498,7 +500,7 @@ class Season extends Model
                 break;
         }
         foreach ($teams as $key => $team) {
-            $data = $this->get_table_data_team($team->id);
+            $data = $this->get_table_data_team($team->id, $streak);
             $table_teams->push([
                 'team' => $team,
                 'team_name' => $team->team->name,

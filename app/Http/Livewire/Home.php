@@ -57,7 +57,7 @@ class Home extends Component
 	    		->orderBy('conferences.name')
 	    		->get();
 	    	foreach ($this->seasons_conferences as $key => $conference) {
-	        	$this->table_positions[$key] = $this->season->generateTable('conference', 'wavg', $conference->id, null);
+	        	$this->table_positions[$key] = $this->season->generateTable('conference', 'wavg', $conference->id, null, false);
 	    	}
     	}
 	}
@@ -73,12 +73,8 @@ class Home extends Component
 		}
 		$posts = Post::type($this->filterType)->orderBy('created_at', 'desc')->paginate(15);
 
-		// dd($this->table_positions);
-
         return view('home.index', [
         	'posts' => $posts,
-        	// 'seasons_conferences' => $this->season ? $this->seasons_conferences : null,
-        	// 'table_positions' => $this->season ? $this->table_positions : null,
         ]);
     }
 }

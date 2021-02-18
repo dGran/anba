@@ -60,16 +60,16 @@ class Standings extends Component
 	        switch ($this->view) {
 	            case 'conference':
 	            	foreach ($seasons_conferences as $key => $conference) {
-	                	$table_positions[$key] = $current_season->generateTable($this->view, $this->order, $conference->id, null);
+	                	$table_positions[$key] = $current_season->generateTable($this->view, $this->order, $conference->id, null, true);
 	            	}
 	                break;
 	            case 'division':
 	            	foreach ($seasons_divisions as $key => $division) {
-	                	$table_positions[$key] = $current_season->generateTable($this->view, $this->order, null, $division->id);
+	                	$table_positions[$key] = $current_season->generateTable($this->view, $this->order, null, $division->id, true);
 	            	}
 	                break;
 	            case 'general':
-	            	$table_positions = $current_season->generateTable($this->view, $this->order, null, null);
+	            	$table_positions = $current_season->generateTable($this->view, $this->order, null, null, true);
 	                break;
 	        }
 
