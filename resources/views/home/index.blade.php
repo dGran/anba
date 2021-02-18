@@ -4,12 +4,6 @@
     <div class="max-w-7xl mx-auto md:px-6 lg:px-8 md:my-8">
         <div class="bg-cover bg-top h-60 max-h-60 sm:h-72 sm:max-h-72 md:h-80 md:max-h-80 lg:h-96 lg:max-h-96 xl:h-96 xl:max-h-96 text-white py-12 px-6 object-fill md:rounded-lg" style="background-image: url(https://i1.wp.com/couchguysports.com/wp-content/uploads/2020/07/Zion-Williamson-reacts-to-NBA-2K21-cover-honor.jpg?fit=1200%2C673&ssl=1)">
         </div>
-{{--         <h4 class="text-center py-3 font-bold">
-        	La liga interactiva mas real para NBA2K
-    	</h4> --}}
-{{--         <button type="button" class="bg-indigo-500 border border-indigo-700 hover:bg-indigo-600 focus:bg-indigo-600 rounded-md px-3 py-1.5 mt-8 fon-bold text-sm uppercase" wire:click="autopost">
-            Test auto-new
-        </button> --}}
     </div>
 
     <div class="max-w-7xl mx-auto md:px-6 lg:px-8 md:my-8">

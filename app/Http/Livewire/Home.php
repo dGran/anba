@@ -19,6 +19,8 @@ class Home extends Component
 
 	public $season;
 	public $filterType = "all";
+	public $seasons_conferences;
+	public $table_positions = [];
 
 	// queryString
 	protected $queryString = [
@@ -42,42 +44,26 @@ class Home extends Component
 		$this->page--;
     }
 
-    public function autopost()
-    {
-    	$post = $this->storePost(
-			'declaraciones',
-			null,
-			null,
-			null,
-			'Categoria',
-			'Título de prueba',
-			'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Culpa quaerat, sequi, ratione fugiat alias odio atque. Porro, quae perspiciatis repellendus omnis iste a dolore neque nam quaerat, molestias, et quisquam.',
-			null
-    	);
-    	event(new PostStored($post));
-    }
-
 	public function mount()
 	{
 		if ($season = Season::where('current', 1)->first()) {
 			$this->season = $season;
 		}
-	}
-
-    public function render()
-    {
     	if ($this->season) {
-	    	$seasons_conferences = SeasonConference::
+	    	$this->seasons_conferences = SeasonConference::
 	    		leftJoin('conferences', 'conferences.id', 'seasons_conferences.conference_id')
 	    		->select('seasons_conferences.*', 'conferences.name')
 	    		->where('season_id', $this->season->id)
 	    		->orderBy('conferences.name')
 	    		->get();
-	    	foreach ($seasons_conferences as $key => $conference) {
-	        	$table_positions[$key] = $this->season->generateTable('conference', 'wavg', $conference->id, null);
+	    	foreach ($this->seasons_conferences as $key => $conference) {
+	        	$this->table_positions[$key] = $this->season->generateTable('conference', 'wavg', $conference->id, null);
 	    	}
     	}
+	}
 
+    public function render()
+    {
     	$posts = Post::type($this->filterType)->orderBy('created_at', 'desc')->paginate(15);
 	    if (($posts->total() > 0 && $posts->count() == 0)) {
 			$this->page = 1;
@@ -87,10 +73,12 @@ class Home extends Component
 		}
 		$posts = Post::type($this->filterType)->orderBy('created_at', 'desc')->paginate(15);
 
+		// dd($this->table_positions);
+
         return view('home.index', [
         	'posts' => $posts,
-        	'seasons_conferences' => $this->season ? $seasons_conferences : null,
-        	'table_positions' => $this->season ? $table_positions : null,
+        	// 'seasons_conferences' => $this->season ? $this->seasons_conferences : null,
+        	// 'table_positions' => $this->season ? $this->table_positions : null,
         ]);
     }
 }

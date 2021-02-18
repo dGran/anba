@@ -501,8 +501,12 @@ class Season extends Model
             $data = $this->get_table_data_team($team->id);
             $table_teams->push([
                 'team' => $team,
-                'team_medium_name' => $team->team->medium_name,
                 'team_name' => $team->team->name,
+                'team_medium_name' => $team->team->medium_name,
+                'team_short_name' => $team->team->short_name,
+                'team_img' => $team->team->getImg(),
+                'team_with_manager' => $team->team->user ? true : false,
+                'team_manager' => $team->team->user ? $team->team->user->name : 'Sin manager',
                 'w' => $data['w'],
                 'l' => $data['l'],
                 'wavg' => $data['wavg'],

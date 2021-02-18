@@ -1,12 +1,11 @@
 <td class="dark:border-gray-600 pl-4">
 	<div class="flex items-center border-gray-200 dark:border-gray-650 py-1">
 		<p class="m-0 text-left mr-3 font-semibold w-2">{{ $loop->iteration }}</p>
-		<img src="{{ $position['team']->team->getImg() }}" alt="{{ $position['team']->team->short_name }}" class="mr-2 w-8 h-8">
+		<img src="{{ $position['team_img'] }}" alt="{{ $position['team_short_name'] }}" class="mr-2 w-8 h-8">
 		<p class="truncate">
-			{{-- <span class="hidden sm:block">{{ $position['team']->team->name }}</span> --}}
-			<span class="">{{ $position['team']->team->medium_name }}</span>
-			<span class="block text-xs leading-4 truncate {{ $position['team']->team->user ? 'text-gray-500 dark:text-gray-300' : 'text-gray-300 dark:text-gray-500 uppercase text-xs' }}">
-				{{ $position['team']->team->user ? $position['team']->team->user->name : 'Sin manager' }}
+			<span class="">{{ $position['team_medium_name'] }}</span>
+			<span class="block text-xs leading-4 truncate {{ $position['team_with_manager'] ? 'text-gray-500 dark:text-gray-300' : 'text-gray-300 dark:text-gray-500 uppercase text-xs' }}">
+				{{ $position['team_manager'] }}
 			</span>
 		</p>
 	</div>
