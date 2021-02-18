@@ -3,7 +3,7 @@
         <div class="modal-dialog modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header pb-0" style="background: #F9FAFB; position: relative; overflow: hidden;">
-                    <img class="object-cover ml-3 mb-3 rounded-circle" src="{{ $regView->getImg() }}" alt="{{ $regView->name }}" style="width: auto; height: 75px">
+                    <img class="object-cover ml-3 mb-3 rounded-circle" src="{{ $regView->getImg() }}" alt="{{ $regView->name }}" style="width: 75px; height: 75px">
                     <h5 class="modal-title text-base text-uppercase font-medium tracking-wide py-3 ml-3">
                         <span>{{ $regView->getName() }}</span>
                     </h5>
