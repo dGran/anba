@@ -467,7 +467,7 @@ class Match extends Model
         $local_wins = 0;
         $visitor_wins = 0;
         foreach ($regs as $reg) {
-            if ($reg->winner()->team_id == $current->localTeam->id) {
+            if ($reg->winner()->id == $current->localTeam->id) {
                 $local_wins++;
             } else {
                 $visitor_wins++;
