@@ -583,7 +583,7 @@ class Season extends Model
                 \DB::raw('AVG(AST) as AVG_AST'),
                 \DB::raw('SUM(PTS + REB + AST) / COUNT(player_id) as AVG_TOTAL')
             )
-            ->with('season', 'player', 'seasonTeam')
+            ->where('season_id', $this->id)
             ->where('season_team_id', $season_team_id)
             ->orderBy('AVG_TOTAL', 'desc')
             ->orderBy('AVG_PTS', 'desc')

@@ -107,6 +107,7 @@ class Matches extends Component
 	    	with('team', 'season')
 	    	->join('teams', 'teams.id', 'seasons_teams.team_id')
 	    	->where('season_id', $current_season->id)
+	    	->select('seasons_teams.*')
 	    	->orderBy('teams.medium_name', 'asc')
 	    	->get();
 	    	$managers = SeasonTeam::
@@ -140,7 +141,7 @@ class Matches extends Component
 	{
     	$regs = Match::
     		with('scores', 'localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager', 'playerStats.seasonTeam.team')
-            ->join('scores', 'scores.match_id', 'matches.id')
+            ->leftJoin('scores', 'scores.match_id', 'matches.id')
    			->join('seasons_teams', function($join){
                 $join->on('seasons_teams.id','=','matches.local_team_id');
                 $join->orOn('seasons_teams.id','=','matches.visitor_team_id');
@@ -171,7 +172,7 @@ class Matches extends Component
 
     	$regs = Match::
     		with('scores', 'localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager', 'playerStats.seasonTeam.team')
-            ->join('scores', 'scores.match_id', 'matches.id')
+            ->leftJoin('scores', 'scores.match_id', 'matches.id')
    			->join('seasons_teams', function($join){
                 $join->on('seasons_teams.id','=','matches.local_team_id');
                 $join->orOn('seasons_teams.id','=','matches.visitor_team_id');
