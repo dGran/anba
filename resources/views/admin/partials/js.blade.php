@@ -166,13 +166,13 @@
         Mousetrap.bind('p 1', function() {
             @this.setFilterPerPage("5");
         });
-        Mousetrap.bind(['p q', 'p 2'], function() {
+        Mousetrap.bind('p 2', function() {
             @this.setFilterPerPage("10");
         });
         Mousetrap.bind('p 3', function() {
             @this.setFilterPerPage("15");
         });
-        Mousetrap.bind('p 4', function() {
+        Mousetrap.bind(['p q', 'p 4'], function() {
             @this.setFilterPerPage("25");
         });
         Mousetrap.bind('p 5', function() {

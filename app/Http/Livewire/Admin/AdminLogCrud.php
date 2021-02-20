@@ -23,7 +23,7 @@ class AdminLogCrud extends Component
 
 	//filters
 	public $search = "";
-	public $perPage = '10';
+	public $perPage = '25';
 	public $filterType = "all";
 	public $filterUser = "all";
 	public $filterTable = "all";
@@ -57,7 +57,7 @@ class AdminLogCrud extends Component
 		'filterType' => ['except' => "all"],
 		'filterUser' => ['except' => "all"],
 		'filterTable' => ['except' => "all"],
-		'perPage' => ['except' => '10'],
+		'perPage' => ['except' => '25'],
 		'order' => ['except' => 'id_desc'],
 	];
 
@@ -259,14 +259,14 @@ class AdminLogCrud extends Component
 
     public function cancelFilterPerPage()
     {
-    	$this->perPage = '10';
+    	$this->perPage = '25';
     }
 
     public function clearAllFilters()
     {
     	$this->search = '';
     	$this->page = 1;
-    	$this->perPage = '10';
+    	$this->perPage = '25';
 		$this->order = 'id_desc';
 		$this->filterType = "all";
 		$this->filterUser = "all";

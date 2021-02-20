@@ -95,7 +95,7 @@
 			<i class="fas fa-filter"></i>
 		</button>
 
-		<button type="button" class="btn btn-white {{ $order != "id_desc" || $search || $filterPosition != "all" || $filterTeam != "all" || $filterNation != "all" || $filterAge != ['from' => 15, 'to' => 45] || $filterHeight != ['from' => 5, 'to' => 8] || $filterWeight != ['from' => 125, 'to' => 500] || $filterYearDraft != ['from' => 1995, 'to' => 2020] || $filterCollege != "all" || $perPage != "10" || $filterRetired != "all" ?: 'disabled' }}" wire:click="clearAllFilters">
+		<button type="button" class="btn btn-white {{ $order != "id_desc" || $search || $filterPosition != "all" || $filterTeam != "all" || $filterNation != "all" || $filterAge != ['from' => 15, 'to' => 45] || $filterHeight != ['from' => 5, 'to' => 8] || $filterWeight != ['from' => 125, 'to' => 500] || $filterYearDraft != ['from' => 1995, 'to' => 2020] || $filterCollege != "all" || $perPage != "25" || $filterRetired != "all" ?: 'disabled' }}" wire:click="clearAllFilters">
 			<i class="fas fa-eraser"></i>
 		</button>
 	</div>
@@ -103,7 +103,7 @@
 </div> {{-- filters --}}
 
 
-@if ($search || $filterPosition != "all" || $filterTeam != "all" || $filterNation != "all" || $filterAge != ['from' => 15, 'to' => 45] || $filterHeight != ['from' => 5, 'to' => 8] || $filterWeight != ['from' => 125, 'to' => 500] || $filterYearDraft != ['from' => 1995, 'to' => 2020] || $filterCollege != "all" || $filterRetired != "all" || $perPage != "10")
+@if ($search || $filterPosition != "all" || $filterTeam != "all" || $filterNation != "all" || $filterAge != ['from' => 15, 'to' => 45] || $filterHeight != ['from' => 5, 'to' => 8] || $filterWeight != ['from' => 125, 'to' => 500] || $filterYearDraft != ['from' => 1995, 'to' => 2020] || $filterCollege != "all" || $filterRetired != "all" || $perPage != "25")
 	<ul class="list-inline my-2">
 		@if ($search)
 			<li class="list-inline-item mr-1">
@@ -175,7 +175,7 @@
 				<a>
 			</li>
 		@endif
-		@if ($perPage !== "10")
+		@if ($perPage !== "25")
 			<li class="list-inline-item">
 				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterPerPage">
 					{{ $perPage }} / página<i class="fas fa-times ml-2"></i>

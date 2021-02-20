@@ -38,7 +38,7 @@ class SeasonCrud extends Component
 
 	//filters
 	public $search = "";
-	public $perPage = '10';
+	public $perPage = '25';
 	public $order = 'id_desc';
 
 	// preferences vars
@@ -63,7 +63,7 @@ class SeasonCrud extends Component
 	// queryString
 	protected $queryString = [
 		'search' => ['except' => ''],
-		'perPage' => ['except' => '10'],
+		'perPage' => ['except' => '25'],
 		'order' => ['except' => 'id_desc'],
 	];
 
@@ -229,14 +229,14 @@ class SeasonCrud extends Component
 
     public function cancelFilterPerPage()
     {
-    	$this->perPage = '10';
+    	$this->perPage = '25';
     }
 
     public function clearAllFilters()
     {
     	$this->search = '';
     	$this->page = 1;
-    	$this->perPage = '10';
+    	$this->perPage = '25';
 		$this->order = 'id_desc';
 
 		$this->emit('resetFiltersMode');

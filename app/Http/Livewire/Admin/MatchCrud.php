@@ -53,7 +53,7 @@ class MatchCrud extends Component
 
 	//filters
 	public $search = "";
-	public $perPage = '10';
+	public $perPage = '25';
 	public $filterTeam = "all";
 	public $filterUser = "all";
 	public $order = 'id_desc';
@@ -89,7 +89,7 @@ class MatchCrud extends Component
 		'search' => ['except' => ''],
 		'filterTeam' => ['except' => "all"],
 		'filterUser' => ['except' => "all"],
-		'perPage' => ['except' => '10'],
+		'perPage' => ['except' => '25'],
 		'order' => ['except' => 'id_desc'],
 	];
 
@@ -315,14 +315,14 @@ class MatchCrud extends Component
 
     public function cancelFilterPerPage()
     {
-    	$this->perPage = '10';
+    	$this->perPage = '25';
     }
 
     public function clearAllFilters()
     {
     	$this->search = '';
     	$this->page = 1;
-    	$this->perPage = '10';
+    	$this->perPage = '25';
 		$this->order = 'id_desc';
 		$this->filterTeam = "all";
 		$this->filterUser = "all";

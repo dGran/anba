@@ -7,7 +7,7 @@
 	@else
 		<div class="p-3">
 			No existen resultados
-			@if ($search || $filterState != "all" || $perPage != "10")
+			@if ($search || $filterState != "all" || $perPage != "25")
 				con los filtros aplicados
 			@endif
 		</div>

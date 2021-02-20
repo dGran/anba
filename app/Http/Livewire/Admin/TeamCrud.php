@@ -35,7 +35,7 @@ class TeamCrud extends Component
 
 	//filters
 	public $search = "";
-	public $perPage = '10';
+	public $perPage = '25';
 	public $filterDivision = "all";
 	public $filterActive = "all";
 	public $order = 'id_desc';
@@ -70,7 +70,7 @@ class TeamCrud extends Component
 		'search' => ['except' => ''],
 		'filterDivision' => ['except' => "all"],
 		'filterActive' => ['except' => "all"],
-		'perPage' => ['except' => '10'],
+		'perPage' => ['except' => '25'],
 		'order' => ['except' => 'id_desc'],
 	];
 
@@ -305,14 +305,14 @@ class TeamCrud extends Component
 
     public function cancelFilterPerPage()
     {
-    	$this->perPage = '10';
+    	$this->perPage = '25';
     }
 
     public function clearAllFilters()
     {
     	$this->search = '';
     	$this->page = 1;
-    	$this->perPage = '10';
+    	$this->perPage = '25';
 		$this->order = 'id_desc';
 		$this->filterDivision = "all";
 		$this->filterActive = "all";
