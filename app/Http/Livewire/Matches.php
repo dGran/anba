@@ -148,6 +148,9 @@ class Matches extends Component
                 $join->on('users.id','=','matches.local_manager_id');
                 $join->orOn('users.id','=','matches.visitor_manager_id');
             })
+            ->with('localTeam')
+            ->with('visitorTeam')
+
             ->season($this->season)
     		->name($this->search)
     		->team($this->team)
@@ -177,6 +180,10 @@ class Matches extends Component
                 $join->on('users.id','=','matches.local_manager_id');
                 $join->orOn('users.id','=','matches.visitor_manager_id');
             })
+
+            ->with('localTeam')
+            ->with('visitorTeam')
+
             ->season($this->season)
     		->name($this->search)
     		->team($this->team)

@@ -22,15 +22,18 @@
 				<tr class="border-b border-gray-200 dark:border-gray-650">
 					<td style="min-width: 150px">
 						<div class="flex items-center py-3">
-							@if ($reg->top_local_player())
-								<img src="{{ $reg->top_local_player() ? $reg->top_local_player()->player->getImg() : '' }}" alt="{{ $reg->top_local_player() ? $reg->top_local_player()->player->name : '' }}" class="rounded-full border border-gray-200 dark:border-gray-650 object-cover" style="width: 26px; height: 26px">
+							@php
+								$top_local_player = $reg->top_local_player();
+							@endphp
+							@if ($top_local_player)
+								<img src="{{ $top_local_player ? $top_local_player->player_img : '' }}" alt="{{ $top_local_player ? $top_local_player->player_name : '' }}" class="rounded-full border border-gray-200 dark:border-gray-650 object-cover" style="width: 26px; height: 26px">
 							@endif
 							<div class="flex flex-col ml-2 leading-3">
-								<span class="text-sm">{{ $reg->top_local_player() ? $reg->top_local_player()->player->name : '-' }}</span>
+								<span class="text-sm">{{ $top_local_player ? $top_local_player->player_name : '-' }}</span>
 								<div class="text-xs uppercase leading-5">
-									<span>{{ $reg->top_local_player() ? $reg->top_local_player()->seasonTeam->team->short_name : '' }}</span>
-									<span class="mx-1">{{ $reg->top_local_player() ? '|' : '' }}</span>
-									<span>{{ $reg->top_local_player() ? $reg->top_local_player()->player->position : '' }}</span>
+									<span>{{ $top_local_player ? $top_local_player->team_short_name : '' }}</span>
+									<span class="mx-1">{{ $top_local_player ? '|' : '' }}</span>
+									<span>{{ $top_local_player ? $top_local_player->player_position : '' }}</span>
 								</div>
 							</div>
 						</div>
@@ -49,15 +52,18 @@
 				<tr>
 					<td style="min-width: 150px">
 						<div class="flex items-center py-3">
-							@if ($reg->top_visitor_player())
-								<img src="{{ $reg->top_visitor_player() ? $reg->top_visitor_player()->player->getImg() : '' }}" alt="{{ $reg->top_visitor_player() ? $reg->top_visitor_player()->player->name : '' }}" class="rounded-full border border-gray-200 dark:border-gray-650 object-cover" style="width: 26px; height: 26px">
+							@php
+								$top_visitor_player = $reg->top_visitor_player();
+							@endphp
+							@if ($top_visitor_player)
+								<img src="{{ $top_visitor_player ? $top_visitor_player->player_img : '' }}" alt="{{ $top_visitor_player ? $top_visitor_player->player_name : '' }}" class="rounded-full border border-gray-200 dark:border-gray-650 object-cover" style="width: 26px; height: 26px">
 							@endif
-							<div class="flex flex-col leading-3 ml-2">
-								<span class="text-sm">{{ $reg->top_visitor_player() ? $reg->top_visitor_player()->player->name : '-' }}</span>
+							<div class="flex flex-col ml-2 leading-3">
+								<span class="text-sm">{{ $top_visitor_player ? $top_visitor_player->player_name : '-' }}</span>
 								<div class="text-xs uppercase leading-5">
-									<span>{{ $reg->top_visitor_player() ? $reg->top_visitor_player()->seasonTeam->team->short_name : '' }}</span>
-									<span class="mx-1">{{ $reg->top_visitor_player() ? '|' : '' }}</span>
-									<span>{{ $reg->top_visitor_player() ? $reg->top_visitor_player()->player->position : '' }}</span>
+									<span>{{ $top_visitor_player ? $top_visitor_player->team_short_name : '' }}</span>
+									<span class="mx-1">{{ $top_visitor_player ? '|' : '' }}</span>
+									<span>{{ $top_visitor_player ? $top_visitor_player->player_position : '' }}</span>
 								</div>
 							</div>
 						</div>

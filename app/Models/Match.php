@@ -257,12 +257,15 @@ class Match extends Model
     {
         $team_id = $this->localTeam->id;
         return $top = PlayerStat::
-            where('match_id', $this->id)
+            join('players', 'players.id', 'players_stats.player_id')
+            ->join('seasons_teams', 'seasons_teams.id', 'players_stats.season_team_id')
+            ->join('teams', 'teams.id', 'seasons_teams.team_id')
+            ->where('match_id', $this->id)
             // ->whereIn('player_id', function($query) use ($team_id) {
             //    $query->select('id')->from('players')->where('team_id', '=', $team_id);
             // })
-            ->where('season_team_id', $team_id)
-            ->select('*', \DB::raw('PTS + REB + AST as TOTAL'))
+            // ->with('player')
+            ->select('players.name as player_name', 'players.img as player_img', 'players.position as player_position', 'teams.short_name as team_short_name', \DB::raw('PTS + REB + AST as TOTAL'), 'players_stats.PTS', 'players_stats.REB', 'players_stats.AST')
             ->orderBy('TOTAL', 'desc')
             ->orderBy('PTS', 'desc')
             ->orderBy('REB', 'desc')
@@ -274,12 +277,15 @@ class Match extends Model
     {
         $team_id = $this->visitorTeam->id;
         return $top = PlayerStat::
-            where('match_id', $this->id)
+            join('players', 'players.id', 'players_stats.player_id')
+            ->join('seasons_teams', 'seasons_teams.id', 'players_stats.season_team_id')
+            ->join('teams', 'teams.id', 'seasons_teams.team_id')
+            ->where('match_id', $this->id)
             // ->whereIn('player_id', function($query) use ($team_id) {
             //    $query->select('id')->from('players')->where('team_id', '=', $team_id);
             // })
-            ->where('season_team_id', $team_id)
-            ->select('*', \DB::raw('PTS + REB + AST as TOTAL'))
+            // ->with('player')
+            ->select('players.name as player_name', 'players.img as player_img', 'players.position as player_position', 'teams.short_name as team_short_name', \DB::raw('PTS + REB + AST as TOTAL'), 'players_stats.PTS', 'players_stats.REB', 'players_stats.AST')
             ->orderBy('TOTAL', 'desc')
             ->orderBy('PTS', 'desc')
             ->orderBy('REB', 'desc')

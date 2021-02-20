@@ -473,12 +473,13 @@ class Season extends Model
         ];
 
         $matches = Match::leftJoin('scores', 'scores.match_id', 'matches.id')
-            ->select('matches.*')
+            ->with('scores')
             ->where('season_id', $this->id)
             ->where(function($q) use ($team_id) {
                 $q->where('local_team_id', $team_id)
                     ->orWhere('visitor_team_id', $team_id);
                 })
+            ->select('matches.*', 'scores.*')
             ->orderBy('scores.created_at', 'desc')
             ->get();
 
