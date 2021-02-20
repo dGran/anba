@@ -104,14 +104,14 @@ class Matches extends Component
     		$current_season = Season::where('slug', $this->season)->first();
     		$seasons = Season::orderBy('id', 'desc')->get();
 	    	$season_teams = SeasonTeam::
-	    	leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
+	    	join('teams', 'teams.id', 'seasons_teams.team_id')
 	    	->select('seasons_teams.*')
 	    	->where('season_id', $current_season->id)
 	    	->orderBy('teams.medium_name', 'asc')
 	    	->get();
 	    	$managers = SeasonTeam::
-	    	leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
-	    	->leftJoin('users', 'users.id', 'teams.manager_id')
+	    	join('teams', 'teams.id', 'seasons_teams.team_id')
+	    	->join('users', 'users.id', 'teams.manager_id')
 	    	->where('season_id', $current_season->id)
 	    	->whereNotNull('teams.manager_id')
 	    	->select('users.*')
@@ -138,13 +138,13 @@ class Matches extends Component
 	protected function getData()
 	{
     	$regs = Match::
-            leftJoin('scores', 'scores.match_id', 'matches.id')
-   			->leftJoin('seasons_teams', function($join){
+            join('scores', 'scores.match_id', 'matches.id')
+   			->join('seasons_teams', function($join){
                 $join->on('seasons_teams.id','=','matches.local_team_id');
                 $join->orOn('seasons_teams.id','=','matches.visitor_team_id');
             })
-    		->leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
-   			->leftJoin('users', function($join){
+    		->join('teams', 'teams.id', 'seasons_teams.team_id')
+   			->join('users', function($join){
                 $join->on('users.id','=','matches.local_manager_id');
                 $join->orOn('users.id','=','matches.visitor_manager_id');
             })
@@ -167,13 +167,13 @@ class Matches extends Component
 		}
 
     	$regs = Match::
-            leftJoin('scores', 'scores.match_id', 'matches.id')
-   			->leftJoin('seasons_teams', function($join){
+            join('scores', 'scores.match_id', 'matches.id')
+   			->join('seasons_teams', function($join){
                 $join->on('seasons_teams.id','=','matches.local_team_id');
                 $join->orOn('seasons_teams.id','=','matches.visitor_team_id');
             })
-    		->leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
-   			->leftJoin('users', function($join){
+    		->join('teams', 'teams.id', 'seasons_teams.team_id')
+   			->join('users', function($join){
                 $join->on('users.id','=','matches.local_manager_id');
                 $join->orOn('users.id','=','matches.visitor_manager_id');
             })

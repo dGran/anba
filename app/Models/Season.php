@@ -486,8 +486,6 @@ class Season extends Model
             if ($match->played()) {
                 $local_score = $match->scores->sum('local_score');
                 $visitor_score = $match->scores->sum('visitor_score');
-                $same_conf = $match->localTeam->seasonDivision->seasonConference->id == $match->visitorTeam->seasonDivision->seasonConference->id ? true : false;
-                $same_div = $match->localTeam->seasonDivision->id == $match->visitorTeam->seasonDivision->id ? true : false;
                 if ($team_id == $match->local_team_id) {
                     if ($local_score > $visitor_score) {
                         $data['w'] += 1;
