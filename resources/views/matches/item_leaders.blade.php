@@ -28,7 +28,7 @@
 							<div class="flex flex-col ml-2 leading-3">
 								<span class="text-sm">{{ $reg->top_local_player() ? $reg->top_local_player()->player->name : '-' }}</span>
 								<div class="text-xs uppercase leading-5">
-									<span>{{ $reg->top_local_player() ? $reg->top_local_player()->player->team->short_name : '' }}</span>
+									<span>{{ $reg->top_local_player() ? $reg->top_local_player()->seasonTeam->team->short_name : '' }}</span>
 									<span class="mx-1">{{ $reg->top_local_player() ? '|' : '' }}</span>
 									<span>{{ $reg->top_local_player() ? $reg->top_local_player()->player->position : '' }}</span>
 								</div>
@@ -55,7 +55,7 @@
 							<div class="flex flex-col leading-3 ml-2">
 								<span class="text-sm">{{ $reg->top_visitor_player() ? $reg->top_visitor_player()->player->name : '-' }}</span>
 								<div class="text-xs uppercase leading-5">
-									<span>{{ $reg->top_visitor_player() ? $reg->top_visitor_player()->player->team->short_name : '' }}</span>
+									<span>{{ $reg->top_visitor_player() ? $reg->top_visitor_player()->seasonTeam->team->short_name : '' }}</span>
 									<span class="mx-1">{{ $reg->top_visitor_player() ? '|' : '' }}</span>
 									<span>{{ $reg->top_visitor_player() ? $reg->top_visitor_player()->player->position : '' }}</span>
 								</div>

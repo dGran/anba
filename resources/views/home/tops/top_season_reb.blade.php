@@ -6,18 +6,18 @@
 
 					@include('home.tops.player_info')
 
-			        <div class="ml-4 grid grid-cols-3 gap-3">
+			        <div class="flex items-center">
 			        	<div class="flex flex-col">
-			        		<p class="text-center tracking-wide">RPG</p>
-			        		<p class="text-center">{{ number_format($top->AVG_REB, 1) }}</p>
+			        		<p class="text-right tracking-wide">REB</p>
+			        		<p class="text-right">{{ number_format($top->SUM_REB, 0, ',', '.') }}</p>
 			        	</div>
-			        	<div class="flex flex-col">
-			        		<p class="text-center tracking-wide">REB</p>
-			        		<p class="text-center">{{ number_format($top->SUM_REB, 0) }}</p>
+			        	<div class="ml-3 flex flex-col">
+			        		<p class="text-right tracking-wide">RPG</p>
+			        		<p class="text-right font-bold">{{ number_format($top->AVG_REB, 1, ',', '.') }}</p>
 			        	</div>
-			        	<div class="flex flex-col">
-			        		<p class="text-center tracking-wide">PJ</p>
-			        		<p class="text-center">{{ number_format($top->PJ, 0) }}</p>
+			        	<div class="ml-3 flex flex-col">
+			        		<p class="text-right tracking-wide">PJ</p>
+			        		<p class="text-right">{{ number_format($top->PJ, 0, ',', '.') }}</p>
 			        	</div>
 			        </div>
 			    </div>
