@@ -781,7 +781,8 @@ class TeamCrud extends Component
 	protected function getData()
 	{
     	$regs = Team::
-    		leftJoin('divisions', 'divisions.id', 'teams.division_id')
+			with('user', 'division')
+    		->leftJoin('divisions', 'divisions.id', 'teams.division_id')
     		->leftJoin('users', 'users.id', 'teams.manager_id')
     		->select('teams.*', 'divisions.name as division_name', 'users.name as manager_name')
     		->name($this->search)
@@ -799,7 +800,8 @@ class TeamCrud extends Component
 		}
 
     	$regs = Team::
-    		leftJoin('divisions', 'divisions.id', 'teams.division_id')
+			with('user', 'division')
+    		->leftJoin('divisions', 'divisions.id', 'teams.division_id')
     		->leftJoin('users', 'users.id', 'teams.manager_id')
     		->select('teams.*', 'divisions.name as division_name', 'users.name as manager_name')
     		->name($this->search)

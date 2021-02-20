@@ -99,19 +99,18 @@ class Matches extends Component
 
     public function render()
     {
-    	// dd('render');
     	if (!$this->blank_view) {
     		$current_season = Season::where('slug', $this->season)->first();
     		$seasons = Season::orderBy('id', 'desc')->get();
 	    	$season_teams = SeasonTeam::
-	    	with('team', 'season')
+	    	with('team')
 	    	->join('teams', 'teams.id', 'seasons_teams.team_id')
 	    	->where('season_id', $current_season->id)
 	    	->select('seasons_teams.*')
 	    	->orderBy('teams.medium_name', 'asc')
 	    	->get();
 	    	$managers = SeasonTeam::
-	    	with('team', 'season')
+	    	with('team')
 	    	->join('teams', 'teams.id', 'seasons_teams.team_id')
 	    	->join('users', 'users.id', 'teams.manager_id')
 	    	->where('season_id', $current_season->id)
@@ -140,7 +139,7 @@ class Matches extends Component
 	protected function getData()
 	{
     	$regs = Match::
-    		with('scores', 'localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager', 'playerStats.seasonTeam.team')
+    		with('localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager', 'scores', 'playerStats.player', 'playerStats.seasonTeam.team')
             ->leftJoin('scores', 'scores.match_id', 'matches.id')
    			->join('seasons_teams', function($join){
                 $join->on('seasons_teams.id','=','matches.local_team_id');
@@ -171,7 +170,7 @@ class Matches extends Component
 		}
 
     	$regs = Match::
-    		with('scores', 'localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager', 'playerStats.seasonTeam.team')
+    		with('localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager', 'scores', 'playerStats.player', 'playerStats.seasonTeam.team')
             ->leftJoin('scores', 'scores.match_id', 'matches.id')
    			->join('seasons_teams', function($join){
                 $join->on('seasons_teams.id','=','matches.local_team_id');

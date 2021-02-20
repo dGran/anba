@@ -1084,7 +1084,8 @@ class PlayerCrud extends Component
 	protected function getData()
 	{
     	$regs = Player::
-    		leftJoin('teams', 'teams.id', 'players.team_id')
+    		with('team', 'injury')
+    		->leftJoin('teams', 'teams.id', 'players.team_id')
     		->select('players.*', 'teams.name as team_name')
     		->name($this->search)
 			->team($this->filterTeam)
@@ -1108,7 +1109,8 @@ class PlayerCrud extends Component
 		}
 
     	$regs = Player::
-    		leftJoin('teams', 'teams.id', 'players.team_id')
+    		with('team', 'injury')
+    		->leftJoin('teams', 'teams.id', 'players.team_id')
     		->select('players.*', 'teams.name as team_name')
     		->name($this->search)
     		->team($this->filterTeam)
@@ -1133,7 +1135,8 @@ class PlayerCrud extends Component
 	protected function setCheckAllSelector()
 	{
     	$regs = Player::
-    		leftJoin('teams', 'teams.id', 'players.team_id')
+    		with('team', 'injury')
+    		->leftJoin('teams', 'teams.id', 'players.team_id')
     		->select('players.*', 'teams.name as team_name')
     		->name($this->search)
     		->team($this->filterTeam)

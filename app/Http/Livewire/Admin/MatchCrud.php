@@ -821,12 +821,16 @@ class MatchCrud extends Component
     	$this->setSessionState();
 
     	$seasons = Season::orderBy('id', 'desc')->get();
-    	$season_teams = SeasonTeam::leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
+    	$season_teams = SeasonTeam::
+    	with('team')
+    	->leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
     	->select('seasons_teams.*')
     	->where('season_id', $this->season->id)
     	->orderBy('teams.medium_name', 'asc')
     	->get();
-    	$managers = SeasonTeam::leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
+    	$managers = SeasonTeam::
+    	with('team')
+    	->leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
     	->leftJoin('users', 'users.id', 'teams.manager_id')
     	->where('season_id', $this->season->id)
     	->whereNotNull('teams.manager_id')
@@ -856,7 +860,8 @@ class MatchCrud extends Component
 	protected function getData()
 	{
     	$regs = Match::
-   			leftjoin('seasons_teams', function($join){
+    		with('localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager', 'scores', 'playerStats.player', 'teamStats')
+   			->leftjoin('seasons_teams', function($join){
                 $join->on('seasons_teams.id','=','matches.local_team_id');
                 $join->orOn('seasons_teams.id','=','matches.visitor_team_id');
             })
@@ -883,7 +888,8 @@ class MatchCrud extends Component
 		}
 
     	$regs = Match::
-   			leftjoin('seasons_teams', function($join){
+    		with('localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager', 'scores', 'playerStats.player', 'teamStats')
+   			->leftjoin('seasons_teams', function($join){
                 $join->on('seasons_teams.id','=','matches.local_team_id');
                 $join->orOn('seasons_teams.id','=','matches.visitor_team_id');
             })
