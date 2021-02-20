@@ -84,54 +84,60 @@
 				<tr class="border-b border-gray-200 dark:border-gray-650">
 					<td style="min-width: 150px">
 						<div class="flex items-center py-3">
-							@if ($current_season->top_player($reg->localTeam->id))
-								<img src="{{ $current_season->top_player($reg->localTeam->id) ? $current_season->top_player($reg->localTeam->id)->player->getImg() : '' }}" alt="{{ $current_season->top_player($reg->localTeam->id) ? $current_season->top_player($reg->localTeam->id)->player->name : '' }}" class="rounded-full border border-gray-200 dark:border-gray-650 object-cover" style="width: 26px; height: 26px">
+							@php
+								$season_top_local_player = $current_season->top_player($reg->localTeam->id);
+							@endphp
+							@if ($season_top_local_player)
+								<img src="{{ $season_top_local_player ? asset('storage/' . $season_top_local_player->player->img) : '' }}" alt="{{ $season_top_local_player ? $season_top_local_player->player->name : '' }}" class="rounded-full border border-gray-200 dark:border-gray-650 object-cover" style="width: 26px; height: 26px">
 							@endif
 							<div class="flex flex-col leading-3 ml-2">
-								<span class="text-sm">{{ $current_season->top_player($reg->localTeam->id) ? $current_season->top_player($reg->localTeam->id)->player->name : '-' }}</span>
+								<span class="text-sm">{{ $season_top_local_player ? $season_top_local_player->player->name : '-' }}</span>
 								<div class="text-xs uppercase leading-5">
-									<span>{{ $current_season->top_player($reg->localTeam->id) ? $current_season->top_player($reg->localTeam->id)->player->team->short_name : '' }}</span>
-									<span class="mx-1">{{ $current_season->top_player($reg->localTeam->id) ? '|' : '' }}</span>
-									<span>{{ $current_season->top_player($reg->localTeam->id) ? $current_season->top_player($reg->localTeam->id)->player->position : '' }}</span>
+									<span>{{ $season_top_local_player ? $season_top_local_player->player->team->short_name : '' }}</span>
+									<span class="mx-1">{{ $season_top_local_player ? '|' : '' }}</span>
+									<span>{{ $season_top_local_player ? $season_top_local_player->player->position : '' }}</span>
 								</div>
 							</div>
 						</div>
 					</td>
 					<td style="min-width: 40px" class="text-right">
-						<span class="text-base uppercase">{{ $current_season->top_player($reg->localTeam->id) ? number_format($current_season->top_player($reg->localTeam->id)->AVG_PTS, 1) : '-' }}</span>
+						<span class="text-base uppercase">{{ $season_top_local_player ? number_format($season_top_local_player->AVG_PTS, 1) : '-' }}</span>
 					</td>
 					<td style="min-width: 40px" class="text-right">
-						<span class="text-base uppercase">{{ $current_season->top_player($reg->localTeam->id) ? number_format($current_season->top_player($reg->localTeam->id)->AVG_REB, 1) : '-' }}</span>
+						<span class="text-base uppercase">{{ $season_top_local_player ? number_format($season_top_local_player->AVG_REB, 1) : '-' }}</span>
 					</td>
 					<td style="min-width: 40px" class="text-right">
-						<span class="text-base uppercase">{{ $current_season->top_player($reg->localTeam->id) ? number_format($current_season->top_player($reg->localTeam->id)->AVG_AST, 1) : '-' }}</span>
+						<span class="text-base uppercase">{{ $season_top_local_player ? number_format($season_top_local_player->AVG_AST, 1) : '-' }}</span>
 					</td>
 				</tr>
 
 				<tr>
 					<td style="min-width: 150px">
 						<div class="flex items-center py-3">
-							@if ($current_season->top_player($reg->visitorTeam->id))
-								<img src="{{ $current_season->top_player($reg->visitorTeam->id) ? $current_season->top_player($reg->visitorTeam->id)->player->getImg() : '' }}" alt="{{ $current_season->top_player($reg->visitorTeam->id) ? $current_season->top_player($reg->visitorTeam->id)->player->name : '' }}" class="rounded-full border border-gray-200 dark:border-gray-650 object-cover" style="width: 26px; height: 26px">
+							@php
+								$season_top_visitor_player = $current_season->top_player($reg->visitorTeam->id);
+							@endphp
+							@if ($season_top_visitor_player)
+								<img src="{{ $season_top_visitor_player ? asset('storage/' . $season_top_visitor_player->player->img) : '' }}" alt="{{ $season_top_visitor_player ? $season_top_visitor_player->player->name : '' }}" class="rounded-full border border-gray-200 dark:border-gray-650 object-cover" style="width: 26px; height: 26px">
 							@endif
 							<div class="flex flex-col leading-3 ml-2">
-								<span class="text-sm">{{ $current_season->top_player($reg->visitorTeam->id) ? $current_season->top_player($reg->visitorTeam->id)->player->name : '-' }}</span>
+								<span class="text-sm">{{ $season_top_visitor_player ? $season_top_visitor_player->player->name : '-' }}</span>
 								<div class="text-xs uppercase leading-5">
-									<span>{{ $current_season->top_player($reg->visitorTeam->id) ? $current_season->top_player($reg->visitorTeam->id)->player->team->short_name : '' }}</span>
-									<span class="mx-1">{{ $current_season->top_player($reg->visitorTeam->id) ? '|' : '' }}</span>
-									<span>{{ $current_season->top_player($reg->visitorTeam->id) ? $current_season->top_player($reg->visitorTeam->id)->player->position : '' }}</span>
+									<span>{{ $season_top_visitor_player ? $season_top_visitor_player->player->team->short_name : '' }}</span>
+									<span class="mx-1">{{ $season_top_visitor_player ? '|' : '' }}</span>
+									<span>{{ $season_top_visitor_player ? $season_top_visitor_player->player->position : '' }}</span>
 								</div>
 							</div>
 						</div>
 					</td>
 					<td style="min-width: 40px" class="text-right">
-						<span class="text-base uppercase">{{ $current_season->top_player($reg->visitorTeam->id) ? number_format($current_season->top_player($reg->visitorTeam->id)->AVG_PTS, 1) : '-' }}</span>
+						<span class="text-base uppercase">{{ $season_top_visitor_player ? number_format($season_top_visitor_player->AVG_PTS, 1) : '-' }}</span>
 					</td>
 					<td style="min-width: 40px" class="text-right">
-						<span class="text-base uppercase">{{ $current_season->top_player($reg->visitorTeam->id) ? number_format($current_season->top_player($reg->visitorTeam->id)->AVG_REB, 1) : '-' }}</span>
+						<span class="text-base uppercase">{{ $season_top_visitor_player ? number_format($season_top_visitor_player->AVG_REB, 1) : '-' }}</span>
 					</td>
 					<td style="min-width: 40px" class="text-right">
-						<span class="text-base uppercase">{{ $current_season->top_player($reg->visitorTeam->id) ? number_format($current_season->top_player($reg->visitorTeam->id)->AVG_AST, 1) : '-' }}</span>
+						<span class="text-base uppercase">{{ $season_top_visitor_player ? number_format($season_top_visitor_player->AVG_AST, 1) : '-' }}</span>
 					</td>
 				</tr>
 
