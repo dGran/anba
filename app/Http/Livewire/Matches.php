@@ -104,13 +104,14 @@ class Matches extends Component
     		$current_season = Season::where('slug', $this->season)->first();
     		$seasons = Season::orderBy('id', 'desc')->get();
 	    	$season_teams = SeasonTeam::
-	    	join('teams', 'teams.id', 'seasons_teams.team_id')
-	    	->select('seasons_teams.*')
+	    	with('team', 'season')
+	    	->join('teams', 'teams.id', 'seasons_teams.team_id')
 	    	->where('season_id', $current_season->id)
 	    	->orderBy('teams.medium_name', 'asc')
 	    	->get();
 	    	$managers = SeasonTeam::
-	    	join('teams', 'teams.id', 'seasons_teams.team_id')
+	    	with('team', 'season')
+	    	->join('teams', 'teams.id', 'seasons_teams.team_id')
 	    	->join('users', 'users.id', 'teams.manager_id')
 	    	->where('season_id', $current_season->id)
 	    	->whereNotNull('teams.manager_id')
@@ -138,7 +139,8 @@ class Matches extends Component
 	protected function getData()
 	{
     	$regs = Match::
-            join('scores', 'scores.match_id', 'matches.id')
+    		with('scores', 'localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager', 'playerStats.seasonTeam.team')
+            ->join('scores', 'scores.match_id', 'matches.id')
    			->join('seasons_teams', function($join){
                 $join->on('seasons_teams.id','=','matches.local_team_id');
                 $join->orOn('seasons_teams.id','=','matches.visitor_team_id');
@@ -148,8 +150,6 @@ class Matches extends Component
                 $join->on('users.id','=','matches.local_manager_id');
                 $join->orOn('users.id','=','matches.visitor_manager_id');
             })
-            ->with('localTeam')
-            ->with('visitorTeam')
 
             ->season($this->season)
     		->name($this->search)
@@ -169,31 +169,29 @@ class Matches extends Component
 			$this->page = $regs->lastPage();
 		}
 
-    	$regs = Match::
-            join('scores', 'scores.match_id', 'matches.id')
-   			->join('seasons_teams', function($join){
-                $join->on('seasons_teams.id','=','matches.local_team_id');
-                $join->orOn('seasons_teams.id','=','matches.visitor_team_id');
-            })
-    		->join('teams', 'teams.id', 'seasons_teams.team_id')
-   			->join('users', function($join){
-                $join->on('users.id','=','matches.local_manager_id');
-                $join->orOn('users.id','=','matches.visitor_manager_id');
-            })
+   //  	$regs = Match::
+   //  		with('scores', 'localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager', 'playerStats.seasonTeam.team', 'playerStats.player')
+   //          ->join('scores', 'scores.match_id', 'matches.id')
+   // 			->join('seasons_teams', function($join){
+   //              $join->on('seasons_teams.id','=','matches.local_team_id');
+   //              $join->orOn('seasons_teams.id','=','matches.visitor_team_id');
+   //          })
+   //  		->join('teams', 'teams.id', 'seasons_teams.team_id')
+   // 			->join('users', function($join){
+   //              $join->on('users.id','=','matches.local_manager_id');
+   //              $join->orOn('users.id','=','matches.visitor_manager_id');
+   //          })
 
-            ->with('localTeam')
-            ->with('visitorTeam')
-
-            ->season($this->season)
-    		->name($this->search)
-    		->team($this->team)
-    		->user($this->manager)
-            ->hidePlayed($this->hidePlayed)
-			->select('matches.*')
-			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
-			->orderBy('matches.id', 'desc')
-			->groupBy('matches.id', 'scores.created_at')
-			->paginate($this->perPage)->onEachSide(2);
+   //          ->season($this->season)
+   //  		->name($this->search)
+   //  		->team($this->team)
+   //  		->user($this->manager)
+   //          ->hidePlayed($this->hidePlayed)
+			// ->select('matches.*')
+			// ->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
+			// ->orderBy('matches.id', 'desc')
+			// ->groupBy('matches.id', 'scores.created_at')
+			// ->paginate($this->perPage)->onEachSide(2);
 
 		return $regs;
 	}

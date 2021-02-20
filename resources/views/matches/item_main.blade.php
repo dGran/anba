@@ -5,7 +5,7 @@
 
 			<div class="text-center text-sm">{{ $reg->localTeam->team->medium_name }}</div>
 			<div class="text-center text-sm">{{ $current_season->get_table_data_team_record($reg->localTeam->id)['w'] }}-{{ $current_season->get_table_data_team_record($reg->localTeam->id)['l'] }}</div>
-			<div class="text-center text-xs light:text-gray-500 dark:text-gray-300">{{ $reg->local_manager ? $reg->local_manager->name : 'sin manager' }}</div>
+			<div class="text-center text-xs light:text-gray-500 dark:text-gray-300">{{ $reg->localManager ? $reg->localManager->name : 'sin manager' }}</div>
 		</div>
 
 		<div class="flex-1 text-center truncate">

@@ -261,10 +261,7 @@ class Match extends Model
             ->join('seasons_teams', 'seasons_teams.id', 'players_stats.season_team_id')
             ->join('teams', 'teams.id', 'seasons_teams.team_id')
             ->where('match_id', $this->id)
-            // ->whereIn('player_id', function($query) use ($team_id) {
-            //    $query->select('id')->from('players')->where('team_id', '=', $team_id);
-            // })
-            // ->with('player')
+            ->where('season_team_id', $team_id)
             ->select('players.name as player_name', 'players.img as player_img', 'players.position as player_position', 'teams.short_name as team_short_name', \DB::raw('PTS + REB + AST as TOTAL'), 'players_stats.PTS', 'players_stats.REB', 'players_stats.AST')
             ->orderBy('TOTAL', 'desc')
             ->orderBy('PTS', 'desc')
@@ -281,10 +278,7 @@ class Match extends Model
             ->join('seasons_teams', 'seasons_teams.id', 'players_stats.season_team_id')
             ->join('teams', 'teams.id', 'seasons_teams.team_id')
             ->where('match_id', $this->id)
-            // ->whereIn('player_id', function($query) use ($team_id) {
-            //    $query->select('id')->from('players')->where('team_id', '=', $team_id);
-            // })
-            // ->with('player')
+            ->where('season_team_id', $team_id)
             ->select('players.name as player_name', 'players.img as player_img', 'players.position as player_position', 'teams.short_name as team_short_name', \DB::raw('PTS + REB + AST as TOTAL'), 'players_stats.PTS', 'players_stats.REB', 'players_stats.AST')
             ->orderBy('TOTAL', 'desc')
             ->orderBy('PTS', 'desc')
@@ -292,6 +286,34 @@ class Match extends Model
             ->orderBy('AST', 'desc')
             ->first();
     }
+
+    // public function top_local_player()
+    // {
+    //     $team_id = $this->localTeam->id;
+    //     return $top = PlayerStat::
+    //         where('match_id', $this->id)
+    //         ->where('season_team_id', $team_id)
+    //         ->select('*', \DB::raw('PTS + REB + AST as TOTAL'))
+    //         ->orderBy('TOTAL', 'desc')
+    //         ->orderBy('PTS', 'desc')
+    //         ->orderBy('REB', 'desc')
+    //         ->orderBy('AST', 'desc')
+    //         ->first();
+    // }
+
+    // public function top_visitor_player()
+    // {
+    //     $team_id = $this->visitorTeam->id;
+    //     return $top = PlayerStat::
+    //         where('match_id', $this->id)
+    //         ->where('season_team_id', $team_id)
+    //         ->select('*', \DB::raw('PTS + REB + AST as TOTAL'))
+    //         ->orderBy('TOTAL', 'desc')
+    //         ->orderBy('PTS', 'desc')
+    //         ->orderBy('REB', 'desc')
+    //         ->orderBy('AST', 'desc')
+    //         ->first();
+    // }
 
     public function localTeam_playerTotals()
     {

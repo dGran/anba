@@ -9,7 +9,9 @@
 		@if (isset($regs))
 			@if ($regs->count() > 0)
 				@foreach ($regs as $key => $reg)
+
 					@include('matches.item')
+
 				@endforeach
 				@if ($regs->total() > $perPage)
 					<div class="pagination-wrapper">
