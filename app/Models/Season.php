@@ -323,16 +323,22 @@ class Season extends Model
             "streak" => 0,
         ];
 
-        $matches = Match::leftJoin('scores', 'scores.match_id', 'matches.id')
-            ->select('matches.*')
-            ->with('season')
-            ->with('localTeam')
-            ->with('visitorTeam')
-            ->with('scores')
-            ->where('season_id', $this->id)
+        $matches = Match::with('season', 'localTeam', 'visitorTeam', 'scores')
+            ->join('scores', 'scores.match_id', 'matches.id')
+
+            ->join('seasons_teams as local_seasons_teams', 'local_seasons_teams.id', 'matches.local_team_id')
+            ->join('seasons_divisions as local_seasons_divisions', 'local_seasons_divisions.id', 'local_seasons_teams.season_division_id')
+            ->join('seasons_conferences as local_seasons_conferences', 'local_seasons_conferences.id', 'local_seasons_divisions.season_conference_id')
+
+            ->join('seasons_teams as visitor_seasons_teams', 'visitor_seasons_teams.id', 'matches.visitor_team_id')
+            ->join('seasons_divisions as visitor_seasons_divisions', 'visitor_seasons_divisions.id', 'visitor_seasons_teams.season_division_id')
+            ->join('seasons_conferences as visitor_seasons_conferences', 'visitor_seasons_conferences.id', 'visitor_seasons_divisions.season_conference_id')
+
+            ->select('matches.*', 'local_seasons_divisions.id as local_division_id', 'local_seasons_conferences.id as local_conference_id', 'visitor_seasons_divisions.id as visitor_division_id', 'visitor_seasons_conferences.id as visitor_conference_id')
+            ->where('matches.season_id', $this->id)
             ->where(function($q) use ($team_id) {
-                $q->where('local_team_id', $team_id)
-                    ->orWhere('visitor_team_id', $team_id);
+                $q->where('matches.local_team_id', $team_id)
+                    ->orWhere('matches.visitor_team_id', $team_id);
                 })
             ->orderBy('scores.created_at', 'desc')
             ->get();
@@ -341,8 +347,10 @@ class Season extends Model
             if ($match->played()) {
                 $local_score = $match->scores->sum('local_score');
                 $visitor_score = $match->scores->sum('visitor_score');
-                $same_conf = $match->localTeam->seasonDivision->seasonConference->id == $match->visitorTeam->seasonDivision->seasonConference->id ? true : false;
-                $same_div = $match->localTeam->seasonDivision->id == $match->visitorTeam->seasonDivision->id ? true : false;
+
+                $same_conf = $match->local_conference_id == $match->visitor_conference_id ? true : false;
+                $same_div = $match->local_division_id == $match->visitor_division_id ? true : false;
+
                 $extra_times = $match->extra_times > 0 ? true : false;
                 if ($team_id == $match->local_team_id) {
                     if ($local_score > $visitor_score) {
@@ -382,18 +390,24 @@ class Season extends Model
 
         if ($streak) {
             // loop for streak
-            $matches = Match::leftJoin('scores', 'scores.match_id', 'matches.id')
-                ->select('matches.*')
-                ->with('season')
-                ->with('localTeam')
-                ->with('visitorTeam')
-                ->with('scores')
-                ->where('season_id', $this->id)
+            $matches = Match::with('season', 'localTeam', 'visitorTeam', 'scores')
+                ->join('scores', 'scores.match_id', 'matches.id')
+
+                ->join('seasons_teams as local_seasons_teams', 'local_seasons_teams.id', 'matches.local_team_id')
+                ->join('seasons_divisions as local_seasons_divisions', 'local_seasons_divisions.id', 'local_seasons_teams.season_division_id')
+                ->join('seasons_conferences as local_seasons_conferences', 'local_seasons_conferences.id', 'local_seasons_divisions.season_conference_id')
+
+                ->join('seasons_teams as visitor_seasons_teams', 'visitor_seasons_teams.id', 'matches.visitor_team_id')
+                ->join('seasons_divisions as visitor_seasons_divisions', 'visitor_seasons_divisions.id', 'visitor_seasons_teams.season_division_id')
+                ->join('seasons_conferences as visitor_seasons_conferences', 'visitor_seasons_conferences.id', 'visitor_seasons_divisions.season_conference_id')
+
+                ->select('matches.*', 'local_seasons_divisions.id as local_division_id', 'local_seasons_conferences.id as local_conference_id', 'visitor_seasons_divisions.id as visitor_division_id', 'visitor_seasons_conferences.id as visitor_conference_id')
+                ->where('matches.season_id', $this->id)
                 ->where(function($q) use ($team_id) {
-                    $q->where('local_team_id', $team_id)
-                        ->orWhere('visitor_team_id', $team_id);
+                    $q->where('matches.local_team_id', $team_id)
+                        ->orWhere('matches.visitor_team_id', $team_id);
                     })
-                ->orderBy('scores.created_at', 'asc')
+                ->orderBy('scores.created_at', 'desc')
                 ->get();
 
             foreach ($matches as $key => $match) {
@@ -502,8 +516,8 @@ class Season extends Model
                 break;
             case 'conference':
                 $teams = SeasonTeam::
-                    leftJoin('seasons_divisions', 'seasons_divisions.id', 'seasons_teams.season_division_id')
-                    ->leftJoin('seasons_conferences', 'seasons_conferences.id', 'seasons_divisions.season_conference_id')
+                    join('seasons_divisions', 'seasons_divisions.id', 'seasons_teams.season_division_id')
+                    ->join('seasons_conferences', 'seasons_conferences.id', 'seasons_divisions.season_conference_id')
                     ->with('team')
                     ->with('seasonDivision')
                     ->select('seasons_teams.*')
@@ -512,7 +526,7 @@ class Season extends Model
                 break;
             case 'division':
                 $teams = SeasonTeam::
-                    leftJoin('seasons_divisions', 'seasons_divisions.id', 'seasons_teams.season_division_id')
+                    join('seasons_divisions', 'seasons_divisions.id', 'seasons_teams.season_division_id')
                    ->with('team')
                     ->with('seasonDivision')
                     ->select('seasons_teams.*')
@@ -591,7 +605,6 @@ class Season extends Model
                 \DB::raw('AVG(AST) as AVG_AST'),
                 \DB::raw('SUM(PTS + REB + AST) / COUNT(player_id) as AVG_TOTAL')
             )
-            ->with('season', 'player', 'seasonTeam')
             ->where('season_id', $this->id)
             ->orderBy('AVG_TOTAL', 'desc')
             ->orderBy('AVG_PTS', 'desc')
@@ -609,7 +622,6 @@ class Season extends Model
                 \DB::raw('SUM(PTS) as SUM_PTS'),
                 \DB::raw('COUNT(player_id) as PJ')
             )
-            ->with('season', 'player', 'seasonTeam')
             ->where('season_id', $this->id)
             ->orderBy('AVG_PTS', 'desc')
             ->orderBy('SUM_PTS', 'desc')
@@ -625,7 +637,6 @@ class Season extends Model
                 \DB::raw('SUM(REB) as SUM_REB'),
                 \DB::raw('COUNT(player_id) as PJ')
             )
-            ->with('season', 'player', 'seasonTeam')
             ->where('season_id', $this->id)
             ->orderBy('AVG_REB', 'desc')
             ->orderBy('SUM_REB', 'desc')
@@ -641,7 +652,6 @@ class Season extends Model
                 \DB::raw('SUM(AST) as SUM_AST'),
                 \DB::raw('COUNT(player_id) as PJ')
             )
-            ->with('season', 'player', 'seasonTeam')
             ->where('season_id', $this->id)
             ->orderBy('AVG_AST', 'desc')
             ->orderBy('SUM_AST', 'desc')

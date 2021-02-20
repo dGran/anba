@@ -51,7 +51,7 @@ class Home extends Component
 		}
     	if ($this->season) {
 	    	$this->seasons_conferences = SeasonConference::
-	    		leftJoin('conferences', 'conferences.id', 'seasons_conferences.conference_id')
+	    		join('conferences', 'conferences.id', 'seasons_conferences.conference_id')
 	    		->select('seasons_conferences.*', 'conferences.name')
 	    		->where('season_id', $this->season->id)
 	    		->orderBy('conferences.name')
