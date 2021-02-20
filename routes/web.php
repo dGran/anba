@@ -23,13 +23,6 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
-Route::get('/prueba', function () {
-    // $users = \App\Models\Match::all();
-    $users = \App\Models\Match::with('localTeam')->with('visitorTeam')->with('scores')->get(['id', 'season_id', 'round_id', 'local_team_id', 'visitor_team_id', 'local_manager_id', 'visitor_manager_id', 'stadium', 'extra_times', 'created_at']);
-    return view('test');
-    // dd($match);
-});
-
 Route::get('/partidos', function () {
     return view('matches');
 })->name('matches');
