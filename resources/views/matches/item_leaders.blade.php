@@ -56,7 +56,7 @@
 								$top_visitor_player = $reg->top_visitor_player();
 							@endphp
 							@if ($top_visitor_player)
-								<img src="{{ $top_visitor_player ? asset('storage/' . $top_visitor_player->player_img) : '' }}" alt="{{ $top_visitor_player ? $top_visitor_player->player_name : '' }}" class="rounded-full border border-gray-200 dark:border-gray-650 object-cover" style="width: 26px; height: 26px">
+								<img src="{{ $top_visitor_player->player_img ? asset('storage/' . $top_visitor_player->player_img) : asset('storage/players/default.png') }}" alt="{{ $top_visitor_player ? $top_visitor_player->player_name : '' }}" class="rounded-full border border-gray-200 dark:border-gray-650 object-cover" style="width: 26px; height: 26px">
 							@endif
 							<div class="flex flex-col ml-2 leading-3">
 								<span class="text-sm">{{ $top_visitor_player ? $top_visitor_player->player_name : '-' }}</span>
