@@ -26,7 +26,7 @@
 								$top_local_player = $reg->top_local_player();
 							@endphp
 							@if ($top_local_player)
-								<img src="{{ $top_local_player ? asset('storage/' . $top_local_player->player_img) : '' }}" alt="{{ $top_local_player ? $top_local_player->player_name : '' }}" class="rounded-full border border-gray-200 dark:border-gray-650 object-cover" style="width: 26px; height: 26px">
+								<img src="{{ $top_local_player->player_img ? asset('storage/' . $top_local_player->player_img) : asset('storage/players/default.png') }}" alt="{{ $top_local_player ? $top_local_player->player_name : '' }}" class="rounded-full border border-gray-200 dark:border-gray-650 object-cover" style="width: 26px; height: 26px">
 							@endif
 							<div class="flex flex-col ml-2 leading-3">
 								<span class="text-sm">{{ $top_local_player ? $top_local_player->player_name : '-' }}</span>
@@ -88,7 +88,7 @@
 								$season_top_local_player = $current_season->top_player($reg->localTeam->id);
 							@endphp
 							@if ($season_top_local_player)
-								<img src="{{ $season_top_local_player ? asset('storage/' . $season_top_local_player->player->img) : '' }}" alt="{{ $season_top_local_player ? $season_top_local_player->player->name : '' }}" class="rounded-full border border-gray-200 dark:border-gray-650 object-cover" style="width: 26px; height: 26px">
+								<img src="{{ $season_top_local_player ? $season_top_local_player->player->getImg() : '' }}" alt="{{ $season_top_local_player ? $season_top_local_player->player->name : '' }}" class="rounded-full border border-gray-200 dark:border-gray-650 object-cover" style="width: 26px; height: 26px">
 							@endif
 							<div class="flex flex-col leading-3 ml-2">
 								<span class="text-sm">{{ $season_top_local_player ? $season_top_local_player->player->name : '-' }}</span>
@@ -118,7 +118,7 @@
 								$season_top_visitor_player = $current_season->top_player($reg->visitorTeam->id);
 							@endphp
 							@if ($season_top_visitor_player)
-								<img src="{{ $season_top_visitor_player ? asset('storage/' . $season_top_visitor_player->player->img) : '' }}" alt="{{ $season_top_visitor_player ? $season_top_visitor_player->player->name : '' }}" class="rounded-full border border-gray-200 dark:border-gray-650 object-cover" style="width: 26px; height: 26px">
+								<img src="{{ $season_top_visitor_player ? $season_top_visitor_player->player->getImg() : '' }}" alt="{{ $season_top_visitor_player ? $season_top_visitor_player->player->name : '' }}" class="rounded-full border border-gray-200 dark:border-gray-650 object-cover" style="width: 26px; height: 26px">
 							@endif
 							<div class="flex flex-col leading-3 ml-2">
 								<span class="text-sm">{{ $season_top_visitor_player ? $season_top_visitor_player->player->name : '-' }}</span>
