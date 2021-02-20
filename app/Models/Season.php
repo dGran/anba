@@ -616,8 +616,8 @@ class Season extends Model
 
     public function top_season_pts()
     {
-        return $top = PlayerStat::
-            select('player_id',
+        return $top = PlayerStat::with('player')
+            ->select('player_id',
                 \DB::raw('AVG(PTS) as AVG_PTS'),
                 \DB::raw('SUM(PTS) as SUM_PTS'),
                 \DB::raw('COUNT(player_id) as PJ')
@@ -631,8 +631,8 @@ class Season extends Model
 
     public function top_season_reb()
     {
-        return $top = PlayerStat::
-            select('player_id',
+        return $top = PlayerStat::with('player')
+            ->select('player_id',
                 \DB::raw('AVG(REB) as AVG_REB'),
                 \DB::raw('SUM(REB) as SUM_REB'),
                 \DB::raw('COUNT(player_id) as PJ')
@@ -646,8 +646,8 @@ class Season extends Model
 
     public function top_season_ast()
     {
-        return $top = PlayerStat::
-            select('player_id',
+        return $top = PlayerStat::with('player')
+            ->select('player_id',
                 \DB::raw('AVG(AST) as AVG_AST'),
                 \DB::raw('SUM(AST) as SUM_AST'),
                 \DB::raw('COUNT(player_id) as PJ')

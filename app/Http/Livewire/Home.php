@@ -49,17 +49,6 @@ class Home extends Component
 		if ($season = Season::where('current', 1)->first()) {
 			$this->season = $season;
 		}
-    	if ($this->season) {
-	    	$this->seasons_conferences = SeasonConference::
-	    		join('conferences', 'conferences.id', 'seasons_conferences.conference_id')
-	    		->select('seasons_conferences.*', 'conferences.name')
-	    		->where('season_id', $this->season->id)
-	    		->orderBy('conferences.name')
-	    		->get();
-	    	foreach ($this->seasons_conferences as $key => $conference) {
-	        	$this->table_positions[$key] = $this->season->generateTable('conference', 'wavg', $conference->id, null, false);
-	    	}
-    	}
 	}
 
     public function render()
@@ -72,6 +61,18 @@ class Home extends Component
 			$this->page = $posts->lastPage();
 		}
 		$posts = Post::type($this->filterType)->orderBy('created_at', 'desc')->paginate(15);
+
+    	if ($this->season) {
+	    	$this->seasons_conferences = SeasonConference::
+	    		join('conferences', 'conferences.id', 'seasons_conferences.conference_id')
+	    		->select('seasons_conferences.*', 'conferences.name')
+	    		->where('season_id', $this->season->id)
+	    		->orderBy('conferences.name')
+	    		->get();
+	    	foreach ($this->seasons_conferences as $key => $conference) {
+	        	$this->table_positions[$key] = $this->season->generateTable('conference', 'wavg', $conference->id, null, false);
+	    	}
+    	}
 
         return view('home.index', [
         	'posts' => $posts,
