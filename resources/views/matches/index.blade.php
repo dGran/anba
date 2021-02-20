@@ -35,4 +35,17 @@
 
 	@include('matches.forecasts')
 
+	<script>
+	    document.addEventListener('livewire:load', function () {
+	        Mousetrap.bind("right", function() {
+	            @this.setNextPage();
+	            return false;
+	        });
+	        Mousetrap.bind("left", function() {
+	            @this.setPreviousPage();
+	            return false;
+	        });
+	    });
+	</script>
+
 </div>
