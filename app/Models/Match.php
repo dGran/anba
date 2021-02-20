@@ -587,7 +587,13 @@ class Match extends Model
     public function canDestroy()
     {
         // apply logic
-        // ....
+        if (Score::where('match_id', $this->id)->count() > 0) { return false; }
+        if (TeamStat::where('match_id', $this->id)->count() > 0) { return false; }
+        if (PlayerStat::where('match_id', $this->id)->count() > 0) { return false; }
+        if (MatchPoll::where('match_id', $this->id)->count() > 0) { return false; }
+        if (Post::where('match_id', $this->id)->count() > 0) { return false; }
+        if (Statement::where('match_id', $this->id)->count() > 0) { return false; }
+
         return true;
     }
 }

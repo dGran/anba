@@ -148,7 +148,10 @@ class Team extends Model
     public function canDestroy()
     {
         // apply logic
-        // ....
+        if (SeasonTeam::where('team_id', $this->id)->count() > 0) { return false; }
+        if (Post::where('team_id', $this->id)->count() > 0) { return false; }
+        if (Player::where('team_id', $this->id)->count() > 0) { return false; }
+
         return true;
     }
 }

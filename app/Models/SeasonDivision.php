@@ -34,4 +34,12 @@ class SeasonDivision extends Model
     {
         return $this->season->name . ' - ' . $this->division->name;
     }
+
+    public function canDestroy()
+    {
+        // apply logic
+        if (SeasonTeam::where('season_division_id', $this->id)->count() > 0) { return false; }
+
+        return true;
+    }
 }

@@ -30,4 +30,12 @@ class SeasonScoreHeader extends Model
     {
         return $this->season->name . ' - ' . $this->scoreHeader->name;
     }
+
+    public function canDestroy()
+    {
+        // apply logic
+        if (Score::where('seasons_scores_headers_id', $this->id)->count() > 0) { return false; }
+
+        return true;
+    }
 }

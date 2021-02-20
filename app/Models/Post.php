@@ -127,7 +127,6 @@ class Post extends Model
     public function canDestroy()
     {
         // apply logic
-        // ....
         return true;
     }
 }

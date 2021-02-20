@@ -16,4 +16,12 @@ class ScoreHeader extends Model
         'active',
         'order',
     ];
+
+    public function canDestroy()
+    {
+        // apply logic
+        if (SeasonScoreHeader::where('score_header_id', $this->id)->count() > 0) { return false; }
+
+        return true;
+    }
 }

@@ -69,7 +69,9 @@ class Division extends Model
     public function canDestroy()
     {
         // apply logic
-        // ....
+        if (SeasonDivision::where('division_id', $this->id)->count() > 0) { return false; }
+        if (Team::where('division_id', $this->id)->count() > 0) { return false; }
+
         return true;
     }
 }

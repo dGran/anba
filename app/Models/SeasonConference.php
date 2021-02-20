@@ -29,4 +29,11 @@ class SeasonConference extends Model
     {
         return $this->season->name . ' - ' . $this->conference->name;
     }
+
+    public function canDestroy()
+    {
+        // apply logic
+
+        return true;
+    }
 }

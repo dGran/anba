@@ -54,7 +54,16 @@ class Season extends Model
     public function canDestroy()
     {
         // apply logic
-        // ....
+        if (SeasonScoreHeader::where('season_id', $this->id)->count() > 0) { return false; }
+        if (SeasonConference::where('season_id', $this->id)->count() > 0) { return false; }
+        if (SeasonDivision::where('season_id', $this->id)->count() > 0) { return false; }
+        if (SeasonTeam::where('season_id', $this->id)->count() > 0) { return false; }
+        if (Statement::where('season_id', $this->id)->count() > 0) { return false; }
+        if (Match::where('season_id', $this->id)->count() > 0) { return false; }
+        if (TeamStat::where('season_id', $this->id)->count() > 0) { return false; }
+        if (PlayerStat::where('season_id', $this->id)->count() > 0) { return false; }
+        if (Round::where('season_id', $this->id)->count() > 0) { return false; }
+
         return true;
     }
 

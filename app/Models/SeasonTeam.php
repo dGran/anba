@@ -56,4 +56,18 @@ class SeasonTeam extends Model
             ->take(5)
             ->get();
     }
+
+    public function canDestroy()
+    {
+        // apply logic
+        if (Transfer::where('season_team_from', $this->id)->orWhere('season_team_to', $this->id)->count() > 0) { return false; }
+        if (TeamStat::where('season_team_id', $this->id)->count() > 0) { return false; }
+        if (PlayerStat::where('season_team_id', $this->id)->count() > 0) { return false; }
+        if (Match::where('local_team_id', $this->id)->orWhere('visitor_team_id', $this->id)->count() > 0) { return false; }
+        //pending
+        // RoundParticipant
+        // RoundClash
+
+        return true;
+    }
 }

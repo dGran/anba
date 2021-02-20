@@ -15,4 +15,13 @@ class Injury extends Model
     protected $fillable = [
         'name'
     ];
+
+    public function canDestroy()
+    {
+        // apply logic
+        if (Player::where('injury_id', $this->id)->count() > 0) { return false; }
+        if (PlayerStat::where('injury_id', $this->id)->count() > 0) { return false; }
+
+        return true;
+    }
 }

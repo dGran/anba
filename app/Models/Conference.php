@@ -81,7 +81,9 @@ class Conference extends Model
     public function canDestroy()
     {
         // apply logic
-        // ....
+        if (SeasonConference::where('conference_id', $this->id)->count() > 0) { return false; }
+        if (Division::where('conference_id', $this->id)->count() > 0) { return false; }
+
         return true;
     }
 }

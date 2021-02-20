@@ -260,7 +260,10 @@ class Player extends Model
     public function canDestroy()
     {
         // apply logic
-        // ....
+        if (Transfer::where('player_id', $this->id)->count() > 0) { return false; }
+        if (Post::where('player_id', $this->id)->count() > 0) { return false; }
+        if (PlayerStat::where('player_id', $this->id)->count() > 0) { return false; }
+
         return true;
     }
 }
