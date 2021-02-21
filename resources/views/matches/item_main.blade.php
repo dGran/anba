@@ -41,9 +41,15 @@
 		<div class="h-full flex items-center justify-center">
 			<a href="{{ route('match', $reg->id) }}">
 				@if ($reg->played())
-	                <x-buttons.primary class="uppercase text-xs px-2.5 py-0.5 leading-6">
-						ficha del partido
-	                </x-buttons.primary>
+					@if (!count($reg->teamStats) || !count($reg->playerStats))
+		                <x-buttons.warning class="uppercase text-xs px-2.5 py-0.5 leading-6">
+							<i class="fas fa-exclamation mr-2 animate-pulse"></i>ficha del partido
+		                </x-buttons.warning>
+	                @else
+		                <x-buttons.primary class="uppercase text-xs px-2.5 py-0.5 leading-6">
+							ficha del partido
+		                </x-buttons.primary>
+		            @endif
 	            @else
 	                <x-buttons.primary-outline class="uppercase text-xs px-2.5 py-0.5 leading-6">
 						informe pre-partido

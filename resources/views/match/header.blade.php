@@ -17,6 +17,13 @@
 				<p class="text-center hidden md:block text-sm text-gray-600 dark:text-gray-300">
 					<span class="text-sm">{{ $match->scores->first()->getUpdatedAt() }}</span>
 				</p>
+				@if (!count($match->teamStats) || !count($match->playerStats))
+					<div class="text-center mt-5 hidden md:block">
+						<span class="animate-pulse text-white text-sm uppercase rounded bg-orange-500 focus:outline-none px-4 py-1.5">
+							<i class="fas fa-exclamation mr-2"></i>reporte incompleto
+						</span>
+					</div>
+				@endif
 			@endif
 		</div>
 		<div class="flex-1">
@@ -36,6 +43,13 @@
 			<p class="text-center text-sm text-gray-600 dark:text-gray-300">
 				<span class="text-xs">{{ $match->scores->first()->getUpdatedAt() }}</span>
 			</p>
+			@if (!count($match->teamStats) || !count($match->playerStats))
+				<div class="text-center mt-5 mb-3">
+					<span class="animate-pulse text-white text-xs uppercase rounded bg-orange-500 focus:outline-none px-4 py-1.5">
+						<i class="fas fa-exclamation mr-2"></i>reporte incompleto
+					</span>
+				</div>
+			@endif
 		</div>
 	@endif
 </div>
