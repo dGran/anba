@@ -2,10 +2,10 @@
 	<!-- Page Content -->
 	<div class="max-w-7xl mx-auto px-1 sm:px-3 md:px-6 lg:px-8">
 		@include('match.header')
+		@include('match.reports')
 
 		<div class="mb-8">
 			@if (!$match->played())
-				@include('match.reports')
 				@include('match.players_info')
 				@include('match.last_matches')
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -32,4 +32,6 @@
 			@endif
 		</div>
 	</div>
+
+	@include('match.scoreReportModal')
 </div>

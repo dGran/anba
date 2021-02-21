@@ -6,13 +6,24 @@ use Livewire\Component;
 use Illuminate\Support\Collection;
 use App\Models\MatchPoll;
 use App\Models\Player;
+use App\Models\Score;
+
+use App\Http\Traits\PostTrait;
+use App\Events\PostStored;
 
 class Match extends Component
 {
+	use PostTrait;
+
 	public $match;
 	public $players_stats;
 	public $boxscore_order = "default";
 	public $criteria;
+
+	public $scoreReportModal = false;
+	public $scores;
+	public $total_scores = [];
+	public $extra_times;
 
 	protected $queryString = [
 		'boxscore_order' => ['except' => 'default'],
@@ -33,6 +44,145 @@ class Match extends Component
 		if ($poll) {
 			$poll->delete();
 		}
+	}
+
+	public function openScoreReportModal()
+	{
+		$this->initializeScores();
+		$this->scoreReportModal = true;
+	}
+
+	protected function initializeScores()
+	{
+    	$this->scores = Collection::make();
+		foreach ($this->match->season->scores_headers as $header) {
+			$score['seasons_scores_headers_id'] = $header->id;
+			$score['seasons_scores_headers_name'] = $header->scoreHeader->name;
+			$score['local_score'] = null;
+			$score['visitor_score'] = null;
+			$this->scores->push($score);
+		}
+
+		$this->extra_times = null;
+	}
+
+	protected function updateScores()
+	{
+
+        $total_local_scores = 0;
+        $total_visitor_scores = 0;
+        if ($this->scores != null) {
+	        foreach ($this->scores as $score) {
+				$local = $score['local_score'] == null ? 0 : $score['local_score'];
+				$visitor = $score['visitor_score'] == null ? 0 : $score['visitor_score'];
+				$total_local_scores += $local;
+				$total_visitor_scores += $visitor;
+	        }
+        }
+        $this->total_scores['local'] = $total_local_scores;
+        $this->total_scores['visitor'] = $total_visitor_scores;
+	}
+
+	public function reportResult()
+	{
+		$this->storeResult();
+		$this->createMatchPosts($this->match->id);
+
+		$this->scoreReportModal = false;
+		return redirect()->route('match', $this->match->id);
+	}
+
+	public function storeResult()
+	{
+		foreach ($this->scores as $key => $score_temp) {
+			$score = Score::create([
+				'match_id' => $this->match->id,
+				'seasons_scores_headers_id' => $score_temp['seasons_scores_headers_id'],
+				'local_score' => $score_temp['local_score'],
+				'visitor_score' => $score_temp['visitor_score'],
+				'order' => $key+1,
+				'updated_user_id' => auth()->user()->id,
+			]);
+		}
+
+		$this->match->extra_times = $this->extra_times ?: 0;
+		$this->match->save();
+	}
+
+	protected function createMatchPosts($match_id)
+	{
+		$match = \App\Models\Match::find($match_id);
+
+		if ($match->winner()) {
+			$this->createResultPost($match);
+			$this->createFeaturedPost($match);
+			$this->createStreakPost($match);
+		}
+	}
+
+	protected function createResultPost($match)
+	{
+		$descriptions = [
+			$match->winner()->team->medium_name . ' logra la victoria frente a los ' . $match->loser()->team->medium_name . ' en el ' . $match->stadium,
+			'Los ' . $match->winner()->team->medium_name . ' vencen a los ' . $match->loser()->team->medium_name . ' en el ' . $match->stadium,
+			'Los ' . $match->loser()->team->medium_name . ' han caído derrotados ante los ' . $match->winner()->team->medium_name . ' en el ' . $match->stadium,
+		];
+		$description_index = rand(0,2);
+		$description = $descriptions[$description_index];
+
+		$description .= '.';
+
+    	$post = $this->storePost(
+			'resultados',
+			$match->id,
+			null,
+			null,
+			null,
+			null,
+			$match->localTeam->team->short_name . ' | ' . $match->visitorTeam->team->short_name,
+			$match->localTeam->team->medium_name . '  ' . $match->score() . '  ' . $match->visitorTeam->team->medium_name,
+			$description,
+			null,
+    	);
+    	event(new PostStored($post));
+	}
+
+	protected function createFeaturedPost($match)
+	{
+		//votes
+		$votes = $match->votes()['local'] + $match->votes()['visitor'];
+		if ($votes > 0) {
+			$votes_local = ($match->votes()['local'] / $votes) * 100;
+			$votes_visitor = ($match->votes()['visitor'] / $votes) * 100;
+
+			if ( $votes_local <= 20 && $match->localTeam == $match->winner() || $votes_visitor <= 20 && $match->visitorTeam == $match->winner() ) {
+				$descriptions = [
+					$match->winner()->team->name . ' dan la sorpresa al imponerse a ' . $match->loser()->team->name,
+					$match->loser()->team->name . ' cayó de forma inesperada frente a ' . $match->winner()->team->name
+				];
+				$description_index = rand(0,1);
+				$description = $descriptions[$description_index];
+				$description .= '.';
+
+		    	$post = $this->storePost(
+					'destacados',
+					$match->id,
+					null,
+					null,
+					null,
+					$match->winner()->team->id,
+					'pronósticos' . ' | ' . $match->winner()->team->short_name,
+					'Los ' . $match->winner()->team->medium_name . ' contra todo pronóstico',
+					$description,
+					$match->winner()->team->getImg(),
+		    	);
+		    	event(new PostStored($post));
+			}
+		}
+	}
+
+	protected function createStreakPost($match)
+	{
 	}
 
     protected function makeComparer($criteria)
@@ -115,6 +265,8 @@ class Match extends Component
     public function render()
     {
     	$this->loadStats();
+
+    	$this->updateScores();
 
         return view('match.index', [
         	'localInjuries' => $this->getLocalInjuries(),

@@ -1339,6 +1339,8 @@ class MatchCrud extends Component
 					$reg->playerStats()->delete();
 					$reg->teamStats()->delete();
 					$reg->posts()->delete();
+					$reg->extra_times = null;
+					$reg->save();
 					$regs_reset++;
 					// event(new TableWasUpdated($reg, 'update', $reg->toJson(JSON_PRETTY_PRINT), $before));
 					$this->createResetMatchPosts($reg->id);
@@ -1380,6 +1382,8 @@ class MatchCrud extends Component
 							$post->delete();
 						}
 					}
+					$reg->extra_times = null;
+					$reg->save();
 					$regs_reset++;
 					// event(new TableWasUpdated($reg, 'update', $reg->toJson(JSON_PRETTY_PRINT), $before));
 					$this->createResetScorePosts($reg->id);
