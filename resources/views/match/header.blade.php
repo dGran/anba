@@ -18,7 +18,7 @@
 					<span class="text-sm">{{ $match->scores->first()->getUpdatedAt() }}</span>
 				</p>
 				@if (!count($match->teamStats) || !count($match->playerStats))
-					<div class="text-center mt-5 hidden md:block">
+					<div class="text-center mt-8 hidden md:block">
 						<span class="animate-pulse text-white text-sm uppercase rounded bg-orange-500 focus:outline-none px-4 py-1.5">
 							<i class="fas fa-exclamation mr-2"></i>reporte incompleto
 						</span>
