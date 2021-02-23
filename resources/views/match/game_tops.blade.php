@@ -89,7 +89,7 @@
 				@endforeach
 			</div>
 		@else
-			<div class="text-sm py-2.5 w-full text-gray-500 dark:text-gray-300">
+			<div class="text-sm py-2.5 w-full text-gray-500 dark:text-gray-300 animate-pulse">
 				@if (!$match->hasLocalPlayerStats())
 					Reporte de los {{ $match->localTeam->team->medium_name }} pendiente
 				@endif

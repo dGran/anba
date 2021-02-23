@@ -330,8 +330,8 @@
 		            @endif
 		        </div>
 		    @else
-				<div class="text-sm py-1.5 w-full text-gray-500 dark:text-gray-300">
-					Reporte de los {{ $match->localTeam->team->medium_name }} pendiente
+				<div class="text-sm py-1.5 w-full text-gray-500 dark:text-gray-300 animate-pulse">
+					Reporte de estadísticas pendiente
 				</div>
 			@endif
 
@@ -656,8 +656,8 @@
 		            @endif
 		        </div>
 		    @else
-				<div class="text-sm py-1.5 w-full text-gray-500 dark:text-gray-300">
-					Reporte de los {{ $match->visitorTeam->team->medium_name }} pendiente
+				<div class="text-sm py-1.5 w-full text-gray-500 dark:text-gray-300 animate-pulse">
+					Reporte de estadísticas pendiente
 				</div>
 			@endif
 
