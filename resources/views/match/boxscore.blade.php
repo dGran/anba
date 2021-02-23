@@ -330,7 +330,9 @@
 		            @endif
 		        </div>
 		    @else
-		    	<p class="py-1.5">No hay estadísticas registradas</p>
+				<div class="text-sm py-1.5 w-full text-gray-500 dark:text-gray-300">
+					Reporte de los {{ $match->localTeam->team->medium_name }} pendiente
+				</div>
 			@endif
 
 	        {{-- visitor --}}
@@ -654,7 +656,9 @@
 		            @endif
 		        </div>
 		    @else
-		    	<p class="py-1.5">No hay estadísticas registradas</p>
+				<div class="text-sm py-1.5 w-full text-gray-500 dark:text-gray-300">
+					Reporte de los {{ $match->visitorTeam->team->medium_name }} pendiente
+				</div>
 			@endif
 
 {{-- 		@else
