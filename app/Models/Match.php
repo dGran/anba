@@ -513,7 +513,7 @@ class Match extends Model
     public function userIsParticipant()
     {
         if (auth()->user()) {
-            if (($this->localTeam->team->user && $this->localTeam->team->user->id == auth()->user()->id) || ($this->visitorTeam->team->user && $this->visitorTeam->team->user->id == auth()->user()->id)) {
+            if (($this->local_manager_id == auth()->user()->id) || ($this->visitor_manager_id == auth()->user()->id)) {
                 return true;
             }
         }
