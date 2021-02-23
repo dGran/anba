@@ -238,19 +238,22 @@ class Match extends Model
 
     public function mvp()
     {
-        return $top = PlayerStat::
-            where('match_id', $this->id)
-            ->select('*', \DB::raw('PTS + REB + AST as TOTAL'))
-            ->where('MIN', '>', 0)
-            ->where('PTS', '>', 0)
-            // ->whereIn('player_id', function($query) use ($team_id) {
-            //    $query->select('id')->from('players')->where('team_id', '=', $team_id);
-            // })
-            ->orderBy('TOTAL', 'desc')
-            ->orderBy('PTS', 'desc')
-            ->orderBy('REB', 'desc')
-            ->orderBy('AST', 'desc')
-            ->first();
+        if ($this->hasLocalPlayerStats() && $this->hasVisitorPlayerStats()) {
+            return $top = PlayerStat::
+                where('match_id', $this->id)
+                ->select('*', \DB::raw('PTS + REB + AST as TOTAL'))
+                ->where('MIN', '>', 0)
+                ->where('PTS', '>', 0)
+                // ->whereIn('player_id', function($query) use ($team_id) {
+                //    $query->select('id')->from('players')->where('team_id', '=', $team_id);
+                // })
+                ->orderBy('TOTAL', 'desc')
+                ->orderBy('PTS', 'desc')
+                ->orderBy('REB', 'desc')
+                ->orderBy('AST', 'desc')
+                ->first();
+        }
+        return false;
     }
 
     public function top_local_player()
