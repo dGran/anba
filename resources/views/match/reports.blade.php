@@ -1,4 +1,4 @@
-@if ($match->userIsParticipant() || auth()->user()->hasRole(['admin', 'super-admin']))
+@if ($match->userIsParticipant() || (auth()->user() && auth()->user()->hasRole(['admin', 'super-admin'])))
 	<div class="flex items-center justify-center my-6">
 		@if (!$match->played())
 		    <x-buttons.primary class="mr-3 uppercase text-xs py-2 leading-4 w-36 md:w-40 lg:w-48" wire:click.prevent="openScoreReportModal">
