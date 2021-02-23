@@ -14,7 +14,7 @@
                         <img src="{{ $post->team->getImg() }}" alt="{{ $post->team->getName() }}" class="absolute top-0 left-0 -m-0.5 w-7 h-7 md:w-8 md:h-8 object-cover">
                     </figure>
                 @else
-                    <figure class="h-20 w-20 md:h-24 md:w-24 rounded-md shadow-md p-0.5 border border-gray-200 dark:border-gray-650 relative">
+                    <figure class="h-20 w-20 md:h-24 md:w-24 rounded-md shadow-md p-0.5 dark:bg-gray-750 border border-gray-200 dark:border-gray-650 relative">
                         <img src="{{ $post->getImg() }}" alt="{{ $post->getName() }}" class="h-full w-auto rounded-md object-cover mx-auto">
                     </figure>
                 @endif

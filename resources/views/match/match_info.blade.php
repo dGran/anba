@@ -4,6 +4,18 @@
 
 			<div class="flex flex-col py-0.5 md:py-1.5 border-b border-gray-150 dark:border-gray-650">
 				<div class="flex items-center">
+					<div class="flex-1 flex items-center text-left md:pl-3 text-sm md:text-base lg:text-xl font-bold text-gray-500 dark:text-gray-300 uppercase">
+						<img src="{{ $match->localTeam->team->getImg() }}" alt="{{ $match->localTeam->team->medium_name }}" class="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 object-cover mr-2">
+						<span>{{ $match->localTeam->team->medium_name }}</span>
+					</div>
+					<div class="flex-1 flex items-center justify-end text-left md:pl-3 text-sm md:text-base lg:text-xl font-bold text-gray-500 dark:text-gray-300 uppercase">
+						<span>{{ $match->visitorTeam->team->medium_name }}</span>
+						<img src="{{ $match->visitorTeam->team->getImg() }}" alt="{{ $match->visitorTeam->team->medium_name }}" class="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 object-cover ml-2">
+					</div>
+				</div>
+			</div>
+			<div class="flex flex-col py-0.5 md:py-1.5 border-b border-gray-150 dark:border-gray-650">
+				<div class="flex items-center">
 					<p class="w-10 md:w-12 lg:w-16 text-left md:pl-3 text-sm md:text-base lg:text-xl font-bold {{ $match->localScore() > $match->visitorScore() ? 'text-black dark:text-yellow-400' : 'text-gray-500 dark:text-gray-300' }}">
 						{{ $match->localScore() }}
 					</p>
