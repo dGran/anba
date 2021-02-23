@@ -513,7 +513,7 @@ class Match extends Model
     public function userIsParticipant()
     {
         if (auth()->user()) {
-            if (($this->local_manager_id == auth()->user()->id) || ($this->visitor_manager_id == auth()->user()->id)) {
+            if ( ($this->local_manager_id == auth()->user()->id) || ($this->visitor_manager_id == auth()->user()->id) || (auth()->user()->hasRole(['admin', 'super-admin'])) ) {
                 return true;
             }
         }
