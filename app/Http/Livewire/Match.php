@@ -233,6 +233,8 @@ class Match extends Component
 			$player_stat['player_id'] = $player->id;
 			$player_stat['player_img'] = $player->getImg();
 			$player_stat['player_name'] = $player->name;
+			$explode_name = explode(" ", $player->name);
+			$player_stat['player_subname'] = $explode_name[1];
 			$player_stat['player_pos_ordered'] = $player->getPositionOrdered();
 			$player_stat['player_pos'] = $player->getPosition();
 			$player_stat['injury_id'] = $player->injury_id;
@@ -269,6 +271,7 @@ class Match extends Component
 
 		$criteria = [
 			"injuried" => "asc",
+			"player_subname" => "asc",
             "headline" => "desc",
             "MIN" => "desc",
             "player_pos_ordered" => "asc",
@@ -433,6 +436,8 @@ class Match extends Component
 			$player_stat['player_id'] = $player->id;
 			$player_stat['player_img'] = $player->getImg();
 			$player_stat['player_name'] = $player->name;
+			$explode_name = explode(" ", $player->name);
+			$player_stat['player_subname'] = $explode_name[1];
 			$player_stat['player_pos_ordered'] = $player->getPositionOrdered();
 			$player_stat['player_pos'] = $player->getPosition();
 			$player_stat['injury_id'] = $player->injury_id;
@@ -469,6 +474,7 @@ class Match extends Component
 
 		$criteria = [
 			"injuried" => "asc",
+			"player_subname" => "asc",
             "headline" => "desc",
             "MIN" => "desc",
             "player_pos_ordered" => "asc",
