@@ -41,7 +41,7 @@
 		<div class="h-full flex items-center justify-center">
 			<a href="{{ route('match', $reg->id) }}">
 				@if ($reg->played())
-					@if (!count($reg->teamStats) || !count($reg->playerStats))
+					@if ( (!$reg->hasLocalTeamStats() && !$reg->hasLocalPlayerStats()) || (!$reg->hasvisitorTeamStats() && !$reg->hasvisitorPlayerStats()) )
 		                <x-buttons.warning class="uppercase text-xs px-2.5 py-0.5 leading-6">
 							<i class="fas fa-exclamation mr-2 animate-pulse"></i>ficha del partido
 		                </x-buttons.warning>

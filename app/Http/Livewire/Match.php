@@ -7,6 +7,8 @@ use Illuminate\Support\Collection;
 use App\Models\MatchPoll;
 use App\Models\Player;
 use App\Models\Score;
+use App\Models\TeamStat;
+use App\Models\PlayerStat;
 
 use App\Http\Traits\PostTrait;
 use App\Events\PostStored;
@@ -21,9 +23,13 @@ class Match extends Component
 	public $criteria;
 
 	public $scoreReportModal = false;
+	public $localBoxscoreReport = false;
+	public $visitorBoxscoreReport = false;
 	public $scores;
 	public $total_scores = [];
 	public $extra_times;
+	public $local_team_stats, $local_players_stats;
+	public $visitor_team_stats, $visitor_players_stats;
 
 	protected $queryString = [
 		'boxscore_order' => ['except' => 'default'],
@@ -68,7 +74,6 @@ class Match extends Component
 
 	protected function updateScores()
 	{
-
         $total_local_scores = 0;
         $total_visitor_scores = 0;
         if ($this->scores != null) {
@@ -184,6 +189,407 @@ class Match extends Component
 	protected function createStreakPost($match)
 	{
 	}
+
+	public function openLocalBoxscoreReport()
+	{
+		$this->initializeLocalTeamStats();
+		$this->initializeLocalPlayerStats();
+		$this->localBoxscoreReport = true;
+	}
+
+	public function closeLocalBoxscoreReport()
+	{
+		// $this->localBoxscoreReport = false;
+		return redirect()->route('match', $this->match->id);
+	}
+
+	protected function initializeLocalTeamStats()
+	{
+    	$this->local_team_stats = Collection::make();
+
+		$team_stat['season_team_id'] = $this->match->local_team_id;
+		$team_stat['counterattack'] = null;
+		$team_stat['zone'] = null;
+		$team_stat['second_oportunity'] = null;
+		$team_stat['substitute'] = null;
+		$team_stat['advantage'] = null;
+		$team_stat['AST'] = null;
+		$team_stat['DRB'] = null;
+		$team_stat['ORB'] = null;
+		$team_stat['STL'] = null;
+		$team_stat['BLK'] = null;
+		$team_stat['LOS'] = null;
+		$team_stat['PF'] = null;
+		$this->local_team_stats->push($team_stat);
+	}
+
+	protected function initializeLocalPlayerStats()
+	{
+    	$local_players_stats = Collection::make();
+
+    	// local players
+    	$players_stats = Player::where('team_id', $this->match->localTeam->team->id)->where('retired', false)->orderBy('name', 'asc')->get();
+		foreach ($players_stats as $player) {
+			$player_stat['player_id'] = $player->id;
+			$player_stat['player_img'] = $player->getImg();
+			$player_stat['player_name'] = $player->name;
+			$player_stat['player_pos_ordered'] = $player->getPositionOrdered();
+			$player_stat['player_pos'] = $player->getPosition();
+			$player_stat['injury_id'] = $player->injury_id;
+			$player_stat['injury_matches'] = $player->injury_matches;
+			$player_stat['injury_days'] = $player->injury_days;
+			$player_stat['injury_playable'] = $player->injury_playable;
+			$player_stat['injury_name'] = $player->injury ? $player->injury->name : '';
+			$player_stat['injuried'] = 0;
+			if ($player->injury_id > 0 && !$player->injury_playable) {
+				$player_stat['injuried'] = 1;
+			}
+			$player_stat['team_id'] = $this->match->localTeam->team->id;
+			$player_stat['season_team_id'] = $this->match->local_team_id;
+			$player_stat['MIN'] = null;
+			$player_stat['PTS'] = null;
+			$player_stat['REB'] = null;
+			$player_stat['AST'] = null;
+			$player_stat['STL'] = null;
+			$player_stat['BLK'] = null;
+			$player_stat['LOS'] = null;
+			$player_stat['FGM'] = null;
+			$player_stat['FGA'] = null;
+			$player_stat['TPM'] = null;
+			$player_stat['TPA'] = null;
+			$player_stat['FTM'] = null;
+			$player_stat['FTA'] = null;
+			$player_stat['ORB'] = null;
+			$player_stat['PF'] = null;
+			$player_stat['ML'] = null;
+			$player_stat['headline'] = 0;
+
+			$local_players_stats->push($player_stat);
+		}
+
+		$criteria = [
+			"injuried" => "asc",
+            "headline" => "desc",
+            "MIN" => "desc",
+            "player_pos_ordered" => "asc",
+        ];
+        $comparer = $this->makeComparer($criteria);
+        $sorted = $local_players_stats->sort($comparer);
+        $this->local_players_stats = $sorted->values()->toArray();
+	}
+
+	public function reportLocalStats()
+	{
+		$this->storeLocalStats();
+		$this->localBoxscoreReport = false;
+		return redirect()->route('match', $this->match->id);
+	}
+
+	public function storeLocalStats()
+	{
+		foreach ($this->local_team_stats as $key => $team_stat) {
+			$teamStat = TeamStat::create([
+				'match_id' 			=> $this->match->id,
+				'season_id' 		=> $this->match->season_id,
+				'season_team_id' 	=> $team_stat['season_team_id'] == null && $team_stat['season_team_id'] !== 0 ? null : $team_stat['season_team_id'],
+				'counterattack'  	=> $team_stat['counterattack'] == null && $team_stat['counterattack'] !== 0 ? null : $team_stat['counterattack'],
+				'zone' 			 	=> $team_stat['zone'] == null && $team_stat['zone'] !== 0 ? null : $team_stat['zone'],
+				'second_oportunity' => $team_stat['second_oportunity'] == null && $team_stat['second_oportunity'] !== 0 ? null : $team_stat['second_oportunity'],
+				'substitute' 		=> $team_stat['substitute'] == null && $team_stat['substitute'] !== 0 ? null : $team_stat['substitute'],
+				'advantage' 		=> $team_stat['advantage'] == null && $team_stat['advantage'] !== 0 ? null : $team_stat['advantage'],
+				'AST' 				=> $team_stat['AST'] == null && $team_stat['AST'] !== 0 ? null : $team_stat['AST'],
+				'DRB' 				=> $team_stat['DRB'] == null && $team_stat['DRB'] !== 0 ? null : $team_stat['DRB'],
+				'ORB' 				=> $team_stat['ORB'] == null && $team_stat['ORB'] !== 0 ? null : $team_stat['ORB'],
+				'STL' 				=> $team_stat['STL'] == null && $team_stat['STL'] !== 0 ? null : $team_stat['STL'],
+				'BLK' 				=> $team_stat['BLK'] == null && $team_stat['BLK'] !== 0 ? null : $team_stat['BLK'],
+				'LOS' 				=> $team_stat['LOS'] == null && $team_stat['LOS'] !== 0 ? null : $team_stat['LOS'],
+				'PF' 				=> $team_stat['PF'] == null && $team_stat['PF'] !== 0 ? null : $team_stat['PF'],
+				'updated_user_id' 	=> auth()->user()->id,
+			]);
+
+		foreach ($this->local_players_stats as $key => $player_stat) {
+			if ($player_stat['MIN'] > 0) {
+				$PTS = $player_stat['PTS'] == null && $player_stat['PTS'] !== 0 ? null : $player_stat['PTS'];
+				$REB = $player_stat['REB'] == null && $player_stat['REB'] !== 0 ? null : $player_stat['REB'];
+				$AST = $player_stat['AST'] == null && $player_stat['AST'] !== 0 ? null : $player_stat['AST'];
+				$STL = $player_stat['STL'] == null && $player_stat['STL'] !== 0 ? null : $player_stat['STL'];
+				$BLK = $player_stat['BLK'] == null && $player_stat['BLK'] !== 0 ? null : $player_stat['BLK'];
+				$LOS = $player_stat['LOS'] == null && $player_stat['LOS'] !== 0 ? null : $player_stat['LOS'];
+				$FGM = $player_stat['FGM'] == null && $player_stat['FGM'] !== 0 ? null : $player_stat['FGM'];
+				$FGA = $player_stat['FGA'] == null && $player_stat['FGA'] !== 0 ? null : $player_stat['FGA'];
+				$TPM = $player_stat['TPM'] == null && $player_stat['TPM'] !== 0 ? null : $player_stat['TPM'];
+				$TPA = $player_stat['TPA'] == null && $player_stat['TPA'] !== 0 ? null : $player_stat['TPA'];
+				$FTM = $player_stat['FTM'] == null && $player_stat['FTM'] !== 0 ? null : $player_stat['FTM'];
+				$FTA = $player_stat['FTA'] == null && $player_stat['FTA'] !== 0 ? null : $player_stat['FTA'];
+				$ORB = $player_stat['ORB'] == null && $player_stat['ORB'] !== 0 ? null : $player_stat['ORB'];
+				$PF = $player_stat['PF'] == null && $player_stat['PF'] !== 0 ? null : $player_stat['PF'];
+				$ML = $player_stat['ML'] == null && $player_stat['ML'] !== 0 ? null : $player_stat['ML'];
+				$headline = $player_stat['headline'];
+			} else {
+				$PTS = null;
+				$REB = null;
+				$AST = null;
+				$STL = null;
+				$BLK = null;
+				$LOS = null;
+				$FGM = null;
+				$FGA = null;
+				$TPM = null;
+				$TPA = null;
+				$FTM = null;
+				$FTA = null;
+				$ORB = null;
+				$PF = null;
+				$ML = null;
+				$headline = 0;
+			}
+			$playerStat = PlayerStat::create([
+				'match_id' => $this->match->id,
+				'season_id' => $this->match->season_id,
+				'player_id' => $player_stat['player_id'],
+				'injury_id' => $player_stat['injury_id'],
+				'injury_matches' => $player_stat['injury_matches'],
+				'injury_days' => $player_stat['injury_days'],
+				'injury_playable' => $player_stat['injury_playable'],
+				'season_team_id' => $player_stat['season_team_id'],
+				'MIN' 		=> $player_stat['MIN'] == null && $player_stat['MIN'] !== 0 ? null : $player_stat['MIN'],
+				'PTS' 		=> $PTS,
+				'REB' 		=> $REB,
+				'AST' 		=> $AST,
+				'STL' 		=> $STL,
+				'BLK' 		=> $BLK,
+				'LOS' 		=> $LOS,
+				'FGM' 		=> $FGM,
+				'FGA' 		=> $FGA,
+				'TPM' 		=> $TPM,
+				'TPA' 		=> $TPA,
+				'FTM' 		=> $FTM,
+				'FTA' 		=> $FTA,
+				'ORB' 		=> $ORB,
+				'PF' 		=> $PF,
+				'ML' 		=> $ML,
+				'headline' 	=> $headline,
+				'updated_user_id' => auth()->user()->id,
+			]);
+
+			if ($player_stat['injury_id'] > 0) {
+				$player = Player::find($player_stat['player_id']);
+
+				$before = $player->toJson(JSON_PRETTY_PRINT);
+				if ($player->injury_matches == 1) {
+					$player->injury_id = null;
+					$player->injury_matches = null;
+					$player->injury_days = null;
+					$player->injury_playable = 0;
+				} else {
+					$player->injury_matches = $player->injury_matches - 1;
+				}
+				$player->save();
+			}
+		}
+		}
+	}
+
+	public function openVisitorBoxscoreReport()
+	{
+		$this->initializeVisitorTeamStats();
+		$this->initializeVisitorPlayerStats();
+		$this->visitorBoxscoreReport = true;
+	}
+
+	public function closeVisitorBoxscoreReport()
+	{
+		// $this->visitorBoxscoreReport = false;
+		return redirect()->route('match', $this->match->id);
+	}
+
+	protected function initializeVisitorTeamStats()
+	{
+    	$this->visitor_team_stats = Collection::make();
+
+		$team_stat['season_team_id'] = $this->match->visitor_team_id;
+		$team_stat['counterattack'] = null;
+		$team_stat['zone'] = null;
+		$team_stat['second_oportunity'] = null;
+		$team_stat['substitute'] = null;
+		$team_stat['advantage'] = null;
+		$team_stat['AST'] = null;
+		$team_stat['DRB'] = null;
+		$team_stat['ORB'] = null;
+		$team_stat['STL'] = null;
+		$team_stat['BLK'] = null;
+		$team_stat['LOS'] = null;
+		$team_stat['PF'] = null;
+		$this->visitor_team_stats->push($team_stat);
+	}
+
+	protected function initializeVisitorPlayerStats()
+	{
+    	$visitor_players_stats = Collection::make();
+
+    	// visitor players
+    	$players_stats = Player::where('team_id', $this->match->visitorTeam->team->id)->where('retired', false)->orderBy('name', 'asc')->get();
+		foreach ($players_stats as $player) {
+			$player_stat['player_id'] = $player->id;
+			$player_stat['player_img'] = $player->getImg();
+			$player_stat['player_name'] = $player->name;
+			$player_stat['player_pos_ordered'] = $player->getPositionOrdered();
+			$player_stat['player_pos'] = $player->getPosition();
+			$player_stat['injury_id'] = $player->injury_id;
+			$player_stat['injury_matches'] = $player->injury_matches;
+			$player_stat['injury_days'] = $player->injury_days;
+			$player_stat['injury_playable'] = $player->injury_playable;
+			$player_stat['injury_name'] = $player->injury ? $player->injury->name : '';
+			$player_stat['injuried'] = 0;
+			if ($player->injury_id > 0 && !$player->injury_playable) {
+				$player_stat['injuried'] = 1;
+			}
+			$player_stat['team_id'] = $this->match->visitorTeam->team->id;
+			$player_stat['season_team_id'] = $this->match->visitor_team_id;
+			$player_stat['MIN'] = null;
+			$player_stat['PTS'] = null;
+			$player_stat['REB'] = null;
+			$player_stat['AST'] = null;
+			$player_stat['STL'] = null;
+			$player_stat['BLK'] = null;
+			$player_stat['LOS'] = null;
+			$player_stat['FGM'] = null;
+			$player_stat['FGA'] = null;
+			$player_stat['TPM'] = null;
+			$player_stat['TPA'] = null;
+			$player_stat['FTM'] = null;
+			$player_stat['FTA'] = null;
+			$player_stat['ORB'] = null;
+			$player_stat['PF'] = null;
+			$player_stat['ML'] = null;
+			$player_stat['headline'] = 0;
+
+			$visitor_players_stats->push($player_stat);
+		}
+
+		$criteria = [
+			"injuried" => "asc",
+            "headline" => "desc",
+            "MIN" => "desc",
+            "player_pos_ordered" => "asc",
+        ];
+        $comparer = $this->makeComparer($criteria);
+        $sorted = $visitor_players_stats->sort($comparer);
+        $this->visitor_players_stats = $sorted->values()->toArray();
+	}
+
+	public function reportVisitorStats()
+	{
+		$this->storeVisitorStats();
+		$this->visitorBoxscoreReport = false;
+		return redirect()->route('match', $this->match->id);
+	}
+
+	public function storeVisitorStats()
+	{
+		foreach ($this->visitor_team_stats as $key => $team_stat) {
+			$teamStat = TeamStat::create([
+				'match_id' 			=> $this->match->id,
+				'season_id' 		=> $this->match->season_id,
+				'season_team_id' 	=> $team_stat['season_team_id'] == null && $team_stat['season_team_id'] !== 0 ? null : $team_stat['season_team_id'],
+				'counterattack'  	=> $team_stat['counterattack'] == null && $team_stat['counterattack'] !== 0 ? null : $team_stat['counterattack'],
+				'zone' 			 	=> $team_stat['zone'] == null && $team_stat['zone'] !== 0 ? null : $team_stat['zone'],
+				'second_oportunity' => $team_stat['second_oportunity'] == null && $team_stat['second_oportunity'] !== 0 ? null : $team_stat['second_oportunity'],
+				'substitute' 		=> $team_stat['substitute'] == null && $team_stat['substitute'] !== 0 ? null : $team_stat['substitute'],
+				'advantage' 		=> $team_stat['advantage'] == null && $team_stat['advantage'] !== 0 ? null : $team_stat['advantage'],
+				'AST' 				=> $team_stat['AST'] == null && $team_stat['AST'] !== 0 ? null : $team_stat['AST'],
+				'DRB' 				=> $team_stat['DRB'] == null && $team_stat['DRB'] !== 0 ? null : $team_stat['DRB'],
+				'ORB' 				=> $team_stat['ORB'] == null && $team_stat['ORB'] !== 0 ? null : $team_stat['ORB'],
+				'STL' 				=> $team_stat['STL'] == null && $team_stat['STL'] !== 0 ? null : $team_stat['STL'],
+				'BLK' 				=> $team_stat['BLK'] == null && $team_stat['BLK'] !== 0 ? null : $team_stat['BLK'],
+				'LOS' 				=> $team_stat['LOS'] == null && $team_stat['LOS'] !== 0 ? null : $team_stat['LOS'],
+				'PF' 				=> $team_stat['PF'] == null && $team_stat['PF'] !== 0 ? null : $team_stat['PF'],
+				'updated_user_id' 	=> auth()->user()->id,
+			]);
+
+		foreach ($this->visitor_players_stats as $key => $player_stat) {
+			if ($player_stat['MIN'] > 0) {
+				$PTS = $player_stat['PTS'] == null && $player_stat['PTS'] !== 0 ? null : $player_stat['PTS'];
+				$REB = $player_stat['REB'] == null && $player_stat['REB'] !== 0 ? null : $player_stat['REB'];
+				$AST = $player_stat['AST'] == null && $player_stat['AST'] !== 0 ? null : $player_stat['AST'];
+				$STL = $player_stat['STL'] == null && $player_stat['STL'] !== 0 ? null : $player_stat['STL'];
+				$BLK = $player_stat['BLK'] == null && $player_stat['BLK'] !== 0 ? null : $player_stat['BLK'];
+				$LOS = $player_stat['LOS'] == null && $player_stat['LOS'] !== 0 ? null : $player_stat['LOS'];
+				$FGM = $player_stat['FGM'] == null && $player_stat['FGM'] !== 0 ? null : $player_stat['FGM'];
+				$FGA = $player_stat['FGA'] == null && $player_stat['FGA'] !== 0 ? null : $player_stat['FGA'];
+				$TPM = $player_stat['TPM'] == null && $player_stat['TPM'] !== 0 ? null : $player_stat['TPM'];
+				$TPA = $player_stat['TPA'] == null && $player_stat['TPA'] !== 0 ? null : $player_stat['TPA'];
+				$FTM = $player_stat['FTM'] == null && $player_stat['FTM'] !== 0 ? null : $player_stat['FTM'];
+				$FTA = $player_stat['FTA'] == null && $player_stat['FTA'] !== 0 ? null : $player_stat['FTA'];
+				$ORB = $player_stat['ORB'] == null && $player_stat['ORB'] !== 0 ? null : $player_stat['ORB'];
+				$PF = $player_stat['PF'] == null && $player_stat['PF'] !== 0 ? null : $player_stat['PF'];
+				$ML = $player_stat['ML'] == null && $player_stat['ML'] !== 0 ? null : $player_stat['ML'];
+				$headline = $player_stat['headline'];
+			} else {
+				$PTS = null;
+				$REB = null;
+				$AST = null;
+				$STL = null;
+				$BLK = null;
+				$LOS = null;
+				$FGM = null;
+				$FGA = null;
+				$TPM = null;
+				$TPA = null;
+				$FTM = null;
+				$FTA = null;
+				$ORB = null;
+				$PF = null;
+				$ML = null;
+				$headline = 0;
+			}
+			$playerStat = PlayerStat::create([
+				'match_id' => $this->match->id,
+				'season_id' => $this->match->season_id,
+				'player_id' => $player_stat['player_id'],
+				'injury_id' => $player_stat['injury_id'],
+				'injury_matches' => $player_stat['injury_matches'],
+				'injury_days' => $player_stat['injury_days'],
+				'injury_playable' => $player_stat['injury_playable'],
+				'season_team_id' => $player_stat['season_team_id'],
+				'MIN' 		=> $player_stat['MIN'] == null && $player_stat['MIN'] !== 0 ? null : $player_stat['MIN'],
+				'PTS' 		=> $PTS,
+				'REB' 		=> $REB,
+				'AST' 		=> $AST,
+				'STL' 		=> $STL,
+				'BLK' 		=> $BLK,
+				'LOS' 		=> $LOS,
+				'FGM' 		=> $FGM,
+				'FGA' 		=> $FGA,
+				'TPM' 		=> $TPM,
+				'TPA' 		=> $TPA,
+				'FTM' 		=> $FTM,
+				'FTA' 		=> $FTA,
+				'ORB' 		=> $ORB,
+				'PF' 		=> $PF,
+				'ML' 		=> $ML,
+				'headline' 	=> $headline,
+				'updated_user_id' => auth()->user()->id,
+			]);
+
+			if ($player_stat['injury_id'] > 0) {
+				$player = Player::find($player_stat['player_id']);
+
+				$before = $player->toJson(JSON_PRETTY_PRINT);
+				if ($player->injury_matches == 1) {
+					$player->injury_id = null;
+					$player->injury_matches = null;
+					$player->injury_days = null;
+					$player->injury_playable = 0;
+				} else {
+					$player->injury_matches = $player->injury_matches - 1;
+				}
+				$player->save();
+			}
+		}
+		}
+	}
+
 
     protected function makeComparer($criteria)
     {

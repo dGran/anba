@@ -612,6 +612,42 @@ class Match extends Model
         }
     }
 
+    public function hasLocalTeamStats()
+    {
+        $stats = TeamStat::where('match_id', $this->id)->where('season_team_id', $this->local_team_id)->count();
+        if ($stats > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public function hasvisitorTeamStats()
+    {
+        $stats = TeamStat::where('match_id', $this->id)->where('season_team_id', $this->visitor_team_id)->count();
+        if ($stats > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public function hasLocalPlayerStats()
+    {
+        $stats = PlayerStat::where('match_id', $this->id)->where('season_team_id', $this->local_team_id)->count();
+        if ($stats > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public function hasvisitorPlayerStats()
+    {
+        $stats = PlayerStat::where('match_id', $this->id)->where('season_team_id', $this->visitor_team_id)->count();
+        if ($stats > 0) {
+            return true;
+        }
+        return false;
+    }
+
     public function canDestroy()
     {
         // apply logic

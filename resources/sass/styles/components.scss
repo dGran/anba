@@ -64,3 +64,11 @@ select:-webkit-autofill:focus {
 .toggle:checked:before {
 	left: 1.25rem;
 }
+
+.min-w-48 {
+	min-width: 12rem;
+}
+
+.min-w-60 {
+	min-width: 15rem;
+}

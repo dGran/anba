@@ -35,7 +35,23 @@
 
 	@include('matches.forecasts')
 
+	@section('js')
 	<script>
+	    window.livewire.onError(statusCode => {
+	        if (statusCode === 419) {
+	            toastr.options = {
+	                "positionClass": "toast-top-center",
+	                "closeButton": false,
+	                "timeOut": "2000",
+	            };
+	            toastr.options.onHidden = function() {
+	                window.location.href=window.location.href;
+	            }
+	            toastr.info('redirigiendo...');
+	            return false;
+	        }
+	    });
+
 	    document.addEventListener('livewire:load', function () {
 	        Mousetrap.bind("right", function() {
 	            @this.setNextPage();
@@ -47,5 +63,5 @@
 	        });
 	    });
 	</script>
-
+	@endsection
 </div>

@@ -85,5 +85,5 @@
 
 			</div>
 	    </x-slot>
-	</x-jet-confirmation-modal>
+	</x-modals.dialog>
 @endif
