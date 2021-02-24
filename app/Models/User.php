@@ -126,6 +126,43 @@ class User extends Authenticatable implements MustVerifyEmail
         return "user/profile";
     }
 
+    public function currentSeasonMatches()
+    {
+        $currentSeason = Season::where('current', 1)->first();
+        $user_id = $this->id;
+        $matches = Match::where('season_id', $currentSeason->id)
+            ->where(function($q) use ($user_id) {
+                $q->where('matches.local_manager_id', $user_id)
+                    ->orWhere('matches.visitor_manager_id', $user_id);
+                })
+            ->get();
+        return $matches;
+    }
+
+    public function pendingMatchesReports()
+    {
+        $currentSeason = Season::where('current', 1)->first();
+        $user_id = $this->id;
+        $matches = $this->currentSeasonMatches();
+
+        $pending_reports = 0;
+        foreach ($matches as $match) {
+            if ($match->played()) {
+                if ($match->local_manager_id == $user_id) {
+                    if (!$match->hasLocalPlayerStats() || !$match->hasLocalTeamStats()) {
+                        $pending_reports++;
+                    }
+                } else {
+                    if (!$match->hasVisitorPlayerStats() || !$match->hasVisitorTeamStats()) {
+                        $pending_reports++;
+                    }
+                }
+            }
+        }
+
+        return $pending_reports;
+    }
+
     public function canDestroy()
     {
         // apply logic

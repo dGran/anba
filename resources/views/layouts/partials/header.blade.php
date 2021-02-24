@@ -63,21 +63,31 @@
 
                         <div class="flex items-center">
                             @auth
-                                @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                                    <button class="group flex text-sm rounded-full focus:outline-none border border-transparent">
-                                        <img class="h-10 w-10 border border-gray-500 dark:border-gray-700 rounded-full object-cover transform group-hover:scale-110 group-focus:scale-110 transition duration-150 ease-in-out" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
-                                    </button>
-                                @else
-                                    <button class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
-                                        <div>{{ Auth::user()->name }}</div>
+                                <div class="relative">
+                                    @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
+                                        <button class="group flex text-sm rounded-full focus:outline-none border border-transparent">
+                                            <img class="h-10 w-10 border border-gray-500 dark:border-gray-700 rounded-full object-cover transform group-hover:scale-110 group-focus:scale-110 transition duration-150 ease-in-out" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                                        </button>
+                                    @else
+                                        <button class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
+                                            <div>{{ Auth::user()->name }}</div>
 
-                                        <div class="ml-1">
-                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                            </svg>
-                                        </div>
-                                    </button>
-                                @endif
+                                            <div class="ml-1">
+                                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                                </svg>
+                                            </div>
+                                        </button>
+                                    @endif
+                                    @hasrole('manager')
+                                        @if (Auth::user()->pendingMatchesReports() > 0)
+                                            <span class="flex h-2.5 w-2.5 absolute bottom-0 left-0 my-0.5">
+                                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-200 opacity-75"></span>
+                                                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-yellow-300"></span>
+                                            </span>
+                                        @endif
+                                    @endhasrole
+                                </div>
                             @endauth
                             @guest
                                 <button class="group flex text-sm rounded-full focus:outline-none border border-transparent">
@@ -99,6 +109,12 @@
                                 <x-dropdown-link href="#" class="flex items-center">
                                     <i class="icon-gamepad text-base w-6 mr-1.5 text-center"></i><span>{{ __('Partidas pendientes') }}</span>
                                 </x-dropdown-link>
+                                @if (Auth::user()->pendingMatchesReports() > 0)
+                                    <x-dropdown-link href="#" class="flex items-center animate-pulse">
+                                        <i class="fas fa-clipboard-list w-6 mr-1.5 text-center"></i>
+                                        <span>{{ Auth::user()->pendingMatchesReports() }}{{ Auth::user()->pendingMatchesReports() == 1 ? ' reporte pendiente' : ' reportes pendientes' }}</span>
+                                    </x-dropdown-link>
+                                @endif
                             @endhasrole
 
                             @hasanyrole('super-admin|admin')
