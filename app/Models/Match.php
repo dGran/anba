@@ -606,13 +606,13 @@ class Match extends Model
             return "error";
         }
 
-        if ($this->hasLocalPlayerStats()) {
+        if (!$this->hasLocalPlayerStats()) {
             $warning++;
         }
-        if ($this->hasVisitorPlayerStats()) {
+        if (!$this->hasVisitorPlayerStats()) {
             $warning++;
         }
-        if ($this->hasLocalPlayerStats() && $this->hasVisitorPlayerStats()) {
+        if (!$this->hasLocalPlayerStats() && !$this->hasVisitorPlayerStats()) {
             $error++;
         }
 
