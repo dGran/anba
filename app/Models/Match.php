@@ -590,7 +590,7 @@ class Match extends Model
                         && ($stat->FTA === 0 || $stat->FTA > 0)
                         && ($stat->ORB === 0 || $stat->ORB > 0)
                         && ($stat->PF === 0 || $stat->PF > 0)
-                        && ($stat->ML != null)
+                        && ($stat->ML !== null)
                     ) {
                         $success++;
                     } else {
