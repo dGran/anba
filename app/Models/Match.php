@@ -606,6 +606,16 @@ class Match extends Model
             return "error";
         }
 
+        if ($this->hasLocalPlayerStats) {
+            $warning++;
+        }
+        if ($this->hasVisitorPlayerStats) {
+            $warning++;
+        }
+        if ($this->hasLocalPlayerStats && $this->hasVisitorPlayerStats) {
+            $error++;
+        }
+
         if ($error > 0) { return "error"; }
         if ($warning > 0) { return "warning"; }
         if ($success > 0) {
