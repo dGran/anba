@@ -590,14 +590,14 @@ class Match extends Model
                         && ($stat->FTA === 0 || $stat->FTA > 0)
                         && ($stat->ORB === 0 || $stat->ORB > 0)
                         && ($stat->PF === 0 || $stat->PF > 0)
-                        && ($stat->ML === 0 || $stat->ML > 0)
+                        && ($stat->ML != null)
                     ) {
                         $success++;
                     } else {
                         $warning++;
                     }
 
-                    if ($stat->FGM > $stat->FGA || $stat->TPM > $stat->TPA || $stat->FTM > $stat->FTA || $stat->PTS > 150 || $stat->REB > 75 || $stat->AST > 55 || $stat->STL > 30 || $stat->BLK > 25 || ($stat->FGM + $stat->TPM + $stat->FTM > 99) || ($stat->FGA + $stat->TPA + $stat->FTA > 99) || $stat->LOS > 50 || $stat->ML > 150) {
+                    if ($stat->FGM > $stat->FGA || $stat->TPM > $stat->TPA || $stat->FTM > $stat->FTA || $stat->PTS > 150 || $stat->REB > 75 || $stat->AST > 55 || $stat->STL > 30 || $stat->BLK > 25 || ($stat->FGM + $stat->TPM + $stat->FTM > 99) || ($stat->FGA + $stat->TPA + $stat->FTA > 99) || $stat->LOS > 50 || $stat->ML > 150 || $stat->ML < -150) {
                         $warning++;
                     }
                 }
