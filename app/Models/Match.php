@@ -557,6 +557,16 @@ class Match extends Model
             return "error";
         }
 
+        if (!$this->hasLocalTeamStats()) {
+            $warning++;
+        }
+        if (!$this->hasVisitorTeamStats()) {
+            $warning++;
+        }
+        if (!$this->hasLocalTeamStats() && !$this->hasVisitorTeamStats()) {
+            $error++;
+        }
+
         if ($error > 0) { return "error"; }
         if ($warning > 0) { return "warning"; }
         if ($success > 0) {
