@@ -39,6 +39,9 @@ Route::get('/jugadores', function () {
 Route::get('/equipos', function () {
     return view('teams');
 })->name('teams');
+Route::get('/equipos/{seasonTeam:id}/{team:slug}', function () {
+    return view('team');
+})->name('team');
 Route::get('/managers', function () {
     return view('managers');
 })->name('managers');

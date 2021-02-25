@@ -30,6 +30,11 @@ class SeasonDivision extends Model
         return $this->belongsTo('App\Models\SeasonConference', 'season_conference_id', 'id');
     }
 
+    public function teams()
+    {
+        return $this->hasMany('App\Models\SeasonTeam', 'season_division_id', 'id');
+    }
+
     public function getName()
     {
         return $this->season->name . ' - ' . $this->division->name;

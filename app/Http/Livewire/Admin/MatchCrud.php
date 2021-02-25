@@ -704,17 +704,17 @@ class MatchCrud extends Component
 
     public function checkMatches()
     {
-    	$matches = Match::where('matches.season_id', $this->season->id)->get();
+    	$matches = Match::with('localTeam.team')->with('visitorTeam.team')->where('matches.season_id', $this->season->id)->get();
     	$counter = 0;
     	foreach ($matches as $match) {
     		if (!$match->played()) {
     			$before = $match->toJson(JSON_PRETTY_PRINT);
-				$local_team = SeasonTeam::find($match->local_team_id);
-				$visitor_team = SeasonTeam::find($match->visitor_team_id);
+				// $local_team = SeasonTeam::find($match->local_team_id);
+				// $visitor_team = SeasonTeam::find($match->visitor_team_id);
 
-				$validatedData['local_manager_id'] = $local_team->team->manager_id;
-				$validatedData['visitor_manager_id'] = $visitor_team->team->manager_id;
-				$validatedData['stadium'] = $local_team->team->stadium;
+				$validatedData['local_manager_id'] = $match->localTeam->team->manager_id;
+				$validatedData['visitor_manager_id'] = $match->visitorTeam->team->manager_id;
+				$validatedData['stadium'] = $match->localTeam->team->stadium;
 
 				$match->fill($validatedData);
 

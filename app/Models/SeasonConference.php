@@ -25,6 +25,11 @@ class SeasonConference extends Model
         return $this->belongsTo('App\Models\Conference', 'conference_id', 'id');
     }
 
+    public function divisions()
+    {
+        return $this->hasMany('App\Models\SeasonDivision', 'season_conference_id', 'id');
+    }
+
     public function getName()
     {
         return $this->season->name . ' - ' . $this->conference->name;
