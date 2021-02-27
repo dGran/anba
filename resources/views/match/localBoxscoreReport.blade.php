@@ -468,7 +468,7 @@
                             <li class="{{ $exception_players_stats['TP'] ? 'text-pretty-red animate-pulse' : '' }}">Los tiros de 3 puntos anotados no pueden ser superiores a los intentados.</li>
                             <li class="{{ $exception_players_stats['FT'] ? 'text-pretty-red animate-pulse' : '' }}">Los tiros libres anotados no pueden ser superiores a los intentados.</li>
                             <li class="{{ $exception_players_stats['SHOOTS_TOTAL'] ? 'text-pretty-red animate-pulse' : '' }}">El total de tiros anotados o intentados de un jugador no pueden ser mayor a 99.</li>
-                            <li class="{{ $exception_players_stats['ML'] ? 'text-pretty-red animate-pulse' : '' }}">No se puede registrar más de 150 +/- a un jugador.</li>
+                            <li class="{{ $exception_players_stats['ML'] ? 'text-pretty-red animate-pulse' : '' }}">No se puede registrar más de 150 ó -150 +/- a un jugador.</li>
                         </ul>
                     </div>
                 @endif
