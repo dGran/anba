@@ -86,11 +86,11 @@
             <div class="text-sm md:text-base uppercase pt-6 pb-2 px-1">
                 <p class="tracking-wide font-bold">Estadísticas de jugadores</p>
                 <div class="py-2 w-full">
-                    <label class="flex items-center cursor-pointer py-1.5 select-none whitespace-nowrap">
+                    <label class="flex items-center cursor-pointer py-1.5 select-none">
                         <input type="checkbox" class="toggle appearance-none relative w-10 h-5 transition-all duration-200 ease-in-out bg-gray-300 hover:bg-gray-400 focus:bg-gray-400 rounded-full shadow-inner outline-none" wire:model="show_players_stats_totals_under"/>
-                        <span class="ml-2 text-xs uppercase">Mostrar totales al final de la lista</span>
+                        <span class="ml-2 text-xs uppercase">Mostrar totales al final</span>
                     </label>
-                    <label class="flex items-center cursor-pointer py-1.5 select-none whitespace-nowrap">
+                    <label class="flex items-center cursor-pointer py-1.5 select-none">
                         <input type="checkbox" class="toggle appearance-none relative w-10 h-5 transition-all duration-200 ease-in-out bg-gray-300 hover:bg-gray-400 focus:bg-gray-400 rounded-full shadow-inner outline-none" wire:model="show_players_stats_totals_inline"/>
                         <span class="ml-2 text-xs uppercase">Mostrar totales por línea</span>
                     </label>
