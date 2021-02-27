@@ -30,6 +30,9 @@ class Match extends Component
 	public $extra_times;
 	public $local_team_stats, $local_players_stats;
 	public $visitor_team_stats, $visitor_players_stats;
+	public $local_players_stats_totals, $visitor_players_stats_totals;
+	public $show_players_stats_totals_under = true;
+	public $show_players_stats_totals_inline = false;
 
 	protected $queryString = [
 		'boxscore_order' => ['except' => 'default'],
@@ -88,13 +91,93 @@ class Match extends Component
         $this->total_scores['visitor'] = $total_visitor_scores;
 	}
 
+	protected function calcLocalPlayerStatsTotals()
+	{
+        $this->local_players_stats_totals = [
+        	'MIN' => 0,
+        	'PTS' => 0,
+        	'REB' => 0,
+        	'AST' => 0,
+        	'STL' => 0,
+        	'BLK' => 0,
+        	'LOS' => 0,
+        	'FGM' => 0,
+        	'FGA' => 0,
+        	'TPM' => 0,
+        	'TPA' => 0,
+        	'FTM' => 0,
+        	'FTA' => 0,
+        	'ORB' => 0,
+			'PF' => 0,
+			'ML' => 0,
+        ];
+        foreach ($this->local_players_stats as $stat) {
+        	$this->local_players_stats_totals['MIN'] += $stat['MIN'] == null ? 0 : $stat['MIN'];
+        	$this->local_players_stats_totals['PTS'] += $stat['PTS'] == null ? 0 : $stat['PTS'];
+        	$this->local_players_stats_totals['REB'] += $stat['REB'] == null ? 0 : $stat['REB'];
+        	$this->local_players_stats_totals['AST'] += $stat['AST'] == null ? 0 : $stat['AST'];
+        	$this->local_players_stats_totals['STL'] += $stat['STL'] == null ? 0 : $stat['STL'];
+        	$this->local_players_stats_totals['BLK'] += $stat['BLK'] == null ? 0 : $stat['BLK'];
+        	$this->local_players_stats_totals['LOS'] += $stat['LOS'] == null ? 0 : $stat['LOS'];
+        	$this->local_players_stats_totals['FGM'] += $stat['FGM'] == null ? 0 : $stat['FGM'];
+        	$this->local_players_stats_totals['FGA'] += $stat['FGA'] == null ? 0 : $stat['FGA'];
+        	$this->local_players_stats_totals['TPM'] += $stat['TPM'] == null ? 0 : $stat['TPM'];
+        	$this->local_players_stats_totals['TPA'] += $stat['TPA'] == null ? 0 : $stat['TPA'];
+        	$this->local_players_stats_totals['FTM'] += $stat['FTM'] == null ? 0 : $stat['FTM'];
+        	$this->local_players_stats_totals['FTA'] += $stat['FTA'] == null ? 0 : $stat['FTA'];
+        	$this->local_players_stats_totals['ORB'] += $stat['ORB'] == null ? 0 : $stat['ORB'];
+        	$this->local_players_stats_totals['PF'] += $stat['PF'] == null ? 0 : $stat['PF'];
+        	$this->local_players_stats_totals['ML'] += $stat['ML'] == null ? 0 : $stat['ML'];
+        }
+	}
+
+	protected function calcVisitorPlayerStatsTotals()
+	{
+        $this->visitor_players_stats_totals = [
+        	'MIN' => 0,
+        	'PTS' => 0,
+        	'REB' => 0,
+        	'AST' => 0,
+        	'STL' => 0,
+        	'BLK' => 0,
+        	'LOS' => 0,
+        	'FGM' => 0,
+        	'FGA' => 0,
+        	'TPM' => 0,
+        	'TPA' => 0,
+        	'FTM' => 0,
+        	'FTA' => 0,
+        	'ORB' => 0,
+			'PF' => 0,
+			'ML' => 0,
+        ];
+        foreach ($this->visitor_players_stats as $stat) {
+        	$this->visitor_players_stats_totals['MIN'] += $stat['MIN'] == null ? 0 : $stat['MIN'];
+        	$this->visitor_players_stats_totals['PTS'] += $stat['PTS'] == null ? 0 : $stat['PTS'];
+        	$this->visitor_players_stats_totals['REB'] += $stat['REB'] == null ? 0 : $stat['REB'];
+        	$this->visitor_players_stats_totals['AST'] += $stat['AST'] == null ? 0 : $stat['AST'];
+        	$this->visitor_players_stats_totals['STL'] += $stat['STL'] == null ? 0 : $stat['STL'];
+        	$this->visitor_players_stats_totals['BLK'] += $stat['BLK'] == null ? 0 : $stat['BLK'];
+        	$this->visitor_players_stats_totals['LOS'] += $stat['LOS'] == null ? 0 : $stat['LOS'];
+        	$this->visitor_players_stats_totals['FGM'] += $stat['FGM'] == null ? 0 : $stat['FGM'];
+        	$this->visitor_players_stats_totals['FGA'] += $stat['FGA'] == null ? 0 : $stat['FGA'];
+        	$this->visitor_players_stats_totals['TPM'] += $stat['TPM'] == null ? 0 : $stat['TPM'];
+        	$this->visitor_players_stats_totals['TPA'] += $stat['TPA'] == null ? 0 : $stat['TPA'];
+        	$this->visitor_players_stats_totals['FTM'] += $stat['FTM'] == null ? 0 : $stat['FTM'];
+        	$this->visitor_players_stats_totals['FTA'] += $stat['FTA'] == null ? 0 : $stat['FTA'];
+        	$this->visitor_players_stats_totals['ORB'] += $stat['ORB'] == null ? 0 : $stat['ORB'];
+        	$this->visitor_players_stats_totals['PF'] += $stat['PF'] == null ? 0 : $stat['PF'];
+        	$this->visitor_players_stats_totals['ML'] += $stat['ML'] == null ? 0 : $stat['ML'];
+        }
+	}
+
 	public function reportResult()
 	{
 		$this->storeResult();
 		$this->createMatchPosts($this->match->id);
 
 		$this->scoreReportModal = false;
-		return redirect()->route('match', $this->match->id);
+		session()->flash('success', 'Reporte de resultado registrado correctamente.');
 	}
 
 	public function storeResult()
@@ -199,8 +282,7 @@ class Match extends Component
 
 	public function closeLocalBoxscoreReport()
 	{
-		// $this->localBoxscoreReport = false;
-		return redirect()->route('match', $this->match->id);
+		$this->localBoxscoreReport = false;
 	}
 
 	protected function initializeLocalTeamStats()
@@ -232,9 +314,26 @@ class Match extends Component
 		foreach ($players_stats as $player) {
 			$player_stat['player_id'] = $player->id;
 			$player_stat['player_img'] = $player->getImg();
-			$player_stat['player_name'] = $player->name;
 			$explode_name = explode(" ", $player->name);
-			$player_stat['player_subname'] = $explode_name[1];
+			switch (count($explode_name)) {
+				case 1:
+					$player_stat['player_name'] = $explode_name[0];
+					break;
+				case 2:
+					$player_stat['player_name'] = $explode_name[1] . ', ' . $explode_name[0];
+					break;
+				case (count($explode_name) > 2):
+					$subname = '';
+					for ($i=1; $i < count($explode_name) ; $i++) {
+						if ($i == 1) {
+							$subname .= $explode_name[$i];
+						} else {
+							$subname .= ' ' . $explode_name[$i];
+						}
+					}
+					$player_stat['player_name'] = $subname . ', ' . $explode_name[0];
+					break;
+			}
 			$player_stat['player_pos_ordered'] = $player->getPositionOrdered();
 			$player_stat['player_pos'] = $player->getPosition();
 			$player_stat['injury_id'] = $player->injury_id;
@@ -271,7 +370,7 @@ class Match extends Component
 
 		$criteria = [
 			"injuried" => "asc",
-			"player_subname" => "asc",
+			"player_name" => "asc",
             "headline" => "desc",
             "MIN" => "desc",
             "player_pos_ordered" => "asc",
@@ -285,7 +384,7 @@ class Match extends Component
 	{
 		$this->storeLocalStats();
 		$this->localBoxscoreReport = false;
-		return redirect()->route('match', $this->match->id);
+		session()->flash('success', 'Reporte de estadísticas registrado correctamente.');
 	}
 
 	public function storeLocalStats()
@@ -402,8 +501,7 @@ class Match extends Component
 
 	public function closeVisitorBoxscoreReport()
 	{
-		// $this->visitorBoxscoreReport = false;
-		return redirect()->route('match', $this->match->id);
+		$this->visitorBoxscoreReport = false;
 	}
 
 	protected function initializeVisitorTeamStats()
@@ -435,9 +533,26 @@ class Match extends Component
 		foreach ($players_stats as $player) {
 			$player_stat['player_id'] = $player->id;
 			$player_stat['player_img'] = $player->getImg();
-			$player_stat['player_name'] = $player->name;
 			$explode_name = explode(" ", $player->name);
-			$player_stat['player_subname'] = $explode_name[1];
+			switch (count($explode_name)) {
+				case 1:
+					$player_stat['player_name'] = $explode_name[0];
+					break;
+				case 2:
+					$player_stat['player_name'] = $explode_name[1] . ', ' . $explode_name[0];
+					break;
+				case (count($explode_name) > 2):
+					$subname = '';
+					for ($i=1; $i < count($explode_name) ; $i++) {
+						if ($i == 1) {
+							$subname .= $explode_name[$i];
+						} else {
+							$subname .= ' ' . $explode_name[$i];
+						}
+					}
+					$player_stat['player_name'] = $subname . ', ' . $explode_name[0];
+					break;
+			}
 			$player_stat['player_pos_ordered'] = $player->getPositionOrdered();
 			$player_stat['player_pos'] = $player->getPosition();
 			$player_stat['injury_id'] = $player->injury_id;
@@ -474,7 +589,7 @@ class Match extends Component
 
 		$criteria = [
 			"injuried" => "asc",
-			"player_subname" => "asc",
+			"player_name" => "asc",
             "headline" => "desc",
             "MIN" => "desc",
             "player_pos_ordered" => "asc",
@@ -488,7 +603,7 @@ class Match extends Component
 	{
 		$this->storeVisitorStats();
 		$this->visitorBoxscoreReport = false;
-		return redirect()->route('match', $this->match->id);
+		session()->flash('success', 'Reporte de estadísticas registrado correctamente.');
 	}
 
 	public function storeVisitorStats()
@@ -666,19 +781,30 @@ class Match extends Component
 	public function mount($match)
 	{
 		$this->match = $match;
-				$this->criteria = [
-					"injuried" => "asc",
-					"headline" => "desc",
-					"MIN" => "desc",
-					"player_pos_ordered" => "asc",
-		        ];
+		$this->criteria = [
+			"injuried" => "asc",
+			"headline" => "desc",
+			"MIN" => "desc",
+			"player_pos_ordered" => "asc",
+        ];
 	}
 
     public function render()
     {
-    	$this->loadStats();
-
-    	$this->updateScores();
+		if ($this->scoreReportModal || $this->localBoxscoreReport || $this->visitorBoxscoreReport) {
+			if ($this->scoreReportModal) {
+	    		$this->updateScores();
+			}
+			if ($this->localBoxscoreReport) {
+	    		$this->calcLocalPlayerStatsTotals();
+			}
+			if ($this->visitorBoxscoreReport) {
+	    		$this->calcVisitorPlayerStatsTotals();
+			}
+		} else {
+			$this->match = \App\Models\Match::find($this->match->id);
+			$this->loadStats();
+		}
 
         return view('match.index', [
         	'localInjuries' => $this->getLocalInjuries(),

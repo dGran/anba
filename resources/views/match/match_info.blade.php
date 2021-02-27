@@ -1,5 +1,5 @@
 {{-- @if ($match->localTeam_playerTotals() && $match->visitorTeam_playerTotals() && $match->localTeam_teamTotals() && $match->visitorTeam_teamTotals()) --}}
-	<div class="bg-white dark:bg-gray-750 border border-gray-150 dark:border-transparent shadow-md rounded mx-3 md:mx-0 my-6">
+	<div class="{{ !$localBoxscoreReport && !$visitorBoxscoreReport ?: 'hidden' }} bg-white dark:bg-gray-750 border border-gray-150 dark:border-transparent shadow-md rounded mx-3 md:mx-0 my-6">
 		<div class="px-3 py-1">
 
 			<div class="flex flex-col py-0.5 md:py-1.5 border-b border-gray-150 dark:border-gray-650">
