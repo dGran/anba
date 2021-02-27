@@ -10,9 +10,12 @@
             <x-dropdown align="right" width="48">
                 <x-slot name="trigger">
                     <div class="flex items-center">
-					    <x-buttons.primary class="ml-3 uppercase text-xs py-2 leading-4 px-3 inline-flex items-center transition-colors duration-150">
-						    <span>reportar estadisticas</span>
-						    <svg class="w-4 h-4 ml-3 fill-current" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
+					    <x-buttons.primary class="w-48 uppercase text-xs py-2 leading-4 transition-colors duration-150">
+					    	<div class="inline-flex items-center px-3">
+							    <span>reportar estadisticas</span>
+							    <svg class="w-4 h-4 ml-1.5 fill-current" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
+
+					    	</div>
 					    </x-buttons.primary>
                     </div>
                 </x-slot>
@@ -21,13 +24,13 @@
                 	@if (!$match->hasLocalTeamStats() && !$match->hasLocalPlayerStats())
 	                    <x-dropdown-link class="flex items-center cursor-pointer" wire:click.prevent="openLocalBoxscoreReport">
 	                        <img src="{{ $match->localTeam->team->getImg() }}" alt="{{ $match->localTeam->team->medium_name }}" class="w-7 h-7 object-cover mr-2">
-	                        <span>{{ $match->localTeam->team->name }}</span>
+	                        <span>{{ $match->localTeam->team->medium_name }}</span>
 	                    </x-dropdown-link>
                 	@endif
                 	@if (!$match->hasvisitorTeamStats() && !$match->hasvisitorPlayerStats())
 	                    <x-dropdown-link class="flex items-center cursor-pointer" wire:click.prevent="openVisitorBoxscoreReport">
 	                        <img src="{{ $match->visitorTeam->team->getImg() }}" alt="{{ $match->visitorTeam->team->medium_name }}" class="w-7 h-7 object-cover mr-2">
-	                        <span>{{ $match->visitorTeam->team->name }}</span>
+	                        <span>{{ $match->visitorTeam->team->medium_name }}</span>
 	                    </x-dropdown-link>
                 	@endif
                 </x-slot>
