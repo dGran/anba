@@ -656,13 +656,14 @@ class PlayerCrud extends Component
 
     	$reg = Player::find($id);
 		$this->reg_id = $reg->id;
+		$this->name = $reg->name;
     	$this->injury_id = $reg->injury_id;
     	$this->injury_matches = $reg->injury_matches ?: 1;
     	$this->injury_days = $reg->injury_days ?: 1;
 		$this->injury_playable = $reg->injury_playable;
 
     	$this->emit('openEditStateModal');
-    	$this->setCurrentModal('editStateModal');
+    	// $this->setCurrentModal('editStateModal');
     }
 
     public function updateState()
