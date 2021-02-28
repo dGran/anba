@@ -454,6 +454,7 @@ class PlayerCrud extends Component
     // Add & Store
     protected function resetFields()
     {
+    	$this->reg_id = null;
 		$this->name = null;
 		$this->nickname = null;
 		$this->team_id = null;
@@ -473,6 +474,8 @@ class PlayerCrud extends Component
 
     protected function resetStateFields()
     {
+    	$this->reg_id = null;
+    	$this->name = null;
 		$this->injury_id = null;
 		$this->injury_matches = 1;
 		$this->injury_days = 1;
@@ -748,7 +751,7 @@ class PlayerCrud extends Component
         $this->closeAnyModal();
 
         $this->cancelSelection();
-		$this->resetFields();
+		$this->resetStateFields();
     }
 
     public function confirmRestoreStates()
