@@ -18,7 +18,7 @@
 									<div class="flex flex-col ml-3 leading-5">
 										<span>{{ $injury->name }}</span>
 										<p class="text-gray-500 dark:text-gray-300">
-											<i class="fas fa-briefcase-medical text-pretty-red mr-1.5"></i>
+											<i class="fas fa-briefcase-medical {{ $injury->injury_playable ? 'text-yellow-300' : 'text-pretty-red' }} mr-1.5"></i>
 											{{ $injury->injury->name }}
 										</p>
 									</div>
@@ -35,7 +35,7 @@
 									<div class="flex flex-col ml-3 leading-5">
 										<span>{{ $injury->name }}</span>
 										<p class="text-gray-500 dark:text-gray-300">
-											<i class="fas fa-briefcase-medical text-pretty-red mr-1.5"></i>
+											<i class="fas fa-briefcase-medical {{ $injury->injury_playable ? 'text-yellow-300' : 'text-pretty-red' }} mr-1.5"></i>
 											{{ $injury->injury->name }}
 										</p>
 									</div>

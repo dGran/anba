@@ -814,12 +814,12 @@ class Match extends Component
 
     public function getLocalInjuries()
     {
-    	return $injuries = Player::whereNotNull('injury_id')->where('injury_playable', 0)->where('team_id', $this->match->localTeam->team->id)->get();
+    	return $injuries = Player::whereNotNull('injury_id')->where('team_id', $this->match->localTeam->team->id)->orderBy('injury_playable', 'asc')->get();
     }
 
     public function getVisitorInjuries()
     {
-    	return $injuries = Player::whereNotNull('injury_id')->where('injury_playable', 0)->where('team_id', $this->match->visitorTeam->team->id)->get();
+    	return $injuries = Player::whereNotNull('injury_id')->where('team_id', $this->match->visitorTeam->team->id)->orderBy('injury_playable', 'asc')->get();
     }
 
 	public function setOrder($boxscore_order)

@@ -694,7 +694,7 @@ class PlayerCrud extends Component
 	            if ($reg->update()) {
 
 		        	$changes = $reg->getChanges();
-	        		dd($changes);
+	        		// dd($changes);
 
 	            	// injury post
 			    	if ($reg->injury_id) {
