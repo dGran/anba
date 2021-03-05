@@ -3,13 +3,13 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title text-base text-uppercase font-medium tracking-wide">
-                    <span>{{ $reg_id }} - {{ $name }}</span>
+                    <span>{{ $name }}</span>
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="closeAnyModal">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form wire:submit.prevent="updateState">
+            <form wire:submit.prevent="updateState({{ $reg_id }})">
                 <div class="modal-body">
                     @include('admin.players.forms.formState')
                 </div>

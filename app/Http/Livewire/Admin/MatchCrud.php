@@ -1784,8 +1784,8 @@ class MatchCrud extends Component
 	protected function createFeaturedPost($match)
 	{
 		//votes
-		$votes = $match->votes()['local'] + $match->votes()['visitor'];
-		if ($votes > 0) {
+		$pollVotes = MatchPoll::where('match_id', $match->id)->count();
+		if ($pollVotes > 4) {
 			$votes_local = ($match->votes()['local'] / $votes) * 100;
 			$votes_visitor = ($match->votes()['visitor'] / $votes) * 100;
 

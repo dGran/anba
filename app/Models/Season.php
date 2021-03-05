@@ -296,7 +296,7 @@ class Season extends Model
         }
     }
 
-    public function get_table_data_team($team_id, $streak)
+    public function get_table_data_team($team_id)
     {
         $data = [
             "w" => 0,
@@ -323,7 +323,7 @@ class Season extends Model
             "streak" => 0,
         ];
 
-        $matches = Match::with('season', 'localTeam', 'visitorTeam', 'scores')
+        $matches = Match::with('scores')
             ->join('scores', 'scores.match_id', 'matches.id')
 
             ->join('seasons_teams as local_seasons_teams', 'local_seasons_teams.id', 'matches.local_team_id')
@@ -359,14 +359,28 @@ class Season extends Model
                         if ($same_div) { $data['div_w'] += 1; }
                         if ($extra_times) { $data['ot_w'] += 1; }
                         $data['home_w'] += 1;
-                        if ($key < 10) { $data['last10_w'] += 1; }
+                        if ($key < 10) {
+                            $data['last10_w'] += 1;
+                            if ($data['streak'] > 0) {
+                                $data['streak'] += 1;
+                            } else {
+                                $data['streak'] = 1;
+                            }
+                        }
                     } else {
                         $data['l'] += 1;
                         if ($same_conf) { $data['conf_l'] += 1; }
                         if ($same_div) { $data['div_l'] += 1; }
                         if ($extra_times) { $data['ot_l'] += 1; }
                         $data['home_l'] += 1;
-                        if ($key < 10) { $data['last10_l'] += 1; }
+                        if ($key < 10) {
+                            $data['last10_l'] += 1;
+                            if ($data['streak'] < 0) {
+                                $data['streak'] -= 1;
+                            } else {
+                                $data['streak'] = -1;
+                            }
+                        }
                     }
                 } else {
                     if ($local_score > $visitor_score) {
@@ -375,53 +389,8 @@ class Season extends Model
                         if ($same_div) { $data['div_l'] += 1; }
                         if ($extra_times) { $data['ot_l'] += 1; }
                         $data['road_l'] += 1;
-                        if ($key < 10) { $data['last10_l'] += 1; }
-                    } else {
-                        $data['w'] += 1;
-                        if ($same_conf) { $data['conf_w'] += 1; }
-                        if ($same_div) { $data['div_w'] += 1; }
-                        if ($extra_times) { $data['ot_w'] += 1; }
-                        $data['road_w'] += 1;
-                        if ($key < 10) { $data['last10_w'] += 1; }
-                    }
-                }
-            }
-        }
-
-        if ($streak) {
-            // loop for streak
-            $matches = Match::with('season', 'localTeam', 'visitorTeam', 'scores')
-                ->join('scores', 'scores.match_id', 'matches.id')
-
-                ->join('seasons_teams as local_seasons_teams', 'local_seasons_teams.id', 'matches.local_team_id')
-                ->join('seasons_divisions as local_seasons_divisions', 'local_seasons_divisions.id', 'local_seasons_teams.season_division_id')
-                ->join('seasons_conferences as local_seasons_conferences', 'local_seasons_conferences.id', 'local_seasons_divisions.season_conference_id')
-
-                ->join('seasons_teams as visitor_seasons_teams', 'visitor_seasons_teams.id', 'matches.visitor_team_id')
-                ->join('seasons_divisions as visitor_seasons_divisions', 'visitor_seasons_divisions.id', 'visitor_seasons_teams.season_division_id')
-                ->join('seasons_conferences as visitor_seasons_conferences', 'visitor_seasons_conferences.id', 'visitor_seasons_divisions.season_conference_id')
-
-                ->select('matches.*', 'local_seasons_divisions.id as local_division_id', 'local_seasons_conferences.id as local_conference_id', 'visitor_seasons_divisions.id as visitor_division_id', 'visitor_seasons_conferences.id as visitor_conference_id')
-                ->where('matches.season_id', $this->id)
-                ->where(function($q) use ($team_id) {
-                    $q->where('matches.local_team_id', $team_id)
-                        ->orWhere('matches.visitor_team_id', $team_id);
-                    })
-                ->orderBy('scores.created_at', 'desc')
-                ->get();
-
-            foreach ($matches as $key => $match) {
-                if ($match->played()) {
-                    $local_score = $match->scores->sum('local_score');
-                    $visitor_score = $match->scores->sum('visitor_score');
-                    if ($team_id == $match->local_team_id) {
-                        if ($local_score > $visitor_score) {
-                            if ($data['streak'] > 0) {
-                                $data['streak'] += 1;
-                            } else {
-                                $data['streak'] = 1;
-                            }
-                        } else {
+                        if ($key < 10) {
+                            $data['last10_l'] += 1;
                             if ($data['streak'] < 0) {
                                 $data['streak'] -= 1;
                             } else {
@@ -429,13 +398,13 @@ class Season extends Model
                             }
                         }
                     } else {
-                        if ($local_score > $visitor_score) {
-                            if ($data['streak'] < 0) {
-                                $data['streak'] -= 1;
-                            } else {
-                                $data['streak'] = -1;
-                            }
-                        } else {
+                        $data['w'] += 1;
+                        if ($same_conf) { $data['conf_w'] += 1; }
+                        if ($same_div) { $data['div_w'] += 1; }
+                        if ($extra_times) { $data['ot_w'] += 1; }
+                        $data['road_w'] += 1;
+                        if ($key < 10) {
+                            $data['last10_w'] += 1;
                             if ($data['streak'] > 0) {
                                 $data['streak'] += 1;
                             } else {
@@ -504,7 +473,7 @@ class Season extends Model
         return $data;
     }
 
-    public function generateTable($type, $order, $conference_id, $division_id, $streak)
+    public function generateTable($type, $order, $conference_id, $division_id)
     {
         $table_teams = collect();
         switch ($type) {
@@ -515,7 +484,7 @@ class Season extends Model
                 $teams = SeasonTeam::
                     join('seasons_divisions', 'seasons_divisions.id', 'seasons_teams.season_division_id')
                     ->join('seasons_conferences', 'seasons_conferences.id', 'seasons_divisions.season_conference_id')
-                    ->with('team')
+                    ->with('team.user')
                     ->with('seasonDivision')
                     ->select('seasons_teams.*')
                     ->where('seasons_divisions.season_conference_id', $conference_id)
@@ -532,7 +501,7 @@ class Season extends Model
                 break;
         }
         foreach ($teams as $key => $team) {
-            $data = $this->get_table_data_team($team->id, $streak);
+            $data = $this->get_table_data_team($team->id);
             $table_teams->push([
                 'team' => $team,
                 'team_name' => $team->team->name,

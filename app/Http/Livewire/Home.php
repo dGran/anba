@@ -53,14 +53,16 @@ class Home extends Component
 
     public function render()
     {
-    	$posts = Post::type($this->filterType)->orderBy('created_at', 'desc')->paginate(16);
+    	$posts = Post::with('match.visitorTeam.team', 'match.localTeam.team', 'team', 'player')
+    		->type($this->filterType)->orderBy('created_at', 'desc')->paginate(16);
 	    if (($posts->total() > 0 && $posts->count() == 0)) {
 			$this->page = 1;
 		}
 		if ($this->page == 0) {
 			$this->page = $posts->lastPage();
 		}
-		$posts = Post::type($this->filterType)->orderBy('created_at', 'desc')->paginate(16);
+		$posts = Post::with('match.visitorTeam.team', 'match.localTeam.team', 'team', 'player')
+			->type($this->filterType)->orderBy('created_at', 'desc')->paginate(16);
 
     	if ($this->season) {
 	    	$this->seasons_conferences = SeasonConference::
@@ -70,7 +72,7 @@ class Home extends Component
 	    		->orderBy('conferences.name')
 	    		->get();
 	    	foreach ($this->seasons_conferences as $key => $conference) {
-	        	$this->table_positions[$key] = $this->season->generateTable('conference', 'wavg', $conference->id, null, false);
+	        	$this->table_positions[$key] = $this->season->generateTable('conference', 'wavg', $conference->id, null);
 	    	}
     	}
 

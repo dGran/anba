@@ -659,7 +659,7 @@ class PlayerCrud extends Component
 
     	$reg = Player::find($id);
 		$this->reg_id = $reg->id;
-		$this->name = $reg->name;
+    	$this->name = $reg->name;
     	$this->injury_id = $reg->injury_id;
     	$this->injury_matches = $reg->injury_matches ?: 1;
     	$this->injury_days = $reg->injury_days ?: 1;
@@ -669,83 +669,91 @@ class PlayerCrud extends Component
     	// $this->setCurrentModal('editStateModal');
     }
 
-    public function updateState()
+    public function updateState($id)
     {
-    	$reg = Player::find($this->reg_id);
-    	$before = $reg->toJson(JSON_PRETTY_PRINT);
-    	$suspension_id = Injury::where('name', 'Suspensión')->first()->id;
+    	$reg = Player::find($id);
+    	if ($reg) {
+	    	$before = $reg->toJson(JSON_PRETTY_PRINT);
+	    	$suspension_id = Injury::where('name', 'Suspensión')->first()->id;
 
-    	if ($this->injury_id) {
-		    $validatedData['injury_id'] = $this->injury_id;
-		    $validatedData['injury_matches'] = $this->injury_matches ?: 0;
-			$validatedData['injury_days'] = $this->injury_days ?: 0;
-			$validatedData['injury_playable'] = $this->injury_id != $suspension_id ? $this->injury_playable : 0;
-    	} else {
-		    $validatedData['injury_id'] = null;
-		    $validatedData['injury_matches'] = null;
-			$validatedData['injury_days'] = null;
-			$validatedData['injury_playable'] = 0;
-    	}
+	    	if ($this->injury_id) {
+			    $validatedData['injury_id'] = $this->injury_id;
+			    $validatedData['injury_matches'] = $this->injury_matches ?: 0;
+				$validatedData['injury_days'] = $this->injury_days ?: 0;
+				$validatedData['injury_playable'] = $this->injury_id != $suspension_id ? $this->injury_playable : 0;
+	    	} else {
+			    $validatedData['injury_id'] = null;
+			    $validatedData['injury_matches'] = null;
+				$validatedData['injury_days'] = null;
+				$validatedData['injury_playable'] = 0;
+	    	}
 
-		$reg->fill($validatedData);
+			$reg->fill($validatedData);
 
-        if ($reg->isDirty()) {
-            if ($reg->update()) {
+	        if ($reg->isDirty()) {
+	            if ($reg->update()) {
 
-            	// injury post
-		    	if ($reg->injury_id) {
-		    		if ($reg->injury_id == $suspension_id) {
-						$cat_name = 'Supensión';
-		    			if ($reg->injury_matches == 1) {
-							$title = $reg->name . ' suspendido el siguiente partido.';
-		    			} else {
-		    				$title = $reg->injury_matches . ' partidos de suspensión para ' . $reg->name . '.';
-		    			}
-		    			$description = '';
-		    		} else {
-		    			$cat_name = 'Lesión';
-			    		$description = $reg->injury->name;
-			    		if ($reg->injury_playable) {
-			    			$title = $reg->name . ' sufre una leve lesión';
-			    			$description .= ', que no le impedirá estar disponible para el siguiente partido.';
-			    		} else {
+		        	$changes = $reg->getChanges();
+	        		dd($changes);
+
+	            	// injury post
+			    	if ($reg->injury_id) {
+			    		if ($reg->injury_id == $suspension_id) {
+							$cat_name = 'Supensión';
 			    			if ($reg->injury_matches == 1) {
-								$title = $reg->name . ' lesionado para el siguiente partido.';
+								$title = $reg->name . ' suspendido el siguiente partido.';
 			    			} else {
-			    				$title = $reg->name . ' lesionado para los próximos ' . $reg->injury_matches . ' partidos.';
+			    				$title = $reg->injury_matches . ' partidos de suspensión para ' . $reg->name . '.';
 			    			}
-			    			$description .= '. Le apartará de las canchas durante ' . $reg->injury_days;
-			    			$description .= $reg->injury_days == 1 ? ' día.' : ' días.';
+			    			$description = '';
+			    		} else {
+			    			$cat_name = 'Lesión';
+				    		$description = $reg->injury->name;
+				    		if ($reg->injury_playable) {
+				    			$title = $reg->name . ' sufre una leve lesión';
+				    			$description .= ', que no le impedirá estar disponible para el siguiente partido.';
+				    		} else {
+				    			if ($reg->injury_matches == 1) {
+									$title = $reg->name . ' lesionado para el siguiente partido.';
+				    			} else {
+				    				$title = $reg->name . ' lesionado para los próximos ' . $reg->injury_matches . ' partidos.';
+				    			}
+				    			$description .= '. Le apartará de las canchas durante ' . $reg->injury_days;
+				    			$description .= $reg->injury_days == 1 ? ' día.' : ' días.';
+				    		}
 			    		}
-		    		}
-		    		$cat_name .= ' | ' . $reg->name;
-		    		if ($reg->team) {
-		    			$cat_name .= ' | ' . $reg->team->short_name;
-		    		}
+			    		$cat_name .= ' | ' . $reg->name;
+			    		if ($reg->team) {
+			    			$cat_name .= ' | ' . $reg->team->short_name;
+			    		}
 
-			    	$post = $this->storePost(
-						'lesiones',
-						null,
-						null,
-						null,
-						$reg->id,
-						$reg->team ? $reg->team->id : null,
-						$cat_name,
-						$title,
-						$description,
-						$reg->getImg(),
-			    	);
-			    	event(new PostStored($post));
-		    	}
+				    	$post = $this->storePost(
+							'lesiones',
+							null,
+							null,
+							null,
+							$reg->id,
+							$reg->team ? $reg->team->id : null,
+							$cat_name,
+							$title,
+							$description,
+							$reg->getImg(),
+				    	);
+				    	event(new PostStored($post));
+			    	}
 
-            	event(new TableWasUpdated($reg, 'update', $reg->toJson(JSON_PRETTY_PRINT), $before));
-            	session()->flash('success', 'Registro actualizado correctamente.');
-            } else {
-            	session()->flash('error', 'Se ha producido un error y no se han podido actualizar los datos.');
-            }
-        } else {
-        	session()->flash('info', 'No se han detectado cambios en el registro.');
-        }
+	            	event(new TableWasUpdated($reg, 'update', $changes, $before));
+	            	session()->flash('success', 'Registro actualizado correctamente.');
+	            } else {
+	            	session()->flash('error', 'Se ha producido un error y no se han podido actualizar los datos.');
+	            }
+	        } else {
+	        	session()->flash('info', 'No se han detectado cambios en el registro.');
+	        }
+
+    	} else {
+    		session()->flash('error', 'Se ha producido un error y no se han podido actualizar los datos.');
+    	}
 
         $this->emit('closeEditStateModal');
         $this->closeAnyModal();
