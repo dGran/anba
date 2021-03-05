@@ -352,6 +352,25 @@ class Season extends Model
                 $same_div = $match->local_division_id == $match->visitor_division_id ? true : false;
 
                 $extra_times = $match->extra_times > 0 ? true : false;
+
+                // last_game, fix streak
+                if ($key == 0) {
+                    if ($team_id == $match->local_team_id) {
+                        if ($local_score > $visitor_score) {
+                            $data['streak'] = 1;
+                        } else {
+                            $data['streak'] = -1;
+                        }
+                    } else {
+                        if ($local_score > $visitor_score) {
+                            $data['streak'] = -1;
+                        } else {
+                            $data['streak'] = 1;
+                        }
+                    }
+                }
+
+
                 if ($team_id == $match->local_team_id) {
                     if ($local_score > $visitor_score) {
                         $data['w'] += 1;
@@ -359,12 +378,10 @@ class Season extends Model
                         if ($same_div) { $data['div_w'] += 1; }
                         if ($extra_times) { $data['ot_w'] += 1; }
                         $data['home_w'] += 1;
-                        if ($key < 10) {
-                            $data['last10_w'] += 1;
+                        if ($key < 10) { $data['last10_w'] += 1; }
+                        if ($key > 0 && $key < 10) {
                             if ($data['streak'] > 0) {
                                 $data['streak'] += 1;
-                            } else {
-                                $data['streak'] = 1;
                             }
                         }
                     } else {
@@ -373,12 +390,10 @@ class Season extends Model
                         if ($same_div) { $data['div_l'] += 1; }
                         if ($extra_times) { $data['ot_l'] += 1; }
                         $data['home_l'] += 1;
-                        if ($key < 10) {
-                            $data['last10_l'] += 1;
-                            if ($data['streak'] < 0) {
+                        if ($key < 10) { $data['last10_l'] += 1; }
+                        if ($key > 0 && $key < 10) {
+                            if ($data['streak'] > 0) {
                                 $data['streak'] -= 1;
-                            } else {
-                                $data['streak'] = -1;
                             }
                         }
                     }
@@ -389,12 +404,10 @@ class Season extends Model
                         if ($same_div) { $data['div_l'] += 1; }
                         if ($extra_times) { $data['ot_l'] += 1; }
                         $data['road_l'] += 1;
-                        if ($key < 10) {
-                            $data['last10_l'] += 1;
-                            if ($data['streak'] < 0) {
+                        if ($key < 10) { $data['last10_l'] += 1; }
+                        if ($key > 0 && $key < 10) {
+                            if ($data['streak'] > 0) {
                                 $data['streak'] -= 1;
-                            } else {
-                                $data['streak'] = -1;
                             }
                         }
                     } else {
@@ -403,12 +416,10 @@ class Season extends Model
                         if ($same_div) { $data['div_w'] += 1; }
                         if ($extra_times) { $data['ot_w'] += 1; }
                         $data['road_w'] += 1;
-                        if ($key < 10) {
-                            $data['last10_w'] += 1;
+                        if ($key < 10) { $data['last10_w'] += 1; }
+                        if ($key > 0 && $key < 10) {
                             if ($data['streak'] > 0) {
                                 $data['streak'] += 1;
-                            } else {
-                                $data['streak'] = 1;
                             }
                         }
                     }
