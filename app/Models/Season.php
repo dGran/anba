@@ -358,14 +358,18 @@ class Season extends Model
                     if ($team_id == $match->local_team_id) {
                         if ($local_score > $visitor_score) {
                             $first_match_streak = 1;
+                            $data['streak'] += 1;
                         } else {
                             $first_match_streak = -1;
+                            $data['streak'] -= 1;
                         }
                     } else {
                         if ($local_score > $visitor_score) {
                             $first_match_streak = -1;
+                            $data['streak'] -= 1;
                         } else {
                             $first_match_streak = 1;
+                            $data['streak'] += 1;
                         }
                     }
                 }
