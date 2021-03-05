@@ -392,7 +392,7 @@ class Season extends Model
                         $data['home_l'] += 1;
                         if ($key < 10) { $data['last10_l'] += 1; }
                         if ($key > 0 && $key < 10) {
-                            if ($data['streak'] > 0) {
+                            if ($data['streak'] < 0) {
                                 $data['streak'] -= 1;
                             }
                         }
@@ -406,7 +406,7 @@ class Season extends Model
                         $data['road_l'] += 1;
                         if ($key < 10) { $data['last10_l'] += 1; }
                         if ($key > 0 && $key < 10) {
-                            if ($data['streak'] > 0) {
+                            if ($data['streak'] < 0) {
                                 $data['streak'] -= 1;
                             }
                         }
