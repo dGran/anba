@@ -9,7 +9,7 @@ use App\Models\SeasonConference;
 
 class Standings extends Component
 {
-	public $season;
+	public $season, $active_season;
 	public $view = "conference";
 	public $order = "wavg";
 
@@ -30,7 +30,7 @@ class Standings extends Component
 	public function mount()
 	{
 		if ($season = Season::where('current', 1)->first()) {
-			$this->season = $season;
+			$this->season = $season->slug;
 		} else {
 			$this->blank_view = true;
 		}
@@ -39,7 +39,7 @@ class Standings extends Component
     public function render()
     {
     	if (!$this->blank_view) {
-    		$current_season = Season::where('slug', $this->season->slug)->first();
+    		$current_season = Season::where('slug', $this->season)->first();
     		$seasons = Season::orderBy('id', 'desc')->get();
 	    	$seasons_conferences = SeasonConference::
 	    		leftJoin('conferences', 'conferences.id', 'seasons_conferences.conference_id')

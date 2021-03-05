@@ -409,23 +409,21 @@ class Season extends Model
                     }
                 }
 
-                if ($key < 10) {
-                    if ($streak_sign) {
-                        if ($win) {
-                            if (!$streak_stop) {
-                                $data['streak'] += 1;
-                            }
-                        } else {
-                            $streak_stop = true;
+                if ($streak_sign) {
+                    if ($win) {
+                        if (!$streak_stop) {
+                            $data['streak'] += 1;
                         }
                     } else {
-                        if (!$win) {
-                            if (!$streak_stop) {
-                                $data['streak'] -= 1;
-                            }
-                        } else {
-                            $streak_stop = true;
+                        $streak_stop = true;
+                    }
+                } else {
+                    if (!$win) {
+                        if (!$streak_stop) {
+                            $data['streak'] -= 1;
                         }
+                    } else {
+                        $streak_stop = true;
                     }
                 }
             }
