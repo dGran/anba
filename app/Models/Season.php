@@ -341,7 +341,6 @@ class Season extends Model
                     ->orWhere('matches.visitor_team_id', $team_id);
                 })
             ->orderBy('scores.created_at', 'desc')
-            ->orderBy('matches.id', 'desc')
             ->get();
 
         foreach ($matches as $key => $match) {
@@ -358,78 +357,75 @@ class Season extends Model
                 if ($key == 0) {
                     if ($team_id == $match->local_team_id) {
                         if ($local_score > $visitor_score) {
-                            $first_match_streak = 1;
-                            $data['streak'] = 1;
+                            $streak_sign = 1;
                         } else {
-                            $first_match_streak = -1;
-                            $data['streak'] = -1;
+                            $streak_sign = 0;
                         }
                     } else {
                         if ($local_score > $visitor_score) {
-                            $first_match_streak = -1;
-                            $data['streak'] = -1;
+                            $streak_sign = 0;
                         } else {
-                            $first_match_streak = 1;
-                            $data['streak'] = 1;
+                            $streak_sign = 1;
                         }
                     }
                 }
+                $streak_stop = false;
 
                 if ($team_id == $match->local_team_id) {
                     if ($local_score > $visitor_score) {
+                        $win = true;
                         $data['w'] += 1;
                         if ($same_conf) { $data['conf_w'] += 1; }
                         if ($same_div) { $data['div_w'] += 1; }
                         if ($extra_times) { $data['ot_w'] += 1; }
                         $data['home_w'] += 1;
                         if ($key < 10) { $data['last10_w'] += 1; }
-                        if ($key > 0 && $key < 10) {
-                            if ($first_match_streak > 0 && $previous_match_streak > 0) {
-                                $data['streak'] += 1;
-                            }
-                        }
-                        $previous_match_streak = 1;
                     } else {
+                        $win = false;
                         $data['l'] += 1;
                         if ($same_conf) { $data['conf_l'] += 1; }
                         if ($same_div) { $data['div_l'] += 1; }
                         if ($extra_times) { $data['ot_l'] += 1; }
                         $data['home_l'] += 1;
                         if ($key < 10) { $data['last10_l'] += 1; }
-                        if ($key > 0 && $key < 10) {
-                            if ($first_match_streak < 0 && $previous_match_streak < 0) {
-                                $data['streak'] -= 1;
-                            }
-                        }
-                        $previous_match_streak = -1;
                     }
                 } else {
                     if ($local_score > $visitor_score) {
+                        $win = false;
                         $data['l'] += 1;
                         if ($same_conf) { $data['conf_l'] += 1; }
                         if ($same_div) { $data['div_l'] += 1; }
                         if ($extra_times) { $data['ot_l'] += 1; }
                         $data['road_l'] += 1;
                         if ($key < 10) { $data['last10_l'] += 1; }
-                        if ($key > 0 && $key < 10) {
-                            if ($first_match_streak < 0 && $previous_match_streak < 0) {
-                                $data['streak'] -= 1;
-                            }
-                        }
-                        $previous_match_streak = -1;
                     } else {
+                        $win = true;
                         $data['w'] += 1;
                         if ($same_conf) { $data['conf_w'] += 1; }
                         if ($same_div) { $data['div_w'] += 1; }
                         if ($extra_times) { $data['ot_w'] += 1; }
                         $data['road_w'] += 1;
                         if ($key < 10) { $data['last10_w'] += 1; }
-                        if ($key > 0 && $key < 10) {
-                            if ($first_match_streak > 0 && $previous_match_streak > 0) {
+                    }
+                }
+
+                if ($key < 10) {
+                    if ($streak_sign) {
+                        if ($win) {
+                            if (!$streak_stop) {
                                 $data['streak'] += 1;
                             }
+                        } else {
+                            $streak_stop = true;
                         }
-                        $previous_match_streak = 1;
+                    } else {
+                        if (!$win) {
+                            if (!$streak_stop) {
+                                $data['streak'] -= 1;
+                            }
+                        } else {
+                            $streak_stop = true;
+                        }
                     }
                 }
             }
