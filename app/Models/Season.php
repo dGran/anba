@@ -343,6 +343,7 @@ class Season extends Model
             ->orderBy('scores.created_at', 'desc')
             ->get();
 
+        $streak_stop = false;
         foreach ($matches as $key => $match) {
             if ($match->played()) {
                 $local_score = $match->scores->sum('local_score');
@@ -369,7 +370,6 @@ class Season extends Model
                         }
                     }
                 }
-                $streak_stop = false;
 
                 if ($team_id == $match->local_team_id) {
                     if ($local_score > $visitor_score) {
