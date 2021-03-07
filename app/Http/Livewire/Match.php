@@ -733,7 +733,9 @@ class Match extends Component
 	protected function loadStats()
 	{
     	$players_stats = Collection::make();
-		foreach ($this->match->playerStats as $ps) {
+
+    	$playerStats = PlayerStat::with('player.injury')->where('match_id', $this->match->id)->get();
+		foreach ($playerStats as $ps) {
 			$player_stat['player_id'] = $ps->player->id;
 			$player_stat['player_img'] = $ps->player->getImg();
 			$player_stat['player_name'] = $ps->player->name;
@@ -804,11 +806,21 @@ class Match extends Component
 		} else {
 			$this->match = \App\Models\Match::find($this->match->id);
 			$this->loadStats();
+			$localTeam_playerTotals = $this->match->localTeam_playerTotals();
+			$localTeam_teamTotals = $this->match->localTeam_teamTotals();
+			$visitorTeam_playerTotals = $this->match->visitorTeam_playerTotals();
+			$visitorTeam_teamTotals = $this->match->visitorTeam_teamTotals();
+			$mvp = $this->match->mvp();
 		}
 
         return view('match.index', [
         	'localInjuries' => $this->getLocalInjuries(),
         	'visitorInjuries' => $this->getVisitorInjuries(),
+			'localTeam_playerTotals' => $localTeam_playerTotals,
+			'localTeam_teamTotals' => $localTeam_teamTotals,
+			'visitorTeam_playerTotals' => $visitorTeam_playerTotals,
+			'visitorTeam_teamTotals' => $visitorTeam_teamTotals,
+			'mvp' => $mvp,
         ]);
     }
 
