@@ -805,13 +805,14 @@ class Match extends Component
 			}
 		} else {
 			$this->match = \App\Models\Match::find($this->match->id);
-			$this->loadStats();
-			$localTeam_playerTotals = $this->match->localTeam_playerTotals();
-			$localTeam_teamTotals = $this->match->localTeam_teamTotals();
-			$visitorTeam_playerTotals = $this->match->visitorTeam_playerTotals();
-			$visitorTeam_teamTotals = $this->match->visitorTeam_teamTotals();
-			$mvp = $this->match->mvp();
 		}
+
+		$this->loadStats();
+		$localTeam_playerTotals = $this->match->localTeam_playerTotals();
+		$localTeam_teamTotals = $this->match->localTeam_teamTotals();
+		$visitorTeam_playerTotals = $this->match->visitorTeam_playerTotals();
+		$visitorTeam_teamTotals = $this->match->visitorTeam_teamTotals();
+		$mvp = $this->match->mvp();
 
         return view('match.index', [
         	'localInjuries' => $this->getLocalInjuries(),
