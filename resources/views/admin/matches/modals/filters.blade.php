@@ -33,6 +33,35 @@
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label class="text-sm text-uppercase tracking-wide">Estado</label>
+                        <select class="form-control custom-select text-sm" wire:model="filterPlayed">
+                            <option value="all">Todos</option>
+                            <option value="jugados">Jugados</option>
+                            <option value="no jugados">No jugados</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label class="text-sm text-uppercase tracking-wide">Stats Equipos</label>
+                        <select class="form-control custom-select text-sm" wire:model="filterTeamStats">
+                            <option value="all">Todas</option>
+                            <option value="incompletas">Incompletas</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label class="text-sm text-uppercase tracking-wide">Stats Jugadores</label>
+                        <select class="form-control custom-select text-sm" wire:model="filterPlayerStats">
+                            <option value="all">Todas</option>
+                            <option value="incompletas">Incompletas</option>
+                        </select>
+                    </div>
+                </div>
+
             	<div class="row">
             		<div class="col-md-6">
             			<div class="form-group">

@@ -29,6 +29,19 @@ class Score extends Model
         return $this->belongsTo('App\Models\SeasonScoreHeader', 'seasons_scores_headers_id', 'id');
     }
 
+
+    public function getCreatedAtDate()
+    {
+        $date = Carbon::parse($this->created_at)->locale(app()->getLocale());
+        return $date->isoFormat("D MMMM YYYY");
+    }
+
+    public function getCreatedAtTime()
+    {
+        $date = Carbon::parse($this->created_at)->locale(app()->getLocale());
+        return $date->isoFormat("hh:mm");
+    }
+
     public function getUpdatedAt()
     {
         $date = Carbon::parse($this->created_at)->locale(app()->getLocale());

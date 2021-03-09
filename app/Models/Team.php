@@ -104,7 +104,7 @@ class Team extends Model
     public function getUserImg()
     {
         if ($this->user) {
-            return $this->user->profile_photo_url;
+            return $this->user->getImg();
         }
     }
 

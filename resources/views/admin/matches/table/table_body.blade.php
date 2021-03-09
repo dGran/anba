@@ -72,6 +72,11 @@
 					<span>{{ $reg->visitorManager ? $reg->visitorManager->name : '' }}</span>
 				</div>
 			</td>
+			<td class="{{ $colPlayedData ?: 'd-none' }}" style="width: 200px; min-width: 200px">
+				@if ($reg->scores->count() > 0)
+					{{ $reg->scores->first()->getCreatedAtTime() }}, {{ $reg->scores->first()->getCreatedAtDate() }}
+				@endif
+			</td>
 			<td class="truncate {{ $colStadium ?: 'd-none' }}" style="width: 300px; min-width: 300px; max-width: 300px">
 				{{ $reg->stadium }}
 			</td>

@@ -56,6 +56,9 @@ class MatchCrud extends Component
 	public $perPage = '25';
 	public $filterTeam = "all";
 	public $filterUser = "all";
+	public $filterPlayed = "all";
+	public $filterTeamStats = "all";
+	public $filterPlayerStats = "all";
 	public $order = 'id_desc';
 
 	// preferences vars
@@ -66,6 +69,7 @@ class MatchCrud extends Component
 	public $colLocalManager;
 	public $colVisitorManager;
 	public $colStadium;
+	public $colPlayedData;
 
 	// general vars
 	public $currentModal;
@@ -89,6 +93,9 @@ class MatchCrud extends Component
 		'search' => ['except' => ''],
 		'filterTeam' => ['except' => "all"],
 		'filterUser' => ['except' => "all"],
+		'filterPlayed' => ['except' => "all"],
+		'filterTeamStats' => ['except' => "all"],
+		'filterPlayerStats' => ['except' => "all"],
 		'perPage' => ['except' => '25'],
 		'order' => ['except' => 'id_desc'],
 	];
@@ -104,9 +111,10 @@ class MatchCrud extends Component
 			'matches.colLocalManager' => $this->colLocalManager ? 'on' : 'off',
 			'matches.colVisitorManager' => $this->colVisitorManager ? 'on' : 'off',
 			'matches.colStadium' => $this->colStadium ? 'on' : 'off',
+			'matches.colPlayedData' => $this->colPlayedData ? 'on' : 'off',
 		]);
 
-		if (!$this->colScores && !$this->colLocalManager && !$this->colVisitorManager && !$this->colStadium) {
+		if (!$this->colScores && !$this->colLocalManager && !$this->colVisitorManager && !$this->colStadium && !$this->colPlayedData) {
 			session(['matches.fixedFirstColumn' => 'off']);
 		}
 	}
@@ -148,6 +156,11 @@ class MatchCrud extends Component
 		} else {
 			$this->colStadium = true;
 		}
+		if (session()->get('matches.colPlayedData')) {
+			$this->colPlayedData = session()->get('matches.colPlayedData') == 'on' ? true : false;
+		} else {
+			$this->colPlayedData = true;
+		}
 	}
 
 	// Session State
@@ -168,6 +181,9 @@ class MatchCrud extends Component
 			'matches.perPage' => $this->perPage,
 			'matches.filterTeam' => $this->filterTeam,
 			'matches.filterUser' => $this->filterUser,
+			'matches.filterPlayed' => $this->filterPlayed,
+			'matches.filterTeamStats' => $this->filterTeamStats,
+			'matches.filterPlayerStats' => $this->filterPlayerStats,
 			'matches.order' => $this->order,
 			'matches.page' => $this->page,
 			'matches.regsSelectedArray' => $this->regsSelectedArray,
@@ -197,6 +213,9 @@ class MatchCrud extends Component
 		if (session()->get('matches.perPage')) { $this->perPage = session()->get('matches.perPage'); }
 		if (session()->get('matches.filterTeam')) { $this->filterTeam = session()->get('matches.filterTeam'); }
 		if (session()->get('matches.filterUser')) { $this->filterUser = session()->get('matches.filterUser'); }
+		if (session()->get('matches.filterPlayed')) { $this->filterPlayed = session()->get('matches.filterPlayed'); }
+		if (session()->get('matches.filterTeamStats')) { $this->filterTeamStats = session()->get('matches.filterTeamStats'); }
+		if (session()->get('matches.filterPlayerStats')) { $this->filterPlayerStats = session()->get('matches.filterPlayerStats'); }
 		if (session()->get('matches.order')) { $this->order = session()->get('matches.order'); }
 		if (session()->get('matches.page')) { $this->page = session()->get('matches.page'); }
 		if (session()->get('matches.regsSelectedArray')) { $this->regsSelectedArray = session()->get('matches.regsSelectedArray'); }
@@ -223,7 +242,8 @@ class MatchCrud extends Component
 	public function checkAll()
 	{
     	$regs = Match::
-   			leftjoin('seasons_teams', function($join){
+    		with('localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager', 'scores', 'playerStats.player', 'teamStats')
+   			->leftjoin('seasons_teams', function($join){
                 $join->on('seasons_teams.id','=','matches.local_team_id');
                 $join->orOn('seasons_teams.id','=','matches.visitor_team_id');
             })
@@ -232,14 +252,18 @@ class MatchCrud extends Component
                 $join->on('users.id','=','matches.local_manager_id');
                 $join->orOn('users.id','=','matches.visitor_manager_id');
             })
+            ->leftJoin('scores', 'matches.id', 'scores.match_id')
+            ->leftJoin('teams_stats', 'matches.id', 'teams_stats.match_id')
+			->select('matches.*', 'scores.created_at AS disputed_at')
     		->name($this->search)
     		->team($this->filterTeam)
     		->user($this->filterUser)
+    		->played($this->filterPlayed)
+    		->teamStats($this->filterTeamStats)
     		->where('matches.season_id', $this->season->id)
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
 			->orderBy('matches.id', 'desc')
-			->select('matches.*')
-			->groupBy('matches.id')
+			->distinct('matches.id')
 			->paginate($this->perPage)->onEachSide(2);
 		foreach ($regs as $reg) {
 			if ($this->checkAllSelector == 1) {
@@ -308,6 +332,21 @@ class MatchCrud extends Component
 		$this->filterUser = "all";
     }
 
+    public function cancelFilterPlayed()
+    {
+		$this->filterPlayed = "all";
+    }
+
+    public function cancelFilterTeamStats()
+    {
+		$this->filterTeamStats = "all";
+    }
+
+    public function cancelFilterPlayerStats()
+    {
+		$this->filterPlayerStats = "all";
+    }
+
     public function setFilterPerPage($number)
     {
     	$this->perPage = $number;
@@ -326,6 +365,9 @@ class MatchCrud extends Component
 		$this->order = 'id_desc';
 		$this->filterTeam = "all";
 		$this->filterUser = "all";
+		$this->filterPlayed = "all";
+		$this->filterTeamStats = "all";
+		$this->filterPlayerStats = "all";
 
 		$this->emit('resetFiltersMode');
     }
@@ -620,7 +662,8 @@ class MatchCrud extends Component
     	$filename = $this->filenameExportTable ?: 'partidos';
 
     	$regs = Match::
-   			leftjoin('seasons_teams', function($join){
+    		with('localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager', 'scores', 'playerStats.player', 'teamStats')
+   			->leftjoin('seasons_teams', function($join){
                 $join->on('seasons_teams.id','=','matches.local_team_id');
                 $join->orOn('seasons_teams.id','=','matches.visitor_team_id');
             })
@@ -629,14 +672,18 @@ class MatchCrud extends Component
                 $join->on('users.id','=','matches.local_manager_id');
                 $join->orOn('users.id','=','matches.visitor_manager_id');
             })
+            ->leftJoin('scores', 'matches.id', 'scores.match_id')
+            ->leftJoin('teams_stats', 'matches.id', 'teams_stats.match_id')
+			->select('matches.*', 'scores.created_at AS disputed_at')
     		->name($this->search)
     		->team($this->filterTeam)
     		->user($this->filterUser)
+    		->played($this->filterPlayed)
+    		->teamStats($this->filterTeamStats)
     		->where('matches.season_id', $this->season->id)
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
 			->orderBy('matches.id', 'desc')
-			->select('matches.*')
-			->groupBy('matches.id')
+			->distinct('matches.id')
     		->get();
 
 		$regs->makeHidden(['created_at', 'updated_at']);
@@ -658,7 +705,8 @@ class MatchCrud extends Component
     	$filename = $this->filenameExportSelected ?: 'partidos_seleccionados';
 
     	$regs = Match::
-   			leftjoin('seasons_teams', function($join){
+    		with('localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager', 'scores', 'playerStats.player', 'teamStats')
+   			->leftjoin('seasons_teams', function($join){
                 $join->on('seasons_teams.id','=','matches.local_team_id');
                 $join->orOn('seasons_teams.id','=','matches.visitor_team_id');
             })
@@ -667,12 +715,15 @@ class MatchCrud extends Component
                 $join->on('users.id','=','matches.local_manager_id');
                 $join->orOn('users.id','=','matches.visitor_manager_id');
             })
-    		->whereIn('matches.id', $this->regsSelectedArray)
+            ->leftJoin('scores', 'matches.id', 'scores.match_id')
+            ->leftJoin('teams_stats', 'matches.id', 'teams_stats.match_id')
+			->select('matches.*', 'scores.created_at AS disputed_at')
+			->whereIn('matches.id', $this->regsSelectedArray)
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
 			->orderBy('matches.id', 'desc')
-			->select('matches.*')
-			->groupBy('matches.id')
-        	->get();
+			->distinct('matches.id')
+			->get();
+
         $regs->makeHidden(['created_at', 'updated_at']);
 
         session()->flash('success', 'Registros exportados correctamente!.');
@@ -861,6 +912,8 @@ class MatchCrud extends Component
 	{
     	$regs = Match::
     		with('localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager', 'scores', 'playerStats.player', 'teamStats')
+    		->withCount('teamStats')
+    		->withCount('playerStats')
    			->leftjoin('seasons_teams', function($join){
                 $join->on('seasons_teams.id','=','matches.local_team_id');
                 $join->orOn('seasons_teams.id','=','matches.visitor_team_id');
@@ -870,14 +923,20 @@ class MatchCrud extends Component
                 $join->on('users.id','=','matches.local_manager_id');
                 $join->orOn('users.id','=','matches.visitor_manager_id');
             })
+            ->leftJoin('scores', 'matches.id', 'scores.match_id')
+            ->leftJoin('teams_stats', 'matches.id', 'teams_stats.match_id')
+            ->leftJoin('players_stats', 'matches.id', 'players_stats.match_id')
+			->select('matches.*', 'scores.created_at AS disputed_at')
     		->name($this->search)
     		->team($this->filterTeam)
     		->user($this->filterUser)
+    		->played($this->filterPlayed)
+    		->teamStats($this->filterTeamStats)
+    		->playerStats($this->filterPlayerStats)
     		->where('matches.season_id', $this->season->id)
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
 			->orderBy('matches.id', 'desc')
-			->select('matches.*')
-			->groupBy('matches.id')
+			->distinct('matches.id')
 			->paginate($this->perPage)->onEachSide(2);
 
 	    if (($regs->total() > 0 && $regs->count() == 0)) {
@@ -898,16 +957,19 @@ class MatchCrud extends Component
                 $join->on('users.id','=','matches.local_manager_id');
                 $join->orOn('users.id','=','matches.visitor_manager_id');
             })
+            ->leftJoin('scores', 'matches.id', 'scores.match_id')
+            ->leftJoin('teams_stats', 'matches.id', 'teams_stats.match_id')
+			->select('matches.*', 'scores.created_at AS disputed_at')
     		->name($this->search)
     		->team($this->filterTeam)
     		->user($this->filterUser)
+    		->played($this->filterPlayed)
+    		->teamStats($this->filterTeamStats)
     		->where('matches.season_id', $this->season->id)
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
 			->orderBy('matches.id', 'desc')
-			->select('matches.*')
-			->groupBy('matches.id')
+			->distinct('matches.id')
 			->paginate($this->perPage)->onEachSide(2);
-
 
         $this->setCheckAllSelector();
 		return $regs;
@@ -916,7 +978,8 @@ class MatchCrud extends Component
 	protected function setCheckAllSelector()
 	{
     	$regs = Match::
-   			leftjoin('seasons_teams', function($join){
+    		with('localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager', 'scores', 'playerStats.player', 'teamStats')
+   			->leftjoin('seasons_teams', function($join){
                 $join->on('seasons_teams.id','=','matches.local_team_id');
                 $join->orOn('seasons_teams.id','=','matches.visitor_team_id');
             })
@@ -925,15 +988,19 @@ class MatchCrud extends Component
                 $join->on('users.id','=','matches.local_manager_id');
                 $join->orOn('users.id','=','matches.visitor_manager_id');
             })
+            ->leftJoin('scores', 'matches.id', 'scores.match_id')
+            ->leftJoin('teams_stats', 'matches.id', 'teams_stats.match_id')
+			->select('matches.*', 'scores.created_at AS disputed_at')
     		->name($this->search)
     		->team($this->filterTeam)
     		->user($this->filterUser)
+    		->played($this->filterPlayed)
+    		->teamStats($this->filterTeamStats)
     		->where('matches.season_id', $this->season->id)
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
 			->orderBy('matches.id', 'desc')
-			->select('matches.*')
-			->groupBy('matches.id')
-			->paginate($this->perPage, ['*'], 'page', $this->page);
+			->distinct('matches.id')
+			->paginate($this->perPage)->onEachSide(2);
 
 		$this->checkAllSelector = 1;
 		foreach ($regs as $Conference) {
@@ -946,8 +1013,9 @@ class MatchCrud extends Component
 
 	protected function getDataSelected()
 	{
-		return Match::
-   			leftjoin('seasons_teams', function($join){
+    	return Match::
+    		with('localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager', 'scores', 'playerStats.player', 'teamStats')
+   			->leftjoin('seasons_teams', function($join){
                 $join->on('seasons_teams.id','=','matches.local_team_id');
                 $join->orOn('seasons_teams.id','=','matches.visitor_team_id');
             })
@@ -956,11 +1024,13 @@ class MatchCrud extends Component
                 $join->on('users.id','=','matches.local_manager_id');
                 $join->orOn('users.id','=','matches.visitor_manager_id');
             })
+            ->leftJoin('scores', 'matches.id', 'scores.match_id')
+            ->leftJoin('teams_stats', 'matches.id', 'teams_stats.match_id')
+			->select('matches.*', 'scores.created_at AS disputed_at')
 			->whereIn('matches.id', $this->regsSelectedArray)
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
 			->orderBy('matches.id', 'desc')
-			->select('matches.*')
-			->groupBy('matches.id')
+			->distinct('matches.id')
 			->get();
 	}
 
@@ -993,6 +1063,14 @@ class MatchCrud extends Component
             ],
             'id_desc' => [
                 'field'     => 'matches.id',
+                'direction' => 'desc'
+            ],
+            'playedData' => [
+                'field'     => 'disputed_at',
+                'direction' => 'asc'
+            ],
+            'playedData_desc' => [
+                'field'     => 'disputed_at',
                 'direction' => 'desc'
             ],
             'stadium' => [

@@ -30,6 +30,16 @@
 			Manager Visitante
 		</th>
 
+		<th class="{{ $colPlayedData ?: 'd-none' }}">
+			@if ($order == 'playedData')
+				<span class="d-inline-block cursor-pointer" wire:click="order('playedData_desc')">Fecha disputado<i class="fas fa-sort-alpha-up pl-1"></i></span>
+			@elseif ($order == 'playedData_desc')
+				<span class="d-inline-block cursor-pointer" wire:click="order('playedData')">Fecha disputado<i class="fas fa-sort-alpha-down pl-1"></i></span>
+			@else
+				<span class="d-inline-block cursor-pointer" wire:click="order('playedData')">Fecha disputado</span>
+			@endif
+		</th>
+
 		<th class="{{ $colStadium ?: 'd-none' }}">
 			@if ($order == 'stadium')
 				<span class="d-inline-block cursor-pointer" wire:click="order('stadium_desc')">Estadio<i class="fas fa-sort-alpha-up pl-1"></i></span>
@@ -39,5 +49,6 @@
 				<span class="d-inline-block cursor-pointer" wire:click="order('stadium')">Estadio</span>
 			@endif
 		</th>
+
 	</tr>
 </thead>

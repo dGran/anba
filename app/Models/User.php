@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
@@ -91,7 +92,17 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function getImg()
     {
-        return $this->profile_photo_url;
+        $broken = asset('img/broken.png');
+
+        if ($this->profile_photo_path) {
+            if (Storage::disk('public')->exists($this->profile_photo_path)) {
+                return $this->profile_photo_url;
+            } else {
+                return $broken;
+            }
+        } else {
+            return $this->profile_photo_url;
+        }
     }
 
     public function getName()

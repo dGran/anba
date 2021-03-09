@@ -112,6 +112,91 @@ class Match extends Model
         }
     }
 
+    public function scopePlayed($query, $value)
+    {
+        if ($value != 'all') {
+            if ($value == 'jugados') {
+                return $query->whereNotNull('scores.match_id');
+            }
+            if ($value == 'no jugados') {
+                return $query->whereNull('scores.match_id');
+            }
+        }
+    }
+
+    public function scopeTeamStats($query, $value)
+    {
+        if ($value != 'all') {
+            if ($value == 'incompletas') {
+                return $query->has('teamStats', '<', 2)
+                    ->orWhere(function($q) {
+                        $q->whereNull('teams_stats.counterattack')
+                            ->orWhereNull('teams_stats.zone')
+                            ->orWhereNull('teams_stats.second_oportunity')
+                            ->orWhereNull('teams_stats.substitute')
+                            ->orWhereNull('teams_stats.advantage')
+                            ->orWhereNull('teams_stats.AST')
+                            ->orWhereNull('teams_stats.DRB')
+                            ->orWhereNull('teams_stats.ORB')
+                            ->orWhereNull('teams_stats.STL')
+                            ->orWhereNull('teams_stats.BLK')
+                            ->orWhereNull('teams_stats.LOS')
+                            ->orWhereNull('teams_stats.PF')
+                            ->orWhere('teams_stats.zone', '>', 200)
+                            ->orWhere('teams_stats.second_oportunity', '>', 150)
+                            ->orWhere('teams_stats.substitute', '>', 200)
+                            ->orWhere('teams_stats.advantage', '>', 200)
+                            ->orWhere('teams_stats.AST', '>', 60)
+                            ->orWhere(\DB::raw('teams_stats.ORB + teams_stats.DRB') , '>', 150)
+                            ->orWhere('teams_stats.STL', '>', 60)
+                            ->orWhere('teams_stats.BLK', '>', 50)
+                            ->orWhere('teams_stats.LOS', '>', 125);
+                });
+            }
+        }
+    }
+
+    public function scopePlayerStats($query, $value)
+    {
+        if ($value != 'all') {
+            if ($value == 'incompletas') {
+                return $query->has('playerStats', 0)
+                    ->where(function($q) {
+                        $q->where('players_stats.MIN', '>', 0);
+                            // ->orWhereNull('players_stats.PTS');
+                });
+            }
+        }
+    }
+
+                    // if ($stat->MIN > 0) {
+                //     // first check
+                //     if (
+                //         ($stat->PTS === 0 || $stat->PTS > 0)
+                //         && ($stat->REB === 0 || $stat->REB > 0)
+                //         && ($stat->AST === 0 || $stat->AST > 0)
+                //         && ($stat->STL === 0 || $stat->STL > 0)
+                //         && ($stat->BLK === 0 || $stat->BLK > 0)
+                //         && ($stat->LOS === 0 || $stat->LOS > 0)
+                //         && ($stat->FGM === 0 || $stat->FGM > 0)
+                //         && ($stat->FGA === 0 || $stat->FGA > 0)
+                //         && ($stat->TPM === 0 || $stat->TPM > 0)
+                //         && ($stat->TPA === 0 || $stat->TPA > 0)
+                //         && ($stat->FTM === 0 || $stat->FTM > 0)
+                //         && ($stat->FTA === 0 || $stat->FTA > 0)
+                //         && ($stat->ORB === 0 || $stat->ORB > 0)
+                //         && ($stat->PF === 0 || $stat->PF > 0)
+                //         && ($stat->ML !== null)
+                //     ) {
+                //         $success++;
+                //     } else {
+                //         $warning++;
+                //     }
+
+                //     if ($stat->FGM > $stat->FGA || $stat->TPM > $stat->TPA || $stat->FTM > $stat->FTA || $stat->PTS > 150 || $stat->REB > 75 || $stat->AST > 55 || $stat->STL > 30 || $stat->BLK > 25 || ($stat->FGM + $stat->TPM + $stat->FTM > 99) || ($stat->FGA + $stat->TPA + $stat->FTA > 99) || $stat->LOS > 50 || $stat->ML > 150 || $stat->ML < -150) {
+                //         $warning++;
+                //     }
+
     public function scopeHidePlayed($query, $value)
     {
         if ($value) {

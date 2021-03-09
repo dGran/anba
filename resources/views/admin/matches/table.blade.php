@@ -7,7 +7,7 @@
 	@else
 		<div class="p-3">
 			No existen resultados
-			@if ($search || $filterTeam != "all" || $filterUser != "all" || $perPage != "25")
+			@if ($search || $filterTeam != "all" || $filterUser != "all" || $filterPlayed != "all" || $filterTeamStats != "all" || $filterPlayerStats != "all" || $perPage != "25")
 				con los filtros aplicados
 			@endif
 		</div>
