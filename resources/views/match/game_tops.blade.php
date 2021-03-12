@@ -7,7 +7,7 @@
 			No hay estadisticas registradas
 		</div>
 	@else
-		@if ($match->hasLocalPlayerStats() && $match->hasVisitorPlayerStats())
+		@if ($match->teamStats_state == "success" && $match->playerStats_state == "success")
 			<div class="md:py-3">
 
 				@foreach ($match->playerStats->sortByDesc('PTS')->take(1) as $stat)

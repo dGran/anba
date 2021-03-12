@@ -16,9 +16,9 @@
 				    </div>
 					<div class="pl-2">
 						<div class="name d-flex align-items-center" wire:click.stop="boxscore({{ $reg->id }})">
-							<span class="rounded-circle border text-xs text-center {{ $reg->scores->count() > 0 ? 'bg-success' : 'bg-danger' }}" style="width: 21px; height: 21px">R</span>
-							<span class="rounded-circle border ml-1 text-xs text-center {{ $reg->checkTeamStats() == 'error' ? 'bg-danger' : '' }} {{ $reg->checkTeamStats() == 'warning' ? 'bg-warning' : '' }} {{ $reg->checkTeamStats() == 'success' ? 'bg-success' : '' }}" style="width: 21px; height: 21px">E</span>
-							<span class="rounded-circle border ml-1 text-xs text-center {{ $reg->checkPlayerStats() == 'error' ? 'bg-danger' : '' }} {{ $reg->checkPlayerStats() == 'warning' ? 'bg-warning' : '' }} {{ $reg->checkPlayerStats() == 'success' ? 'bg-success' : '' }}" style="width: 21px; height: 21px">J</span>
+							<span class="rounded-circle border text-xs text-center {{ $reg->played ? 'bg-success' : 'bg-danger' }}" style="width: 21px; height: 21px">R</span>
+							<span class="rounded-circle border ml-1 text-xs text-center {{ $reg->teamStats_state == 'error' ? 'bg-danger' : '' }} {{ $reg->teamStats_state == 'warning' ? 'bg-warning' : '' }} {{ $reg->teamStats_state == 'success' ? 'bg-success' : '' }}" style="width: 21px; height: 21px">E</span>
+							<span class="rounded-circle border ml-1 text-xs text-center {{ $reg->playerStats_state == 'error' ? 'bg-danger' : '' }} {{ $reg->playerStats_state == 'warning' ? 'bg-warning' : '' }} {{ $reg->playerStats_state == 'success' ? 'bg-success' : '' }}" style="width: 21px; height: 21px">J</span>
 							<spa class="ml-2">{{ $reg->getName() }}</span>
 						</div>
 						<p class="{{-- {{ !$reg->active ?: 'text-muted' }} --}} text-xxs m-0">

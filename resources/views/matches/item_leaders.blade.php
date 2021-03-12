@@ -1,11 +1,11 @@
 <div class="leaders hidden sm:block md:w-1/2 p-4 border-l border-gray-200 dark:border-gray-650">
-	<p class="uppercase pb-3 text-sm font-bold tracking-wider">{{ $reg->played() ? 'Game Leaders' : 'Season Leaders' }}</p>
+	<p class="uppercase pb-3 text-sm font-bold tracking-wider">{{ $reg->played ? 'Game Leaders' : 'Season Leaders' }}</p>
 
 	<table class="w-full mt-1">
 		<thead>
 			<tr class="border-b border-gray-300 dark:border-gray-550">
 				<th class="text-xs font-normal text-left pb-2">JUGADOR</th>
-				@if ($reg->played())
+				@if ($reg->played)
 					<th class="text-xs font-normal text-right">PTS</th>
 					<th class="text-xs font-normal text-right">REB</th>
 					<th class="text-xs font-normal text-right">AST</th>
@@ -17,7 +17,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			@if ($reg->played())
+			@if ($reg->played)
 
 				<tr class="border-b border-gray-200 dark:border-gray-650">
 					<td style="min-width: 150px">

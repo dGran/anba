@@ -432,7 +432,7 @@
                 @if ($allow_report)
                     <p class="pl-4 text-xl font-bold">Revisa las estadísticas antes de proceder</p>
                     <p class="pt-1.5 pb-3 pl-4 text-sm"><u>Tan sólo se permite un único reporte.</u> En el caso de haber algún fallo una vez enviado el reporte tendrás que contactar con los administradores para notificarlo.</p>
-                    <button type="button" class="text-white dark:text-gray-900 rounded bg-blue-500 dark:bg-dark-link focus:outline-none hover:bg-blue-600 focus:bg-blue-600 dark:hover:bg-blue-300 dark:focus:bg-blue-300 transition duration-150 ease-in-out uppercase text-xs py-2 px-3 leading-4" wire:click.prevent="reportLocalStats">
+                    <button type="button" class="text-white dark:text-gray-900 rounded bg-blue-500 dark:bg-dark-link focus:outline-none hover:bg-blue-600 focus:bg-blue-600 dark:hover:bg-blue-300 dark:focus:bg-blue-300 transition duration-150 ease-in-out uppercase text-xs py-2 px-3 leading-4" wire:click.prevent="reportLocalStats" wire:loading.attr="disabled">
                         enviar reporte de los {{ $match->localTeam->team->medium_name }}
                     </button>
                 @else

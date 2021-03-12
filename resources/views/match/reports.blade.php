@@ -1,12 +1,12 @@
 @if ($match->userIsParticipant() || (auth()->user() && auth()->user()->hasRole(['admin', 'super-admin'])))
 	<div class="flex items-center justify-center my-6 {{ !$localBoxscoreReport && !$visitorBoxscoreReport ?: 'hidden' }}">
-		@if (!$match->played())
+		@if (!$match->played)
 		    <x-buttons.primary class="mr-3 uppercase text-xs py-2 leading-4 w-36 md:w-40 lg:w-48" wire:click.prevent="openScoreReportModal">
 				reportar resultado
 		    </x-buttons.primary>
 		@endif
 
-		@if ($match->played() && ( (!$match->hasLocalTeamStats() && !$match->hasLocalPlayerStats()) || (!$match->hasvisitorTeamStats() && !$match->hasvisitorPlayerStats()) ))
+		@if ($match->played && ($match->teamStats_state != "success" || $match->playerStats_state != "success"))
             <x-dropdown align="right" width="48">
                 <x-slot name="trigger">
                     <div class="flex items-center">

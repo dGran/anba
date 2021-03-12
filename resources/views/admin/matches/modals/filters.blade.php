@@ -35,29 +35,20 @@
 
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label class="text-sm text-uppercase tracking-wide">Estado</label>
+                        <label class="text-sm text-uppercase tracking-wide">Reporte resultados</label>
                         <select class="form-control custom-select text-sm" wire:model="filterPlayed">
                             <option value="all">Todos</option>
                             <option value="jugados">Jugados</option>
                             <option value="no jugados">No jugados</option>
                         </select>
                     </div>
-                </div>
-
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label class="text-sm text-uppercase tracking-wide">Stats Equipos</label>
-                        <select class="form-control custom-select text-sm" wire:model="filterTeamStats">
-                            <option value="all">Todas</option>
-                            <option value="incompletas">Incompletas</option>
-                        </select>
-                    </div>
 
                     <div class="form-group col-md-6">
-                        <label class="text-sm text-uppercase tracking-wide">Stats Jugadores</label>
-                        <select class="form-control custom-select text-sm" wire:model="filterPlayerStats">
-                            <option value="all">Todas</option>
-                            <option value="incompletas">Incompletas</option>
+                        <label class="text-sm text-uppercase tracking-wide">Reporte estadísticas</label>
+                        <select class="form-control custom-select text-sm" wire:model="filterReport">
+                            <option value="all">Todos</option>
+                             <option value="correctas">Correctas</option>
+                            <option value="incorrectas">Incorrectas</option>
                         </select>
                     </div>
                 </div>

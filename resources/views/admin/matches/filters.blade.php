@@ -79,7 +79,7 @@
 			<i class="fas fa-filter"></i>
 		</button>
 
-		<button type="button" class="btn btn-white {{ $order != "id_desc" || $search || $filterTeam != "all" || $filterUser != "all" || $filterPlayed != "all" || $filterTeamStats != "all" || $filterPlayerStats != "all" || $perPage != "25" ?: 'disabled' }}" wire:click="clearAllFilters">
+		<button type="button" class="btn btn-white {{ $order != "id_desc" || $search || $filterTeam != "all" || $filterUser != "all" || $filterPlayed != "all" || $filterReport != "all" || $perPage != "25" ?: 'disabled' }}" wire:click="clearAllFilters">
 			<i class="fas fa-eraser"></i>
 		</button>
 	</div>
@@ -87,7 +87,7 @@
 </div> {{-- filters --}}
 
 
-@if ($search || $filterTeam != "all" || $filterUser != "all" || $filterPlayed != "all" || $filterTeamStats != "all" || $filterPlayerStats != "all" || $perPage != "25")
+@if ($search || $filterTeam != "all" || $filterUser != "all" || $filterPlayed != "all" || $filterReport != "all" || $perPage != "25")
 	<ul class="list-inline my-2">
 		@if ($search)
 			<li class="list-inline-item mr-1">
@@ -117,17 +117,10 @@
 				<a>
 			</li>
 		@endif
-		@if ($filterTeamStats != "all")
+		@if ($filterReport != "all")
 			<li class="list-inline-item mr-1">
-				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterTeamStats">
-					Stats Equipos: {{ $filterTeamStats }}<i class="fas fa-times ml-2"></i>
-				<a>
-			</li>
-		@endif
-		@if ($filterPlayerStats != "all")
-			<li class="list-inline-item mr-1">
-				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterPlayerStats">
-					Stats Jugadores: {{ $filterPlayerStats }}<i class="fas fa-times ml-2"></i>
+				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterReport">
+					Reporte Stats: {{ $filterReport }}<i class="fas fa-times ml-2"></i>
 				<a>
 			</li>
 		@endif

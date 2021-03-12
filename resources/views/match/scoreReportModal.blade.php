@@ -77,7 +77,7 @@
 	                @if ($total_scores['local'] == $total_scores['visitor'])
 	                	<p class="text-pretty-red font-bold text-center">No se permite reportar sin especificar el vencedor</p>
 	                @else
-					    <button type="button" class="text-white dark:text-gray-900 rounded bg-blue-500 dark:bg-dark-link focus:outline-none hover:bg-blue-600 focus:bg-blue-600 dark:hover:bg-blue-300 dark:focus:bg-blue-300 transition duration-150 ease-in-out uppercase text-xs py-2 leading-4 w-36 md:w-40 lg:w-48" wire:click.prevent="reportResult">
+					    <button type="button" class="text-white dark:text-gray-900 rounded bg-blue-500 dark:bg-dark-link focus:outline-none hover:bg-blue-600 focus:bg-blue-600 dark:hover:bg-blue-300 dark:focus:bg-blue-300 transition duration-150 ease-in-out uppercase text-xs py-2 leading-4 w-36 md:w-40 lg:w-48" wire:click.prevent="reportResult" wire:loading.attr="disabled">
 							reportar resultado
 					    </button>
 	                @endif

@@ -1,4 +1,4 @@
-@if (!$reg->played())
+@if (!$reg->played)
 	<div class="px-4 py-2">
 		<p class="uppercase py-2 text-sm font-bold tracking-wider">PRONÓSTICOS</p>
 
@@ -78,80 +78,82 @@
 @else
 	<div class="p-4">
 		<p class="uppercase pb-3 text-sm font-bold tracking-wider">game tops</p>
-		@foreach ($reg->playerStats->sortByDesc('PTS')->take(1) as $stat)
-			@if ($stat->PTS > 0)
-				<div class="flex justify-between text-sm items-center border-b border-gray-200 dark:border-gray-650 py-0.5">
-					<div class="flex items-center">
-						<img src="{{ $stat->seasonTeam->team->getImg() }}" alt="{{ $stat->seasonTeam->team->short_name }}" style="width: 32px; height: 32px" class="mr-2">
-						<span class="uppercase font-bold light:text-gray-600 dark:text-gray-200 text-center" style="width: 20px">{{ $stat->player->position }}</span>
-						<span class="ml-2">{{ $stat->player->name }}</span>
+		@if ($reg->teamStats_state == "success" && $reg->playerStats_state == "success")
+			@foreach ($reg->playerStats->sortByDesc('PTS')->take(1) as $stat)
+				@if ($stat->PTS > 0)
+					<div class="flex justify-between text-sm items-center border-b border-gray-200 dark:border-gray-650 py-0.5">
+						<div class="flex items-center">
+							<img src="{{ $stat->seasonTeam->team->getImg() }}" alt="{{ $stat->seasonTeam->team->short_name }}" style="width: 32px; height: 32px" class="mr-2">
+							<span class="uppercase font-bold light:text-gray-600 dark:text-gray-200 text-center" style="width: 20px">{{ $stat->player->position }}</span>
+							<span class="ml-2">{{ $stat->player->name }}</span>
+						</div>
+						<div class="flex items-center uppercase text-sm font-bold">
+							<span class="light:text-gray-500 dark:text-gray-300">puntos</span>
+							<span class="light:text-gray-600 dark:text-gray-200 text-center ml-2" style="min-width: 20px">{{ $stat->PTS }}</span>
+						</div>
 					</div>
-					<div class="flex items-center uppercase text-sm font-bold">
-						<span class="light:text-gray-500 dark:text-gray-300">puntos</span>
-						<span class="light:text-gray-600 dark:text-gray-200 text-center ml-2" style="min-width: 20px">{{ $stat->PTS }}</span>
+				@endif
+			@endforeach
+			@foreach ($reg->playerStats->sortByDesc('REB')->take(1) as $stat)
+				@if ($stat->REB > 0)
+					<div class="flex justify-between text-sm items-center border-b border-gray-200 dark:border-gray-650 py-0.5">
+						<div class="flex items-center">
+							<img src="{{ $stat->seasonTeam->team->getImg() }}" alt="{{ $stat->seasonTeam->team->short_name }}" style="width: 32px; height: 32px" class="mr-2">
+							<span class="uppercase font-bold light:text-gray-600 dark:text-gray-200 text-center" style="width: 20px">{{ $stat->player->position }}</span>
+							<span class="ml-2">{{ $stat->player->name }}</span>
+						</div>
+						<div class="flex items-center uppercase text-sm font-bold">
+							<span class="light:text-gray-500 dark:text-gray-300">rebotes</span>
+							<span class="light:text-gray-600 dark:text-gray-200 text-center ml-2" style="min-width: 20px">{{ $stat->REB }}</span>
+						</div>
 					</div>
-				</div>
-			@endif
-		@endforeach
-		@foreach ($reg->playerStats->sortByDesc('REB')->take(1) as $stat)
-			@if ($stat->REB > 0)
-				<div class="flex justify-between text-sm items-center border-b border-gray-200 dark:border-gray-650 py-0.5">
-					<div class="flex items-center">
-						<img src="{{ $stat->seasonTeam->team->getImg() }}" alt="{{ $stat->seasonTeam->team->short_name }}" style="width: 32px; height: 32px" class="mr-2">
-						<span class="uppercase font-bold light:text-gray-600 dark:text-gray-200 text-center" style="width: 20px">{{ $stat->player->position }}</span>
-						<span class="ml-2">{{ $stat->player->name }}</span>
+				@endif
+			@endforeach
+			@foreach ($reg->playerStats->sortByDesc('AST')->take(1) as $stat)
+				@if ($stat->AST > 0)
+					<div class="flex justify-between text-sm items-center border-b border-gray-200 dark:border-gray-650 py-0.5">
+						<div class="flex items-center">
+							<img src="{{ $stat->seasonTeam->team->getImg() }}" alt="{{ $stat->seasonTeam->team->short_name }}" style="width: 32px; height: 32px" class="mr-2">
+							<span class="uppercase font-bold light:text-gray-600 dark:text-gray-200 text-center" style="width: 20px">{{ $stat->player->position }}</span>
+							<span class="ml-2">{{ $stat->player->name }}</span>
+						</div>
+						<div class="flex items-center uppercase text-sm font-bold">
+							<span class="light:text-gray-500 dark:text-gray-300">asistencias</span>
+							<span class="light:text-gray-600 dark:text-gray-200 text-center ml-2" style="min-width: 20px">{{ $stat->AST }}</span>
+						</div>
 					</div>
-					<div class="flex items-center uppercase text-sm font-bold">
-						<span class="light:text-gray-500 dark:text-gray-300">rebotes</span>
-						<span class="light:text-gray-600 dark:text-gray-200 text-center ml-2" style="min-width: 20px">{{ $stat->REB }}</span>
+				@endif
+			@endforeach
+			@foreach ($reg->playerStats->sortByDesc('STL')->take(1) as $stat)
+				@if ($stat->STL > 0)
+					<div class="flex justify-between text-sm items-center border-b border-gray-200 dark:border-gray-650 py-0.5">
+						<div class="flex items-center">
+							<img src="{{ $stat->seasonTeam->team->getImg() }}" alt="{{ $stat->seasonTeam->team->short_name }}" style="width: 32px; height: 32px" class="mr-2">
+							<span class="uppercase font-bold light:text-gray-600 dark:text-gray-200 text-center" style="width: 20px">{{ $stat->player->position }}</span>
+							<span class="ml-2">{{ $stat->player->name }}</span>
+						</div>
+						<div class="flex items-center uppercase text-sm font-bold">
+							<span class="light:text-gray-500 dark:text-gray-300">robos</span>
+							<span class="light:text-gray-600 dark:text-gray-200 text-center ml-2" style="min-width: 20px">{{ $stat->STL }}</span>
+						</div>
 					</div>
-				</div>
-			@endif
-		@endforeach
-		@foreach ($reg->playerStats->sortByDesc('AST')->take(1) as $stat)
-			@if ($stat->AST > 0)
-				<div class="flex justify-between text-sm items-center border-b border-gray-200 dark:border-gray-650 py-0.5">
-					<div class="flex items-center">
-						<img src="{{ $stat->seasonTeam->team->getImg() }}" alt="{{ $stat->seasonTeam->team->short_name }}" style="width: 32px; height: 32px" class="mr-2">
-						<span class="uppercase font-bold light:text-gray-600 dark:text-gray-200 text-center" style="width: 20px">{{ $stat->player->position }}</span>
-						<span class="ml-2">{{ $stat->player->name }}</span>
+				@endif
+			@endforeach
+			@foreach ($reg->playerStats->sortByDesc('BLK')->take(1) as $stat)
+				@if ($stat->BLK > 0)
+					<div class="flex justify-between text-sm items-center">
+						<div class="flex items-center">
+							<img src="{{ $stat->seasonTeam->team->getImg() }}" alt="{{ $stat->seasonTeam->team->short_name }}" style="width: 32px; height: 32px" class="mr-2">
+							<span class="uppercase font-bold light:text-gray-600 dark:text-gray-200 text-center" style="width: 20px">{{ $stat->player->position }}</span>
+							<span class="ml-2">{{ $stat->player->name }}</span>
+						</div>
+						<div class="flex items-center uppercase text-sm font-bold">
+							<span class="light:text-gray-500 dark:text-gray-300">tapones</span>
+							<span class="light:text-gray-600 dark:text-gray-200 text-center ml-2" style="min-width: 20px">{{ $stat->BLK }}</span>
+						</div>
 					</div>
-					<div class="flex items-center uppercase text-sm font-bold">
-						<span class="light:text-gray-500 dark:text-gray-300">asistencias</span>
-						<span class="light:text-gray-600 dark:text-gray-200 text-center ml-2" style="min-width: 20px">{{ $stat->AST }}</span>
-					</div>
-				</div>
-			@endif
-		@endforeach
-		@foreach ($reg->playerStats->sortByDesc('STL')->take(1) as $stat)
-			@if ($stat->STL > 0)
-				<div class="flex justify-between text-sm items-center border-b border-gray-200 dark:border-gray-650 py-0.5">
-					<div class="flex items-center">
-						<img src="{{ $stat->seasonTeam->team->getImg() }}" alt="{{ $stat->seasonTeam->team->short_name }}" style="width: 32px; height: 32px" class="mr-2">
-						<span class="uppercase font-bold light:text-gray-600 dark:text-gray-200 text-center" style="width: 20px">{{ $stat->player->position }}</span>
-						<span class="ml-2">{{ $stat->player->name }}</span>
-					</div>
-					<div class="flex items-center uppercase text-sm font-bold">
-						<span class="light:text-gray-500 dark:text-gray-300">robos</span>
-						<span class="light:text-gray-600 dark:text-gray-200 text-center ml-2" style="min-width: 20px">{{ $stat->STL }}</span>
-					</div>
-				</div>
-			@endif
-		@endforeach
-		@foreach ($reg->playerStats->sortByDesc('BLK')->take(1) as $stat)
-			@if ($stat->BLK > 0)
-				<div class="flex justify-between text-sm items-center">
-					<div class="flex items-center">
-						<img src="{{ $stat->seasonTeam->team->getImg() }}" alt="{{ $stat->seasonTeam->team->short_name }}" style="width: 32px; height: 32px" class="mr-2">
-						<span class="uppercase font-bold light:text-gray-600 dark:text-gray-200 text-center" style="width: 20px">{{ $stat->player->position }}</span>
-						<span class="ml-2">{{ $stat->player->name }}</span>
-					</div>
-					<div class="flex items-center uppercase text-sm font-bold">
-						<span class="light:text-gray-500 dark:text-gray-300">tapones</span>
-						<span class="light:text-gray-600 dark:text-gray-200 text-center ml-2" style="min-width: 20px">{{ $stat->BLK }}</span>
-					</div>
-				</div>
-			@endif
-		@endforeach
+				@endif
+			@endforeach
+		@endif
 	</div>
 @endif
