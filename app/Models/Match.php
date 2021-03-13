@@ -172,7 +172,7 @@ class Match extends Model
 
     public function score()
     {
-        if ($this->played) {
+        if ($this->played()) {
             $local = null;
             $visitor = null;
             foreach ($this->scores as $score) {
@@ -187,7 +187,7 @@ class Match extends Model
 
     public function localScore()
     {
-        if ($this->played) {
+        if ($this->played()) {
             $local = 0;
             foreach ($this->scores as $score) {
                 $local += $score->local_score;
@@ -200,7 +200,7 @@ class Match extends Model
 
     public function visitorScore()
     {
-        if ($this->played) {
+        if ($this->played()) {
             $visitor = 0;
             foreach ($this->scores as $score) {
                 $visitor += $score->visitor_score;
@@ -213,7 +213,7 @@ class Match extends Model
 
     public function winner()
     {
-        if ($this->played) {
+        if ($this->played()) {
             $local = 0;
             $visitor = 0;
             foreach ($this->scores as $score) {
@@ -232,7 +232,7 @@ class Match extends Model
 
     public function loser()
     {
-        if ($this->played) {
+        if ($this->played()) {
             $local = 0;
             $visitor = 0;
             foreach ($this->scores as $score) {
