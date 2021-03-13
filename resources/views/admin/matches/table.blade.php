@@ -1,9 +1,9 @@
-{{-- <button type="button" class="btn btn-primary my-2 text-xs text-uppercase tracking-widest" wire:click="checkMatchesState" wire:loading.attr="disabled">
+<button type="button" class="btn btn-primary my-2 text-xs text-uppercase tracking-widest" wire:click="checkMatchesState" wire:loading.attr="disabled">
     check matches state
 </button>
 <div wire:loading wire:target="checkMatchesState">
     Chequeando partidos...
-</div> --}}
+</div>
 
 
 <div class="admin-crud-table-wrapper shadow-sm mt-2">

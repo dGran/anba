@@ -193,9 +193,10 @@ class Match extends Component
 			]);
 		}
 
-		$this->match->extra_times = $this->extra_times ?: 0;
-		$this->match->played = $this->played() ? 1 : 0;
-		$this->match->save();
+		$match = \App\Models\Match::find($this->match->id);
+		$match->extra_times = $this->extra_times ?: 0;
+		$match->played = $match->played() ? 1 : 0;
+		$match->save();
 	}
 
 	protected function createMatchPosts($match_id)

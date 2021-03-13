@@ -1147,9 +1147,10 @@ class MatchCrud extends Component
 			]);
 		}
 
-		$this->regView->extra_times = $this->extra_times ?: 0;
-		$this->played = $this->played() ? 1 : 0;
-		$this->regView->save();
+		$match = Match::find($this->regView->id);
+		$match->extra_times = $this->extra_times ?: 0;
+		$match->played = $match->played() ? 1 : 0;
+		$match->save();
 	}
 
 	public function storePlayerStats()
@@ -1369,6 +1370,7 @@ class MatchCrud extends Component
 			$playerStat->save();
 		}
 
+		$match = Match::find($match->id);
 		$match->teamStats_state = $match->checkTeamStats();
 		$match->playerStats_state = $match->checkPlayerStats();
 		$match->save();
@@ -1396,6 +1398,7 @@ class MatchCrud extends Component
 			}
 		}
 
+		$match = Match::find($match->id);
 		$match->teamStats_state = $match->checkTeamStats();
 		$match->playerStats_state = $match->checkPlayerStats();
 		$match->save();
