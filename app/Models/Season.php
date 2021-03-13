@@ -341,6 +341,7 @@ class Season extends Model
                     ->orWhere('matches.visitor_team_id', $team_id);
                 })
             ->orderBy('scores.created_at', 'desc')
+            ->orderBy('matches.id', 'desc')
             ->get();
 
         $streak_stop = false;
