@@ -154,6 +154,28 @@
 					</div>
 				@endif
 			@endforeach
+		@else
+			<ul class="animate-pulse text-pretty-red text-sm">
+				@if (!$reg->hasLocalPlayerStats() || !$reg->hasLocalTeamStats())
+					<li class="py-0.5">
+						Pendiente el reporte de los {{ $reg->localTeam->team->medium_name }}
+						<div class="flex items-center mb-2 text-gray-700 dark:text-white py-1">
+							<img src="{{ $reg->localManager->getImg() }}" alt="{{ $reg->localManager->name }}" class="w-8 h-8 object-cover rounded-full border border-gray-300 dark:border-gray-650 mr-2">
+							<p>{{ $reg->localManager->name }}</p>
+						</div>
+					</li>
+				@endif
+				@if (!$reg->hasVisitorPlayerStats() || !$reg->hasVisitorTeamStats())
+					<li class="py-0.5">
+						Pendiente el reporte de los {{ $reg->visitorTeam->team->medium_name }}
+						<div class="flex items-center mb-2 text-gray-700 dark:text-white py-1">
+							<img src="{{ $reg->visitorManager->getImg() }}" alt="{{ $reg->visitorManager->name }}" class="w-8 h-8 object-cover rounded-full border border-gray-300 dark:border-gray-650 mr-2">
+							<p>{{ $reg->visitorManager->name }}</p>
+						</div>
+					</li>
+				@endif
+
+			</ul>
 		@endif
 	</div>
 @endif
