@@ -1,15 +1,15 @@
 <div wire:ignore.self class="modal fade" tabindex="-1" role="dialog" id="editModal" data-keyboard="false" data-backdrop="static">
-    <div class="modal-dialog modal-dialog-scrollable non-selectable" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title text-base text-uppercase font-medium tracking-wide">
-                    <span>Editar {{ $modelSingular }}</span>
-                </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="closeAnyModal">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form wire:submit.prevent="update">
+    <form wire:submit.prevent="update">
+        <div class="modal-dialog modal-dialog-scrollable non-selectable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-base text-uppercase font-medium tracking-wide">
+                        <span>Editar {{ $modelSingular }}</span>
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="closeAnyModal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
                 <div class="modal-body">
                     @include('admin.posts.forms.form')
                 </div>
@@ -21,7 +21,7 @@
                         Guardar
                     </button>
                 </div>
-            </form>
+            </div>
         </div>
-    </div>
+    </form>
 </div>

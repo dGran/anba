@@ -1,18 +1,21 @@
 <div wire:ignore.self class="modal fade" tabindex="-1" role="dialog" id="addModal" data-keyboard="true" data-backdrop="static">
-    <div class="modal-dialog modal-dialog-scrollable non-selectable" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title text-base text-uppercase font-medium tracking-wide">
-                    <span>{{ $modelGender == 'male' ? 'Nuevo' : 'Nueva' }} {{ $modelSingular }}</span>
-                </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="closeAnyModal">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form wire:submit.prevent="store" enctype="multipart/form-data">
+    <form wire:submit.prevent="store" enctype="multipart/form-data">
+        <div class="modal-dialog modal-dialog-scrollable non-selectable" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title text-base text-uppercase font-medium tracking-wide">
+                        <span>{{ $modelGender == 'male' ? 'Nuevo' : 'Nueva' }} {{ $modelSingular }}</span>
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="closeAnyModal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div> {{-- modal-header --}}
+
                 <div class="modal-body">
                     @include('admin.players.forms.form')
-                </div>
+                </div> {{-- modal-body --}}
+
                 <div class="modal-footer" style="background: #F9FAFB">
                     <div class="d-sm-flex align-items-center w-100">
                         <div class="text-xs mr-auto pb-4 pb-sm-0">
@@ -35,8 +38,9 @@
                             </button>
                         </div>
                     </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+                </div> {{-- modal-footer --}}
+
+            </div> {{-- modal-content --}}
+        </div> {{-- modal-dialog --}}
+    </form>
+</div> {{-- modal --}}
