@@ -39,7 +39,7 @@ class Score extends Model
     public function getCreatedAtTime()
     {
         $date = Carbon::parse($this->created_at)->locale(app()->getLocale());
-        return $date->isoFormat("hh:mm");
+        return $date->isoFormat("HH:mm");
     }
 
     public function getUpdatedAt()
