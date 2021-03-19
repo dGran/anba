@@ -36,7 +36,7 @@
                                      {{ $match['score'] }}
                                  </a>
                                  @if ($match["extra_times"] > 0)
-                                     <span class="text-xxs pt-0.5 uppercase">*{{ $match["extra_times"] }} prórrogas</span>
+                                     <span class="text-xxs pt-0.5 uppercase">*{{ $match["extra_times"] }} {{ $match["extra_times" == 1] ? 'prórroga' : 'prórrogas' }}</span>
                                  @endif
                                  <span></span>
                              </div>
