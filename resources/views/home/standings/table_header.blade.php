@@ -8,8 +8,11 @@
 	<th class="text-center">
 		D
 	</th>
-	<th class="text-right pr-4">
+	<th class="text-right pr-4 md:pr-0">
 		VIC%
+	</th>
+	<th class="hidden lg:table-cell text-center">
+		Racha
 	</th>
 {{-- 	<th class="text-center">
 		@if ($order == 'w')

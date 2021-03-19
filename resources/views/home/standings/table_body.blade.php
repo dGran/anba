@@ -24,6 +24,9 @@
 		<span>-</span>
 	@endif
 </td>
-<td class="text-right tracking-tight w-14 pr-4 ml-3">
+<td class="text-right tracking-tight w-14 pr-4 lg:pr-0 ml-3">
 	{{ number_format($position['wavg'], 3) }}
+</td>
+<td class="hidden lg:table-cell text-center tracking-tight w-20 ml-3">
+	{{ $position['streak'] > 0 ? 'W' : 'L' }} {{ abs($position['streak']) }}
 </td>
