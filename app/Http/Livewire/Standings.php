@@ -147,7 +147,7 @@ class Standings extends Component
 
     public function fieldTeamInfoMatches_w($matches, $team)
     {
-    	$this->fieldTeamInfoTitle = "Partidos ganados";
+    	$this->fieldTeamInfoTitle = "ganados";
 
 		foreach ($matches as $match) {
 			$date = \Carbon\Carbon::parse($match->played_date)->locale(app()->getLocale());
@@ -169,7 +169,7 @@ class Standings extends Component
 
     public function fieldTeamInfoMatches_l($matches, $team)
     {
-    	$this->fieldTeamInfoTitle = "Partidos perdidos";
+    	$this->fieldTeamInfoTitle = "perdidos";
 
 		foreach ($matches as $match) {
 			$date = \Carbon\Carbon::parse($match->played_date)->locale(app()->getLocale());
@@ -190,7 +190,7 @@ class Standings extends Component
 
     public function fieldTeamInfoMatches_conf($matches, $team)
     {
-    	$this->fieldTeamInfoTitle = "Partidos misma conferencia";
+    	$this->fieldTeamInfoTitle = "misma conferencia";
 
 		foreach ($matches as $match) {
 			$date = \Carbon\Carbon::parse($match->played_date)->locale(app()->getLocale());
@@ -204,7 +204,7 @@ class Standings extends Component
 
     public function fieldTeamInfoMatches_div($matches, $team)
     {
-    	$this->fieldTeamInfoTitle = "Partidos misma división";
+    	$this->fieldTeamInfoTitle = "misma división";
 
 		foreach ($matches as $match) {
 			$date = \Carbon\Carbon::parse($match->played_date)->locale(app()->getLocale());
