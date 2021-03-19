@@ -20,7 +20,7 @@
         </x-slot>
 
         <x-slot name="content">
-            <div class="text-sm overflow-y-auto h-96">
+            <div class="text-sm overflow-y-auto max-h-96">
                 @foreach ($fieldTeamInfoMatches as $match)
                     <div class="py-1.5 {{ $loop->last ? '' : 'border-b' }} border-gray-300 dark:border-gray-650">
                         <div class="flex items-center justify-between text-xs px-4">
