@@ -25,6 +25,9 @@
 			</div>
 		@endif
 	</div>
+
+	@include('standings.team_info_modal')
+
 </div>
 
 @section('js')
