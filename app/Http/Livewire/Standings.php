@@ -140,6 +140,18 @@ class Standings extends Component
     		case 'div':
     			$this->fieldTeamInfoMatches_div($matches, $team);
     			break;
+    		case 'home':
+    			$this->fieldTeamInfoMatches_home($matches, $team);
+    			break;
+    		case 'road':
+    			$this->fieldTeamInfoMatches_road($matches, $team);
+    			break;
+    		case 'ot':
+    			$this->fieldTeamInfoMatches_ot($matches, $team);
+    			break;
+    		case 'last10':
+    			$this->fieldTeamInfoMatches_last10($matches, $team);
+    			break;
     	}
 
     	$this->teamInfoModal = true;
@@ -216,6 +228,59 @@ class Standings extends Component
 		}
     }
 
+    public function fieldTeamInfoMatches_home($matches, $team)
+    {
+    	$this->fieldTeamInfoTitle = "local";
+
+		foreach ($matches as $match) {
+			$date = \Carbon\Carbon::parse($match->played_date)->locale(app()->getLocale());
+        	$date = $date->isoFormat("D MMMM YYYY");
+			if ($match->local_team_id == $team) {
+				$this->fieldTeamInfoMatches_push_data($date, $match);
+			}
+		}
+    }
+
+    public function fieldTeamInfoMatches_road($matches, $team)
+    {
+    	$this->fieldTeamInfoTitle = "visitante";
+
+		foreach ($matches as $match) {
+			$date = \Carbon\Carbon::parse($match->played_date)->locale(app()->getLocale());
+        	$date = $date->isoFormat("D MMMM YYYY");
+			if ($match->visitor_team_id == $team) {
+				$this->fieldTeamInfoMatches_push_data($date, $match);
+			}
+		}
+    }
+
+    public function fieldTeamInfoMatches_ot($matches, $team)
+    {
+    	$this->fieldTeamInfoTitle = "con prórroga";
+
+		foreach ($matches as $match) {
+			$date = \Carbon\Carbon::parse($match->played_date)->locale(app()->getLocale());
+        	$date = $date->isoFormat("D MMMM YYYY");
+			if ($match->extra_times > 0) {
+				$this->fieldTeamInfoMatches_push_data($date, $match);
+			}
+		}
+    }
+
+    public function fieldTeamInfoMatches_last10($matches, $team)
+    {
+    	$this->fieldTeamInfoTitle = "últimos 10";
+
+		foreach ($matches as $key => $match) {
+			$date = \Carbon\Carbon::parse($match->played_date)->locale(app()->getLocale());
+        	$date = $date->isoFormat("D MMMM YYYY");
+			if ($key < 10) {
+				$this->fieldTeamInfoMatches_push_data($date, $match);
+			}
+		}
+    }
+
+
     public function fieldTeamInfoMatches_push_data($date, $match)
     {
         $this->fieldTeamInfoMatches->push([
@@ -231,6 +296,7 @@ class Standings extends Component
             'visitorTeam_manager' => $match->visitorManager->name,
             'score' => $match->score(),
             'stadium' => $match->stadium,
+            'extra_times' => $match->extra_times,
         ]);
     }
 

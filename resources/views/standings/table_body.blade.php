@@ -53,28 +53,36 @@
 </td>
 <td style="min-width: 60px; width: 80px" class="text-center tracking-tight">
 	@if ($position['w'] > 0 || $position['l'] > 0)
-		{{ $position['home_w'] }}-{{ $position['home_l'] }}
+		<a href="" class="hover:underline focus:underline focus:outline-none" wire:click.prevent="openFieldTeamInfoMatches('home', {{ $position['team']->id }})">
+			{{ $position['home_w'] }}-{{ $position['home_l'] }}
+		</a>
 	@else
 		<span>-</span>
 	@endif
 </td>
 <td style="min-width: 60px; width: 80px" class="text-center tracking-tight">
 	@if ($position['w'] > 0 || $position['l'] > 0)
-		{{ $position['road_w'] }}-{{ $position['road_l'] }}
+		<a href="" class="hover:underline focus:underline focus:outline-none" wire:click.prevent="openFieldTeamInfoMatches('road', {{ $position['team']->id }})">
+			{{ $position['road_w'] }}-{{ $position['road_l'] }}
+		</a>
 	@else
 		<span>-</span>
 	@endif
 </td>
 <td style="min-width: 60px; width: 80px" class="text-center tracking-tight">
 	@if ($position['w'] > 0 || $position['l'] > 0)
-		{{ $position['ot_w'] }}-{{ $position['ot_l'] }}
+		<a href="" class="hover:underline focus:underline focus:outline-none" wire:click.prevent="openFieldTeamInfoMatches('ot', {{ $position['team']->id }})">
+			{{ $position['ot_w'] }}-{{ $position['ot_l'] }}
+		</a>
 	@else
 		<span>-</span>
 	@endif
 </td>
 <td style="min-width: 60px; width: 80px" class="text-center tracking-tight">
 	@if ($position['w'] > 0 || $position['l'] > 0)
-		{{ $position['last10_w'] }}-{{ $position['last10_l'] }}
+		<a href="" class="hover:underline focus:underline focus:outline-none" wire:click.prevent="openFieldTeamInfoMatches('last10', {{ $position['team']->id }})">
+			{{ $position['last10_w'] }}-{{ $position['last10_l'] }}
+		</a>
 	@else
 		<span>-</span>
 	@endif

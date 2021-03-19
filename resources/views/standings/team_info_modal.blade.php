@@ -31,9 +31,15 @@
                              <span class="flex-1 text-right md:hidden mr-3">{{ $match['localTeam_short_name'] }}</span>
                              <span class="flex-1 text-right hidden md:block mr-3">{{ $match['localTeam_medium_name'] }}</span>
                              <img src="{{ $match['localTeam_img'] }}" alt="{{ $match['localTeam_short_name'] }}" class="w-8 h-8 object-cover">
-                             <a href="{{ route('match', $match['id']) }}" class="flex-0 flex flex-col mx-3 rounded px-2 py-0.5 w-20 text-center bg-gray-100 dark:bg-gray-600 border border-gray-300 dark:border-transparent | hover:bg-white focus:bg-white focus:outline-none dark:hover:bg-dark-link dark:hover:text-gray-900 dark:focus:bg-dark-link dark:focus:text-gray-900">
-                                 {{ $match['score'] }}
-                             </a>
+                             <div class="flex flex-col">
+                                 <a href="{{ route('match', $match['id']) }}" class="flex-0 flex flex-col mx-3 rounded px-2 py-0.5 w-20 text-center bg-gray-100 dark:bg-gray-600 border border-gray-300 dark:border-transparent | hover:bg-white focus:bg-white focus:outline-none dark:hover:bg-dark-link dark:hover:text-gray-900 dark:focus:bg-dark-link dark:focus:text-gray-900">
+                                     {{ $match['score'] }}
+                                 </a>
+                                 @if ($match["extra_times"] > 0)
+                                     <span class="text-xxs pt-0.5 uppercase">*{{ $match["extra_times"] }} prórrogas</span>
+                                 @endif
+                                 <span></span>
+                             </div>
                              <img src="{{ $match['visitorTeam_img'] }}" alt="{{ $match['visitorTeam_short_name'] }}" class="w-8 h-8 object-cover">
                              <span class="flex-1 text-left md:hidden ml-3">{{ $match['visitorTeam_short_name'] }}</span>
                              <span class="flex-1 text-left hidden md:block ml-3">{{ $match['visitorTeam_medium_name'] }}</span>
