@@ -157,7 +157,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
         $pending_reports = 0;
         foreach ($matches as $match) {
-            if ($match->played()) {
+            if ($match->played == 1) {
                 if ($match->local_manager_id == $user_id) {
                     if (!$match->hasLocalPlayerStats() || !$match->hasLocalTeamStats()) {
                         $pending_reports++;

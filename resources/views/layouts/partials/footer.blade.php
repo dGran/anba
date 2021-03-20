@@ -67,7 +67,8 @@
                     x-transition:leave-end="opacity-0 transform scale-y-0">
                     <ul class="flex flex-col leading-6 list-none text-sm tracking-wide text-gray-350">
                         <li class="py-1"><a href="#" class="block outline-none hover:text-white focus:text-white">Mi equipo</a></li>
-                        <li class="py-1"><a href="#" class="block outline-none hover:text-white focus:text-white">Partidas pendientes</a></li>
+                        <li class="py-1"><a href="{{ route('manager.pending_matches') }}" class="block outline-none hover:text-white focus:text-white">Partidos pendientes</a></li>
+                        <li class="py-1"><a href="{{ route('manager.pending_reports') }}" class="block outline-none hover:text-white focus:text-white">Reportes pendientes</a></li>
                     </ul>
                 </div>
             </li>
@@ -132,7 +133,8 @@
                 <h4 class="text-gray-200 font-bold uppercase">manager</h4>
                 <ul class="flex flex-col leading-6 list-none text-sm tracking-wide text-gray-350 mt-1.5">
                     <li class="py-1"><a href="#" class="block outline-none hover:text-white focus:text-white">Mi equipo</a></li>
-                    <li class="py-1"><a href="#" class="block outline-none hover:text-white focus:text-white">Partidas pendientes</a></li>
+                    <li class="py-1"><a href="{{ route('manager.pending_matches') }}" class="block outline-none hover:text-white focus:text-white">Partidas pendientes</a></li>
+                    <li class="py-1"><a href="{{ route('manager.pending_reports') }}" class="block outline-none hover:text-white focus:text-white">Reportes pendientes</a></li>
                 </ul>
             </div>
             @endhasrole

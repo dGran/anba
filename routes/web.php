@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\MatchController;
+use App\Http\Controllers\ManagerController;
 
 use App\Http\Livewire\Admin\Dashboard;
 
@@ -55,6 +56,11 @@ Route::get('/politica-de-privacidad', function () {
 Route::get('/reglamento', function () {
     return view('rules');
 })->name('rules');
+
+Route::middleware(['auth:sanctum', 'verified', 'role:manager'])->prefix('manager')->group(function() {
+	Route::get('reportes-pendientes', [ManagerController::class, 'pendingReports'])->name('manager.pending_reports');
+	Route::get('partidos-pendientes', [ManagerController::class, 'pendingMatches'])->name('manager.pending_matches');
+});
 
 // admin routes
 

@@ -106,11 +106,11 @@
                                 <x-dropdown-link href="#" class="flex items-center">
                                     <i class="fas fa-shield-alt text-base w-6 mr-1.5 text-center"></i><span>{{ __('Mi equipo') }}</span>
                                 </x-dropdown-link>
-                                <x-dropdown-link href="#" class="flex items-center">
-                                    <i class="icon-gamepad text-base w-6 mr-1.5 text-center"></i><span>{{ __('Partidas pendientes') }}</span>
+                                <x-dropdown-link href="{{ route('manager.pending_matches') }}" class="flex items-center">
+                                    <i class="icon-gamepad text-base w-6 mr-1.5 text-center"></i><span>{{ __('Partidos pendientes') }}</span>
                                 </x-dropdown-link>
                                 @if (Auth::user()->pendingMatchesReports() > 0)
-                                    <x-dropdown-link href="#" class="flex items-center animate-pulse">
+                                    <x-dropdown-link href="{{ route('manager.pending_reports') }}" class="flex items-center animate-pulse">
                                         <i class="fas fa-clipboard-list w-6 mr-1.5 text-center"></i>
                                         <span>{{ Auth::user()->pendingMatchesReports() }}{{ Auth::user()->pendingMatchesReports() == 1 ? ' reporte pendiente' : ' reportes pendientes' }}</span>
                                     </x-dropdown-link>
