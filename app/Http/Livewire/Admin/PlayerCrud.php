@@ -693,9 +693,6 @@ class PlayerCrud extends Component
 	        if ($reg->isDirty()) {
 	            if ($reg->update()) {
 
-		        	$changes = $reg->getChanges();
-	        		// dd($changes);
-
 	            	// injury post
 			    	if ($reg->injury_id) {
 			    		if ($reg->injury_id == $suspension_id) {
@@ -740,9 +737,10 @@ class PlayerCrud extends Component
 							$reg->getImg(),
 				    	);
 				    	event(new PostStored($post));
+						event(new TableWasUpdated($post, 'insert', $post->toJson(JSON_PRETTY_PRINT)));
 			    	}
 
-	            	event(new TableWasUpdated($reg, 'update', $changes, $before));
+	            	event(new TableWasUpdated($reg, 'update', $reg->toJson(JSON_PRETTY_PRINT), $before));
 	            	session()->flash('success', 'Registro actualizado correctamente.');
 	            } else {
 	            	session()->flash('error', 'Se ha producido un error y no se han podido actualizar los datos.');
