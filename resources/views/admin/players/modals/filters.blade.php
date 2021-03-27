@@ -142,9 +142,29 @@
                     <div class="form-group col-md-6">
                         <label class="text-sm text-uppercase tracking-wide">Estado</label>
                         <select class="form-control custom-select text-sm" wire:model="filterRetired">
-                            <option value="all">Todas los estados</option>
+                            <option value="all">Todos los estados</option>
                             <option value="active">En activo</option>
                             <option value="retired">Retirados</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label class="text-sm text-uppercase tracking-wide">Fuera de la NBA</label>
+                        <select class="form-control custom-select text-sm" wire:model="filterOutNBA">
+                            <option value="all">Todos</option>
+                            <option value="yes">Si</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label class="text-sm text-uppercase tracking-wide">Lesionados</label>
+                        <select class="form-control custom-select text-sm" wire:model="filterInjury">
+                            <option value="all">Todos</option>
+                            <option value="yes">Lesionados</option>
+                            <option value="no">No Lesionados</option>
                         </select>
                     </div>
                 </div>
@@ -159,6 +179,8 @@
                                     <option value="id_desc">ID (desc)</option>
 									<option value="name">Nombre</option>
                                     <option value="name_desc">Nombre (desc)</option>
+                                    <option value="injury_name">Estado</option>
+                                    <option value="injury_name_desc">Estado (desc)</option>
                                     <option value="team">Equipo</option>
                                     <option value="team_desc">Equipo (desc)</option>
 									<option value="position">Posición</option>

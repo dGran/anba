@@ -34,7 +34,7 @@ class PlayerCrud extends Component
 	public $modelHasImg = true;
 
 	//fields
-	public $reg_id, $name, $nickname, $team_id, $img, $reg_img, $reg_img_formated, $position, $height, $weight, $college, $birthdate, $nation_name, $draft_year, $average, $retired;
+	public $reg_id, $name, $nickname, $team_id, $img, $reg_img, $reg_img_formated, $position, $height, $weight, $college, $birthdate, $nation_name, $draft_year, $average, $retired, $outnba;
 	// state fields
 	public $injury_id, $injury_matches, $injury_days, $injury_playable;
 
@@ -50,6 +50,8 @@ class PlayerCrud extends Component
 	public $filterAge = ['from' => 15, 'to' => 45];
 	public $filterYearDraft = ['from' => 1995, 'to' => 2020];
 	public $filterRetired = "all";
+	public $filterOutNBA = "all";
+	public $filterInjury = "all";
 	public $order = 'id_desc';
 
 	// preferences vars
@@ -69,6 +71,7 @@ class PlayerCrud extends Component
 
 	// general vars
 	public $currentModal;
+
 	public $editMode = false;
 	public $continuousInsert = false;
 	public $regView;
@@ -94,6 +97,8 @@ class PlayerCrud extends Component
 		'filterAge' => ['except' => ['from' => 15, 'to' => 45]],
 		'filterYearDraft' => ['except' => ['from' => 1995, 'to' => 2020]],
 		'filterRetired' => ['except' => "all"],
+		'filterOutNBA' => ['except' => "all"],
+		'filterInjury' => ['except' => "all"],
 		'perPage' => ['except' => '25'],
 		'order' => ['except' => 'id_desc'],
 	];
@@ -212,6 +217,7 @@ class PlayerCrud extends Component
 			'players.draft_year' => $this->draft_year,
 			'players.average' => $this->average,
 			'players.retired' => $this->retired,
+			'players.outnba' => $this->outnba,
 			'players.injury_id' => $this->injury_id,
 			'players.injury_matches' => $this->injury_matches,
 			'players.injury_days' => $this->injury_days,
@@ -229,6 +235,8 @@ class PlayerCrud extends Component
 			'players.filterAge' => $this->filterAge,
 			'players.filterYearDraft' => $this->filterYearDraft,
 			'players.filterRetired' => $this->filterRetired,
+			'players.filterOutNBA' => $this->filterOutNBA,
+			'players.filterInjury' => $this->filterInjury,
 			'players.order' => $this->order,
 			'players.page' => $this->page,
 			'players.regsSelectedArray' => $this->regsSelectedArray,
@@ -262,6 +270,7 @@ class PlayerCrud extends Component
 		if (session()->get('players.draft_year')) { $this->draft_year = session()->get('players.draft_year'); }
 		if (session()->get('players.average')) { $this->average = session()->get('players.average'); }
 		if (session()->get('players.retired')) { $this->retired = session()->get('players.retired'); }
+		if (session()->get('players.outnba')) { $this->outnba = session()->get('players.outnba'); }
 		if (session()->get('players.injury_id')) { $this->injury_id = session()->get('players.injury_id'); }
 		if (session()->get('players.injury_matches')) { $this->injury_matches = session()->get('players.injury_matches'); }
 		if (session()->get('players.injury_days')) { $this->injury_days = session()->get('players.injury_days'); }
@@ -278,6 +287,8 @@ class PlayerCrud extends Component
 		if (session()->get('players.filterAge')) { $this->filterAge = session()->get('players.filterAge'); }
 		if (session()->get('players.filterYearDraft')) { $this->filterYearDraft = session()->get('players.filterYearDraft'); }
 		if (session()->get('players.filterRetired')) { $this->filterRetired = session()->get('players.filterRetired'); }
+		if (session()->get('players.filterOutNBA')) { $this->filterOutNBA = session()->get('players.filterOutNBA'); }
+		if (session()->get('players.filterInjury')) { $this->filterInjury = session()->get('players.filterInjury'); }
 		if (session()->get('players.order')) { $this->order = session()->get('players.order'); }
 		if (session()->get('players.page')) { $this->page = session()->get('players.page'); }
 		if (session()->get('players.regsSelectedArray')) { $this->regsSelectedArray = session()->get('players.regsSelectedArray'); }
@@ -306,6 +317,7 @@ class PlayerCrud extends Component
 	{
     	$regs = Player::
     		leftJoin('teams', 'teams.id', 'players.team_id')
+    		->leftJoin('injuries', 'injuries.id', 'players.injury_id')
     		->select('players.*', 'teams.name as team_name')
     		->name($this->search)
     		->team($this->filterTeam)
@@ -317,6 +329,8 @@ class PlayerCrud extends Component
 			->age($this->filterAge)
 			->yearDraft($this->filterYearDraft)
 			->retired($this->filterRetired)
+			->outnba($this->filterOutNBA)
+			->injury($this->filterInjury)
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
 			->orderBy('players.name', 'asc')
     		->paginate($this->perPage, ['*'], 'page', $this->page);
@@ -422,6 +436,16 @@ class PlayerCrud extends Component
 		$this->filterRetired = "all";
     }
 
+    public function cancelFilterOutNBA()
+    {
+		$this->filterOutNBA = "all";
+    }
+
+    public function cancelFilterInjury()
+    {
+		$this->filterInjury = "all";
+    }
+
     public function setFilterPerPage($number)
     {
     	$this->perPage = $number;
@@ -447,6 +471,8 @@ class PlayerCrud extends Component
 		$this->filterCollege = "all";
 		$this->filterNation = "all";
 		$this->filterRetired = "all";
+		$this->filterOutNBA = "all";
+		$this->filterInjury = "all";
 
 		$this->emit('resetFiltersMode');
     }
@@ -470,6 +496,7 @@ class PlayerCrud extends Component
 		$this->draft_year = null;
 		$this->average = null;
 		$this->retired = 0;
+		$this->outnba = 0;
     }
 
     protected function resetStateFields()
@@ -534,7 +561,16 @@ class PlayerCrud extends Component
 		$validatedData['draft_year'] = $this->draft_year;
 		$validatedData['average'] = $this->average;
 		$validatedData['retired'] = $this->retired ?: 0;
-		if ($this->retired) {
+		if (!$this->retired) {
+			$validatedData['outnba'] = $this->outnba ?: 0;
+		} else {
+			$validatedData['outnba'] = 0;
+		    $validatedData['injury_id'] = null;
+		    $validatedData['injury_matches'] = null;
+			$validatedData['injury_days'] = null;
+			$validatedData['injury_playable'] = 0;
+		}
+		if ($this->retired || $this->outnba) {
 			$validatedData['team_id'] = null;
 		}
         $validatedData['slug'] = Str::slug($this->name, '-');
@@ -575,6 +611,7 @@ class PlayerCrud extends Component
 		$this->draft_year = $reg->draft_year;
 		$this->average = $reg->average;
 		$this->retired = $reg->retired;
+		$this->outnba = $reg->outnba;
 
     	$this->emit('openEditModal');
     	$this->setCurrentModal('editModal');
@@ -626,8 +663,18 @@ class PlayerCrud extends Component
 		$validatedData['draft_year'] = $this->draft_year;
 		$validatedData['average'] = $this->average;
 		$validatedData['retired'] = $this->retired ?: 0;
-		if ($this->retired) {
+		$validatedData['outnba'] = $this->outnba ?: 0;
+		if ($this->retired || $this->outnba) {
 			$validatedData['team_id'] = null;
+		}
+		if (!$this->retired) {
+			$validatedData['outnba'] = $this->outnba ?: 0;
+		} else {
+			$validatedData['outnba'] = 0;
+		    $validatedData['injury_id'] = null;
+		    $validatedData['injury_matches'] = null;
+			$validatedData['injury_days'] = null;
+			$validatedData['injury_playable'] = 0;
 		}
         $validatedData['slug'] = Str::slug($this->name, '-');
 
@@ -907,6 +954,7 @@ class PlayerCrud extends Component
 
     	$regs = Player::
     		leftJoin('teams', 'teams.id', 'players.team_id')
+    		->leftJoin('injuries', 'injuries.id', 'players.injury_id')
     		->select('players.*', 'teams.name as team_name')
     		->name($this->search)
     		->team($this->filterTeam)
@@ -918,6 +966,8 @@ class PlayerCrud extends Component
 			->age($this->filterAge)
 			->yearDraft($this->filterYearDraft)
 			->retired($this->filterRetired)
+			->outnba($this->filterOutNBA)
+			->injury($this->filterInjury)
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
 			->orderBy('players.name', 'asc')
     		->get();
@@ -942,6 +992,7 @@ class PlayerCrud extends Component
 
     	$regs = Player::
     		leftJoin('teams', 'teams.id', 'players.team_id')
+    		->leftJoin('injuries', 'injuries.id', 'players.injury_id')
     		->select('players.*', 'teams.name as team_name')
     		->whereIn('players.id', $this->regsSelectedArray)
         	->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
@@ -1085,6 +1136,7 @@ class PlayerCrud extends Component
         			'injuries' => $injuries,
         			'filterTeamName' => $this->filterTeamName(),
         			'filterRetiredName' => $this->filterRetiredName(),
+        			'filterOutNBAName' => $this->filterOutNBAName(),
         			'firstRenderSaved' => $firstRenderSaved,
         			'currentModal' => $this->currentModal,
         		])->layout('adminlte::page');
@@ -1096,6 +1148,7 @@ class PlayerCrud extends Component
     	$regs = Player::
     		with('team', 'injury')
     		->leftJoin('teams', 'teams.id', 'players.team_id')
+    		->leftJoin('injuries', 'injuries.id', 'players.injury_id')
     		->select('players.*', 'teams.name as team_name')
     		->name($this->search)
 			->team($this->filterTeam)
@@ -1107,6 +1160,8 @@ class PlayerCrud extends Component
 			->age($this->filterAge)
 			->yearDraft($this->filterYearDraft)
 			->retired($this->filterRetired)
+			->outnba($this->filterOutNBA)
+			->injury($this->filterInjury)
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
 			->orderBy('players.name', 'asc')
 			->paginate($this->perPage)->onEachSide(2);
@@ -1121,6 +1176,7 @@ class PlayerCrud extends Component
     	$regs = Player::
     		with('team', 'injury')
     		->leftJoin('teams', 'teams.id', 'players.team_id')
+    		->leftJoin('injuries', 'injuries.id', 'players.injury_id')
     		->select('players.*', 'teams.name as team_name')
     		->name($this->search)
     		->team($this->filterTeam)
@@ -1132,6 +1188,8 @@ class PlayerCrud extends Component
 			->age($this->filterAge)
 			->yearDraft($this->filterYearDraft)
 			->retired($this->filterRetired)
+			->outnba($this->filterOutNBA)
+			->injury($this->filterInjury)
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
 			->orderBy('players.name', 'asc')
 			->paginate($this->perPage)->onEachSide(2);
@@ -1147,6 +1205,7 @@ class PlayerCrud extends Component
     	$regs = Player::
     		with('team', 'injury')
     		->leftJoin('teams', 'teams.id', 'players.team_id')
+    		->leftJoin('injuries', 'injuries.id', 'players.injury_id')
     		->select('players.*', 'teams.name as team_name')
     		->name($this->search)
     		->team($this->filterTeam)
@@ -1158,6 +1217,8 @@ class PlayerCrud extends Component
 			->age($this->filterAge)
 			->yearDraft($this->filterYearDraft)
 			->retired($this->filterRetired)
+			->outnba($this->filterOutNBA)
+			->injury($this->filterInjury)
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
 			->orderBy('players.name', 'asc')
 			->paginate($this->perPage, ['*'], 'page', $this->page);
@@ -1175,6 +1236,7 @@ class PlayerCrud extends Component
 	{
 		return Player::
     		leftJoin('teams', 'teams.id', 'players.team_id')
+    		->leftJoin('injuries', 'injuries.id', 'players.injury_id')
     		->select('players.*', 'teams.name as team_name')
 			->whereIn('players.id', $this->regsSelectedArray)
 			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
@@ -1196,10 +1258,18 @@ class PlayerCrud extends Component
 			}
 		}
 	}
+
 	protected function filterRetiredName()
 	{
 		if ($this->filterRetired != "all") {
 			return $this->filterRetired == "active" ? 'en activo' : 'retirados';
+		}
+	}
+
+	protected function filterOutNBAName()
+	{
+		if ($this->filterOutNBA != "all") {
+			return $this->filterOutNBA == "yes" ? 'Si' : 'No';
 		}
 	}
 
@@ -1284,7 +1354,15 @@ class PlayerCrud extends Component
             'college_desc' => [
                 'field'     => 'college',
                 'direction' => 'desc'
-            ]
+            ],
+            'injury_name' => [
+                'field'     => 'injuries.name',
+                'direction' => 'asc'
+            ],
+            'injury_name_desc' => [
+                'field'     => 'injuries.name',
+                'direction' => 'desc'
+            ],
         ];
         return $order_ext[$order];
     }

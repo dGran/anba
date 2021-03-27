@@ -25,6 +25,7 @@ class Player extends Model
         'draft_year',
         'average',
         'retired',
+        'outnba',
         'injury_id',
         'injury_matches',
         'injury_days',
@@ -131,6 +132,29 @@ class Player extends Model
             }
         }
     }
+
+    public function scopeOutnba($query, $value)
+    {
+        if ($value != "all") {
+            if ($value == "yes") {
+                return $query->where('outnba', 1);
+            } else {
+                return $query->where('outnba', 0);
+            }
+        }
+    }
+
+    public function scopeInjury($query, $value)
+    {
+        if ($value != "all") {
+            if ($value == "yes") {
+                return $query->where('injury_id', '>', 0);
+            } else {
+                return $query->whereNull('injury_id');
+            }
+        }
+    }
+
 
     public function storageImg()
     {

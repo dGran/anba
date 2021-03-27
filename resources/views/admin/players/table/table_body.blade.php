@@ -33,22 +33,28 @@
 			</td>
 			<td class="{{ $colState ?: 'd-none' }}" style="width: 100px; max-width: 300px">
 				<div class="d-flex align-items-center">
-					@if ($reg->injury_id)
-						<div class="d-flex flex-column truncate">
-							<p class="m-0 truncate"><i class="fas fa-briefcase-medical {{ $reg->injury_playable ? 'text-warning' : 'text-danger' }} mr-2"></i> {{ $reg->injury->name }}</p>
-							<span class="text-xs leading-4">
-								{{ $reg->injury_matches }} {{ $reg->injury_matches == 1 ? 'partido' : 'partidos' }} | {{ $reg->injury_days }} {{ $reg->injury_days == 1 ? 'día' : 'días' }}
-							</span>
-
-						</div>
+					@if ($reg->retired)
+						<span class="text-gray-500 text-uppercase text-xs border bg-light rounded px-2 py-1">
+							Jugador retirado
+						</span>
 					@else
-						<i class="fas fa-check text-xl text-success"></i>
+						@if ($reg->injury_id)
+							<div class="d-flex flex-column truncate">
+								<p class="m-0 truncate"><i class="fas fa-briefcase-medical {{ $reg->injury_playable ? 'text-warning' : 'text-danger' }} mr-2"></i> {{ $reg->injury->name }}</p>
+								<span class="text-xs leading-4">
+									{{ $reg->injury_matches }} {{ $reg->injury_matches == 1 ? 'partido' : 'partidos' }} | {{ $reg->injury_days }} {{ $reg->injury_days == 1 ? 'día' : 'días' }}
+								</span>
+
+							</div>
+						@else
+							<i class="fas fa-check text-xl text-success mr-2"></i>Disponible
+						@endif
 					@endif
 				</div>
 			</td>
 			<td class="{{ $colTeam ?: 'd-none' }}" style="width: 300px; min-width: 300px; max-width: 300px">
 				<div class="d-flex align-items-center">
-					@if (!$reg->retired)
+					@if (!$reg->retired && !$reg->outnba)
 						@if ($showTableImages)
 							<img class="image rounded-circle non-selectable" src="{{ $reg->getTeamImg() }}" alt="{{ $reg->team ? $reg->team->name : 'Free Agent' }}" style="width: 40px;">
 						@endif
@@ -56,9 +62,16 @@
 							{{ $reg->team ? $reg->team->name : 'Free Agent' }}
 						</span>
 					@else
-						<span class="text-gray-500 text-uppercase text-xs border bg-light rounded px-2 py-1">
-							Jugador retirado
-						</span>
+						@if ($reg->retired)
+							<span class="text-gray-500 text-uppercase text-xs border bg-light rounded px-2 py-1">
+								Jugador retirado
+							</span>
+						@endif
+						@if ($reg->outnba)
+							<span class="text-gray-800 text-uppercase text-xs border bg-light rounded px-2 py-1">
+								Fuera de la NBA
+							</span>
+						@endif
 					@endif
 				</div>
 			</td>
