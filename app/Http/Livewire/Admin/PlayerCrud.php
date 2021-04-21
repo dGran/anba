@@ -742,25 +742,26 @@ class PlayerCrud extends Component
 
 	            	// injury post
 			    	if ($reg->injury_id) {
+			    		$player = $reg->name . ' (' . $reg->team->medium_name . ')';
 			    		if ($reg->injury_id == $suspension_id) {
 							$cat_name = 'Supensión';
 			    			if ($reg->injury_matches == 1) {
-								$title = $reg->name . ' suspendido el siguiente partido.';
+								$title = $player . ' suspendido el siguiente partido.';
 			    			} else {
-			    				$title = $reg->injury_matches . ' partidos de suspensión para ' . $reg->name . '.';
+			    				$title = $reg->injury_matches . ' partidos de suspensión para ' . $player . '.';
 			    			}
 			    			$description = '';
 			    		} else {
 			    			$cat_name = 'Lesión';
 				    		$description = $reg->injury->name;
 				    		if ($reg->injury_playable) {
-				    			$title = $reg->name . ' sufre una leve lesión';
+				    			$title = $player . ' sufre una leve lesión';
 				    			$description .= ', que no le impedirá estar disponible para el siguiente partido.';
 				    		} else {
 				    			if ($reg->injury_matches == 1) {
-									$title = $reg->name . ' lesionado para el siguiente partido.';
+									$title = $player . ' lesionado para el siguiente partido.';
 				    			} else {
-				    				$title = $reg->name . ' lesionado para los próximos ' . $reg->injury_matches . ' partidos.';
+				    				$title = $player . ' lesionado para los próximos ' . $reg->injury_matches . ' partidos.';
 				    			}
 				    			$description .= '. Le apartará de las canchas durante ' . $reg->injury_days;
 				    			$description .= $reg->injury_days == 1 ? ' día.' : ' días.';
