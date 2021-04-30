@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
+use App\Models\User;
 use App\Models\Match;
 use App\Models\MatchPoll;
 use App\Models\Season;
@@ -118,7 +119,9 @@ class Matches extends Component
 				$this->season = Season::where('current', 1)->first()->slug;
     		}
     		$current_season = Season::where('slug', $this->season)->first();
+
     		$seasons = Season::orderBy('id', 'desc')->get();
+
 	    	$season_teams = SeasonTeam::
 	    	with('team')
 	    	->join('teams', 'teams.id', 'seasons_teams.team_id')
@@ -126,16 +129,26 @@ class Matches extends Component
 	    	->select('seasons_teams.*')
 	    	->orderBy('teams.medium_name', 'asc')
 	    	->get();
-	    	$managers = SeasonTeam::
-	    	with('team')
-	    	->join('teams', 'teams.id', 'seasons_teams.team_id')
-	    	->join('users', 'users.id', 'teams.manager_id')
-	    	->where('season_id', $current_season->id)
-	    	->whereNotNull('teams.manager_id')
-	    	->select('users.*')
-	    	->distinct()
-	    	->orderBy('users.name', 'asc')
-	    	->get();
+
+	    	$local_managers = Match::select('local_manager_id')->distinct()->where('season_id', $current_season->id)->get();
+	    	$visitor_managers = Match::select('visitor_manager_id')->distinct()->where('season_id', $current_season->id)->get();
+
+    		$managers = \App\Models\User::select("*")
+	            ->whereIn('id', $local_managers)
+	            ->orWhereIn('id', $visitor_managers)
+	            ->orderBy('name', 'asc')
+	            ->get();
+
+	    	// $managers = SeasonTeam::
+	    	// with('team')
+	    	// ->join('teams', 'teams.id', 'seasons_teams.team_id')
+	    	// ->join('users', 'users.id', 'teams.manager_id')
+	    	// ->where('season_id', $current_season->id)
+	    	// ->whereNotNull('teams.manager_id')
+	    	// ->select('users.*')
+	    	// ->distinct()
+	    	// ->orderBy('users.name', 'asc')
+	    	// ->get();
 
 	    	// $this->set_teams_table_data();
 
