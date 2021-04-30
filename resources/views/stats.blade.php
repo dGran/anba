@@ -7,6 +7,6 @@
     </x-slot>
 
     <div>
-        {{-- @livewire('stats') --}}
+        @livewire('stats')
     </div>
 </x-app-layout>

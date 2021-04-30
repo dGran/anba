@@ -17,6 +17,8 @@ class Score extends Model
         'visitor_score',
         'order',
         'updated_user_id',
+        'created_at',
+        'updated_at',
     ];
 
     public function match()

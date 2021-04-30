@@ -46,6 +46,23 @@ class Matches extends Component
 		'order' => ['except' => 'lastPlayed'],
 	];
 
+	public function changeSeasonFilter()
+	{
+		$this->page = 1;
+		$this->team = "all";
+		$this->manager = "all";
+	}
+
+	public function changeTeamFilter()
+	{
+		$this->page = 1;
+	}
+
+	public function changeManagerFilter()
+	{
+		$this->page = 1;
+	}
+
     // Pagination
     public function setNextPage()
     {
@@ -89,17 +106,17 @@ class Matches extends Component
 
 	public function mount()
 	{
-		if ($season = Season::where('current', 1)->first()) {
-			$this->season = $season->slug;
-		} else {
+		if (!$season = Season::where('current', 1)->first()) {
 			$this->blank_view = true;
 		}
-		// dd('mount');
 	}
 
     public function render()
     {
     	if (!$this->blank_view) {
+    		if (!$this->season) {
+				$this->season = Season::where('current', 1)->first()->slug;
+    		}
     		$current_season = Season::where('slug', $this->season)->first();
     		$seasons = Season::orderBy('id', 'desc')->get();
 	    	$season_teams = SeasonTeam::
@@ -138,20 +155,22 @@ class Matches extends Component
 
 	protected function getData()
 	{
+		$current_season = Season::where('slug', $this->season)->first()->slug;
+
     	$regs = Match::
     		with('localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager', 'scores', 'playerStats.player', 'playerStats.seasonTeam.team')
             ->leftJoin('scores', 'scores.match_id', 'matches.id')
-   			->join('seasons_teams', function($join){
+   			->leftJoin('seasons_teams', function($join){
                 $join->on('seasons_teams.id','=','matches.local_team_id');
                 $join->orOn('seasons_teams.id','=','matches.visitor_team_id');
             })
-    		->join('teams', 'teams.id', 'seasons_teams.team_id')
-   			->join('users', function($join){
+    		->leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
+   			->leftJoin('users', function($join){
                 $join->on('users.id','=','matches.local_manager_id');
                 $join->orOn('users.id','=','matches.visitor_manager_id');
             })
 
-            ->season($this->season)
+            ->season($current_season)
     		->name($this->search)
     		->team($this->team)
     		->user($this->manager)
@@ -172,17 +191,17 @@ class Matches extends Component
     	$regs = Match::
     		with('localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager', 'scores', 'playerStats.player', 'playerStats.seasonTeam.team')
             ->leftJoin('scores', 'scores.match_id', 'matches.id')
-   			->join('seasons_teams', function($join){
+   			->leftJoin('seasons_teams', function($join){
                 $join->on('seasons_teams.id','=','matches.local_team_id');
                 $join->orOn('seasons_teams.id','=','matches.visitor_team_id');
             })
-    		->join('teams', 'teams.id', 'seasons_teams.team_id')
-   			->join('users', function($join){
+    		->leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
+   			->leftJoin('users', function($join){
                 $join->on('users.id','=','matches.local_manager_id');
                 $join->orOn('users.id','=','matches.visitor_manager_id');
             })
 
-            ->season($this->season)
+            ->season($current_season)
     		->name($this->search)
     		->team($this->team)
     		->user($this->manager)

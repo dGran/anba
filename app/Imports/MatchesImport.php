@@ -27,6 +27,9 @@ class MatchesImport implements ToModel, WithHeadingRow
             'visitor_manager_id' => User::find($row['visitor_manager_id']) ? $row['visitor_manager_id'] : null,
             'stadium'            => $row['stadium'],
             'extra_times'        => $row['extra_times'] ?: 0,
+            'played'             => $row['played'] ?: 0,
+            'teamStats_state'    => $row['teamStats_state'] ?: 'error',
+            'playerStats_state'    => $row['playerStats_state'] ?: 'error',
         ]);
         event(new TableWasUpdated($reg, 'insert', $reg->toJson(JSON_PRETTY_PRINT), 'Registro importado'));
         return $reg;

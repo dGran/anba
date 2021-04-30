@@ -34,8 +34,17 @@ class MatchesScoresImport implements ToModel, WithHeadingRow
                 'visitor_score'             => $row['visitor_score'] ?: 0,
                 'order'                     => $row['order'] ?: 1,
                 'updated_user_id'           => User::find($row['updated_user_id']) ? $row['updated_user_id'] : null,
+                'created_at'                => $row['created_at'] ?: now(),
+                'updated_at'                => $row['updated_at'] ?: now(),
             ]);
             event(new TableWasUpdated($reg, 'insert', $reg->toJson(JSON_PRETTY_PRINT), 'Registro importado'));
+            if ($row['local_score'] > 0 && $row['visitor_score'] > 0) {
+                $match = Match::find($row['match_id']);
+                $before = $match->toJson(JSON_PRETTY_PRINT);
+                $match->played = 1;
+                $match->save();
+                event(new TableWasUpdated($match, 'update', $match->toJson(JSON_PRETTY_PRINT), $before));
+            }
             return $reg;
         }
     }

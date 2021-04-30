@@ -7,9 +7,9 @@
 						<label for="season" class="text-xs uppercase">
 							Temporada
 						</label>
-						<select id="season" class="appearance-none rounded text-sm | py-1.5 px-3 mt-1 | bg-white dark:bg-gray-700 | border border-gray-300 dark:border-gray-850 focus:border-gray-400 hover:border-gray-400 dark:focus:border-gray-550 dark:hover:border-gray-550 | focus:outline-none" wire:model="season">
-							@foreach ($seasons as $season)
-								<option value="{{ $season->slug }}">{{ $season->name }}</option>
+						<select id="season" class="appearance-none rounded text-sm | py-1.5 px-3 mt-1 | bg-white dark:bg-gray-700 | border border-gray-300 dark:border-gray-850 focus:border-gray-400 hover:border-gray-400 dark:focus:border-gray-550 dark:hover:border-gray-550 | focus:outline-none" wire:model="season" wire:change="changeSeasonFilter">
+							@foreach ($seasons as $filter_season)
+								<option value="{{ $filter_season->slug }}">{{ $filter_season->name }}</option>
 							@endforeach
 						</select>
 					</div>
@@ -17,7 +17,7 @@
 						<label for="teams" class="text-xs uppercase">
 							Equipo
 						</label>
-						<select id="teams" class="appearance-none rounded text-sm | py-1.5 px-3 mt-1 | bg-white dark:bg-gray-700 | border border-gray-300 dark:border-gray-850 focus:border-gray-400 hover:border-gray-400 dark:focus:border-gray-550 dark:hover:border-gray-550 | focus:outline-none" wire:model="team">
+						<select id="teams" class="appearance-none rounded text-sm | py-1.5 px-3 mt-1 | bg-white dark:bg-gray-700 | border border-gray-300 dark:border-gray-850 focus:border-gray-400 hover:border-gray-400 dark:focus:border-gray-550 dark:hover:border-gray-550 | focus:outline-none" wire:model="team" wire:change="changeTeamFilter">
 							<option value="all">Todos</option>
 							@foreach ($season_teams as $season_team)
 								<option value="{{ $season_team->id }}">{{ $season_team->team->medium_name }}</option>
@@ -28,7 +28,7 @@
 						<label for="manager" class="text-xs uppercase">
 							Manager
 						</label>
-						<select id="manager" class="appearance-none rounded text-sm | py-1.5 px-3 mt-1 | bg-white dark:bg-gray-700 | border border-gray-300 dark:border-gray-850 focus:border-gray-400 hover:border-gray-400 dark:focus:border-gray-550 dark:hover:border-gray-550 | focus:outline-none" wire:model="manager">
+						<select id="manager" class="appearance-none rounded text-sm | py-1.5 px-3 mt-1 | bg-white dark:bg-gray-700 | border border-gray-300 dark:border-gray-850 focus:border-gray-400 hover:border-gray-400 dark:focus:border-gray-550 dark:hover:border-gray-550 | focus:outline-none" wire:model="manager" wire:change="changeManagerFilter">
 							<option value="all">Todos</option>
 							@foreach ($managers as $manager)
 								<option value="{{ $manager->id }}">{{ $manager->name }}</option>

@@ -1,4 +1,4 @@
-@section('title', 'Conferencias')
+@section('title', 'Usuarios')
 
 @section('content_header')
     <h5 class="content-header-name">
