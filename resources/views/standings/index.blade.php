@@ -9,6 +9,7 @@
 		@if (isset($table_positions))
 			@if ($view == 'conference')
 				@include('standings.conferences_view')
+				@include('standings.current_playoffs')
 			@endif
 			@if ($view == 'division')
 				@include('standings.divisions_view')
@@ -24,8 +25,6 @@
 				No existen temporadas configuradas, contacta con los administradores o espera a que se actualice el contenido.
 			</div>
 		@endif
-
-		@include('standings.current_playoffs')
 
 	</div>
 
