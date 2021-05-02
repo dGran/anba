@@ -139,17 +139,6 @@ class Matches extends Component
 	            ->orderBy('name', 'asc')
 	            ->get();
 
-	    	// $managers = SeasonTeam::
-	    	// with('team')
-	    	// ->join('teams', 'teams.id', 'seasons_teams.team_id')
-	    	// ->join('users', 'users.id', 'teams.manager_id')
-	    	// ->where('season_id', $current_season->id)
-	    	// ->whereNotNull('teams.manager_id')
-	    	// ->select('users.*')
-	    	// ->distinct()
-	    	// ->orderBy('users.name', 'asc')
-	    	// ->get();
-
 	    	// $this->set_teams_table_data();
 
 	        return view('matches.index', [

@@ -24,6 +24,9 @@
 				No existen temporadas configuradas, contacta con los administradores o espera a que se actualice el contenido.
 			</div>
 		@endif
+
+		@include('standings.current_playoffs')
+
 	</div>
 
 	@include('standings.team_info_modal')
