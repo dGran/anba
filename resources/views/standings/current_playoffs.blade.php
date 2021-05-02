@@ -1,5 +1,5 @@
-<p class="text-2xl pb-2 mt-8">
-	Configuración provisional de PlayOffs
+<p class="font-semibold text-xl px-3 md:px-0 mt-8 pb-2">
+	PlayOffs provisionales
 </p>
 <div class="shadow-md rounded-lg mx-3 md:mx-0">
 	<div class="overflow-x-auto bg-white dark:bg-gray-750 rounded-lg p-4">
