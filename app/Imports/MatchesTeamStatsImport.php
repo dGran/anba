@@ -46,6 +46,13 @@ class MatchesTeamStatsImport implements ToModel, WithHeadingRow
                 'updated_user_id'   => User::find($row['updated_user_id']) ? $row['updated_user_id'] : null,
             ]);
             event(new TableWasUpdated($reg, 'insert', $reg->toJson(JSON_PRETTY_PRINT), 'Registro importado'));
+
+            $match = Match::find($reg->id);
+            $before = $match->toJson(JSON_PRETTY_PRINT);
+            $match->teamStats_state = $reg->checkTeamStats();
+            $match->save();
+            event(new TableWasUpdated($match, 'update', $match->toJson(JSON_PRETTY_PRINT), $before));
+
             return $reg;
         }
     }

@@ -51,7 +51,7 @@
 
     @include('admin.partials.modals.destroy')
     @include('admin.partials.modals.duplicate')
-    @include('admin.partials.modals.import_table')
+    @include('admin.matches.modals.import_table')
     @include('admin.matches.modals.import_scores')
     @include('admin.matches.modals.import_team_stats')
     @include('admin.matches.modals.import_player_stats')

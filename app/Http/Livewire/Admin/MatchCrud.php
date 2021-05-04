@@ -744,7 +744,7 @@ class MatchCrud extends Component
         if ($this->fileImport != null) {
         	Excel::import(new MatchesImport, $this->fileImport);
         	// (new TeamsImport)->queue($this->fileImport);
-    		session()->flash('success', 'Registros importados correctamente!.');
+    		session()->flash('success', 'Proceso de importación de datos finalizado.');
         } else {
         	session()->flash('error', 'Ningún archivo seleccionado.');
         }
@@ -800,7 +800,7 @@ class MatchCrud extends Component
         if ($this->fileImport != null) {
         	Excel::import(new MatchesScoresImport, $this->fileImport);
         	// (new TeamsImport)->queue($this->fileImport);
-    		session()->flash('success', 'Registros importados correctamente!.');
+    		session()->flash('success', 'Proceso de importación de datos finalizado.');
         } else {
         	session()->flash('error', 'Ningún archivo seleccionado.');
         }
@@ -817,7 +817,7 @@ class MatchCrud extends Component
     {
         if ($this->fileImport != null) {
         	Excel::import(new MatchesTeamStatsImport, $this->fileImport);
-    		session()->flash('success', 'Registros importados correctamente!.');
+    		session()->flash('success', 'Proceso de importación de datos finalizado.');
         } else {
         	session()->flash('error', 'Ningún archivo seleccionado.');
         }
@@ -834,7 +834,7 @@ class MatchCrud extends Component
     {
         if ($this->fileImport != null) {
         	Excel::import(new MatchesPlayerStatsImport, $this->fileImport);
-    		session()->flash('success', 'Registros importados correctamente!.');
+    		session()->flash('success', 'Proceso de importación de datos finalizado.');
         } else {
         	session()->flash('error', 'Ningún archivo seleccionado.');
         }

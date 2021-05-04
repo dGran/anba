@@ -1,18 +1,20 @@
-<div wire:ignore.self class="modal fade" tabindex="-1" role="dialog" id="importTeamStatsModal" data-keyboard="true" data-backdrop="static">
-    <form wire:submit.prevent="importTeamStats" enctype="multipart/form-data">
+<div wire:ignore.self class="modal fade" tabindex="-1" role="dialog" id="importModal" data-keyboard="true" data-backdrop="static">
+    <form wire:submit.prevent="import" enctype="multipart/form-data">
         <div class="modal-dialog modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title text-base text-uppercase font-medium tracking-wide">
-                        <span>Importar estadísticas de equipos</span>
+                        <span>Importar {{ $modelPlural }}</span>
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="closeAnyModal">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body text-center">
-                    <p>Selecciona el archivo que contiene los datos (.xls, .xlsx, .csv)</p>
-                    <p class="font-weight-bold m-0 mb-1 text-center">Los registros con ids inválidas de partido o equipo serán ignorados.</p>
+                <div class="modal-body">
+                    <p class="text-center">Selecciona el archivo que contiene los datos (.xls, .xlsx, .csv)</p>
+                    <p class="font-weight-bold m-0 mb-1 text-center">Los registros con ids inválidas de temporada, equipo local o equipo visitante serán ignorados.</p>
+                    <p class="m-0 mt-3 pt-3 mb-1 text-sm text-muted border-top"><strong>Modo edición:</strong> Introduce la id del partido para editar datos, tan sólo se importarán datos de equipos, managers y estadios.</p>
+                    <p class="m-0 mt-3 mb-1 text-sm text-muted"><strong>Estadios:</strong> si no se introducen los estadios se actualizará con el nombre de estadio actual del equipo.</p>
                     <div class="form-group">
                         <div class="custom-file" style="text-align: left; margin-top: 1.5rem">
                             <input type="file" class="custom-file-input fileImport" id="fileImport" wire:model="fileImport" accept=".xls, .xlsx, .csv">
