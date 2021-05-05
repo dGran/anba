@@ -15,7 +15,7 @@
 					</div>
 				</td>
 				<td colspan="5">
-					<img src="https://www.pngkey.com/png/full/42-422915_western-conference-2018-nba-playoffs-logo.png" alt="Playoffs" class="w-60 mx-auto pt-4">
+					<img src="{{ asset('img/playoffs.png') }}" alt="Playoffs" class="w-60 mx-auto pt-4">
 				</td>
 				<td colspan="5">
 					<div class="flex items-center justify-end mb-6">
