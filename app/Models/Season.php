@@ -638,4 +638,13 @@ class Season extends Model
             ->groupBy('player_id',)
             ->take(3)->get();
     }
+
+    public function hasPlayIn()
+    {
+        if ($this->play_in_start > 0 && $this->play_in_end > 0) {
+            return true;
+        }
+
+        return false;
+    }
 }

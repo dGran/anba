@@ -55,10 +55,22 @@
 				{{-- left side --}}
 				<td class="w-48 h-14" style="min-width: 12em; max-width: 12em">
 					<div class="flex items-center">
-						<img src="{{ $table_positions[0][6]['team']->team->getImg() }}" alt="{{ $table_positions[0][6]['team']->team->short_name }}" class="w-9 h-9 object-cover m-1">
-						<img src="{{ $table_positions[0][7]['team']->team->getImg() }}" alt="{{ $table_positions[0][7]['team']->team->short_name }}" class="w-9 h-9 object-cover m-1">
-						<img src="{{ $table_positions[0][8]['team']->team->getImg() }}" alt="{{ $table_positions[0][8]['team']->team->short_name }}" class="w-9 h-9 object-cover m-1">
-						<img src="{{ $table_positions[0][9]['team']->team->getImg() }}" alt="{{ $table_positions[0][9]['team']->team->short_name }}" class="w-9 h-9 object-cover m-1">
+						@if ($current_season->hasPlayIn())
+							<img src="{{ $table_positions[0][6]['team']->team->getImg() }}" alt="{{ $table_positions[0][6]['team']->team->short_name }}" class="w-9 h-9 object-cover m-1">
+							<img src="{{ $table_positions[0][7]['team']->team->getImg() }}" alt="{{ $table_positions[0][7]['team']->team->short_name }}" class="w-9 h-9 object-cover m-1">
+							<img src="{{ $table_positions[0][8]['team']->team->getImg() }}" alt="{{ $table_positions[0][8]['team']->team->short_name }}" class="w-9 h-9 object-cover m-1">
+							<img src="{{ $table_positions[0][9]['team']->team->getImg() }}" alt="{{ $table_positions[0][9]['team']->team->short_name }}" class="w-9 h-9 object-cover m-1">
+						@else
+							<img src="{{ $table_positions[0][7]['team']->team->getImg() }}" alt="{{ $table_positions[0][7]['team']->team->short_name }}" class="w-12 h-12 object-cover m-1">
+							<div class="ml-1.5 flex flex-col text-left">
+								<p class="text-sm uppercase leading-4">
+									{{ $table_positions[0][7]['team']->team->medium_name }}
+								</p>
+								<p class="text-xs">
+									{{ $table_positions[0][7]['team']->team->user->name }}
+								</p>
+							</div>
+						@endif
 					</div>
 				</td>
 				<td></td>
@@ -77,10 +89,22 @@
 				<td class="w-6 border-r border-gray-300 dark:border-gray-600" style="min-width: 1.5em; max-width: 1.5em"></td>
 				<td class="w-48 h-14" style="min-width: 12em; max-width: 12em">
 					<div class="flex items-center justify-end">
-						<img src="{{ $table_positions[1][6]['team']->team->getImg() }}" alt="{{ $table_positions[1][6]['team']->team->short_name }}" class="w-9 h-9 object-cover m-1">
-						<img src="{{ $table_positions[1][7]['team']->team->getImg() }}" alt="{{ $table_positions[1][7]['team']->team->short_name }}" class="w-9 h-9 object-cover m-1">
-						<img src="{{ $table_positions[1][8]['team']->team->getImg() }}" alt="{{ $table_positions[1][8]['team']->team->short_name }}" class="w-9 h-9 object-cover m-1">
-						<img src="{{ $table_positions[1][9]['team']->team->getImg() }}" alt="{{ $table_positions[1][9]['team']->team->short_name }}" class="w-9 h-9 object-cover m-1">
+						@if ($current_season->hasPlayIn())
+							<img src="{{ $table_positions[1][6]['team']->team->getImg() }}" alt="{{ $table_positions[1][6]['team']->team->short_name }}" class="w-9 h-9 object-cover m-1">
+							<img src="{{ $table_positions[1][7]['team']->team->getImg() }}" alt="{{ $table_positions[1][7]['team']->team->short_name }}" class="w-9 h-9 object-cover m-1">
+							<img src="{{ $table_positions[1][8]['team']->team->getImg() }}" alt="{{ $table_positions[1][8]['team']->team->short_name }}" class="w-9 h-9 object-cover m-1">
+							<img src="{{ $table_positions[1][9]['team']->team->getImg() }}" alt="{{ $table_positions[1][9]['team']->team->short_name }}" class="w-9 h-9 object-cover m-1">
+						@else
+							<div class="mr-1.5 flex flex-col text-right">
+								<p class="text-sm uppercase leading-4">
+									{{ $table_positions[1][7]['team']->team->medium_name }}
+								</p>
+								<p class="text-xs">
+									{{ $table_positions[1][7]['team']->team->user->name }}
+								</p>
+							</div>
+							<img src="{{ $table_positions[1][7]['team']->team->getImg() }}" alt="{{ $table_positions[1][7]['team']->team->short_name }}" class="w-12 h-12 object-cover m-1">
+						@endif
 					</div>
 				</td>
 			</tr>
@@ -409,8 +433,22 @@
 				{{-- left side --}}
 				<td class="w-48 h-14" style="min-width: 12em; max-width: 12em">
 					<div class="flex items-center">
-						<img src="{{ $table_positions[0][6]['team']->team->getImg() }}" alt="{{ $table_positions[0][6]['team']->team->short_name }}" class="w-9 h-9 object-cover m-1">
-						<img src="{{ $table_positions[0][7]['team']->team->getImg() }}" alt="{{ $table_positions[0][7]['team']->team->short_name }}" class="w-9 h-9 object-cover m-1">
+						@if ($current_season->hasPlayIn())
+							<img src="{{ $table_positions[0][6]['team']->team->getImg() }}" alt="{{ $table_positions[0][6]['team']->team->short_name }}" class="w-9 h-9 object-cover m-1">
+							<img src="{{ $table_positions[0][7]['team']->team->getImg() }}" alt="{{ $table_positions[0][7]['team']->team->short_name }}" class="w-9 h-9 object-cover m-1">
+						@else
+							<img src="{{ $table_positions[0][6]['team']->team->getImg() }}" alt="{{ $table_positions[0][6]['team']->team->short_name }}" class="w-12 h-12 object-cover m-1">
+							<div class="ml-1.5 flex flex-col text-left">
+								<p class="text-sm uppercase leading-4">
+									{{ $table_positions[0][6]['team']->team->medium_name }}
+								</p>
+								<p class="text-xs">
+									{{ $table_positions[0][6]['team']->team->user->name }}
+								</p>
+							</div>
+						@endif
+					</div>
+					<div class="flex items-center">
 					</div>
 				</td>
 				<td></td>
@@ -429,8 +467,20 @@
 				<td></td>
 				<td class="w-48 h-14" style="min-width: 12em; max-width: 12em">
 					<div class="flex items-center justify-end">
-						<img src="{{ $table_positions[1][6]['team']->team->getImg() }}" alt="{{ $table_positions[1][6]['team']->team->short_name }}" class="w-9 h-9 object-cover m-1">
-						<img src="{{ $table_positions[1][7]['team']->team->getImg() }}" alt="{{ $table_positions[1][7]['team']->team->short_name }}" class="w-9 h-9 object-cover m-1">
+						@if ($current_season->hasPlayIn())
+							<img src="{{ $table_positions[1][6]['team']->team->getImg() }}" alt="{{ $table_positions[1][6]['team']->team->short_name }}" class="w-9 h-9 object-cover m-1">
+							<img src="{{ $table_positions[1][7]['team']->team->getImg() }}" alt="{{ $table_positions[1][7]['team']->team->short_name }}" class="w-9 h-9 object-cover m-1">
+						@else
+							<div class="mr-1.5 flex flex-col text-right">
+								<p class="text-sm uppercase leading-4">
+									{{ $table_positions[1][6]['team']->team->medium_name }}
+								</p>
+								<p class="text-xs">
+									{{ $table_positions[1][6]['team']->team->user->name }}
+								</p>
+							</div>
+							<img src="{{ $table_positions[1][6]['team']->team->getImg() }}" alt="{{ $table_positions[1][6]['team']->team->short_name }}" class="w-12 h-12 object-cover m-1">
+						@endif
 					</div>
 				</td>
 			</tr>
