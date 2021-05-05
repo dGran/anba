@@ -20,6 +20,7 @@ class MatchesTeamStatsImport implements ToModel, WithHeadingRow
     public function model(array $row)
     {
         $match = Match::find($row['match_id']);
+        $before = $match->toJson(JSON_PRETTY_PRINT);
         $season_team = SeasonTeam::find($row['season_team_id']);
         if ($match && $season_team && ($season_team->id == $match->local_team_id || $season_team->id == $match->visitor_team_id)) {
             $regs = TeamStat::where('match_id', $match->id)->where('season_team_id', $season_team->id)->get();
@@ -47,9 +48,7 @@ class MatchesTeamStatsImport implements ToModel, WithHeadingRow
             ]);
             event(new TableWasUpdated($reg, 'insert', $reg->toJson(JSON_PRETTY_PRINT), 'Registro importado'));
 
-            $match = Match::find($reg->id);
-            $before = $match->toJson(JSON_PRETTY_PRINT);
-            $match->teamStats_state = $reg->checkTeamStats();
+            $match->teamStats_state = $match->checkTeamStats();
             $match->save();
             event(new TableWasUpdated($match, 'update', $match->toJson(JSON_PRETTY_PRINT), $before));
 
