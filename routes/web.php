@@ -12,6 +12,7 @@ use App\Http\Livewire\Admin\AdminLogCrud;
 
 use App\Http\Livewire\Admin\SeasonCrud;
 use App\Http\Livewire\Admin\MatchCrud;
+use App\Http\Livewire\Admin\PlayoffCrud;
 use App\Http\Livewire\Admin\ConferenceCrud;
 use App\Http\Livewire\Admin\DivisionCrud;
 use App\Http\Livewire\Admin\TeamCrud;
@@ -77,6 +78,7 @@ Route::middleware(['auth:sanctum', 'verified', 'role:super-admin|admin', 'passwo
 	Route::get('noticias', PostCrud::class)->name('admin.posts');
 	Route::get('temporadas', SeasonCrud::class)->name('admin.seasons');
 	Route::get('temporadas/{season:slug}/partidos', MatchCrud::class)->name('admin.matches');
+	Route::get('temporadas/{season:slug}/playoffs', PlayoffCrud::class)->name('admin.playoffs');
 
 	Route::get('configuracion/notificaciones', ConfigNotificationsCrud::class)->name('admin.config.notifications');
 });

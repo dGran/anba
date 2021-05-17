@@ -1,9 +1,6 @@
 <header class="">
     <div class="max-w-7xl mx-auto p-4 sm:px-6 lg:px-8 border-b md:border-b-0 border-gray-300 dark:border-gray-650">
-{{-- 		<p class="font-semibold text-base md:text-2xl px-3 md:px-0 py-3">
-			{{ $current_season ? "Temporada - $current_season->name" : '' }}
-		</p> --}}
-		@if (isset($table_positions))
+		@if (isset($table_positions) || isset($playoff))
 			<div class="my-2">
 				<div class="filters flex items-center select-none">
 					<div class="flex flex-col">
@@ -17,6 +14,17 @@
 						</select>
 					</div>
 					<div class="flex flex-col ml-4">
+						<label for="phase" class="text-xs uppercase">
+							Fase
+						</label>
+						<select id="phase" class="appearance-none rounded text-sm | py-1.5 px-3 mt-1 | bg-white dark:bg-gray-700 | border light:border-gray-300 dark:border-gray-850 light:focus:border-gray-400 light:hover:border-gray-400 dark:focus:border-gray-550 dark:hover:border-gray-550 | focus:outline-none" wire:model="phase">
+							<option value="regular">Liga regular</option>
+							@foreach ($season->playoffs->sortBy('order') as $playoff)
+								<option value="{{ $playoff->id }}">{{ $playoff->name }}</option>
+							@endforeach
+						</select>
+					</div>
+					<div class="flex flex-col ml-4 {{ $phase != 'regular' ? 'hidden' : '' }}">
 						<label for="view" class="text-xs uppercase">
 							Vista
 						</label>

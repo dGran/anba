@@ -29,7 +29,7 @@ class MatchesImport implements ToModel, WithHeadingRow
 
                     $reg = Match::create([
                         'season_id'          => $row['season_id'],
-                        'round_id'           => $row['round_id'],
+                        'clash_id'           => $row['clash_id'],
                         'local_team_id'      => $row['local_team_id'],
                         'local_manager_id'   => User::find($row['local_manager_id']) ? $row['local_manager_id'] : null,
                         'visitor_team_id'    => $row['visitor_team_id'],

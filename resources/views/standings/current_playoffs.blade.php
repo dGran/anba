@@ -3,9 +3,6 @@
 </p>
 <div class="shadow-md rounded-lg mx-3 md:mx-0">
 	<div class="overflow-x-auto bg-white dark:bg-gray-750 rounded-lg p-4">
-
-
-
 		<table class="w-full mb-2">
 			<tr>
 				<td colspan="5">

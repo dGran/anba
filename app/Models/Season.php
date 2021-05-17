@@ -36,6 +36,10 @@ class Season extends Model
         return $this->hasMany('App\Models\SeasonScoreHeader');
     }
 
+    public function playoffs() {
+        return $this->hasMany('App\Models\Playoff');
+    }
+
     public function scopeName($query, $value)
     {
         if (trim($value) != "") {

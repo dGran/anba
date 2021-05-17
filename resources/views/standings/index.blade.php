@@ -1,29 +1,33 @@
 <div>
 	<!-- Page Heading -->
-	@if (isset($table_positions))
+	@if (isset($table_positions) || isset($playoff))
 		@include('standings.header')
 	@endif
 
 	<!-- Page Content -->
 	<div class="max-w-7xl mx-auto px-1 sm:px-3 md:px-6 lg:px-8 my-6 md:mt-0">
-		@if (isset($table_positions))
-			@if ($view == 'conference')
-				@include('standings.conferences_view')
-				@include('standings.current_playoffs')
-			@endif
-			@if ($view == 'division')
-				@include('standings.divisions_view')
-			@endif
-			@if ($view == 'general')
-				@include('standings.general_view')
+		@if ($phase == 'regular')
+			@if (isset($table_positions))
+				@if ($view == 'conference')
+					@include('standings.conferences_view')
+					@include('standings.current_playoffs')
+				@endif
+				@if ($view == 'division')
+					@include('standings.divisions_view')
+				@endif
+				@if ($view == 'general')
+					@include('standings.general_view')
+				@endif
+			@else
+				<div class="px-4 md:px-0 md:pt-4 h-screen md:h-auto">
+					<h3 class="font-bold text-3xl">
+						Ups!
+					</h3>
+					No existen temporadas configuradas, contacta con los administradores o espera a que se actualice el contenido.
+				</div>
 			@endif
 		@else
-			<div class="px-4 md:px-0 md:pt-4 h-screen md:h-auto">
-				<h3 class="font-bold text-3xl">
-					Ups!
-				</h3>
-				No existen temporadas configuradas, contacta con los administradores o espera a que se actualice el contenido.
-			</div>
+			@include('standings.playoffs')
 		@endif
 
 	</div>

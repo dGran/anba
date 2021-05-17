@@ -6,11 +6,16 @@ use Livewire\Component;
 use App\Models\Season;
 use App\Models\SeasonDivision;
 use App\Models\SeasonConference;
+use App\Models\Playoff;
+use App\Models\PlayoffRound;
+use App\Models\PlayoffClash;
+use App\Models\Match;
 
 class Standings extends Component
 {
 	public $season, $active_season;
 	public $view = "conference";
+	public $phase = "regular";
 	public $order = "wavg";
 
 	public $blank_view = false;
@@ -20,6 +25,7 @@ class Standings extends Component
 	// queryString
 	protected $queryString = [
 		'season',
+		'phase' => ['except' => 'regular'],
 		'view' => ['except' => 'conference'],
 		'order' => ['except' => 'wavg'],
 	];
@@ -59,21 +65,27 @@ class Standings extends Component
 	    		->orderBy('divisions.name', 'asc')
 	    		->get();
 
-	        switch ($this->view) {
-	            case 'conference':
-	            	foreach ($seasons_conferences as $key => $conference) {
-	                	$table_positions[$key] = $current_season->generateTable($this->view, $this->order, $conference->id, null);
-	            	}
-	                break;
-	            case 'division':
-	            	foreach ($seasons_divisions as $key => $division) {
-	                	$table_positions[$key] = $current_season->generateTable($this->view, $this->order, null, $division->id);
-	            	}
-	                break;
-	            case 'general':
-	            	$table_positions = $current_season->generateTable($this->view, $this->order, null, null);
-	                break;
-	        }
+			if ($this->phase == 'regular') {
+				$playoff = null;
+				switch ($this->view) {
+					case 'conference':
+						foreach ($seasons_conferences as $key => $conference) {
+							$table_positions[$key] = $current_season->generateTable($this->view, $this->order, $conference->id, null);
+						}
+						break;
+					case 'division':
+						foreach ($seasons_divisions as $key => $division) {
+							$table_positions[$key] = $current_season->generateTable($this->view, $this->order, null, $division->id);
+						}
+						break;
+					case 'general':
+						$table_positions = $current_season->generateTable($this->view, $this->order, null, null);
+						break;
+				}
+			} else {
+				$table_positions = null;
+				$playoff = Playoff::find($this->phase);
+			}
 
 	        return view('standings.index', [
 	        	'current_season' => $current_season,
@@ -81,6 +93,7 @@ class Standings extends Component
 	        	'seasons_conferences' => $seasons_conferences,
 	        	'seasons_divisions' => $seasons_divisions,
 				'table_positions' => $table_positions,
+				'playoff' => $playoff,
 	        ]);
     	} else {
 	        return view('standings.index', [
@@ -299,5 +312,65 @@ class Standings extends Component
             'extra_times' => $match->extra_times,
         ]);
     }
+
+	public function generateRounds()
+	{
+		$playoff = Playoff::find($this->phase);
+		$clashes = intdiv($playoff->num_participants, 2);
+		$round_counter = 1;
+		while ($clashes >= 1) {
+			$round = PlayoffRound::create([
+				"playoff_id" 	 => $playoff->id,
+				"name"		 	 => $clashes == 1 ? 'Final' : 'Ronda ' . $round_counter,
+				"matches_to_win" => 1,
+				"matches_max" 	 => 1
+			]);
+			$clash_order = 1;
+			for ($i=0; $i < $clashes ; $i++) {
+				if ($clashes == 1) {
+					$clash_destiny_order = null;
+				} else {
+					if ($clash_order % 2 == 0) {
+						$clash_destiny_order = $clash_order / 2;
+					} else {
+						$clash_destiny_order = ($clash_order + 1) / 2;
+					}
+				}
+				$clash = PlayoffClash::create([
+					"round_id" 	 	  => $round->id,
+					"local_team_id"	  => null,
+					"visitor_team_id" => null,
+					"order" 		  => $clash_order,
+					"destiny_order"   => $clash_destiny_order,
+				]);
+				$clash_order++;
+			}
+			$round_counter++;
+			$clashes = intdiv($clashes, 2);
+		}
+	}
+
+	public function generateFirstMatches()
+	{
+		$playoff = Playoff::find($this->phase);
+		$current_season = Season::where('slug', $this->season)->first();
+		foreach ($playoff->rounds->first()->clashes as $clash) {
+			if ($clash->local_team_id && $clash->visitor_team_id) {
+				$match = Match::create([
+					'season_id' 		 => $current_season->id,
+					'clash_id' 			 => $clash->id,
+					'local_team_id' 	 => $clash->local_team_id,
+					'local_manager_id' 	 => $clash->localTeam->team->user->id,
+					'visitor_team_id' 	 => $clash->visitor_team_id,
+					'visitor_manager_id' => $clash->visitorTeam->team->user->id,
+					'stadium' 			 => $clash->localTeam->team->stadium,
+					'extra_times' 		 => 0,
+					'played' 			 => 0,
+					'teamStats_state' 	 => 'error',
+					'playerStats_state'  => 'error'
+				]);
+			}
+		}
+	}
 
 }
