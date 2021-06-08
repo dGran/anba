@@ -6,10 +6,7 @@
     generar primeros partidos
 </x-buttons.primary>
 
-@foreach ($playoff->rounds as $round)
-    <h4>
-        {{ $round->name }}
-    </h4>
+@if ($playoff->full_bracket)
     @switch($playoff->num_participants)
         @case(2)
             @include('standings.playoffs.bracket_2')
@@ -23,4 +20,6 @@
         @default
             @include('standings.playoffs.bracket_16')
     @endswitch
-@endforeach
+@else
+    @include('standings.playoffs.simple_bracket')
+@endif

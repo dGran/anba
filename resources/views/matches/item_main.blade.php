@@ -12,6 +12,22 @@
 		</div>
 
 		<div class="flex-1 text-center truncate">
+			@if ($reg->clash)
+				@if ($reg->clash->round->playoff->playin_place)
+					<p class="text-xs truncate font-medium flex flex-col">
+						<span>{{ $reg->clash->round->playoff->name }}</span>
+						<span>{{ $reg->clash->round->name }}</span>
+					</p>
+				@else
+					<p class="text-xs truncate font-medium">
+						{{ $reg->clash->round->playoff->name }} - {{ $reg->clash->round->name }}
+					</p>
+				@endif
+			@else
+				<p class="text-xs truncate font-medium">
+					Liga Regular
+				</p>
+			@endif
 	    	<p class="text-xs truncate">{{ $reg->stadium }}</p>
 	    	<p class="font-bold text-2xl md:text-3xl my-1">{{ $reg->score() }}</p>
 	    	<p class="text-xs">

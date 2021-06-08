@@ -27,7 +27,8 @@ class CreatePlayoffsClashesTable extends Migration
                 ->constrained('seasons_teams')
                 ->onDelete('cascade');
             $table->integer('order');
-            $table->integer('destiny_order')->nullable();
+            $table->integer('destiny_clash')->nullable();
+            $table->boolean('destiny_clash_local')->nullable();
         });
     }
 

@@ -26,6 +26,7 @@ class CreatePlayoffsTable extends Migration
                 ->onDelete('cascade');
             $table->integer('order')->default(1);
             $table->integer('num_participants')->default(16);
+            $table->boolean('full_bracket')->default(true);
         });
     }
 

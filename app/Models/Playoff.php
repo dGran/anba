@@ -31,6 +31,11 @@ class Playoff extends Model
         return $this->hasMany('App\Models\PlayoffRound');
     }
 
+    public function getRound($order)
+    {
+        return PlayoffRound::where('playoff_id', $this->id)->where('order', $order)->first();
+    }
+
     public function canDestroy()
     {
         // apply logic

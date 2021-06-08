@@ -58,6 +58,11 @@ class Match extends Model
         return $this->hasOne('App\Models\MatchPoll');
     }
 
+    public function clash()
+    {
+        return $this->hasOne('App\Models\PlayoffClash', 'id', 'clash_id');
+    }
+
     public function playerStats()
     {
         return $this->hasMany('App\Models\PlayerStat');

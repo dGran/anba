@@ -21,6 +21,7 @@ class CreatePlayoffsRoundsTable extends Migration
             $table->string('name');
             $table->integer('matches_to_win');
             $table->integer('matches_max');
+            $table->integer('order')->default(1);
         });
     }
 
