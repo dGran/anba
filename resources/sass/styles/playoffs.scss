@@ -1,0 +1,14 @@
+.playoffs {
+    td {
+        height: 43px;
+    }
+    .round-name {
+        @apply text-xs uppercase font-medium align-bottom pb-1.5;
+        &.right {
+            @apply text-right;
+        }
+        &.center {
+            @apply text-center;
+        }
+    }
+}

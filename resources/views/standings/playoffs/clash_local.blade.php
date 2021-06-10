@@ -1,4 +1,4 @@
-<div class="flex items-center">
+<div class="flex items-center px-1.5">
     @if ($clash->localTeam || !$round->previousRound())
         @if ($position == 'left')
             <img src="{{ $clash->localTeam ? $clash->localTeam->team->getImg() : asset('storage/teams/default.png') }}" alt="{{ $clash->localTeam ? $clash->localTeam->team->short_name : '' }}" class="w-8 h-8 object-cover m-1">
@@ -10,7 +10,7 @@
                     {{ $clash->localTeam ? $clash->localTeam->team->user->name : '' }}
                 </p>
             </div>
-            @if ($clash->localTeam && $clash->visitorTeam)
+            {{-- @if ($clash->localTeam && $clash->visitorTeam)
                 <div class="w-8 font-bold text-xl">
                     @if ($clash->localResult() == 0 && $clash->visitorResult() == 0)
                         -
@@ -29,9 +29,9 @@
                         @endforeach
                     </div>
                 @endforeach
-            @endif
+            @endif --}}
         @else
-            @if ($clash->localTeam && $clash->visitorTeam)
+            {{-- @if ($clash->localTeam && $clash->visitorTeam)
                 <div class="w-8 font-bold text-xl">
                     @if ($clash->localResult() == 0 && $clash->visitorResult() == 0)
                         -
@@ -50,8 +50,8 @@
                         @endforeach
                     </div>
                 @endforeach
-            @endif
-            <div class="ml-1.5 flex flex-col text-left w-20">
+            @endif --}}
+            <div class="mr-1.5 flex flex-col text-right w-20">
                 <p class="text-xs uppercase leading-4">
                     {{ $clash->localTeam ? $clash->localTeam->team->medium_name : 'N/D' }}
                 </p>

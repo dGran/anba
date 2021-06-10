@@ -1,6 +1,6 @@
 <div class="shadow-md rounded-lg mx-3 md:mx-0">
 	<div class="overflow-x-auto bg-white dark:bg-gray-750 rounded-lg p-4">
-		<table class="mb-2">
+		<table class="playoffs mb-2 w-full">
 			<tr>
 				<td colspan="9">
 					<div class="flex items-center mb-6">
@@ -11,7 +11,11 @@
 
 			<tr>
 				@php $round = $playoff->getRound(1); @endphp
-				<td class="text-xs uppercase font-medium pb-1.5">
+				<td colspan="2" class="round-name">
+					{{ $round->name }} ({{ $round->matches_max }})
+				</td>
+				<td colspan="22"></td>
+				<td colspan="2" class="round-name right">
 					{{ $round->name }} ({{ $round->matches_max }})
 				</td>
 			</tr>
@@ -29,7 +33,7 @@
 				<td class="h-8 w-3"></td>
 				<td class="h-8 w-3"></td>
 				{{-- center side --}}
-				<td colspan="19" class="h-8 w-3"></td>
+				<td colspan="18" class="h-8 w-3"></td>
 				{{-- right side --}}
 				<td class="h-8 w-3"></td>
 				<td class="h-8 w-3"></td>
@@ -57,14 +61,14 @@
 				<td class="border-t border-r w-3"></td>
 				<td class="h-8 w-3"></td>
 				@php $round = $playoff->getRound(2); @endphp
-				<td class="text-xs uppercase font-medium align-bottom pb-1.5">
+				<td class="round-name">
 					{{ $round->name }} ({{ $round->matches_max }})
 				</td>
 				{{-- center side --}}
-				<td colspan="17" class="h-8 w-3"></td>
+				<td colspan="16" class="h-8 w-3"></td>
 				{{-- right side --}}
 				@php $round = $playoff->getRound(2); @endphp
-				<td class="text-xs uppercase font-medium align-bottom text-right pb-1.5">
+				<td class="round-name right">
 					{{ $round->name }} ({{ $round->matches_max }})
 				</td>
 				<td class="h-8 w-3"></td>
@@ -95,7 +99,7 @@
 				</td>
 				<td class="bg-gray-150 border text-sm h-8 w-6 text-center">-</td>
 				{{-- center side --}}
-				<td colspan="15" class="h-8 w-3"></td>
+				<td colspan="14" class="h-8 w-3"></td>
 				{{-- right side --}}
 				<td class="bg-gray-150 border text-sm h-8 w-6 text-center">-</td>
 				<td class="border h-8 w-36">
@@ -129,7 +133,7 @@
 				<td class="bg-gray-150 border text-sm h-8 w-6 text-center">-</td>
 				<td class="border-t border-r h-8 w-3"></td>
 				{{-- center side --}}
-				<td colspan="13" class="h-8 w-3"></td>
+				<td colspan="12" class="h-8 w-3"></td>
 				{{-- right side --}}
 				<td class="border-t border-l h-8 w-3"></td>
 				<td class="bg-gray-150 border text-sm h-8 w-6 text-center">-</td>
@@ -163,7 +167,7 @@
 				<td class="h-8 w-3"></td>
 				<td class="border-r h-8 w-3"></td>
 				{{-- center side --}}
-				<td colspan="13" class="h-8 w-3"></td>
+				<td colspan="12" class="h-8 w-3"></td>
 				{{-- right side --}}
 				<td class="border-l h-8 w-3"></td>
 				<td class="h-8 w-3"></td>
@@ -198,14 +202,14 @@
 				<td class="border-r h-8 w-3"></td>
 				<td class="h-8 w-3"></td>
 				@php $round = $playoff->getRound(3); @endphp
-				<td class="text-xs uppercase font-medium align-bottom pb-1.5">
+				<td class="round-name">
 					{{ $round->name }} ({{ $round->matches_max }})
 				</td>
 				{{-- center side --}}
-				<td colspan="9" class="h-8 w-3"></td>
+				<td colspan="8" class="h-8 w-3"></td>
 				{{-- right side --}}
 				@php $round = $playoff->getRound(3); @endphp
-				<td class="text-xs uppercase font-medium align-bottom text-right pb-1.5">
+				<td class="round-name right">
 					{{ $round->name }} ({{ $round->matches_max }})
 				</td>
 				<td class="h-8 w-3"></td>
@@ -251,6 +255,11 @@
 					@endphp
 					@include('standings.playoffs.clash_local', ['position' => 'right'])
 				</td>
+				<td class="border-b h-8 w-3"></td>
+				<td class="border-l h-8 w-3"></td>
+				<td rowspan="2" colspan="6" class="h-8 w-3 px-3 text-2xl">
+					CONF. OESTE
+				</td>
 			</tr>
 
 			{{-- row 8 --}}
@@ -269,8 +278,10 @@
 				{{-- center side --}}
 				<td class="border-t border-r h-8 w-3"></td>
 				<td class="h-8 w-3"></td>
-				<td class="h-8 w-3"></td>
-				<td class="h-8 w-3"></td>
+				@php $round = $playoff->getRound(4); @endphp
+				<td colspan="2" class="round-name center">
+					{{ $round->name }} ({{ $round->matches_max }})
+				</td>
 				<td class="h-8 w-3"></td>
 				<td class="border-t border-l h-8 w-3"></td>
 				{{-- right side --}}
@@ -282,8 +293,7 @@
 						@endphp
 					@include('standings.playoffs.clash_local', ['position' => 'right'])
 				</td>
-				<td class="h-8 w-3"></td>
-				<td class="border-r h-8 w-3"></td>
+				<td class="border-t border-r h-8 w-3"></td>
 			</tr>
 
 			{{-- row 9 --}}
@@ -305,7 +315,6 @@
 				<td class="h-8 w-3"></td>
 				<td class="h-8 w-3"></td>
 				<td class="h-8 w-3"></td>
-
 				{{-- center side --}}
 				<td class="border-r h-8 w-3"></td>
 				<td class="h-8 w-3"></td>
@@ -313,11 +322,29 @@
 					@php
 						$round = $playoff->getRound(4);
 						$clash = $round->getClash(1);
-					@endphp
+						@endphp
 					@include('standings.playoffs.clash_local', ['position' => 'left'])
 				</td>
 				<td class="bg-gray-150 border text-sm w-6 text-center">-</td>
 				<td class="border-r h-8 w-3"></td>
+				{{-- right side --}}
+				<td class="h-8 w-3"></td>
+				<td class="h-8 w-3"></td>
+				<td class="h-8 w-3"></td>
+				<td class="h-8 w-3"></td>
+				<td class="border-l h-8 w-3"></td>
+				<td class="h-8 w-3"></td>
+				<td class="h-8 w-3"></td>
+				<td class="h-8 w-3"></td>
+				<td class="h-8 w-3"></td>
+				<td class="bg-gray-150 border text-sm w-6 text-center">-</td>
+				<td class="border h-8 w-36">
+					@php
+						$round = $playoff->getRound(1);
+						$clash = $round->getClash(7);
+					@endphp
+					@include('standings.playoffs.clash_local', ['position' => 'right'])
+				</td>
 			</tr>
 
 			{{-- row 10 --}}
@@ -340,7 +367,6 @@
 				<td class="h-8 w-3"></td>
 				<td class="h-8 w-3"></td>
 				<td class="h-8 w-3"></td>
-
 				{{-- center side --}}
 				<td class="border-t h-8 w-3"></td>
 				<td class="border h-8 w-36">
@@ -352,6 +378,24 @@
 				</td>
 				<td class="bg-gray-150 border text-sm w-6 text-center">-</td>
 				<td class="border-t h-8 w-3"></td>
+				{{-- right side --}}
+				<td class="h-8 w-3"></td>
+				<td class="h-8 w-3"></td>
+				<td class="h-8 w-3"></td>
+				<td class="h-8 w-3"></td>
+				<td class="border-l h-8 w-3"></td>
+				<td class="h-8 w-3"></td>
+				<td class="h-8 w-3"></td>
+				<td class="h-8 w-3"></td>
+				<td class="border-t border-l w-3"></td>
+				<td class="bg-gray-150 border text-sm w-6 text-center">-</td>
+				<td class="border h-8 w-36">
+					@php
+						$round = $playoff->getRound(1);
+						$clash = $round->getClash(7);
+					@endphp
+					@include('standings.playoffs.clash_visitor', ['position' => 'right'])
+				</td>
 			</tr>
 
 			{{-- row 11 --}}
@@ -370,6 +414,22 @@
 				</td>
 				<td class="bg-gray-150 border text-sm w-6 text-center">-</td>
 				<td class="border-b border-r h-8 w-3"></td>
+				{{-- center side --}}
+				<td colspan="12" class="h-8 w-3"></td>
+				{{-- right side --}}
+				<td class="border-b border-l h-8 w-3"></td>
+				<td class="bg-gray-150 border text-sm w-6 text-center">-</td>
+				<td class="border h-8 w-36">
+					@php
+						$round = $playoff->getRound(2);
+						$clash = $round->getClash(4);
+					@endphp
+					@include('standings.playoffs.clash_local', ['position' => 'right'])
+				</td>
+				<td class="border-b h-8 w-3"></td>
+				<td class="border-l h-8 w-3"></td>
+				<td class="h-8 w-3"></td>
+				<td class="h-8 w-3"></td>
 			</tr>
 
 			{{-- row 12 --}}
@@ -387,6 +447,21 @@
 					@include('standings.playoffs.clash_visitor', ['position' => 'left'])
 				</td>
 				<td class="bg-gray-150 border text-sm w-6 text-center">-</td>
+				{{-- center side --}}
+				<td colspan="14" class="h-8 w-3"></td>
+				{{-- right side --}}
+				<td class="bg-gray-150 border text-sm w-6 text-center">-</td>
+				<td class="border h-8 w-36">
+					@php
+						$round = $playoff->getRound(2);
+						$clash = $round->getClash(4);
+					@endphp
+					@include('standings.playoffs.clash_visitor', ['position' => 'right'])
+				</td>
+				<td class="h-8 w-3"></td>
+				<td class="border-l h-8 w-3"></td>
+				<td class="h-8 w-3"></td>
+				<td class="h-8 w-3"></td>
 			</tr>
 
 			{{-- row 13 --}}
@@ -402,6 +477,19 @@
 				<td class="bg-gray-150 border text-sm w-6 text-center">-</td>
 				<td class="border-b border-r w-3"></td>
 				<td class="h-8 w-3"></td>
+				{{-- center side --}}
+				<td colspan="18" class="h-8 w-3"></td>
+				{{-- right side --}}
+				<td class="h-8 w-3"></td>
+				<td class="border-b border-l w-3"></td>
+				<td class="bg-gray-150 border text-sm w-6 text-center">-</td>
+				<td class="border h-8 w-36">
+					@php
+						$round = $playoff->getRound(1);
+						$clash = $round->getClash(8);
+					@endphp
+					@include('standings.playoffs.clash_local', ['position' => 'right'])
+				</td>
 			</tr>
 
 			{{-- row 14 --}}
@@ -417,6 +505,19 @@
 				<td class="bg-gray-150 border text-sm w-6 text-center">-</td>
 				<td class="w-3"></td>
 				<td class="w-3"></td>
+				{{-- center side --}}
+				<td colspan="18" class="h-8 w-3"></td>
+				{{-- right side --}}
+				<td class="w-3"></td>
+				<td class="w-3"></td>
+				<td class="bg-gray-150 border text-sm w-6 text-center">-</td>
+				<td class="border h-8 w-36">
+					@php
+						$round = $playoff->getRound(1);
+						$clash = $round->getClash(8);
+					@endphp
+					@include('standings.playoffs.clash_visitor', ['position' => 'right'])
+				</td>
 			</tr>
 
 		</table>
