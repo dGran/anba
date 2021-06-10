@@ -1,12 +1,12 @@
 <div class="flex items-center">
     @if ($clash->visitorTeam || !$round->previousRound())
         @if ($position == 'left')
-            <img src="{{ $clash->visitorTeam ? $clash->visitorTeam->team->getImg() : asset('storage/teams/default.png') }}" alt="{{ $clash->visitorTeam ? $clash->visitorTeam->team->short_name : '' }}" class="w-12 h-12 object-cover m-1">
-            <div class="ml-1.5 flex flex-col text-left w-32">
-                <p class="text-sm uppercase leading-4">
+            <img src="{{ $clash->visitorTeam ? $clash->visitorTeam->team->getImg() : asset('storage/teams/default.png') }}" alt="{{ $clash->visitorTeam ? $clash->visitorTeam->team->short_name : '' }}" class="w-8 h-8 object-cover m-1">
+            <div class="ml-1.5 flex flex-col text-left w-20">
+                <p class="text-xs uppercase leading-4">
                     {{ $clash->visitorTeam ? $clash->visitorTeam->team->medium_name : 'N/D' }}
                 </p>
-                <p class="text-xs">
+                <p class="text-xxs">
                     {{ $clash->visitorTeam ? $clash->visitorTeam->team->user->name : '' }}
                 </p>
             </div>
@@ -19,7 +19,7 @@
                     @endif
                 </div>
                 @foreach ($clash->matches as $match)
-                    <div class="w-8 text-xs">
+                    <div class="w-8 text-xxs">
                         @foreach ($match->scores as $score)
                             @if ($clash->local_team_id == $match->local_team_id)
                                 {{ $score->local_score }}
@@ -40,7 +40,7 @@
                     @endif
                 </div>
                 @foreach ($clash->matches as $match)
-                    <div class="w-8 text-xs">
+                    <div class="w-8 text-xxs">
                         @foreach ($match->scores as $score)
                             @if ($clash->local_team_id == $match->local_team_id)
                                 {{ $score->local_score }}
@@ -51,21 +51,21 @@
                     </div>
                 @endforeach
             @endif
-            <div class="ml-1.5 flex flex-col text-left w-32">
-                <p class="text-sm uppercase leading-4">
+            <div class="ml-1.5 flex flex-col text-left w-20">
+                <p class="text-xs uppercase leading-4">
                     {{ $clash->visitorTeam ? $clash->visitorTeam->team->medium_name : 'N/D' }}
                 </p>
-                <p class="text-xs">
+                <p class="text-xxs">
                     {{ $clash->visitorTeam ? $clash->visitorTeam->team->user->name : '' }}
                 </p>
             </div>
-            <img src="{{ $clash->visitorTeam ? $clash->visitorTeam->team->getImg() : asset('storage/teams/default.png') }}" alt="{{ $clash->visitorTeam ? $clash->visitorTeam->team->short_name : '' }}" class="w-12 h-12 object-cover m-1">
+            <img src="{{ $clash->visitorTeam ? $clash->visitorTeam->team->getImg() : asset('storage/teams/default.png') }}" alt="{{ $clash->visitorTeam ? $clash->visitorTeam->team->short_name : '' }}" class="w-8 h-8 object-cover m-1">
         @endif
     @else
         @if ($round->previousRound())
-            @if ($clash->previousClash('local'))
-                <div class="">
-                    ganador {{ $clash->previousClash('local') }}
+            @if ($clash->previousClash('visitor'))
+                <div class="text-xs text-center w-full">
+                    {{ $clash->previousClash('visitor') }}
                 </div>
             @endif
         @endif

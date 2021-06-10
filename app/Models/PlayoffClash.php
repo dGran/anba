@@ -83,9 +83,9 @@ class PlayoffClash extends Model
         $local = $position == 'local' ? 1 : NULL;
         $clash = PlayoffClash::where('destiny_clash', $this->id)->where('destiny_clash_local', $local)->first();
         if ($clash) {
-            $text = $clash->localTeam ? $clash->localTeam->team->medium_name : 'indefinido';
-            $text .= ' vs ';
-            $text .= $clash->visitorTeam ? $clash->visitorTeam->team->medium_name : 'indefinido';
+            $text = $clash->localTeam ? $clash->localTeam->team->medium_name : 'N/D';
+            $text .= ' / ';
+            $text .= $clash->visitorTeam ? $clash->visitorTeam->team->medium_name : 'N/D';
             return $text;
         } else {
             return false;
