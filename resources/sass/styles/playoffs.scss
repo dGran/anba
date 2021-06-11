@@ -1,6 +1,8 @@
 .playoffs {
     td {
-        height: 43px;
+        height: 2.5rem;
+        max-height: 2.5rem;
+        white-space: nowrap;
     }
     .round-name {
         @apply text-xs uppercase font-medium align-bottom pb-1.5;
@@ -10,5 +12,19 @@
         &.center {
             @apply text-center;
         }
+    }
+    .clash {
+        width: 7.5rem;
+        min-width: 7.5rem;
+        @apply border;
+    }
+    .result {
+        width: 1.5rem;
+        min-width: 1.5rem;
+        @apply bg-gray-150 border text-sm text-center;
+    }
+    .bracket {
+        width: 0.75rem;
+        min-width: 0.75rem;
     }
 }

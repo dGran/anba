@@ -1,12 +1,12 @@
-<div class="flex items-center px-1.5">
+<div class="flex items-center px-1 {{ $position == 'right' ? 'justify-end' : 'justify-start' }}">
     @if ($clash->visitorTeam || !$round->previousRound())
         @if ($position == 'left')
-            <img src="{{ $clash->visitorTeam ? $clash->visitorTeam->team->getImg() : asset('storage/teams/default.png') }}" alt="{{ $clash->visitorTeam ? $clash->visitorTeam->team->short_name : '' }}" class="w-8 h-8 object-cover m-1">
-            <div class="ml-1.5 flex flex-col text-left w-20">
+            <img src="{{ $clash->visitorTeam ? $clash->visitorTeam->team->getImg() : asset('storage/teams/default.png') }}" alt="{{ $clash->visitorTeam ? $clash->visitorTeam->team->short_name : '' }}" class="w-8 h-8 object-cover">
+            <div class="ml-1.5 flex flex-col text-left truncate">
                 <p class="text-xs uppercase leading-4">
-                    {{ $clash->visitorTeam ? $clash->visitorTeam->team->medium_name : 'N/D' }}
+                    {{ $clash->visitorTeam ? $clash->visitorTeam->team->short_name : 'N/D' }}
                 </p>
-                <p class="text-xxs">
+                <p class="text-xxs truncate text-gray-600">
                     {{ $clash->visitorTeam ? $clash->visitorTeam->team->user->name : '' }}
                 </p>
             </div>
@@ -51,23 +51,23 @@
                     </div>
                 @endforeach
             @endif --}}
-            <div class="mr-1.5 flex flex-col text-right w-20">
+            <div class="mr-1.5 flex flex-col text-right truncate">
                 <p class="text-xs uppercase leading-4">
-                    {{ $clash->visitorTeam ? $clash->visitorTeam->team->medium_name : 'N/D' }}
+                    {{ $clash->visitorTeam ? $clash->visitorTeam->team->short_name : 'N/D' }}
                 </p>
-                <p class="text-xxs">
+                <p class="text-xxs truncate text-gray-600">
                     {{ $clash->visitorTeam ? $clash->visitorTeam->team->user->name : '' }}
                 </p>
             </div>
-            <img src="{{ $clash->visitorTeam ? $clash->visitorTeam->team->getImg() : asset('storage/teams/default.png') }}" alt="{{ $clash->visitorTeam ? $clash->visitorTeam->team->short_name : '' }}" class="w-8 h-8 object-cover m-1">
+            <img src="{{ $clash->visitorTeam ? $clash->visitorTeam->team->getImg() : asset('storage/teams/default.png') }}" alt="{{ $clash->visitorTeam ? $clash->visitorTeam->team->short_name : '' }}" class="w-8 h-8 object-cover">
         @endif
     @else
-        @if ($round->previousRound())
+        {{-- @if ($round->previousRound())
             @if ($clash->previousClash('visitor'))
                 <div class="text-xs text-center w-full">
                     {{ $clash->previousClash('visitor') }}
                 </div>
             @endif
-        @endif
+        @endif --}}
     @endif
 </div>
