@@ -72,7 +72,7 @@
 				<td class="clash">
 					@php
 						$round = $playoff->getRound(1);
-						$clash = $round->getClash(1);
+						$clash = $round->getClash(5);
 					@endphp
 					@include('standings.playoffs.clash_visitor', ['position' => 'right'])
 				</td>

@@ -174,7 +174,13 @@ class Match extends Component
 	public function reportResult()
 	{
 		$this->storeResult();
-		$this->createMatchPosts($this->match->id);
+		if ($this->match->clash_id) {
+			$this->check_clash($this->match->clash_id);
+			$this->createClashPosts($this->match->id);
+		} else {
+			dd($clash->round->playoff)
+			$this->createMatchPosts($this->match->id);
+		}
 
 		$this->scoreReportModal = false;
 		session()->flash('success', 'Reporte de resultado registrado correctamente.');
@@ -273,6 +279,24 @@ class Match extends Component
 
 	protected function createStreakPost($match)
 	{
+	}
+
+	protected check_clash($clash_id)
+	{
+		$clash = \App\Models\PlayoffClash::find($clash_id);
+		dd($clash->round->playoff)
+		return $clash->localResult() . ' - ' . $clash->visitorResult();
+	}
+
+	protected createClashPosts($match_id)
+	{
+		$match = \App\Models\Match::find($match_id);
+
+		if ($match->winner()) {
+			$this->createResultPost($match);
+			$this->createFeaturedPost($match);
+			$this->createStreakPost($match);
+		}
 	}
 
 	public function openLocalBoxscoreReport()
@@ -720,7 +744,6 @@ class Match extends Component
 		$this->match->playerStats_state = $this->match->checkPlayerStats();
 		$this->match->save();
 	}
-
 
     protected function makeComparer($criteria)
     {
