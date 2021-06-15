@@ -1,5 +1,5 @@
 <div class="flex items-center px-1 {{ $position == 'right' ? 'justify-end' : 'justify-start' }}">
-    @if ($clash->localTeam || !$round->previousRound())
+    @if ($clash && $clash->localTeam || !$round->previousRound())
         @if ($position == 'left')
             <img src="{{ $clash->localTeam ? $clash->localTeam->team->getImg() : asset('storage/teams/default.png') }}" alt="{{ $clash->localTeam ? $clash->localTeam->team->short_name : '' }}" class="w-8 h-8 object-cover">
             <div class="ml-1.5 flex flex-col text-left truncate">

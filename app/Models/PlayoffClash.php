@@ -17,7 +17,8 @@ class PlayoffClash extends Model
         'local_team_id',
         'visitor_team_id',
         'order',
-        'destiny_order'
+        'destiny_clash',
+        'destiny_clash_local'
     ];
 
     public function round()

@@ -16,7 +16,8 @@ class PlayoffRound extends Model
         'playoff_id',
         'name',
         'matches_to_win',
-        'matches_max'
+        'matches_max',
+        'order'
     ];
 
     public function playoff()
