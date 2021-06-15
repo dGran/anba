@@ -6,7 +6,7 @@
                 <p class="text-xs uppercase leading-4">
                     {{ $clash->visitorTeam ? $clash->visitorTeam->team->short_name : 'N/D' }}
                 </p>
-                <p class="text-xxs truncate text-gray-600">
+                <p class="text-xxs truncate text-gray-600 dark:text-gray-350">
                     {{ $clash->visitorTeam ? $clash->visitorTeam->team->user->name : '' }}
                 </p>
             </div>
@@ -55,7 +55,7 @@
                 <p class="text-xs uppercase leading-4">
                     {{ $clash->visitorTeam ? $clash->visitorTeam->team->short_name : 'N/D' }}
                 </p>
-                <p class="text-xxs truncate text-gray-600">
+                <p class="text-xxs truncate text-gray-600 dark:text-gray-350">
                     {{ $clash->visitorTeam ? $clash->visitorTeam->team->user->name : '' }}
                 </p>
             </div>

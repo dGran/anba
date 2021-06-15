@@ -178,7 +178,6 @@ class Match extends Component
 			$this->check_clash($this->match->clash_id);
 			$this->createClashPosts($this->match->id);
 		} else {
-			// dd($clash->round->playoff)
 			$this->createMatchPosts($this->match->id);
 		}
 
@@ -284,19 +283,62 @@ class Match extends Component
 	protected function check_clash($clash_id)
 	{
 		$clash = \App\Models\PlayoffClash::find($clash_id);
-		// dd($clash->round->playoff)
-		return $clash->localResult() . ' - ' . $clash->visitorResult();
+		$matches_to_win = $clash->round->matches_to_win;
+		if ($clash->result()['local_result'] == $matches_to_win || $clash->result()['visitor_result'] == $matches_to_win) {
+			// clash finished
+			$nextClash = $clash->nextClash();
+			if ($nextClash) {
+				if ($clash->destiny_clash_local) {
+					$nextClash->local_team_id = $clash->winner();
+				} else {
+					$nextClash->visitor_team_id = $clash->winner();
+				}
+				$nextClash->save();
+
+				if ($nextClash->local_team_id && $nextClash->visitor_team_id) {
+					//generate first match
+					$match = \App\Models\Match::create([
+						'season_id' 		 => $nextClash->round->playoff->season_id,
+						'clash_id' 			 => $nextClash->id,
+						'local_team_id' 	 => $nextClash->local_team_id,
+						'local_manager_id' 	 => $nextClash->localTeam->team->user->id,
+						'visitor_team_id' 	 => $nextClash->visitor_team_id,
+						'visitor_manager_id' => $nextClash->visitorTeam->team->user->id,
+						'stadium' 			 => $nextClash->localTeam->team->stadium,
+						'extra_times' 		 => 0,
+						'played' 			 => 0,
+						'teamStats_state' 	 => 'error',
+						'playerStats_state'  => 'error'
+					]);
+				}
+			}
+		} else {
+			// generate next match
+			$match = \App\Models\Match::create([
+				'season_id' 		 => $clash->round->playoff->season_id,
+				'clash_id' 			 => $clash->id,
+				'local_team_id' 	 => $clash->local_team_id,
+				'local_manager_id' 	 => $clash->localTeam->team->user->id,
+				'visitor_team_id' 	 => $clash->visitor_team_id,
+				'visitor_manager_id' => $clash->visitorTeam->team->user->id,
+				'stadium' 			 => $clash->localTeam->team->stadium,
+				'extra_times' 		 => 0,
+				'played' 			 => 0,
+				'teamStats_state' 	 => 'error',
+				'playerStats_state'  => 'error'
+			]);
+		}
 	}
 
 	protected function createClashPosts($match_id)
 	{
-		$match = \App\Models\Match::find($match_id);
+		// $match = \App\Models\Match::find($match_id);
 
-		if ($match->winner()) {
-			$this->createResultPost($match);
-			$this->createFeaturedPost($match);
-			$this->createStreakPost($match);
-		}
+		// if ($match->winner()) {
+		// 	$this->createResultPost($match);
+		// 	$this->createFeaturedPost($match);
+		// 	$this->createStreakPost($match);
+		// }
 	}
 
 	public function openLocalBoxscoreReport()

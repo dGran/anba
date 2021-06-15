@@ -4,9 +4,9 @@
 		@include('standings.header')
 	@endif
 
-{{-- <x-buttons.primary class="uppercase text-xs px-2.5 py-0.5 mt-2 tracking-wide leading-6" wire:click.prevent="generatePlayoff">
+<x-buttons.primary class="uppercase text-xs px-2.5 py-0.5 mt-2 tracking-wide leading-6" wire:click.prevent="generatePlayoff">
     generar playoff
-</x-buttons.primary> --}}
+</x-buttons.primary>
 
 	<!-- Page Content -->
 	<div class="max-w-7xl mx-auto px-1 sm:px-3 md:px-6 lg:px-8 my-6 md:mt-0">
