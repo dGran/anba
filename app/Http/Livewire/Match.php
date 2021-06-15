@@ -178,7 +178,7 @@ class Match extends Component
 			$this->check_clash($this->match->clash_id);
 			$this->createClashPosts($this->match->id);
 		} else {
-			dd($clash->round->playoff)
+			// dd($clash->round->playoff)
 			$this->createMatchPosts($this->match->id);
 		}
 
@@ -281,14 +281,14 @@ class Match extends Component
 	{
 	}
 
-	protected check_clash($clash_id)
+	protected function check_clash($clash_id)
 	{
 		$clash = \App\Models\PlayoffClash::find($clash_id);
-		dd($clash->round->playoff)
+		// dd($clash->round->playoff)
 		return $clash->localResult() . ' - ' . $clash->visitorResult();
 	}
 
-	protected createClashPosts($match_id)
+	protected function createClashPosts($match_id)
 	{
 		$match = \App\Models\Match::find($match_id);
 
