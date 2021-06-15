@@ -125,7 +125,7 @@ class Standings extends Component
                 $q->where('matches.local_team_id', $team_id)
                     ->orWhere('matches.visitor_team_id', $team_id);
                 })
-            ->whereNull('round_id')
+            ->whereNull('clash_id')
             ->orderBy('played_date', 'desc')
             ->orderBy('matches.id', 'desc')
             ->get();
