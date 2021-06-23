@@ -4,10 +4,6 @@
 		@include('standings.header')
 	@endif
 
-<x-buttons.primary class="uppercase text-xs px-2.5 py-0.5 mt-2 tracking-wide leading-6" wire:click.prevent="generatePlayoff">
-    generar playoff
-</x-buttons.primary>
-
 	<!-- Page Content -->
 	<div class="max-w-7xl mx-auto px-1 sm:px-3 md:px-6 lg:px-8 my-6 md:mt-0">
 		@if ($phase == 'regular')
@@ -34,6 +30,32 @@
 			@include('standings.playoffs')
 		@endif
 
+		{{-- temporal --}}
+        @hasanyrole('super-admin|admin')
+			<div class="py-3">
+				<h4 class="pt-1.5 uppercase text-sm tracking-wide font-bold pb-1.5">
+					Opciones de Admin
+				</h4>
+				@if ($phase == "regular")
+					<x-buttons.primary class="uppercase text-xs px-2.5 py-0.5 tracking-wide leading-6 mr-3" wire:click="generatePlayoff">
+					    generar playoff
+					</x-buttons.primary>
+				@else
+					<x-buttons.primary class="uppercase text-xs px-2.5 py-0.5 tracking-wide leading-6 mr-3" wire:click="generateRounds">
+					    generar rondas
+					</x-buttons.primary>
+
+					<x-buttons.primary class="uppercase text-xs px-2.5 py-0.5 tracking-wide leading-6 mr-3" wire:click="generateFirstMatches">
+					    generar primeros partidos
+					</x-buttons.primary>
+
+					<x-buttons.danger class="uppercase text-xs px-2.5 py-0.5 tracking-wide leading-6 mr-3" wire:click="destroyPlayoff">
+					    eliminar playoff
+					</x-buttons.danger>
+				@endif
+
+			</div>
+        @endhasanyrole
 	</div>
 
 	@include('standings.team_info_modal')

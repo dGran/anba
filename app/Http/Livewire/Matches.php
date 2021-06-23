@@ -33,6 +33,7 @@ class Matches extends Component
 	public $hidePlayed = false;
 	public $manager = "all";
 	public $order = 'lastPlayed';
+	public $phase = "all";
 
 	public $blank_view = false;
 
@@ -45,6 +46,7 @@ class Matches extends Component
 		'hidePlayed' => ['except' => false],
 		'perPage' => ['except' => '5'],
 		'order' => ['except' => 'lastPlayed'],
+		'phase' => ['except' => 'all'],
 	];
 
 	public function changeSeasonFilter()
@@ -52,6 +54,11 @@ class Matches extends Component
 		$this->page = 1;
 		$this->team = "all";
 		$this->manager = "all";
+	}
+
+	public function changePhaseFilter()
+	{
+		$this->page = 1;
 	}
 
 	public function changeTeamFilter()
@@ -174,6 +181,8 @@ class Matches extends Component
 
             ->season($current_season)
     		->name($this->search)
+    		->phase($this->phase)
+    		->phase($this->phase)
     		->team($this->team)
     		->user($this->manager)
             ->hidePlayed($this->hidePlayed)
@@ -205,6 +214,7 @@ class Matches extends Component
 
             ->season($current_season)
     		->name($this->search)
+    		->phase($this->phase)
     		->team($this->team)
     		->user($this->manager)
             ->hidePlayed($this->hidePlayed)

@@ -9,6 +9,14 @@
 			<div class="text-sm md:text-base lg:text-xl text-center light:text-gray-500 dark:text-gray-300">{{ $match->localManager ? $match->localManager->name : 'sin manager' }}</div>
 		</div>
 		<div class="flex-initial px-3 md:px-6">
+			@if ($match->clash_id)
+				<p class="text-center hidden md:block text-sm text-gray-600 dark:text-gray-300">
+					<span>{{ $match->clash->round->playoff->name }}</span> - <span>{{ $match->clash->round->name }}</span>
+				</p>
+				<p class="text-center hidden md:block text-sm text-gray-600 dark:text-gray-300">
+					Partido {{ $match->order }}
+				</p>
+			@endif
 			<p class="text-center font-bold text-3xl md:text-5xl lg:text-6xl">{{ $match->score() }}</p>
 			@if ($match->played)
 				<p class="text-center hidden md:block uppercase text-base text-pretty-red font-bold">

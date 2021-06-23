@@ -234,7 +234,7 @@ class Match extends Component
 			null,
 			null,
 			null,
-			$match->localTeam->team->short_name . ' | ' . $match->visitorTeam->team->short_name,
+			'Liga regular' . ' | ' . $match->localTeam->team->short_name . ' | ' . $match->visitorTeam->team->short_name,
 			$match->localTeam->team->medium_name . '  ' . $match->score() . '  ' . $match->visitorTeam->team->medium_name,
 			$description,
 			null,
@@ -289,9 +289,9 @@ class Match extends Component
 			$nextClash = $clash->nextClash();
 			if ($nextClash) {
 				if ($clash->destiny_clash_local) {
-					$nextClash->local_team_id = $clash->winner();
+					$nextClash->local_team_id = $clash->winner()->id;
 				} else {
-					$nextClash->visitor_team_id = $clash->winner();
+					$nextClash->visitor_team_id = $clash->winner()->id;
 				}
 				$nextClash->save();
 
@@ -313,32 +313,196 @@ class Match extends Component
 				}
 			}
 		} else {
+			$order = \App\Models\Match::where('clash_id', $clash->id)->count() + 1;
+			$matches_to_win = $clash->round->matches_to_win;
 			// generate next match
+			switch ($matches_to_win) {
+				case 3:
+					switch ($order) {
+						case 1:
+						case 2:
+						case 5:
+							$local_team = $clash->local_team_id;
+							$local_manager = $clash->localTeam->team->user->id;
+							$visitor_team = $clash->visitor_team_id;
+							$visitor_manager = $clash->visitorTeam->team->user->id;
+							$stadium = $clash->localTeam->team->stadium;
+							break;
+						case 3:
+						case 4:
+							$local_team = $clash->visitor_team_id;
+							$local_manager = $clash->visitorTeam->team->user->id;
+							$visitor_team = $clash->local_team_id;
+							$visitor_manager = $clash->localTeam->team->user->id;
+							$stadium = $clash->visitorTeam->team->stadium;
+							break;
+					}
+					break;
+				case 4:
+					switch ($order) {
+						case 1:
+						case 2:
+						case 5:
+						case 7:
+							$local_team = $clash->local_team_id;
+							$local_manager = $clash->localTeam->team->user->id;
+							$visitor_team = $clash->visitor_team_id;
+							$visitor_manager = $clash->visitorTeam->team->user->id;
+							$stadium = $clash->localTeam->team->stadium;
+							break;
+						case 3:
+						case 4:
+						case 6:
+							$local_team = $clash->visitor_team_id;
+							$local_manager = $clash->visitorTeam->team->user->id;
+							$visitor_team = $clash->local_team_id;
+							$visitor_manager = $clash->localTeam->team->user->id;
+							$stadium = $clash->visitorTeam->team->stadium;
+							break;
+					}
+					break;
+				default:
+					// code...
+					break;
+			}
 			$match = \App\Models\Match::create([
 				'season_id' 		 => $clash->round->playoff->season_id,
 				'clash_id' 			 => $clash->id,
-				'local_team_id' 	 => $clash->local_team_id,
-				'local_manager_id' 	 => $clash->localTeam->team->user->id,
-				'visitor_team_id' 	 => $clash->visitor_team_id,
-				'visitor_manager_id' => $clash->visitorTeam->team->user->id,
-				'stadium' 			 => $clash->localTeam->team->stadium,
+				'local_team_id' 	 => $local_team,
+				'local_manager_id' 	 => $local_manager,
+				'visitor_team_id' 	 => $visitor_team,
+				'visitor_manager_id' => $visitor_manager,
+				'stadium' 			 => $stadium,
 				'extra_times' 		 => 0,
 				'played' 			 => 0,
 				'teamStats_state' 	 => 'error',
-				'playerStats_state'  => 'error'
+				'playerStats_state'  => 'error',
+				'order'				 => $order
 			]);
 		}
 	}
 
 	protected function createClashPosts($match_id)
 	{
-		// $match = \App\Models\Match::find($match_id);
+		$match = \App\Models\Match::find($match_id);
 
-		// if ($match->winner()) {
-		// 	$this->createResultPost($match);
-		// 	$this->createFeaturedPost($match);
-		// 	$this->createStreakPost($match);
-		// }
+		if ($match->winner()) {
+			$this->createClashResultPost($match);
+			$this->createFeaturedPost($match);
+			$this->createClashFeaturedPost($match);
+		}
+	}
+
+	protected function createClashResultPost($match)
+	{
+		$clash = \App\Models\PlayoffClash::find($match->clash_id);
+		$matches_to_win = $clash->round->matches_to_win;
+
+		if ($clash->result()['local_result'] == $matches_to_win || $clash->result()['visitor_result'] == $matches_to_win) {
+			// clash finished
+	        $next_round = \App\Models\PlayoffRound::where('playoff_id', $clash->round->playoff->id)->where('order', '>', $clash->round->order)->orderBy('order', 'asc')->first();
+	        if ($next_round) {
+	        	if ($matches_to_win > 1) {
+	        		$description = "Con una nueva victoria, los " . $clash->winner()->team->medium_name . " eliminan a los " . $clash->loser()->team->medium_name . " y avanzan a la siguiente ronda, " . $next_round->name;
+	        	} else {
+	        		$description = $clash->winner()->team->medium_name . " eliminan a los " . $clash->loser()->team->medium_name . " y avanzan a la siguiente ronda, " . $next_round->name;
+	        	}
+	        } else {
+				if (!$clash->round->playoff->playin_place) {
+					$description = "¡Campeones! Los " . $clash->winner()->team->medium_name . " han logrado el anillo de ANBA al imponerse a los " . $clash->loser()->team->medium_name;
+				} else {
+					$description = "Los " . $clash->winner()->team->medium_name . " consiguen la " . $clash->round->playoff->playin_place . "ª plaza de la conferencia " . $clash->round->playoff->seasonConference->conference->name .  " al imponerse a los " . $clash->loser()->team->medium_name;
+				}
+	        }
+		} else {
+			if ($match->winner()->id == $clash->local_team_id) {
+				if ($clash->result()['local_result'] > $clash->result()['visitor_result']) {
+					if ($clash->result()['local_result'] > $clash->result()['visitor_result'] + 1) {
+						$description = "Los " . $match->winner()->team->medium_name . " amplían su ventaja en la serie contra los " . $match->loser()->team->medium_name . ", " . $clash->localTeam->team->short_name . ' ' . $clash->result()['local_result'] . ' - ' . $clash->result()['visitor_result'] . ' ' . $clash->visitorTeam->team->short_name;
+					} else {
+						$description = "Victoria de los " . $match->winner()->team->medium_name . " que toman ventaja en la serie frente a " . $match->loser()->team->medium_name . ", " . $clash->localTeam->team->short_name . ' ' . $clash->result()['local_result'] . ' - ' . $clash->result()['visitor_result'] . ' ' . $clash->visitorTeam->team->short_name;
+					}
+				} elseif ($clash->result()['local_result'] == $clash->result()['visitor_result']) {
+					$description = "Los " . $match->winner()->team->medium_name . " vencen y empatan la eliminatoria con los " . $match->loser()->team->medium_name . " a " . $clash->result()['local_result'] . ', ' . $clash->localTeam->team->short_name . ' ' . $clash->result()['local_result'] . ' - ' . $clash->result()['visitor_result'] . ' ' . $clash->visitorTeam->team->short_name;
+				} elseif ($clash->result()['visitor_result'] > $clash->result()['local_result']) {
+					$description = "Victoria de los " . $match->winner()->team->medium_name . " que recortan la ventaja en la serie de los " . $match->loser()->team->medium_name . ", " . $clash->localTeam->team->short_name . ' ' . $clash->result()['local_result'] . ' - ' . $clash->result()['visitor_result'] . ' ' . $clash->visitorTeam->team->short_name;
+				}
+			} else {
+				if ($clash->result()['visitor_result'] > $clash->result()['local_result']) {
+					if ($clash->result()['visitor_result'] > $clash->result()['local_result'] + 1) {
+						$description = "Los " . $match->winner()->team->medium_name . " amplían su ventaja en la serie contra los " . $match->loser()->team->medium_name . ", " . $clash->localTeam->team->short_name . ' ' . $clash->result()['local_result'] . ' - ' . $clash->result()['visitor_result'] . ' ' . $clash->visitorTeam->team->short_name;
+					} else {
+						$description = "Victoria de los " . $match->winner()->team->medium_name . " que toman ventaja en la serie frente a " . $match->loser()->team->medium_name . ", " . $clash->localTeam->team->short_name . ' ' . $clash->result()['local_result'] . ' - ' . $clash->result()['visitor_result'] . ' ' . $clash->visitorTeam->team->short_name;
+					}
+				} elseif ($clash->result()['local_result'] == $clash->result()['visitor_result']) {
+					$description = "Los " . $match->winner()->team->medium_name . " vencen y empatan la eliminatoria con los " . $match->loser()->team->medium_name . " a " . $clash->result()['local_result'] . ', ' . $clash->localTeam->team->short_name . ' ' . $clash->result()['local_result'] . ' - ' . $clash->result()['visitor_result'] . ' ' . $clash->visitorTeam->team->short_name;
+				} elseif ($clash->result()['local_result'] > $clash->result()['visitor_result']) {
+					$description = "Victoria de los " . $match->winner()->team->medium_name . " que recortan la ventaja en la serie de los " . $match->loser()->team->medium_name . ", " . $clash->localTeam->team->short_name . ' ' . $clash->result()['local_result'] . ' - ' . $clash->result()['visitor_result'] . ' ' . $clash->visitorTeam->team->short_name;
+				}
+			}
+		}
+		$description .= '.';
+
+    	$post = $this->storePost(
+			'resultados',
+			$match->id,
+			null,
+			null,
+			null,
+			null,
+			$clash->round->playoff->name . ' | ' . $clash->round->name . ' | ' . $match->localTeam->team->short_name . ' | ' . $match->visitorTeam->team->short_name,
+			$match->localTeam->team->medium_name . '  ' . $match->score() . '  ' . $match->visitorTeam->team->medium_name,
+			$description,
+			null,
+    	);
+    	event(new PostStored($post));
+	}
+
+	protected function createClashFeaturedPost($match)
+	{
+		$clash = \App\Models\PlayoffClash::find($match->clash_id);
+		$matches_to_win = $clash->round->matches_to_win;
+		if ($clash->result()['local_result'] == $matches_to_win || $clash->result()['visitor_result'] == $matches_to_win) {
+			// clash finished
+	        $next_round = \App\Models\PlayoffRound::where('playoff_id', $clash->round->playoff->id)->where('order', '>', $clash->round->order)->orderBy('order', 'asc')->first();
+	        if ($next_round) {
+	        	$title = $clash->winner()->team->medium_name . ' (' . $clash->winner()->team->user->name . ') ' . ' clasificados para ' . $next_round->name;
+	        	$nextClash = $clash->nextClash();
+	        	if ($nextClash->local_team_id == $clash->winner()->id) {
+	        		$rival = $nextClash->visitorTeam;
+	        	} else {
+	        		$rival = $nextClash->localTeam;
+	        	}
+	        	if ($rival) {
+	        		$description = "Se enfrentarán a los " . $rival->team->medium_name . " de " . $rival->team->user->name;
+	        	} else {
+	        		$description = "Quedan a la espera de rival";
+	        	}
+	        } else {
+				if (!$clash->round->playoff->playin_place) {
+		        	$title = '¡' . $clash->winner()->team->medium_name . ' (' . $clash->winner()->team->user->name . ') ' . ' campeones de ANBA!';
+					$description = "Tras derrotar en la final a los " . $clash->loser()->team->medium_name . " de " . $clash->loser()->team->user->name . ". Enhorabuena por el anillo!";
+				} else {
+		        	$title = '¡' . $clash->winner()->team->medium_name . ' (' . $clash->winner()->team->user->name . ') ' . ' clasificados para los Playoffs!';
+					$description = "Tras derrotar a los " . $clash->loser()->team->medium_name . " de " . $clash->loser()->team->user->name . " en el Play-In";
+				}
+	        }
+		}
+		$description .= '.';
+
+    	$post = $this->storePost(
+			'destacados',
+			$match->id,
+			null,
+			null,
+			null,
+			$clash->winner()->team->id,
+			$clash->round->playoff->name . ' | ' . $clash->winner()->team->short_name,
+			$title,
+			$description,
+			$clash->winner()->team->getImg(),
+    	);
+    	event(new PostStored($post));
 	}
 
 	public function openLocalBoxscoreReport()

@@ -42,6 +42,14 @@ class Standings extends Component
 		} else {
 			$this->blank_view = true;
 		}
+
+		$current_season = Season::where('slug', $this->season)->first();
+    	if ($current_season->regular_finished()) {
+    		$playoffs = Playoff::where('season_id', $current_season->id)->orderBy('order', 'desc')->get();
+    		if ($playoffs->count() > 0) {
+    			$this->phase = $playoffs->first()->id;
+    		}
+    	}
 	}
 
  	public function render()
@@ -326,13 +334,224 @@ class Standings extends Component
 			$table_positions[$key] = $current_season->generateTable('conference', 'wavg', $conference->id, null);
 		}
 
+		if ($current_season->play_in_start) {
+			// generate playin
+	    	$playoff = Playoff::create([
+		        'season_id' => $current_season->id,
+		        'name' => 'Play-In - 7th seed - ' . $current_season->conferences[0]->conference->name,
+		        'playin_place' => 7,
+		        'season_conference_id' => $current_season->conferences[0]->id,
+		        'order' => 1,
+		        'num_participants' => 2,
+		        'full_bracket' => false
+	    	]);
+			$round = PlayoffRound::create([
+				"playoff_id" 	 => $playoff->id,
+				"name"		 	 => 'Final',
+				"matches_to_win" => 1,
+				"matches_max" 	 => 1,
+				"order"			 => 1
+			]);
+			$clash = PlayoffClash::create([
+				"round_id" 	 	  	   => $round->id,
+				"local_team_id"	  	   => $table_positions[0][6]['team']->id,
+				"visitor_team_id" 	   => $table_positions[0][7]['team']->id,
+				"order" 		  	   => 1,
+				"destiny_clash"   	   => null,
+				"destiny_clash_local"  => null,
+			]);
+			if ($clash->local_team_id && $clash->visitor_team_id) {
+				$match = Match::create([
+					'season_id' 		 => $current_season->id,
+					'clash_id' 			 => $clash->id,
+					'local_team_id' 	 => $clash->local_team_id,
+					'local_manager_id' 	 => $clash->localTeam->team->user->id,
+					'visitor_team_id' 	 => $clash->visitor_team_id,
+					'visitor_manager_id' => $clash->visitorTeam->team->user->id,
+					'stadium' 			 => $clash->localTeam->team->stadium,
+					'extra_times' 		 => 0,
+					'played' 			 => 0,
+					'teamStats_state' 	 => 'error',
+					'playerStats_state'  => 'error'
+				]);
+			}
+
+	    	$playoff = Playoff::create([
+		        'season_id' => $current_season->id,
+		        'name' => 'Play-In - 7th seed - ' . $current_season->conferences[1]->conference->name,
+		        'playin_place' => 7,
+		        'season_conference_id' => $current_season->conferences[1]->id,
+		        'order' => 2,
+		        'num_participants' => 2,
+		        'full_bracket' => false
+	    	]);
+			$round = PlayoffRound::create([
+				"playoff_id" 	 => $playoff->id,
+				"name"		 	 => 'Final',
+				"matches_to_win" => 1,
+				"matches_max" 	 => 1,
+				"order"			 => 1
+			]);
+			$clash = PlayoffClash::create([
+				"round_id" 	 	  	   => $round->id,
+				"local_team_id"	  	   => $table_positions[1][6]['team']->id,
+				"visitor_team_id" 	   => $table_positions[1][7]['team']->id,
+				"order" 		  	   => 1,
+				"destiny_clash"   	   => null,
+				"destiny_clash_local"  => null,
+			]);
+			if ($clash->local_team_id && $clash->visitor_team_id) {
+				$match = Match::create([
+					'season_id' 		 => $current_season->id,
+					'clash_id' 			 => $clash->id,
+					'local_team_id' 	 => $clash->local_team_id,
+					'local_manager_id' 	 => $clash->localTeam->team->user->id,
+					'visitor_team_id' 	 => $clash->visitor_team_id,
+					'visitor_manager_id' => $clash->visitorTeam->team->user->id,
+					'stadium' 			 => $clash->localTeam->team->stadium,
+					'extra_times' 		 => 0,
+					'played' 			 => 0,
+					'teamStats_state' 	 => 'error',
+					'playerStats_state'  => 'error'
+				]);
+			}
+
+	    	$playoff = Playoff::create([
+		        'season_id' => $current_season->id,
+		        'name' => 'Play-In - 8th seed - ' . $current_season->conferences[0]->conference->name,
+		        'playin_place' => 8,
+		        'season_conference_id' => $current_season->conferences[0]->id,
+		        'order' => 3,
+		        'num_participants' => 4,
+		        'full_bracket' => false
+	    	]);
+			$round = PlayoffRound::create([
+				"playoff_id" 	 => $playoff->id,
+				"name"		 	 => 'Semifinal',
+				"matches_to_win" => 1,
+				"matches_max" 	 => 1,
+				"order"			 => 1
+			]);
+			$clash = PlayoffClash::create([
+				"round_id" 	 	  	   => $round->id,
+				"local_team_id"	  	   => null,
+				"visitor_team_id" 	   => null,
+				"order" 		  	   => 1,
+				"destiny_clash"   	   => 1,
+				"destiny_clash_local"  => true,
+			]);
+			$clash = PlayoffClash::create([
+				"round_id" 	 	  	   => $round->id,
+				"local_team_id"	  	   => $table_positions[0][8]['team']->id,
+				"visitor_team_id" 	   => $table_positions[0][9]['team']->id,
+				"order" 		  	   => 2,
+				"destiny_clash"   	   => 1,
+				"destiny_clash_local"  => false,
+			]);
+			if ($clash->local_team_id && $clash->visitor_team_id) {
+				$match = Match::create([
+					'season_id' 		 => $current_season->id,
+					'clash_id' 			 => $clash->id,
+					'local_team_id' 	 => $clash->local_team_id,
+					'local_manager_id' 	 => $clash->localTeam->team->user->id,
+					'visitor_team_id' 	 => $clash->visitor_team_id,
+					'visitor_manager_id' => $clash->visitorTeam->team->user->id,
+					'stadium' 			 => $clash->localTeam->team->stadium,
+					'extra_times' 		 => 0,
+					'played' 			 => 0,
+					'teamStats_state' 	 => 'error',
+					'playerStats_state'  => 'error'
+				]);
+			}
+			$round = PlayoffRound::create([
+				"playoff_id" 	 => $playoff->id,
+				'name' 			 => 'Final',
+				"matches_to_win" => 1,
+				"matches_max" 	 => 1,
+				"order"			 => 2
+			]);
+			$clash = PlayoffClash::create([
+				"round_id" 	 	  	   => $round->id,
+				"local_team_id"	  	   => null,
+				"visitor_team_id" 	   => null,
+				"order" 		  	   => 1,
+				"destiny_clash"   	   => null,
+				"destiny_clash_local"  => null,
+			]);
+
+	    	$playoff = Playoff::create([
+		        'season_id' => $current_season->id,
+		        'name' => 'Play-In - 8th seed - ' . $current_season->conferences[1]->conference->name,
+		        'playin_place' => 8,
+		        'season_conference_id' => $current_season->conferences[1]->id,
+		        'order' => 4,
+		        'num_participants' => 4,
+		        'full_bracket' => false
+	    	]);
+			$round = PlayoffRound::create([
+				"playoff_id" 	 => $playoff->id,
+				"name"		 	 => 'Semifinal',
+				"matches_to_win" => 1,
+				"matches_max" 	 => 1,
+				"order"			 => 1
+			]);
+			$clash = PlayoffClash::create([
+				"round_id" 	 	  	   => $round->id,
+				"local_team_id"	  	   => null,
+				"visitor_team_id" 	   => null,
+				"order" 		  	   => 1,
+				"destiny_clash"   	   => 1,
+				"destiny_clash_local"  => true,
+			]);
+			$clash = PlayoffClash::create([
+				"round_id" 	 	  	   => $round->id,
+				"local_team_id"	  	   => $table_positions[1][8]['team']->id,
+				"visitor_team_id" 	   => $table_positions[1][9]['team']->id,
+				"order" 		  	   => 2,
+				"destiny_clash"   	   => 1,
+				"destiny_clash_local"  => false,
+			]);
+			if ($clash->local_team_id && $clash->visitor_team_id) {
+				$match = Match::create([
+					'season_id' 		 => $current_season->id,
+					'clash_id' 			 => $clash->id,
+					'local_team_id' 	 => $clash->local_team_id,
+					'local_manager_id' 	 => $clash->localTeam->team->user->id,
+					'visitor_team_id' 	 => $clash->visitor_team_id,
+					'visitor_manager_id' => $clash->visitorTeam->team->user->id,
+					'stadium' 			 => $clash->localTeam->team->stadium,
+					'extra_times' 		 => 0,
+					'played' 			 => 0,
+					'teamStats_state' 	 => 'error',
+					'playerStats_state'  => 'error'
+				]);
+			}
+			$round = PlayoffRound::create([
+				"playoff_id" 	 => $playoff->id,
+				'name' 			 => 'Final',
+				"matches_to_win" => 1,
+				"matches_max" 	 => 1,
+				"order"			 => 2
+			]);
+			$clash = PlayoffClash::create([
+				"round_id" 	 	  	   => $round->id,
+				"local_team_id"	  	   => null,
+				"visitor_team_id" 	   => null,
+				"order" 		  	   => 1,
+				"destiny_clash"   	   => null,
+				"destiny_clash_local"  => null,
+			]);
+		}
+
+		// generate playoffs
     	$playoff = Playoff::create([
 	        'season_id' => $current_season->id,
 	        'name' => 'Playoffs',
 	        'playin_place' => null,
 	        'season_conference_id' => null,
-	        'order' => 1,
-	        'num_participants' => 16
+	        'order' => 5,
+	        'num_participants' => 16,
+	        'full_bracket' => true
     	]);
 
 		$round = PlayoffRound::create([
@@ -346,7 +565,7 @@ class Standings extends Component
 		$clash = PlayoffClash::create([
 			"round_id" 	 	  	   => $round->id,
 			"local_team_id"	  	   => $table_positions[0][0]['team']->id,
-			"visitor_team_id" 	   => $table_positions[0][7]['team']->id,
+			"visitor_team_id" 	   => !$current_season->play_in_start ? $table_positions[0][7]['team']->id : null,
 			"order" 		  	   => 1,
 			"destiny_clash"   	   => 1,
 			"destiny_clash_local"  => true,
@@ -370,7 +589,7 @@ class Standings extends Component
 		$clash = PlayoffClash::create([
 			"round_id" 	 	  	   => $round->id,
 			"local_team_id"	  	   => $table_positions[0][1]['team']->id,
-			"visitor_team_id" 	   => $table_positions[0][6]['team']->id,
+			"visitor_team_id" 	   => !$current_season->play_in_start ? $table_positions[0][6]['team']->id : null,
 			"order" 		  	   => 4,
 			"destiny_clash"   	   => 2,
 			"destiny_clash_local"  => false,
@@ -379,7 +598,7 @@ class Standings extends Component
 		$clash = PlayoffClash::create([
 			"round_id" 	 	  	   => $round->id,
 			"local_team_id"	  	   => $table_positions[1][0]['team']->id,
-			"visitor_team_id" 	   => $table_positions[1][7]['team']->id,
+			"visitor_team_id" 	   => !$current_season->play_in_start ? $table_positions[1][7]['team']->id : null,
 			"order" 		  	   => 5,
 			"destiny_clash"   	   => 3,
 			"destiny_clash_local"  => true,
@@ -403,7 +622,7 @@ class Standings extends Component
 		$clash = PlayoffClash::create([
 			"round_id" 	 	  	   => $round->id,
 			"local_team_id"	  	   => $table_positions[1][1]['team']->id,
-			"visitor_team_id" 	   => $table_positions[1][6]['team']->id,
+			"visitor_team_id" 	   => !$current_season->play_in_start ? $table_positions[1][6]['team']->id : null,
 			"order" 		  	   => 8,
 			"destiny_clash"   	   => 4,
 			"destiny_clash_local"  => false,
@@ -421,7 +640,7 @@ class Standings extends Component
 			"round_id" 	 	  	   => $round->id,
 			"local_team_id"	  	   => null,
 			"visitor_team_id" 	   => null,
-			"order" 		  	   => 9,
+			"order" 		  	   => 1,
 			"destiny_clash"   	   => 1,
 			"destiny_clash_local"  => true,
 		]);
@@ -429,7 +648,7 @@ class Standings extends Component
 			"round_id" 	 	  	   => $round->id,
 			"local_team_id"	  	   => null,
 			"visitor_team_id" 	   => null,
-			"order" 		  	   => 10,
+			"order" 		  	   => 2,
 			"destiny_clash"   	   => 1,
 			"destiny_clash_local"  => false,
 		]);
@@ -437,7 +656,7 @@ class Standings extends Component
 			"round_id" 	 	  	   => $round->id,
 			"local_team_id"	  	   => null,
 			"visitor_team_id" 	   => null,
-			"order" 		  	   => 11,
+			"order" 		  	   => 3,
 			"destiny_clash"   	   => 2,
 			"destiny_clash_local"  => true,
 		]);
@@ -445,7 +664,7 @@ class Standings extends Component
 			"round_id" 	 	  	   => $round->id,
 			"local_team_id"	  	   => null,
 			"visitor_team_id" 	   => null,
-			"order" 		  	   => 12,
+			"order" 		  	   => 4,
 			"destiny_clash"   	   => 2,
 			"destiny_clash_local"  => false,
 		]);
@@ -461,7 +680,7 @@ class Standings extends Component
 			"round_id" 	 	  	   => $round->id,
 			"local_team_id"	  	   => null,
 			"visitor_team_id" 	   => null,
-			"order" 		  	   => 13,
+			"order" 		  	   => 1,
 			"destiny_clash"   	   => 1,
 			"destiny_clash_local"  => true,
 		]);
@@ -469,14 +688,14 @@ class Standings extends Component
 			"round_id" 	 	  	   => $round->id,
 			"local_team_id"	  	   => null,
 			"visitor_team_id" 	   => null,
-			"order" 		  	   => 14,
+			"order" 		  	   => 2,
 			"destiny_clash"   	   => 1,
 			"destiny_clash_local"  => false,
 		]);
 
 		$round = PlayoffRound::create([
 			"playoff_id" 	 => $playoff->id,
-			"name"		 	 => 'Final',
+			"name"		 	 => 'Final ANBA',
 			"matches_to_win" => 4,
 			"matches_max" 	 => 7,
 			"order"			 => 4
@@ -485,10 +704,14 @@ class Standings extends Component
 			"round_id" 	 	  	   => $round->id,
 			"local_team_id"	  	   => null,
 			"visitor_team_id" 	   => null,
-			"order" 		  	   => 15,
+			"order" 		  	   => 1,
 			"destiny_clash"   	   => null,
 			"destiny_clash_local"  => null,
 		]);
+
+		if ($playoff && $this->phase == "regular") {
+			$this->phase = $playoff->id;
+		}
     }
 
 	public function generateRounds()
@@ -550,6 +773,15 @@ class Standings extends Component
 					'playerStats_state'  => 'error'
 				]);
 			}
+		}
+	}
+
+	public function destroyPlayoff()
+	{
+		$playoff = Playoff::find($this->phase);
+		if ($playoff) {
+			$playoff->delete();
+			$this->phase = "regular";
 		}
 	}
 

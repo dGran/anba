@@ -14,6 +14,16 @@
 						</select>
 					</div>
 					<div class="hidden sm:flex-auto sm:flex flex-col ml-4">
+						<label for="phase" class="text-xs uppercase">
+							Fase
+						</label>
+						<select id="phase" class="appearance-none rounded text-sm | py-1.5 px-3 mt-1 | bg-white dark:bg-gray-700 | border border-gray-300 dark:border-gray-850 focus:border-gray-400 hover:border-gray-400 dark:focus:border-gray-550 dark:hover:border-gray-550 | focus:outline-none" wire:model="phase" wire:change="changePhaseFilter">
+							<option value="all">Todas las fases</option>
+							<option value="regular">Liga regular</option>
+							<option value="playoffs">Playoffs</option>
+						</select>
+					</div>
+					<div class="hidden sm:flex-auto sm:flex flex-col ml-4">
 						<label for="teams" class="text-xs uppercase">
 							Equipo
 						</label>

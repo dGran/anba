@@ -21,6 +21,7 @@ class Match extends Model
         'played',
         'teamStats_state',
         'playerStats_state',
+        'order'
     ];
 
     public function localTeam()
@@ -97,6 +98,22 @@ class Match extends Model
                                 ->orWhere('teams.medium_name', 'LIKE', "%{$value}%")
                                 ->orWhere('users.name', 'LIKE', "%{$value}%");
                             });
+        }
+    }
+
+    public function scopePhase($query, $value)
+    {
+        if ($value != 'all') {
+            if ($value == 'regular') {
+                return $query->where(function($q) {
+                        $q->whereNull('matches.clash_id');
+                });
+            }
+            if ($value == 'playoffs') {
+                return $query->where(function($q) {
+                        $q->where('matches.clash_id', '>', 0);
+                });
+            }
         }
     }
 

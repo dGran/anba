@@ -1,24 +1,126 @@
 <div class="shadow-md rounded-lg mx-3 md:mx-0">
-	<div class="overflow-x-auto bg-white dark:bg-gray-750 rounded-lg p-4">
-		<table class="w-full mb-2">
-            @foreach ($playoff->rounds as $round)
-                <tr>
-                    <td class="pt-4 pb-2 uppercase font-bold">
-                        {{ $round->name }}
-                    </td>
-                </tr>
-                @foreach ($round->clashes as $clash)
-                    <tr>
-                        <td class="border w-48 h-14" style="min-width: 12em; max-width: 12em">
-                            {{ $clash->id }} - {{ $clash->bracketPosition() }}
+    <div class="overflow-x-auto bg-white dark:bg-gray-750 rounded-lg">
+        <div class="inline-block p-4">
+        <table class="playoffs w-full">
+            <tr>
+                <td colspan="26" class="font-bold uppercase text-xl">
+                    {{ $playoff->name }}
+                </td>
+            </tr>
 
-                            @include('standings.playoffs.clash_local')
-                            @include('standings.playoffs.clash_visitor')
+            <tr>
+                @php
+                    $round = $playoff->getRound(1);
+                @endphp
+                <td colspan="2" class="round-name">
+                    {{ $round->name }} ({{ $round->matches_max }})
+                </td>
+            </tr>
+            {{-- row 1 --}}
+            <tr>
+                {{-- left side --}}
+                @php
+                    $round = $playoff->getRound(1);
+                    $clash = $round->getClash(1);
+                @endphp
+                <td class="clash dark:border-gray-650">
+                    @include('standings.playoffs.clash_local', ['position' => 'left'])
+                </td>
+                <td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+                    {{ $clash->result()['local_result'] }}
+                </td>
+            </tr>
 
-                        </td>
-                    </tr>
-                @endforeach
-            @endforeach
+            {{-- row 2 --}}
+            <tr>
+                {{-- left side --}}
+                @php
+                    $round = $playoff->getRound(1);
+                    $clash = $round->getClash(1);
+                @endphp
+                <td class="clash dark:border-gray-650">
+                    @include('standings.playoffs.clash_visitor', ['position' => 'left'])
+                </td>
+                <td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+                    {{ $clash->result()['visitor_result'] }}
+                </td>
+                <td class="bracket border-t border-r dark:border-gray-650"></td>
+                <td></td>
+                @php
+                    $round = $playoff->getRound(2);
+                @endphp
+                <td colspan="2" class="round-name">
+                    {{ $round->name }} ({{ $round->matches_max }})
+                </td>
+            </tr>
+
+            {{-- row 3 --}}
+            <tr>
+                {{-- left side --}}
+                <td colspan="2"></td>
+                <td class="bracket border-r dark:border-gray-650"></td>
+                <td class="bracket border-b dark:border-gray-650"></td>
+                @php
+                    $round = $playoff->getRound(2);
+                    $clash = $round->getClash(1);
+                @endphp
+                <td class="clash dark:border-gray-650">
+                    @include('standings.playoffs.clash_local', ['position' => 'left'])
+                </td>
+                <td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+                    {{ $clash->result()['local_result'] }}
+                </td>
+            </tr>
+
+            {{-- row 4 --}}
+            <tr>
+                {{-- left side --}}
+                <td colspan="2"></td>
+                <td class="bracket border-r dark:border-gray-650"></td>
+                <td></td>
+                @php
+                    $round = $playoff->getRound(2);
+                    $clash = $round->getClash(1);
+                @endphp
+                <td class="clash dark:border-gray-650">
+                    @include('standings.playoffs.clash_visitor', ['position' => 'left'])
+                </td>
+                <td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+                    {{ $clash->result()['visitor_result'] }}
+                </td>
+            </tr>
+
+            {{-- row 5 --}}
+            <tr>
+                {{-- left side --}}
+                @php
+                    $round = $playoff->getRound(1);
+                    $clash = $round->getClash(2);
+                @endphp
+                <td class="clash dark:border-gray-650">
+                    @include('standings.playoffs.clash_local', ['position' => 'left'])
+                </td>
+                <td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+                    {{ $clash->result()['local_result'] }}
+                </td>
+                <td class="bracket border-b border-r dark:border-gray-650"></td>
+            </tr>
+
+            {{-- row 6 --}}
+            <tr>
+                {{-- left side --}}
+                @php
+                    $round = $playoff->getRound(1);
+                    $clash = $round->getClash(2);
+                @endphp
+                <td class="clash dark:border-gray-650">
+                    @include('standings.playoffs.clash_visitor', ['position' => 'left'])
+                </td>
+                <td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+                    {{ $clash->result()['visitor_result'] }}
+                </td>
+            </tr>
         </table>
+        </div>
     </div>
 </div>

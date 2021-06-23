@@ -1,4 +1,20 @@
 <div class="w-full md:w-1/2">
+	<div class="px-3 py-2 border-b border-gray-200 dark:border-gray-650 text-xs font-medium">
+			@if ($reg->clash)
+				<div class="flex items-center justify-between">
+					<p class="truncate">
+						{{ $reg->clash->round->playoff->name }} - {{ $reg->clash->round->name }}
+					</p>
+					@if ($reg->clash->round->matches_to_win > 1)
+						Partido {{ $reg->order }}
+					@endif
+				</div>
+			@else
+				<p class="truncate text-center">
+					Liga Regular
+				</p>
+			@endif
+	</div>
 	<div class="flex justify-between items-center py-3 lg:py-8">
 		<div class="flex-1">
 			<img src="{{ $reg->localTeam->team->getImg() }}" alt="{{ $reg->localTeam->team->short_name }}" style="width: 52px; height: 52px" class="mb-3 mx-auto">
@@ -12,22 +28,7 @@
 		</div>
 
 		<div class="flex-1 text-center truncate">
-			@if ($reg->clash)
-				@if ($reg->clash->round->playoff->playin_place)
-					<p class="text-xs truncate font-medium flex flex-col">
-						<span>{{ $reg->clash->round->playoff->name }}</span>
-						<span>{{ $reg->clash->round->name }}</span>
-					</p>
-				@else
-					<p class="text-xs truncate font-medium">
-						{{ $reg->clash->round->playoff->name }} - {{ $reg->clash->round->name }}
-					</p>
-				@endif
-			@else
-				<p class="text-xs truncate font-medium">
-					Liga Regular
-				</p>
-			@endif
+
 	    	<p class="text-xs truncate">{{ $reg->stadium }}</p>
 	    	<p class="font-bold text-2xl md:text-3xl my-1">{{ $reg->score() }}</p>
 	    	<p class="text-xs">

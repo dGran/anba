@@ -18,7 +18,8 @@ class Playoff extends Model
         'playin_place',
         'season_conference_id',
         'order',
-        'num_participants'
+        'num_participants',
+        'full_bracket'
     ];
 
     public function season()
@@ -31,9 +32,27 @@ class Playoff extends Model
         return $this->hasMany('App\Models\PlayoffRound');
     }
 
+    public function seasonConference()
+    {
+        return $this->belongsTo('App\Models\SeasonConference', 'season_conference_id', 'id');
+    }
+
     public function getRound($order)
     {
         return PlayoffRound::where('playoff_id', $this->id)->where('order', $order)->first();
+    }
+
+    public function winner()
+    {
+        $last_round = PlayoffRound::where('playoff_id', $this->id)->orderBy('order', 'desc')->first();
+        $final_clash = PlayoffClash::where('round_id', $last_round->id)->first();
+        $matches_to_win = $final_clash->round->matches_to_win;
+        if ($final_clash->result()['local_result'] == $matches_to_win || $final_clash->result()['visitor_result'] == $matches_to_win) {
+            $team_winner = SeasonTeam::find($final_clash->winner()->id);
+            return $team_winner;
+        }
+
+        return false;
     }
 
     public function canDestroy()

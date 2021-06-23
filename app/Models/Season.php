@@ -651,4 +651,13 @@ class Season extends Model
 
         return false;
     }
+
+    public function regular_finished()
+    {
+        $pending_regular_matches = Match::where('season_id', $this->id)->whereNull('clash_id')->where('played', 0)->count();
+        if ($pending_regular_matches == 0) {
+            return true;
+        }
+        return false;
+    }
 }

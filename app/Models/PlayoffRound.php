@@ -46,7 +46,7 @@ class PlayoffRound extends Model
 
     public function getClash($order)
     {
-        return PlayoffClash::where('round_id', $this->id)->where('order', $order)->first();
+        return PlayoffClash::with('matches.scores')->where('round_id', $this->id)->where('order', $order)->first();
     }
 
     public function canDestroy()

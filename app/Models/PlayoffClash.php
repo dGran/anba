@@ -58,9 +58,9 @@ class PlayoffClash extends Model
                         }
                     } else {
                         if ($match->winner()->id == $this->visitor_team_id) {
-                            $local_result++;
-                        } else {
                             $visitor_result++;
+                        } else {
+                            $local_result++;
                         }
                     }
                 }
@@ -85,9 +85,21 @@ class PlayoffClash extends Model
         $visitor_result = $this->result()['visitor_result'];
 
         if ($local_result > $visitor_result) {
-            return $this->local_team_id;
+            return $this->localTeam;
         } else {
-            return $this->visitor_team_id;
+            return $this->visitorTeam;
+        }
+    }
+
+    public function loser()
+    {
+        $local_result = $this->result()['local_result'];
+        $visitor_result = $this->result()['visitor_result'];
+
+        if ($local_result > $visitor_result) {
+            return $this->visitorTeam;
+        } else {
+            return $this->localTeam;
         }
     }
 
