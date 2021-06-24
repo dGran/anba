@@ -10,7 +10,9 @@
 			@if (isset($table_positions))
 				@if ($view == 'conference')
 					@include('standings.conferences_view')
-					@include('standings.current_playoffs')
+					@if (!$current_season->regular_finished() || $current_season->playoffs->count() == 0)
+						@include('standings.current_playoffs')
+					@endif
 				@endif
 				@if ($view == 'division')
 					@include('standings.divisions_view')

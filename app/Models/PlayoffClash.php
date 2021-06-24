@@ -16,6 +16,8 @@ class PlayoffClash extends Model
         'round_id',
         'local_team_id',
         'visitor_team_id',
+        'regular_position_local',
+        'regular_position_visitor',
         'order',
         'destiny_clash',
         'destiny_clash_local'
