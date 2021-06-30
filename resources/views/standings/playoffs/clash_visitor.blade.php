@@ -10,47 +10,7 @@
                     {{ $clash->visitorTeam ? $clash->visitorTeam->team->user->name : '' }}
                 </p>
             </div>
-            {{-- @if ($clash->localTeam && $clash->visitorTeam)
-                <div class="w-8 font-bold text-xl">
-                    @if ($clash->localResult() == 0 && $clash->visitorResult() == 0)
-                        -
-                    @else
-                        {{ $clash->localResult() }}
-                    @endif
-                </div>
-                @foreach ($clash->matches as $match)
-                    <div class="w-8 text-xxs">
-                        @foreach ($match->scores as $score)
-                            @if ($clash->local_team_id == $match->local_team_id)
-                                {{ $score->local_score }}
-                            @else
-                                {{ $score->visitor_score }}
-                            @endif
-                        @endforeach
-                    </div>
-                @endforeach
-            @endif --}}
         @else
-            {{-- @if ($clash->localTeam && $clash->visitorTeam)
-                <div class="w-8 font-bold text-xl">
-                    @if ($clash->localResult() == 0 && $clash->visitorResult() == 0)
-                        -
-                    @else
-                        {{ $clash->localResult() }}
-                    @endif
-                </div>
-                @foreach ($clash->matches as $match)
-                    <div class="w-8 text-xxs">
-                        @foreach ($match->scores as $score)
-                            @if ($clash->local_team_id == $match->local_team_id)
-                                {{ $score->local_score }}
-                            @else
-                                {{ $score->visitor_score }}
-                            @endif
-                        @endforeach
-                    </div>
-                @endforeach
-            @endif --}}
             <div class="mr-1.5 flex flex-col text-right truncate">
                 <p class="text-xs uppercase leading-4">
                     {{ $clash->visitorTeam ? $clash->visitorTeam->team->short_name . ' (' . $clash->regular_position_visitor . ')' : 'N/D' }}
@@ -61,13 +21,5 @@
             </div>
             <img src="{{ $clash->visitorTeam ? $clash->visitorTeam->team->getImg() : asset('storage/teams/default.png') }}" alt="{{ $clash->visitorTeam ? $clash->visitorTeam->team->short_name : '' }}" class="w-8 h-8 object-cover">
         @endif
-    @else
-        {{-- @if ($round->previousRound())
-            @if ($clash->previousClash('visitor'))
-                <div class="text-xs text-center w-full">
-                    {{ $clash->previousClash('visitor') }}
-                </div>
-            @endif
-        @endif --}}
     @endif
 </div>
