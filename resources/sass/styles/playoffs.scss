@@ -28,3 +28,28 @@
         min-width: 0.75rem;
     }
 }
+
+.detail-clash {
+    thead {
+        td {
+            @apply py-2 px-3;
+        }
+        .team {
+            @apply text-sm;
+        }
+        .result {
+            @apply text-xs w-8;
+        }
+    }
+    tbody {
+        td {
+            @apply py-0.5 px-3;
+        }
+        .team {
+            @apply text-sm w-20;
+        }
+        .result {
+            @apply text-xs w-8;
+        }
+    }
+}

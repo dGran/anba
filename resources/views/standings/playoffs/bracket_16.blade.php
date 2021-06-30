@@ -27,7 +27,7 @@
 					<td class="clash dark:border-gray-650">
 						@include('standings.playoffs.clash_local', ['position' => 'left'])
 					</td>
-					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650" wire:click.prevent="openDetailClash({{ $clash->id }})">
 	                    {{ $clash->result()['local_result'] }}
 					</td>
 					{{-- center side --}}
@@ -44,7 +44,7 @@
 						$round = $playoff->getRound(1);
 						$clash = $round->getClash(1);
 					@endphp
-					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650" wire:click.prevent="openDetailClash({{ $clash->id }})">
 	                    {{ $clash->result()['local_result'] }}
 					</td>
 					<td class="clash dark:border-gray-650">
@@ -62,7 +62,7 @@
 					<td class="clash dark:border-gray-650">
 						@include('standings.playoffs.clash_visitor', ['position' => 'left'])
 					</td>
-					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650" wire:click.prevent="openDetailClash({{ $clash->id }})" wire:click.prevent="openDetailClash({{ $clash->id }})">
 	                    {{ $clash->result()['visitor_result'] }}
 					</td>
 					<td class="bracket border-t border-r dark:border-gray-650"></td>
@@ -88,7 +88,7 @@
 						$round = $playoff->getRound(1);
 						$clash = $round->getClash(1);
 					@endphp
-					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650" wire:click.prevent="openDetailClash({{ $clash->id }})">
 	                    {{ $clash->result()['visitor_result'] }}
 					</td>
 					<td class="clash dark:border-gray-650">
@@ -109,7 +109,7 @@
 					<td class="clash dark:border-gray-650">
 						@include('standings.playoffs.clash_local', ['position' => 'left'])
 					</td>
-					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650" wire:click.prevent="openDetailClash({{ $clash->id }})">
 	                    {{ $clash->result()['local_result'] }}
 					</td>
 					{{-- center side --}}
@@ -121,7 +121,7 @@
 						$round = $playoff->getRound(2);
 						$clash = $round->getClash(1);
 					@endphp
-					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650" wire:click.prevent="openDetailClash({{ $clash->id }})">
 	                    {{ $clash->result()['local_result'] }}
 					</td>
 					<td class="clash dark:border-gray-650">
@@ -144,7 +144,7 @@
 					<td class="clash dark:border-gray-650">
 						@include('standings.playoffs.clash_visitor', ['position' => 'left'])
 					</td>
-					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650" wire:click.prevent="openDetailClash({{ $clash->id }})">
 						{{ $clash->result()['visitor_result'] }}
 					</td>
 					<td class="bracket border-t border-r dark:border-gray-650"></td>
@@ -156,7 +156,7 @@
 						$round = $playoff->getRound(2);
 						$clash = $round->getClash(1);
 					@endphp
-					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650" wire:click.prevent="openDetailClash({{ $clash->id }})">
 						{{ $clash->result()['visitor_result'] }}
 					</td>
 					<td class="clash dark:border-gray-650">
@@ -177,7 +177,7 @@
 					<td class="clash dark:border-gray-650">
 						@include('standings.playoffs.clash_local', ['position' => 'left'])
 					</td>
-					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650" wire:click.prevent="openDetailClash({{ $clash->id }})">
 						{{ $clash->result()['local_result'] }}
 					</td>
 					<td class="bracket border-b border-r dark:border-gray-650"></td>
@@ -194,7 +194,7 @@
 						$round = $playoff->getRound(1);
 						$clash = $round->getClash(2);
 					@endphp
-					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650" wire:click.prevent="openDetailClash({{ $clash->id }})">
 						{{ $clash->result()['local_result'] }}
 					</td>
 					<td class="clash dark:border-gray-650">
@@ -212,7 +212,7 @@
 					<td class="clash dark:border-gray-650">
 						@include('standings.playoffs.clash_visitor', ['position' => 'left'])
 					</td>
-					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650" wire:click.prevent="openDetailClash({{ $clash->id }})">
 						{{ $clash->result()['visitor_result'] }}
 					</td>
 					<td colspan="4" class="border-b border-white dark:border-gray-750"></td>
@@ -241,7 +241,7 @@
 						$round = $playoff->getRound(1);
 						$clash = $round->getClash(2);
 					@endphp
-					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650" wire:click.prevent="openDetailClash({{ $clash->id }})">
 						{{ $clash->result()['visitor_result'] }}
 					</td>
 					<td class="clash dark:border-gray-650">
@@ -262,7 +262,7 @@
 					<td class="clash dark:border-gray-650">
 						@include('standings.playoffs.clash_local', ['position' => 'left'])
 					</td>
-					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650" wire:click.prevent="openDetailClash({{ $clash->id }})">
 						{{ $clash->result()['local_result'] }}
 					</td>
 					{{-- center side --}}
@@ -274,7 +274,7 @@
 						$round = $playoff->getRound(3);
 						$clash = $round->getClash(1);
 					@endphp
-					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650" wire:click.prevent="openDetailClash({{ $clash->id }})">
 						{{ $clash->result()['local_result'] }}
 					</td>
 					<td class="clash dark:border-gray-650">
@@ -300,7 +300,7 @@
 					<td class="clash dark:border-gray-650">
 						@include('standings.playoffs.clash_visitor', ['position' => 'left'])
 					</td>
-					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650" wire:click.prevent="openDetailClash({{ $clash->id }})">
 						{{ $clash->result()['visitor_result'] }}
 					</td>
 					{{-- center side --}}
@@ -319,7 +319,7 @@
 						$round = $playoff->getRound(3);
 						$clash = $round->getClash(1);
 					@endphp
-					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650" wire:click.prevent="openDetailClash({{ $clash->id }})">
 						{{ $clash->result()['visitor_result'] }}
 					</td>
 					<td class="clash dark:border-gray-650">
@@ -341,7 +341,7 @@
 					<td class="clash dark:border-gray-650">
 						@include('standings.playoffs.clash_local', ['position' => 'left'])
 					</td>
-					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650" wire:click.prevent="openDetailClash({{ $clash->id }})">
 						{{ $clash->result()['local_result'] }}
 					</td>
 					<td></td>
@@ -358,7 +358,7 @@
 					<td class="clash dark:border-gray-650">
 						@include('standings.playoffs.clash_local', ['position' => 'left'])
 					</td>
-					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650" wire:click.prevent="openDetailClash({{ $clash->id }})">
 						{{ $clash->result()['local_result'] }}
 					</td>
 					<td class="bracket border-r dark:border-gray-650"></td>
@@ -370,7 +370,7 @@
 						$round = $playoff->getRound(1);
 						$clash = $round->getClash(3);
 					@endphp
-					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650" wire:click.prevent="openDetailClash({{ $clash->id }})">
 						{{ $clash->result()['local_result'] }}
 					</td>
 					<td class="clash dark:border-gray-650">
@@ -388,7 +388,7 @@
 					<td class="clash dark:border-gray-650">
 						@include('standings.playoffs.clash_visitor', ['position' => 'left'])
 					</td>
-					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650" wire:click.prevent="openDetailClash({{ $clash->id }})">
 						{{ $clash->result()['visitor_result'] }}
 					</td>
 					<td class="bracket border-t border-r dark:border-gray-650"></td>
@@ -404,7 +404,7 @@
 					<td class="clash dark:border-gray-650">
 						@include('standings.playoffs.clash_visitor', ['position' => 'left'])
 					</td>
-					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650" wire:click.prevent="openDetailClash({{ $clash->id }})">
 						{{ $clash->result()['visitor_result'] }}
 					</td>
 					<td class="bracket border-t dark:border-gray-650"></td>
@@ -418,7 +418,7 @@
 						$round = $playoff->getRound(1);
 						$clash = $round->getClash(3);
 					@endphp
-					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650" wire:click.prevent="openDetailClash({{ $clash->id }})">
 						{{ $clash->result()['visitor_result'] }}
 					</td>
 					<td class="clash dark:border-gray-650">
@@ -439,7 +439,7 @@
 					<td class="clash dark:border-gray-650">
 						@include('standings.playoffs.clash_local', ['position' => 'left'])
 					</td>
-					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650" wire:click.prevent="openDetailClash({{ $clash->id }})">
 						{{ $clash->result()['local_result'] }}
 					</td>
 					<td class="bracket border-b border-r dark:border-gray-650"></td>
@@ -465,7 +465,7 @@
 						$round = $playoff->getRound(2);
 						$clash = $round->getClash(2);
 					@endphp
-					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650" wire:click.prevent="openDetailClash({{ $clash->id }})">
 						{{ $clash->result()['local_result'] }}
 					</td>
 					<td class="clash dark:border-gray-650">
@@ -488,7 +488,7 @@
 					<td class="clash dark:border-gray-650">
 						@include('standings.playoffs.clash_visitor', ['position' => 'left'])
 					</td>
-					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650" wire:click.prevent="openDetailClash({{ $clash->id }})">
 						{{ $clash->result()['visitor_result'] }}
 					</td>
 					{{-- center side --}}
@@ -500,7 +500,7 @@
 						$round = $playoff->getRound(2);
 						$clash = $round->getClash(2);
 					@endphp
-					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650" wire:click.prevent="openDetailClash({{ $clash->id }})">
 						{{ $clash->result()['visitor_result'] }}
 					</td>
 					<td class="clash dark:border-gray-650">
@@ -520,7 +520,7 @@
 					<td class="clash dark:border-gray-650">
 						@include('standings.playoffs.clash_local', ['position' => 'left'])
 					</td>
-					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650" wire:click.prevent="openDetailClash({{ $clash->id }})">
 						{{ $clash->result()['local_result'] }}
 					</td>
 					<td class="bracket border-b border-r dark:border-gray-650"></td>
@@ -532,7 +532,7 @@
 						$round = $playoff->getRound(1);
 						$clash = $round->getClash(4);
 					@endphp
-					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650" wire:click.prevent="openDetailClash({{ $clash->id }})">
 						{{ $clash->result()['local_result'] }}
 					</td>
 					<td class="clash dark:border-gray-650">
@@ -550,7 +550,7 @@
 					<td class="clash dark:border-gray-650">
 						@include('standings.playoffs.clash_visitor', ['position' => 'left'])
 					</td>
-					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650" wire:click.prevent="openDetailClash({{ $clash->id }})">
 						{{ $clash->result()['visitor_result'] }}
 					</td>
 					{{-- center side --}}
@@ -562,7 +562,7 @@
 						$round = $playoff->getRound(1);
 						$clash = $round->getClash(4);
 					@endphp
-					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650">
+					<td class="result bg-gray-100 dark:bg-gray-700 dark:border-gray-650" wire:click.prevent="openDetailClash({{ $clash->id }})">
 						{{ $clash->result()['visitor_result'] }}
 					</td>
 					<td class="clash dark:border-gray-650">

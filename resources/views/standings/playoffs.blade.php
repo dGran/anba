@@ -16,4 +16,6 @@
                 @include('standings.playoffs.bracket_16')
         @endswitch
     @endif
+
+    @include('standings.playoffs.detail_clash')
 @endif

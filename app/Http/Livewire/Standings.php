@@ -22,6 +22,9 @@ class Standings extends Component
 	public $teamInfoModal = false;
 	public $fieldTeamInfoTeam, $fieldTeamInfoTitle, $fieldTeamInfoMatches;
 
+	public $detailClash = false;
+	public $currentDetailClash;
+
 	// queryString
 	protected $queryString = [
 		'season',
@@ -835,6 +838,15 @@ class Standings extends Component
 		if ($playoff) {
 			$playoff->delete();
 			$this->phase = "regular";
+		}
+	}
+
+	public function openDetailClash($clash_id)
+	{
+		$clash = \App\Models\PlayoffClash::find($clash_id);
+		if ($clash && ($clash->localTeam && $clash->visitorTeam)) {
+			$this->currentDetailClash = $clash;
+			$this->detailClash = true;
 		}
 	}
 

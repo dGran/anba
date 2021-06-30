@@ -48,7 +48,7 @@
                                 {{ $score->visitor_score }}
                             @endif
                         @endforeach
-                    </div>
+                    </div>lo
                 @endforeach
             @endif --}}
             <div class="mr-1.5 flex flex-col text-right truncate">
