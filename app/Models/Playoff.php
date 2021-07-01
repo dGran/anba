@@ -55,6 +55,19 @@ class Playoff extends Model
         return false;
     }
 
+    public function winner_manager()
+    {
+        $last_round = PlayoffRound::where('playoff_id', $this->id)->orderBy('order', 'desc')->first();
+        $final_clash = PlayoffClash::where('round_id', $last_round->id)->first();
+        $matches_to_win = $final_clash->round->matches_to_win;
+        if ($final_clash->result()['local_result'] == $matches_to_win || $final_clash->result()['visitor_result'] == $matches_to_win) {
+            $manager_winner = User::find($final_clash->winner_manager()->id);
+            return $manager_winner;
+        }
+
+        return false;
+    }
+
     public function canDestroy()
     {
         // apply logic

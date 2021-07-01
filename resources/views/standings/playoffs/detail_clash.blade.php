@@ -20,11 +20,17 @@
 	            		<thead>
 	                		<tr class="border-b dark:border-gray-650">
 	                			<td class="team border-r dark:border-gray-650"></td>
-				            	@foreach ($currentDetailClash->matches->sortBy('order') as $key => $match)
-				            		@if ($match->played)
-				            			<td class="result">P{{ $key+1 }}</td>
-				            		@endif
-				            	@endforeach
+	                			@if ($currentDetailClash->matches->count() > $currentDetailClash->round->matches_to_win)
+					            	@foreach ($currentDetailClash->matches->sortBy('order') as $key => $match)
+					            		@if ($match->played)
+					            			<td class="result">P{{ $key+1 }}</td>
+					            		@endif
+					            	@endforeach
+					            @else
+					            	@for ($i = 1; $i < $currentDetailClash->round->matches_to_win+1; $i++)
+					            		<td class="result">P{{ $i }}</td>
+					            	@endfor
+	                			@endif
 	                		</tr>
 	            		</thead>
 	            		<tbody>
@@ -49,6 +55,11 @@
 					                    </td>
 									@endif
 				                @endforeach
+				                @if ($currentDetailClash->matches->count() < $currentDetailClash->round->matches_to_win)
+					            	@for ($i = $currentDetailClash->matches->count(); $i < $currentDetailClash->round->matches_to_win+1; $i++)
+					            		<td class="result">-</td>
+					            	@endfor
+				                @endif
 	                		</tr>
 	                		<tr>
 	                			<td class="team border-r dark:border-gray-650">
@@ -71,6 +82,11 @@
 					                    </td>
 			                        @endif
 				                @endforeach
+				                @if ($currentDetailClash->matches->count() < $currentDetailClash->round->matches_to_win)
+					            	@for ($i = $currentDetailClash->matches->count(); $i < $currentDetailClash->round->matches_to_win+1; $i++)
+					            		<td class="result">-</td>
+					            	@endfor
+				                @endif
 	                		</tr>
 	            		</tbody>
 	            	</table>

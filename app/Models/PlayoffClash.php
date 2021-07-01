@@ -112,6 +112,18 @@ class PlayoffClash extends Model
         }
     }
 
+    public function winner_manager()
+    {
+        $local_result = $this->result()['local_result'];
+        $visitor_result = $this->result()['visitor_result'];
+
+        if ($local_result > $visitor_result) {
+            return $this->localManager;
+        } else {
+            return $this->visitorManager;
+        }
+    }
+
     public function loser()
     {
         $local_result = $this->result()['local_result'];

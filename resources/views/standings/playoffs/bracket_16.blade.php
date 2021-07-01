@@ -513,7 +513,7 @@
 									campeón ANBA
 								</p>
 								<p class="text-sm">
-									<span class="uppercase">{{ $playoff->winner()->team->medium_name }}</span> - <span>{{ $playoff->winner()->team->user->name }}</span>
+									<span class="uppercase">{{ $playoff->winner()->team->medium_name }}</span> - <span>{{ $playoff->winner_manager()->name }}</span>
 								</p>
 							</div>
 						@endif

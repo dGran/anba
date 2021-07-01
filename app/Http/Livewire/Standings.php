@@ -776,7 +776,7 @@ class Standings extends Component
 			"regular_position_visitor" 	=> null,
 			"order" 		  	   		=> 1,
 			"destiny_clash"   	   		=> 1,
-			"destiny_clash_local"  		=> true,
+			"destiny_clash_local"  		=> false,
 		]);
 		$clash = PlayoffClash::create([
 			"round_id" 	 	  	   		=> $round->id,
@@ -788,7 +788,7 @@ class Standings extends Component
 			"regular_position_visitor" 	=> null,
 			"order" 		  	   		=> 2,
 			"destiny_clash"   	   		=> 1,
-			"destiny_clash_local"  		=> false,
+			"destiny_clash_local"  		=> true,
 		]);
 
 		$round = PlayoffRound::create([
