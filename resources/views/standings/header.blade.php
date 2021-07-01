@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto p-4 sm:px-6 lg:px-8 border-b md:border-b-0 border-gray-300 dark:border-gray-650">
 		@if (isset($table_positions) || isset($playoff))
 			<div class="my-2">
-				<div class="filters flex items-center select-none">
+				<div class="filters flex items-center select-none overflow-x-auto">
 					<div class="flex flex-col">
 						<label for="season" class="text-xs uppercase">
 							Temporada
