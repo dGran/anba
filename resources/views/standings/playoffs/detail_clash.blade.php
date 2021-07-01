@@ -22,9 +22,7 @@
 	                			<td class="team border-r dark:border-gray-650"></td>
 	                			@if ($currentDetailClash->matches->count() > $currentDetailClash->round->matches_to_win)
 					            	@foreach ($currentDetailClash->matches->sortBy('order') as $key => $match)
-					            		@if ($match->played)
-					            			<td class="result">P{{ $key+1 }}</td>
-					            		@endif
+				            			<td class="result">P{{ $key+1 }}</td>
 					            	@endforeach
 					            @else
 					            	@for ($i = 1; $i < $currentDetailClash->round->matches_to_win+1; $i++)
@@ -58,7 +56,7 @@
 									@endif
 				                @endforeach
 				                @if ($currentDetailClash->matches->count() < $currentDetailClash->round->matches_to_win)
-					            	@for ($i = $currentDetailClash->matches->count(); $i < $currentDetailClash->round->matches_to_win+1; $i++)
+					            	@for ($i = $currentDetailClash->matches->count(); $i < $currentDetailClash->round->matches_to_win; $i++)
 					            		<td class="result">-</td>
 					            	@endfor
 				                @endif
@@ -87,7 +85,7 @@
 			                        @endif
 				                @endforeach
 				                @if ($currentDetailClash->matches->count() < $currentDetailClash->round->matches_to_win)
-					            	@for ($i = $currentDetailClash->matches->count(); $i < $currentDetailClash->round->matches_to_win+1; $i++)
+					            	@for ($i = $currentDetailClash->matches->count(); $i < $currentDetailClash->round->matches_to_win; $i++)
 					            		<td class="result">-</td>
 					            	@endfor
 				                @endif
