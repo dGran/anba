@@ -3,8 +3,8 @@
 	    <x-slot name="title">
 			<div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-650 bg-gray-50 dark:bg-gray-700">
 				<p class="uppercase text-sm font-bold tracking-wider">
-					<span class="md:hidden">{{ $currentDetailClash->localTeam->team->short_name }} vs {{ $currentDetailClash->visitorTeam->team->short_name }}</span>
-					<span class="hidden md:block">{{ $currentDetailClash->localTeam->team->medium_name }} vs {{ $currentDetailClash->visitorTeam->team->medium_name }}</span>
+					<span class="sm:hidden">{{ $currentDetailClash->localTeam->team->short_name }} vs {{ $currentDetailClash->visitorTeam->team->short_name }}</span>
+					<span class="hidden sm:block">{{ $currentDetailClash->localTeam->team->medium_name }} vs {{ $currentDetailClash->visitorTeam->team->medium_name }}</span>
 				</p>
 				<p class="uppercase text-sm font-bold tracking-wider">
 					{{ $currentDetailClash->round->name }}
@@ -34,17 +34,17 @@
 	                			<td class="team border-r dark:border-gray-650" style="min-width: 120px">
 	                				<div class="flex items-center">
 	                					<img src="{{ $currentDetailClash->localTeam->team->getImg() }}" alt="{{ $currentDetailClash->localTeam->team->short_name }}" class="w-8 h-8 object-cover mr-2">
-	                					<span class="md:hidden">{{ $currentDetailClash->localTeam->team->short_name }}</span>
-	                					<span class="hidden md:block">{{ $currentDetailClash->localTeam->team->medium_name }}</span>
+	                					<span class="sm:hidden">{{ $currentDetailClash->localTeam->team->short_name }}</span>
+	                					<span class="hidden sm:block">{{ $currentDetailClash->localTeam->team->medium_name }}</span>
 	                				</div>
 	                			</td>
 				                @foreach ($currentDetailClash->matches as $match)
 				                    <td class="result">
 				                        @foreach ($match->scores as $score)
 				                            @if ($currentDetailClash->local_team_id == $match->local_team_id)
-				                                <span class="{{ $score->local_score > $score->visitor_score ? 'text-sm font-bold' : '' }}">{{ $score->local_score }}</span>
+				                                <span class="{{ $score->local_score > $score->visitor_score ? 'font-bold' : '' }}">{{ $score->local_score }}</span>
 				                            @else
-				                                <span class="{{ $score->visitor_score > $score->local_score ? 'text-sm font-bold' : '' }}">{{ $score->visitor_score }}</span>
+				                                <span class="{{ $score->visitor_score > $score->local_score ? 'font-bold' : '' }}">{{ $score->visitor_score }}</span>
 				                            @endif
 				                        @endforeach
 				                    </td>
@@ -94,8 +94,8 @@
 		            			</div>
 			            		<div class="flex items-center justify-between py-2">
 			            			<div class="flex-1 flex items-center justify-end">
-	                					<span class="md:hidden text-right text-sm">{{ $match->localTeam->team->short_name }}</span>
-	                					<span class="hidden md:block text-right text-sm">{{ $match->localTeam->team->medium_name }}</span>
+	                					<span class="sm:hidden text-right text-sm">{{ $match->localTeam->team->short_name }}</span>
+	                					<span class="hidden sm:block text-right text-sm">{{ $match->localTeam->team->medium_name }}</span>
 			            				<img src="{{ $match->localTeam->team->getImg() }}" alt="{{ $match->localTeam->team->short_name }}" class="w-8 h-8 object-cover ml-2">
 			            			</div>
 			            			{{-- <span class="px-2 w-32 text-center text-base">{{ $match->score() }}</span> --}}
@@ -104,8 +104,8 @@
 									</a>
 			            			<div class="flex-1 flex items-center">
 			            				<img src="{{ $match->visitorTeam->team->getImg() }}" alt="{{ $match->visitorTeam->team->short_name }}" class="w-8 h-8 object-cover mr-2">
-	                					<span class="md:hidden text-sm">{{ $match->visitorTeam->team->short_name }}</span>
-	                					<span class="hidden md:block text-sm">{{ $match->visitorTeam->team->medium_name }}</span>
+	                					<span class="sm:hidden text-sm">{{ $match->visitorTeam->team->short_name }}</span>
+	                					<span class="hidden sm:block text-sm">{{ $match->visitorTeam->team->medium_name }}</span>
 			            			</div>
 		            			</div>
 	            			</div>
