@@ -340,6 +340,7 @@ class Season extends Model
 
             ->select('matches.*', 'local_seasons_divisions.id as local_division_id', 'local_seasons_conferences.id as local_conference_id', 'visitor_seasons_divisions.id as visitor_division_id', 'visitor_seasons_conferences.id as visitor_conference_id')
             ->where('matches.season_id', $this->id)
+            ->whereNull('matches.clash_id')
             ->where(function($q) use ($team_id) {
                 $q->where('matches.local_team_id', $team_id)
                     ->orWhere('matches.visitor_team_id', $team_id);

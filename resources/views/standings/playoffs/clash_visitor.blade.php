@@ -7,7 +7,7 @@
                     {{ $clash->visitorTeam ? '(' . $clash->regular_position_visitor . ') ' . $clash->visitorTeam->team->short_name : 'N/D' }}
                 </p>
                 <p class="text-xxs truncate text-gray-600 dark:text-gray-350">
-                    {{ $clash->visitorTeam ? $clash->visitorTeam->team->user->name : '' }}
+                    {{ $clash->visitorManager ? $clash->visitorManager->name : '' }}
                 </p>
             </div>
         @else
@@ -16,7 +16,7 @@
                     {{ $clash->visitorTeam ? $clash->visitorTeam->team->short_name . ' (' . $clash->regular_position_visitor . ')' : 'N/D' }}
                 </p>
                 <p class="text-xxs truncate text-gray-600 dark:text-gray-350">
-                    {{ $clash->visitorTeam ? $clash->visitorTeam->team->user->name : '' }}
+                    {{ $clash->visitorManager ? $clash->visitorManager->name : '' }}
                 </p>
             </div>
             <img src="{{ $clash->visitorTeam ? $clash->visitorTeam->team->getImg() : asset('storage/teams/default.png') }}" alt="{{ $clash->visitorTeam ? $clash->visitorTeam->team->short_name : '' }}" class="w-8 h-8 object-cover">

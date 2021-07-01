@@ -16,6 +16,8 @@ class PlayoffClash extends Model
         'round_id',
         'local_team_id',
         'visitor_team_id',
+        'local_manager_id',
+        'visitor_manager_id',
         'regular_position_local',
         'regular_position_visitor',
         'order',
@@ -36,6 +38,16 @@ class PlayoffClash extends Model
     public function visitorTeam()
     {
         return $this->hasOne('App\Models\SeasonTeam', 'id', 'visitor_team_id');
+    }
+
+    public function localManager()
+    {
+        return $this->belongsTo('App\Models\User', 'local_manager_id', 'id');
+    }
+
+    public function visitorManager()
+    {
+        return $this->belongsTo('App\Models\User', 'visitor_manager_id', 'id');
     }
 
     public function matches()

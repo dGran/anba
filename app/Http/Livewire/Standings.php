@@ -362,7 +362,9 @@ class Standings extends Component
 			$clash = PlayoffClash::create([
 				"round_id" 	 	  	       	=> $round->id,
 				"local_team_id"	  	       	=> $table_positions[0][6]['team']->id,
+				"local_manager_id"			=> $table_positions[0][6]['team']->team->user->id,
 				"visitor_team_id" 	       	=> $table_positions[0][7]['team']->id,
+				"visitor_manager_id"		=> $table_positions[0][7]['team']->team->user->id,
 				"regular_position_local"   	=> 7,
 				"regular_position_visitor" 	=> 8,
 				"order" 		  	       	=> 1,
@@ -405,7 +407,9 @@ class Standings extends Component
 			$clash = PlayoffClash::create([
 				"round_id" 	 	  	        => $round->id,
 				"local_team_id"	  	        => $table_positions[1][6]['team']->id,
+				"local_manager_id"			=> $table_positions[1][6]['team']->team->user->id,
 				"visitor_team_id" 	        => $table_positions[1][7]['team']->id,
+				"visitor_manager_id"		=> $table_positions[1][7]['team']->team->user->id,
 				"regular_position_local"    => 7,
 				"regular_position_visitor"  => 8,
 				"order" 		  	        => 1,
@@ -448,7 +452,9 @@ class Standings extends Component
 			$clash = PlayoffClash::create([
 				"round_id" 	 	  	  	    => $round->id,
 				"local_team_id"	  	  	    => null,
+				"local_manager_id"			=> null,
 				"visitor_team_id" 	   	    => null,
+				"visitor_manager_id"		=> null,
 				"regular_position_local"    => null,
 				"regular_position_visitor"  => null,
 				"order" 		  	  	    => 1,
@@ -458,7 +464,9 @@ class Standings extends Component
 			$clash = PlayoffClash::create([
 				"round_id" 	 	  	   	    => $round->id,
 				"local_team_id"	  	  	    => $table_positions[0][8]['team']->id,
+				"local_manager_id"			=> $table_positions[0][8]['team']->team->user->id,
 				"visitor_team_id" 	  	    => $table_positions[0][9]['team']->id,
+				"visitor_manager_id"		=> $table_positions[0][9]['team']->team->user->id,
 				"regular_position_local"    => 9,
 				"regular_position_visitor"  => 10,
 				"order" 		  	  	    => 2,
@@ -490,7 +498,9 @@ class Standings extends Component
 			$clash = PlayoffClash::create([
 				"round_id" 	 	  	  	    => $round->id,
 				"local_team_id"	  	   	    => null,
+				"local_manager_id"			=> null,
 				"visitor_team_id" 	  	    => null,
+				"visitor_manager_id"		=> null,
 				"regular_position_local"    => null,
 				"regular_position_visitor"  => null,
 				"order" 		  	   	    => 1,
@@ -518,7 +528,9 @@ class Standings extends Component
 			$clash = PlayoffClash::create([
 				"round_id" 	 	  	  	   	=> $round->id,
 				"local_team_id"	  	  	   	=> null,
+				"local_manager_id"			=> null,
 				"visitor_team_id" 	   	   	=> null,
+				"visitor_manager_id"		=> null,
 				"regular_position_local"   	=> null,
 				"regular_position_visitor" 	=> null,
 				"order" 		  	  	   	=> 1,
@@ -528,7 +540,9 @@ class Standings extends Component
 			$clash = PlayoffClash::create([
 				"round_id" 	 	  	   	   	=> $round->id,
 				"local_team_id"	  	   	   	=> $table_positions[1][8]['team']->id,
+				"local_manager_id"			=> $table_positions[1][8]['team']->team->user->id,
 				"visitor_team_id" 	   	   	=> $table_positions[1][9]['team']->id,
+				"visitor_manager_id"		=> $table_positions[1][9]['team']->team->user->id,
 				"regular_position_local"   	=> 9,
 				"regular_position_visitor" 	=> 10,
 				"order" 		  	   	   	=> 2,
@@ -560,7 +574,9 @@ class Standings extends Component
 			$clash = PlayoffClash::create([
 				"round_id" 	 	  	   	   	=> $round->id,
 				"local_team_id"	  	  	   	=> null,
+				"local_manager_id"			=> null,
 				"visitor_team_id" 	   	   	=> null,
+				"visitor_manager_id"		=> null,
 				"regular_position_local"   	=> null,
 				"regular_position_visitor" 	=> null,
 				"order" 		  	  	   	=> 1,
@@ -591,7 +607,9 @@ class Standings extends Component
 		$clash = PlayoffClash::create([
 			"round_id" 	 	  	   		=> $round->id,
 			"local_team_id"	  	   		=> $table_positions[0][0]['team']->id,
+			"local_manager_id"			=> $table_positions[0][0]['team']->team->user->id,
 			"visitor_team_id" 	   		=> !$current_season->play_in_start ? $table_positions[0][7]['team']->id : null,
+			"visitor_manager_id"		=> !$current_season->play_in_start ? $table_positions[0][7]['team']->user->id : null,
 			"regular_position_local"   	=> 1,
 			"regular_position_visitor" 	=> 8,
 			"order" 		  	   		=> 1,
@@ -600,8 +618,10 @@ class Standings extends Component
 		]);
 		$clash = PlayoffClash::create([
 			"round_id" 	 	  	   		=> $round->id,
-			"local_team_id"	  	   		=> $table_positions[0][3]['team']->id,
-			"visitor_team_id" 	   		=> $table_positions[0][4]['team']->id,
+			"local_team_id"	  	   	   	=> $table_positions[0][3]['team']->id,
+			"local_manager_id"			=> $table_positions[0][3]['team']->team->user->id,
+			"visitor_team_id" 	   	   	=> $table_positions[0][4]['team']->id,
+			"visitor_manager_id"		=> $table_positions[0][4]['team']->team->user->id,
 			"regular_position_local"   	=> 4,
 			"regular_position_visitor" 	=> 5,
 			"order" 		  	   		=> 2,
@@ -610,8 +630,10 @@ class Standings extends Component
 		]);
 		$clash = PlayoffClash::create([
 			"round_id" 	 	  	   		=> $round->id,
-			"local_team_id"	  	   		=> $table_positions[0][2]['team']->id,
-			"visitor_team_id" 	   		=> $table_positions[0][5]['team']->id,
+			"local_team_id"	  	   	   	=> $table_positions[0][2]['team']->id,
+			"local_manager_id"			=> $table_positions[0][2]['team']->team->user->id,
+			"visitor_team_id" 	   	   	=> $table_positions[0][5]['team']->id,
+			"visitor_manager_id"		=> $table_positions[0][5]['team']->team->user->id,
 			"regular_position_local"   	=> 3,
 			"regular_position_visitor" 	=> 6,
 			"order" 		  	   		=> 3,
@@ -621,7 +643,9 @@ class Standings extends Component
 		$clash = PlayoffClash::create([
 			"round_id" 	 	  	   		=> $round->id,
 			"local_team_id"	  	   		=> $table_positions[0][1]['team']->id,
+			"local_manager_id"			=> $table_positions[0][1]['team']->team->user->id,
 			"visitor_team_id" 	   		=> !$current_season->play_in_start ? $table_positions[0][6]['team']->id : null,
+			"visitor_manager_id"		=> !$current_season->play_in_start ? $table_positions[0][6]['team']->user->id : null,
 			"regular_position_local"   	=> 2,
 			"regular_position_visitor" 	=> 7,
 			"order" 		  	   		=> 4,
@@ -632,7 +656,9 @@ class Standings extends Component
 		$clash = PlayoffClash::create([
 			"round_id" 	 	  	   		=> $round->id,
 			"local_team_id"	  	   		=> $table_positions[1][0]['team']->id,
+			"local_manager_id"			=> $table_positions[1][0]['team']->team->user->id,
 			"visitor_team_id" 	   		=> !$current_season->play_in_start ? $table_positions[1][7]['team']->id : null,
+			"visitor_manager_id"		=> !$current_season->play_in_start ? $table_positions[1][7]['team']->user->id : null,
 			"regular_position_local"   	=> 1,
 			"regular_position_visitor" 	=> 8,
 			"order" 		  	   		=> 5,
@@ -641,8 +667,10 @@ class Standings extends Component
 		]);
 		$clash = PlayoffClash::create([
 			"round_id" 	 	  	   		=> $round->id,
-			"local_team_id"	  	   		=> $table_positions[1][3]['team']->id,
-			"visitor_team_id" 	   		=> $table_positions[1][4]['team']->id,
+			"local_team_id"	  	   	   	=> $table_positions[1][3]['team']->id,
+			"local_manager_id"			=> $table_positions[1][3]['team']->team->user->id,
+			"visitor_team_id" 	   	   	=> $table_positions[1][4]['team']->id,
+			"visitor_manager_id"		=> $table_positions[1][4]['team']->team->user->id,
 			"regular_position_local"   	=> 4,
 			"regular_position_visitor" 	=> 5,
 			"order" 		  	   		=> 6,
@@ -651,8 +679,10 @@ class Standings extends Component
 		]);
 		$clash = PlayoffClash::create([
 			"round_id" 	 	  	   		=> $round->id,
-			"local_team_id"	  	   		=> $table_positions[1][2]['team']->id,
-			"visitor_team_id" 	   		=> $table_positions[1][5]['team']->id,
+			"local_team_id"	  	   	   	=> $table_positions[1][2]['team']->id,
+			"local_manager_id"			=> $table_positions[1][2]['team']->team->user->id,
+			"visitor_team_id" 	   	   	=> $table_positions[1][5]['team']->id,
+			"visitor_manager_id"		=> $table_positions[1][5]['team']->team->user->id,
 			"regular_position_local"   	=> 3,
 			"regular_position_visitor" 	=> 6,
 			"order" 		  	   		=> 7,
@@ -662,7 +692,9 @@ class Standings extends Component
 		$clash = PlayoffClash::create([
 			"round_id" 	 	  	   		=> $round->id,
 			"local_team_id"	  	   		=> $table_positions[1][1]['team']->id,
+			"local_manager_id"			=> $table_positions[1][1]['team']->team->user->id,
 			"visitor_team_id" 	   		=> !$current_season->play_in_start ? $table_positions[1][6]['team']->id : null,
+			"visitor_manager_id"		=> !$current_season->play_in_start ? $table_positions[1][6]['team']->user->id : null,
 			"regular_position_local"   	=> 2,
 			"regular_position_visitor" 	=> 7,
 			"order" 		  	   		=> 8,
@@ -680,8 +712,10 @@ class Standings extends Component
 
 		$clash = PlayoffClash::create([
 			"round_id" 	 	  	   		=> $round->id,
-			"local_team_id"	  	   		=> null,
-			"visitor_team_id" 	   		=> null,
+			"local_team_id"	  	  	    => null,
+			"local_manager_id"			=> null,
+			"visitor_team_id" 	   	    => null,
+			"visitor_manager_id"		=> null,
 			"regular_position_local"   	=> null,
 			"regular_position_visitor" 	=> null,
 			"order" 		  	   		=> 1,
@@ -690,8 +724,10 @@ class Standings extends Component
 		]);
 		$clash = PlayoffClash::create([
 			"round_id" 	 	  	   		=> $round->id,
-			"local_team_id"	  	   		=> null,
-			"visitor_team_id" 	   		=> null,
+			"local_team_id"	  	  	    => null,
+			"local_manager_id"			=> null,
+			"visitor_team_id" 	   	    => null,
+			"visitor_manager_id"		=> null,
 			"regular_position_local"   	=> null,
 			"regular_position_visitor" 	=> null,
 			"order" 		  	   		=> 2,
@@ -700,8 +736,10 @@ class Standings extends Component
 		]);
 		$clash = PlayoffClash::create([
 			"round_id" 	 	  	   		=> $round->id,
-			"local_team_id"	  	   		=> null,
-			"visitor_team_id" 	   		=> null,
+			"local_team_id"	  	  	    => null,
+			"local_manager_id"			=> null,
+			"visitor_team_id" 	   	    => null,
+			"visitor_manager_id"		=> null,
 			"regular_position_local"   	=> null,
 			"regular_position_visitor" 	=> null,
 			"order" 		  	   		=> 3,
@@ -710,8 +748,10 @@ class Standings extends Component
 		]);
 		$clash = PlayoffClash::create([
 			"round_id" 	 	  	   		=> $round->id,
-			"local_team_id"	  	   		=> null,
-			"visitor_team_id" 	   		=> null,
+			"local_team_id"	  	  	    => null,
+			"local_manager_id"			=> null,
+			"visitor_team_id" 	   	    => null,
+			"visitor_manager_id"		=> null,
 			"regular_position_local"   	=> null,
 			"regular_position_visitor" 	=> null,
 			"order" 		  	   		=> 4,
@@ -728,8 +768,10 @@ class Standings extends Component
 		]);
 		$clash = PlayoffClash::create([
 			"round_id" 	 	  	   		=> $round->id,
-			"local_team_id"	  	   		=> null,
-			"visitor_team_id" 	   		=> null,
+			"local_team_id"	  	  	    => null,
+			"local_manager_id"			=> null,
+			"visitor_team_id" 	   	    => null,
+			"visitor_manager_id"		=> null,
 			"regular_position_local"   	=> null,
 			"regular_position_visitor" 	=> null,
 			"order" 		  	   		=> 1,
@@ -738,8 +780,10 @@ class Standings extends Component
 		]);
 		$clash = PlayoffClash::create([
 			"round_id" 	 	  	   		=> $round->id,
-			"local_team_id"	  	   		=> null,
-			"visitor_team_id" 	   		=> null,
+			"local_team_id"	  	  	    => null,
+			"local_manager_id"			=> null,
+			"visitor_team_id" 	   	    => null,
+			"visitor_manager_id"		=> null,
 			"regular_position_local"   	=> null,
 			"regular_position_visitor" 	=> null,
 			"order" 		  	   		=> 2,
@@ -756,8 +800,10 @@ class Standings extends Component
 		]);
 		$clash = PlayoffClash::create([
 			"round_id" 	 	  	   		=> $round->id,
-			"local_team_id"	  	   		=> null,
-			"visitor_team_id" 	   		=> null,
+			"local_team_id"	  	  	    => null,
+			"local_manager_id"			=> null,
+			"visitor_team_id" 	   	    => null,
+			"visitor_manager_id"		=> null,
 			"regular_position_local"   	=> null,
 			"regular_position_visitor" 	=> null,
 			"order" 		  	   		=> 1,

@@ -9,7 +9,7 @@
                     {{ $clash->localTeam ? '(' . $clash->regular_position_local . ') ' . $clash->localTeam->team->short_name : 'N/D' }}
                 </p>
                 <p class="text-xxs truncate text-gray-600 dark:text-gray-350">
-                    {{ $clash->localTeam ? $clash->localTeam->team->user->name : '' }}
+                    {{ $clash->localManager ? $clash->localManager->name : '' }}
                 </p>
             </div>
         @else
@@ -18,7 +18,7 @@
                     {{ $clash->localTeam ? $clash->localTeam->team->short_name . ' (' . $clash->regular_position_local . ')' : 'N/D' }}
                 </p>
                 <p class="text-xxs truncate text-gray-600 dark:text-gray-350">
-                    {{ $clash->localTeam ? $clash->localTeam->team->user->name : '' }}
+                    {{ $clash->localManager ? $clash->localManager->name : '' }}
                 </p>
             </div>
             <img src="{{ $clash->localTeam ? $clash->localTeam->team->getImg() : asset('storage/teams/default.png') }}" alt="{{ $clash->localTeam ? $clash->localTeam->team->short_name : '' }}" class="w-8 h-8 object-cover">
