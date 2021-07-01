@@ -53,6 +53,8 @@
 					                            @endif
 					                        @endforeach
 					                    </td>
+					                @else
+					                	<td class="result">-</td>
 									@endif
 				                @endforeach
 				                @if ($currentDetailClash->matches->count() < $currentDetailClash->round->matches_to_win)
@@ -80,6 +82,8 @@
 					                            @endif
 					                        @endforeach
 					                    </td>
+					                @else
+					                	<td class="result">-</td>
 			                        @endif
 				                @endforeach
 				                @if ($currentDetailClash->matches->count() < $currentDetailClash->round->matches_to_win)
