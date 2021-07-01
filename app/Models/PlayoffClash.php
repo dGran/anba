@@ -64,18 +64,25 @@ class PlayoffClash extends Model
             $visitor_result = 0;
             foreach ($this->matches as $match) {
                 if ($match->winner()) {
-                    if ($this->local_team_id == $match->local_team_id) {
-                        if ($match->winner()->id == $this->local_team_id) {
-                            $local_result++;
+                    if ($this->round->matches_to_win > 1) {
+                        if ($this->local_team_id == $match->local_team_id) {
+                            if ($match->winner()->id == $this->local_team_id) {
+                                $local_result++;
+                            } else {
+                                $visitor_result++;
+                            }
                         } else {
-                            $visitor_result++;
+                            if ($match->winner()->id == $this->visitor_team_id) {
+                                $visitor_result++;
+                            } else {
+                                $local_result++;
+                            }
                         }
                     } else {
-                        if ($match->winner()->id == $this->visitor_team_id) {
-                            $visitor_result++;
-                        } else {
-                            $local_result++;
-                        }
+                        return $result = [
+                            'local_result' => $match->localScore(),
+                            'visitor_result' => $match->visitorScore()
+                        ];
                     }
                 }
             }

@@ -13,7 +13,7 @@
 							@endforeach
 						</select>
 					</div>
-					<div class="hidden sm:flex-auto sm:flex flex-col ml-4">
+					<div class="flex-1 sm:flex-auto flex flex-col ml-4">
 						<label for="phase" class="text-xs uppercase">
 							Fase
 						</label>
@@ -45,7 +45,7 @@
 							@endforeach
 						</select>
 					</div>
-					<div class="flex flex-col">
+					<div class="hidden sm:flex-auto sm:flex sm:flex-col">
 						<label class="flex items-center ml-4 mt-5 cursor-pointer">
 							<input type="checkbox" class="toggle appearance-none relative w-10 h-5 transition-all duration-200 ease-in-out bg-gray-300 hover:bg-gray-400 focus:bg-gray-400 rounded-full shadow-inner outline-none" wire:model="hidePlayed"/>
 							<span class="ml-2 text-xs uppercase">Ocultar jugados</span>
@@ -77,6 +77,13 @@
 						</select>
 					</div>
 				</div>
+
+					<div class="flex-auto flex flex-col sm:hidden">
+						<label class="flex items-center justify-end mt-5 mb-2 cursor-pointer">
+							<input type="checkbox" class="toggle appearance-none relative w-10 h-5 transition-all duration-200 ease-in-out bg-gray-300 hover:bg-gray-400 focus:bg-gray-400 rounded-full shadow-inner outline-none" wire:model="hidePlayed"/>
+							<span class="ml-2 text-xs uppercase">Ocultar jugados</span>
+						</label>
+					</div>
 
 				<div class="flex items-center select-none mt-3">
 					<div class="flex-1 flex flex-col">

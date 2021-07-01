@@ -290,9 +290,11 @@ class Match extends Component
 			if ($nextClash) {
 				if ($clash->destiny_clash_local) {
 					$nextClash->local_team_id = $clash->winner()->id;
+					$nextClash->local_manager_id = $clash->winner()->team->user->id;
 					$nextClash->regular_position_local = $clash->winner()->id == $clash->local_team_id ? $clash->regular_position_local : $clash->regular_position_visitor;
 				} else {
 					$nextClash->visitor_team_id = $clash->winner()->id;
+					$nextClash->visitor_manager_id = $clash->winner()->team->user->id;
 					$nextClash->regular_position_visitor = $clash->winner()->id == $clash->local_team_id ? $clash->regular_position_local : $clash->regular_position_visitor;
 				}
 				$nextClash->save();
