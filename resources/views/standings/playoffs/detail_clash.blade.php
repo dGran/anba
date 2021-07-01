@@ -20,13 +20,11 @@
 	            		<thead>
 	                		<tr class="border-b dark:border-gray-650">
 	                			<td class="team border-r dark:border-gray-650"></td>
-	                			<td class="result">P1</td>
-	                			<td class="result">P2</td>
-	                			<td class="result">P3</td>
-	                			<td class="result">P4</td>
-	                			<td class="result">P5</td>
-	                			<td class="result">P6</td>
-	                			<td class="result">P7</td>
+				            	@foreach ($currentDetailClash->matches->sortBy('order') as $key => $match)
+				            		@if ($match->played)
+				            			<td class="result">P{{ $key+1 }}</td>
+				            		@endif
+				            	@endforeach
 	                		</tr>
 	            		</thead>
 	            		<tbody>
@@ -39,21 +37,18 @@
 	                				</div>
 	                			</td>
 				                @foreach ($currentDetailClash->matches as $match)
-				                    <td class="result">
-				                        @foreach ($match->scores as $score)
-				                            @if ($currentDetailClash->local_team_id == $match->local_team_id)
-				                                <span class="{{ $score->local_score > $score->visitor_score ? 'font-bold' : '' }}">{{ $score->local_score }}</span>
-				                            @else
-				                                <span class="{{ $score->visitor_score > $score->local_score ? 'font-bold' : '' }}">{{ $score->visitor_score }}</span>
-				                            @endif
-				                        @endforeach
-				                    </td>
+	                        		@if ($match->played)
+					                    <td class="result">
+					                        @foreach ($match->scores as $score)
+					                            @if ($currentDetailClash->local_team_id == $match->local_team_id)
+					                                <span class="{{ $score->local_score > $score->visitor_score ? 'font-bold' : '' }}">{{ $score->local_score }}</span>
+					                            @else
+					                                <span class="{{ $score->visitor_score > $score->local_score ? 'font-bold' : '' }}">{{ $score->visitor_score }}</span>
+					                            @endif
+					                        @endforeach
+					                    </td>
+									@endif
 				                @endforeach
-				                @if ($currentDetailClash->matches->count() < 7)
-				                	@for ($i = 0; $i < ($currentDetailClash->round->matches_max - $currentDetailClash->matches->count()); $i++)
-				                		<td>-</td>
-				                	@endfor
-				                @endif
 	                		</tr>
 	                		<tr>
 	                			<td class="team border-r dark:border-gray-650">
@@ -64,21 +59,18 @@
 	                				</div>
 	                			</td>
 				                @foreach ($currentDetailClash->matches->sortBy('order') as $match)
-				                    <td class="result">
-				                        @foreach ($match->scores as $score)
-				                            @if ($currentDetailClash->visitor_team_id == $match->local_team_id)
-				                                <span class="{{ $score->local_score > $score->visitor_score ? 'text-sm font-bold' : '' }}">{{ $score->local_score }}</span>
-				                            @else
-				                                <span class="{{ $score->visitor_score > $score->local_score ? 'text-sm font-bold' : '' }}">{{ $score->visitor_score }}</span>
-				                            @endif
-				                        @endforeach
-				                    </td>
+		                        	@if ($match->played)
+					                    <td class="result">
+					                        @foreach ($match->scores as $score)
+					                            @if ($currentDetailClash->visitor_team_id == $match->local_team_id)
+					                                <span class="{{ $score->local_score > $score->visitor_score ? 'font-bold' : '' }}">{{ $score->local_score }}</span>
+					                            @else
+					                                <span class="{{ $score->visitor_score > $score->local_score ? 'font-bold' : '' }}">{{ $score->visitor_score }}</span>
+					                            @endif
+					                        @endforeach
+					                    </td>
+			                        @endif
 				                @endforeach
-				                @if ($currentDetailClash->matches->count() < 7)
-				                	@for ($i = 0; $i < ($currentDetailClash->round->matches_max - $currentDetailClash->matches->count()); $i++)
-				                		<td>-</td>
-				                	@endfor
-				                @endif
 	                		</tr>
 	            		</tbody>
 	            	</table>
