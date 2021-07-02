@@ -584,14 +584,16 @@ class Season extends Model
 
     public function top_season_mvp()
     {
-        return $top = PlayerStat::
-            select('player_id', 'season_team_id',
+        return $top = PlayerStat::with('player')
+            ->join('matches', 'matches.id', 'players_stats.match_id')
+            ->select('player_id', 'season_team_id',
                 \DB::raw('AVG(PTS) as AVG_PTS'),
                 \DB::raw('AVG(REB) as AVG_REB'),
                 \DB::raw('AVG(AST) as AVG_AST'),
                 \DB::raw('SUM(PTS + REB + AST) / COUNT(player_id) as AVG_TOTAL')
             )
-            ->where('season_id', $this->id)
+            ->whereNull('matches.clash_id')
+            ->where('players_stats.season_id', $this->id)
             ->orderBy('AVG_TOTAL', 'desc')
             ->orderBy('AVG_PTS', 'desc')
             ->orderBy('AVG_REB', 'desc')
@@ -603,12 +605,14 @@ class Season extends Model
     public function top_season_pts()
     {
         return $top = PlayerStat::with('player')
+            ->join('matches', 'matches.id', 'players_stats.match_id')
             ->select('player_id',
                 \DB::raw('AVG(PTS) as AVG_PTS'),
                 \DB::raw('SUM(PTS) as SUM_PTS'),
                 \DB::raw('COUNT(player_id) as PJ')
             )
-            ->where('season_id', $this->id)
+            ->whereNull('matches.clash_id')
+            ->where('players_stats.season_id', $this->id)
             ->orderBy('AVG_PTS', 'desc')
             ->orderBy('SUM_PTS', 'desc')
             ->groupBy('player_id')
@@ -618,12 +622,14 @@ class Season extends Model
     public function top_season_reb()
     {
         return $top = PlayerStat::with('player')
+            ->join('matches', 'matches.id', 'players_stats.match_id')
             ->select('player_id',
                 \DB::raw('AVG(REB) as AVG_REB'),
                 \DB::raw('SUM(REB) as SUM_REB'),
                 \DB::raw('COUNT(player_id) as PJ')
             )
-            ->where('season_id', $this->id)
+            ->whereNull('matches.clash_id')
+            ->where('players_stats.season_id', $this->id)
             ->orderBy('AVG_REB', 'desc')
             ->orderBy('SUM_REB', 'desc')
             ->groupBy('player_id')
@@ -633,12 +639,14 @@ class Season extends Model
     public function top_season_ast()
     {
         return $top = PlayerStat::with('player')
+            ->join('matches', 'matches.id', 'players_stats.match_id')
             ->select('player_id',
                 \DB::raw('AVG(AST) as AVG_AST'),
                 \DB::raw('SUM(AST) as SUM_AST'),
                 \DB::raw('COUNT(player_id) as PJ')
             )
-            ->where('season_id', $this->id)
+            ->whereNull('matches.clash_id')
+            ->where('players_stats.season_id', $this->id)
             ->orderBy('AVG_AST', 'desc')
             ->orderBy('SUM_AST', 'desc')
             ->groupBy('player_id',)

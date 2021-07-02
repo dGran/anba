@@ -10,16 +10,24 @@ class Stats extends Component
 {
 	public $season;
 
+    public $phase = "regular";
+
+    public function set_phase($phase)
+    {
+        $this->phase = $phase;
+    }
 
 	protected function getTopsPTS()
 	{
         return PlayerStat::with('player')
+            ->join('matches', 'matches.id', 'players_stats.match_id')
             ->select('player_id',
                 \DB::raw('AVG(PTS) as AVG_PTS'),
                 \DB::raw('SUM(PTS) as SUM_PTS'),
                 \DB::raw('COUNT(player_id) as PJ')
             )
-            ->where('season_id', $this->season->id)
+            ->whereNull('matches.clash_id')
+            ->where('players_stats.season_id', $this->season->id)
             ->orderBy('AVG_PTS', 'desc')
             ->orderBy('SUM_PTS', 'desc')
             ->groupBy('player_id')
@@ -28,17 +36,35 @@ class Stats extends Component
 
 	protected function getTopsAST()
 	{
-        return PlayerStat::with('player')
-            ->select('player_id',
-                \DB::raw('AVG(AST) as AVG_AST'),
-                \DB::raw('SUM(AST) as SUM_AST'),
-                \DB::raw('COUNT(player_id) as PJ')
-            )
-            ->where('season_id', $this->season->id)
-            ->orderBy('AVG_AST', 'desc')
-            ->orderBy('SUM_AST', 'desc')
-            ->groupBy('player_id',)
-            ->take(10)->get();
+        if ($this->phase == "regular") {
+            return PlayerStat::with('player')
+                ->join('matches', 'matches.id', 'players_stats.match_id')
+                ->select('player_id',
+                    \DB::raw('AVG(AST) as AVG_AST'),
+                    \DB::raw('SUM(AST) as SUM_AST'),
+                    \DB::raw('COUNT(player_id) as PJ')
+                )
+                ->whereNull('matches.clash_id')
+                ->where('players_stats.season_id', $this->season->id)
+                ->orderBy('AVG_AST', 'desc')
+                ->orderBy('SUM_AST', 'desc')
+                ->groupBy('player_id',)
+                ->take(10)->get();
+        } else {
+            return PlayerStat::with('player')
+                ->join('matches', 'matches.id', 'players_stats.match_id')
+                ->select('player_id',
+                    \DB::raw('AVG(AST) as AVG_AST'),
+                    \DB::raw('SUM(AST) as SUM_AST'),
+                    \DB::raw('COUNT(player_id) as PJ')
+                )
+                ->whereNotNull('matches.clash_id')
+                ->where('players_stats.season_id', $this->season->id)
+                ->orderBy('AVG_AST', 'desc')
+                ->orderBy('SUM_AST', 'desc')
+                ->groupBy('player_id',)
+                ->take(10)->get();
+        }
 	}
 
     protected function getTopsREB()
