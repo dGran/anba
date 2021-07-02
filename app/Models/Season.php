@@ -463,6 +463,7 @@ class Season extends Model
         $matches = Match::
             with('scores')
             ->where('season_id', $this->id)
+            ->whereNull('clash_id')
             ->where(function($q) use ($team_id) {
                 $q->where('local_team_id', $team_id)
                     ->orWhere('visitor_team_id', $team_id);
