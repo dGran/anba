@@ -283,7 +283,11 @@ class Match extends Component
 	protected function check_clash($clash_id)
 	{
 		$clash = \App\Models\PlayoffClash::find($clash_id);
+		$season = $clash->round->playoff->season;
 		$matches_to_win = $clash->round->matches_to_win;
+		$local_record = $season->get_table_data_team_record($clash->local_team_id)['w'];
+		$visitor_record = $season->get_table_data_team_record($clash->visitor_team_id)['w'];
+
 		if ($clash->result()['local_result'] == $matches_to_win || $clash->result()['visitor_result'] == $matches_to_win) {
 			// clash finished
 			$nextClash = $clash->nextClash();
@@ -291,24 +295,24 @@ class Match extends Component
 				if ($clash->destiny_clash_local) {
 					$nextClash->local_team_id = $clash->winner()->id;
 					$nextClash->local_manager_id = $clash->winner()->team->user->id;
-					$nextClash->regular_position_local = $clash->winner()->id == $clash->local_team_id ? $clash->regular_position_local : $clash->regular_position_visitor;
+					$nextClash->regular_position_local = $clash->winner()->id == $clash->local_team_id ? $local_record : $visitor_record;
 				} else {
 					$nextClash->visitor_team_id = $clash->winner()->id;
 					$nextClash->visitor_manager_id = $clash->winner()->team->user->id;
-					$nextClash->regular_position_visitor = $clash->winner()->id == $clash->local_team_id ? $clash->regular_position_local : $clash->regular_position_visitor;
+					$nextClash->regular_position_visitor = $clash->winner()->id == $clash->local_team_id ? $local_record : $visitor_record;
 				}
 				$nextClash->save();
 
 				if ($nextClash->local_team_id && $nextClash->visitor_team_id) {
 					//generate first match
 					$match = \App\Models\Match::create([
-						'season_id' 		 => $nextClash->round->playoff->season_id,
+						'season_id' 		 => $season->id,
 						'clash_id' 			 => $nextClash->id,
-						'local_team_id' 	 => $nextClash->regular_position_local <= $nextClash->regular_position_visitor ? $nextClash->local_team_id : $nextClash->visitor_team_id,
-						'local_manager_id' 	 => $nextClash->regular_position_local <= $nextClash->regular_position_visitor ? $nextClash->localTeam->team->user->id : $nextClash->visitorTeam->team->user->id,
-						'visitor_team_id' 	 => $nextClash->regular_position_local <= $nextClash->regular_position_visitor ? $nextClash->visitor_team_id : $nextClash->local_team_id,
-						'visitor_manager_id' => $nextClash->regular_position_local <= $nextClash->regular_position_visitor ? $nextClash->visitorTeam->team->user->id : $nextClash->localTeam->team->user->id,
-						'stadium' 			 => $nextClash->regular_position_local <= $nextClash->regular_position_visitor ? $nextClash->localTeam->team->stadium : $nextClash->visitorTeam->team->stadium,
+						'local_team_id' 	 => $nextClash->regular_position_local >= $nextClash->regular_position_visitor ? $nextClash->local_team_id : $nextClash->visitor_team_id,
+						'local_manager_id' 	 => $nextClash->regular_position_local >= $nextClash->regular_position_visitor ? $nextClash->localTeam->team->user->id : $nextClash->visitorTeam->team->user->id,
+						'visitor_team_id' 	 => $nextClash->regular_position_local >= $nextClash->regular_position_visitor ? $nextClash->visitor_team_id : $nextClash->local_team_id,
+						'visitor_manager_id' => $nextClash->regular_position_local >= $nextClash->regular_position_visitor ? $nextClash->visitorTeam->team->user->id : $nextClash->localTeam->team->user->id,
+						'stadium' 			 => $nextClash->regular_position_local >= $nextClash->regular_position_visitor ? $nextClash->localTeam->team->stadium : $nextClash->visitorTeam->team->stadium,
 						'extra_times' 		 => 0,
 						'played' 			 => 0,
 						'teamStats_state' 	 => 'error',
@@ -319,6 +323,7 @@ class Match extends Component
 		} else {
 			$order = \App\Models\Match::where('clash_id', $clash->id)->count() + 1;
 			$matches_to_win = $clash->round->matches_to_win;
+
 			// generate next match
 			switch ($matches_to_win) {
 				case 3:
@@ -326,19 +331,19 @@ class Match extends Component
 						case 1:
 						case 2:
 						case 5:
-							$local_team = $clash->regular_position_local <= $clash->regular_position_visitor ? $clash->local_team_id : $clash->visitor_team_id;
-							$local_manager = $clash->regular_position_local <= $clash->regular_position_visitor ? $clash->localTeam->team->user->id : $clash->visitorTeam->team->user->id;
-							$visitor_team = $clash->regular_position_local <= $clash->regular_position_visitor ? $clash->visitor_team_id : $clash->local_team_id;
-							$visitor_manager = $clash->regular_position_local <= $clash->regular_position_visitor ? $clash->visitorTeam->team->user->id : $clash->localTeam->team->user->id;
-							$stadium = $clash->regular_position_local <= $clash->regular_position_visitor ? $clash->localTeam->team->stadium : $clash->visitorTeam->team->stadium;
+							$local_team = $local_record >= $visitor_record ? $clash->local_team_id : $clash->visitor_team_id;
+							$local_manager = $local_record >= $visitor_record ? $clash->localTeam->team->user->id : $clash->visitorTeam->team->user->id;
+							$visitor_team = $local_record >= $visitor_record ? $clash->visitor_team_id : $clash->local_team_id;
+							$visitor_manager = $local_record >= $visitor_record ? $clash->visitorTeam->team->user->id : $clash->localTeam->team->user->id;
+							$stadium = $local_record >= $visitor_record ? $clash->localTeam->team->stadium : $clash->visitorTeam->team->stadium;
 							break;
 						case 3:
 						case 4:
-							$local_team = $clash->regular_position_local <= $clash->regular_position_visitor ? $clash->visitor_team_id : $clash->local_team_id;
-							$local_manager = $clash->regular_position_local <= $clash->regular_position_visitor ? $clash->visitorTeam->team->user->id : $clash->localTeam->team->user->id;
-							$visitor_team = $clash->regular_position_local <= $clash->regular_position_visitor ? $clash->local_team_id : $clash->visitor_team_id;
-							$visitor_manager = $clash->regular_position_local <= $clash->regular_position_visitor ? $clash->localTeam->team->user->id : $clash->visitorTeam->team->user->id;
-							$stadium = $clash->regular_position_local <= $clash->regular_position_visitor ? $clash->visitorTeam->team->stadium : $clash->localTeam->team->stadium;
+							$local_team = $local_record >= $visitor_record ? $clash->visitor_team_id : $clash->local_team_id;
+							$local_manager = $local_record >= $visitor_record ? $clash->visitorTeam->team->user->id : $clash->localTeam->team->user->id;
+							$visitor_team = $local_record >= $visitor_record ? $clash->local_team_id : $clash->visitor_team_id;
+							$visitor_manager = $local_record >= $visitor_record ? $clash->localTeam->team->user->id : $clash->visitorTeam->team->user->id;
+							$stadium = $local_record >= $visitor_record ? $clash->visitorTeam->team->stadium : $clash->localTeam->team->stadium;
 							break;
 					}
 					break;
@@ -348,20 +353,20 @@ class Match extends Component
 						case 2:
 						case 5:
 						case 7:
-							$local_team = $clash->regular_position_local <= $clash->regular_position_visitor ? $clash->local_team_id : $clash->visitor_team_id;
-							$local_manager = $clash->regular_position_local <= $clash->regular_position_visitor ? $clash->localTeam->team->user->id : $clash->visitorTeam->team->user->id;
-							$visitor_team = $clash->regular_position_local <= $clash->regular_position_visitor ? $clash->visitor_team_id : $clash->local_team_id;
-							$visitor_manager = $clash->regular_position_local <= $clash->regular_position_visitor ? $clash->visitorTeam->team->user->id : $clash->localTeam->team->user->id;
-							$stadium = $clash->regular_position_local <= $clash->regular_position_visitor ? $clash->localTeam->team->stadium : $clash->visitorTeam->team->stadium;
+							$local_team = $local_record >= $visitor_record ? $clash->local_team_id : $clash->visitor_team_id;
+							$local_manager = $local_record >= $visitor_record ? $clash->localTeam->team->user->id : $clash->visitorTeam->team->user->id;
+							$visitor_team = $local_record >= $visitor_record ? $clash->visitor_team_id : $clash->local_team_id;
+							$visitor_manager = $local_record >= $visitor_record ? $clash->visitorTeam->team->user->id : $clash->localTeam->team->user->id;
+							$stadium = $local_record >= $visitor_record ? $clash->localTeam->team->stadium : $clash->visitorTeam->team->stadium;
 							break;
 						case 3:
 						case 4:
 						case 6:
-							$local_team = $clash->regular_position_local <= $clash->regular_position_visitor ? $clash->visitor_team_id : $clash->local_team_id;
-							$local_manager = $clash->regular_position_local <= $clash->regular_position_visitor ? $clash->visitorTeam->team->user->id : $clash->localTeam->team->user->id;
-							$visitor_team = $clash->regular_position_local <= $clash->regular_position_visitor ? $clash->local_team_id : $clash->visitor_team_id;
-							$visitor_manager = $clash->regular_position_local <= $clash->regular_position_visitor ? $clash->localTeam->team->user->id : $clash->visitorTeam->team->user->id;
-							$stadium = $clash->regular_position_local <= $clash->regular_position_visitor ? $clash->visitorTeam->team->stadium : $clash->localTeam->team->stadium;
+							$local_team = $local_record >= $visitor_record ? $clash->visitor_team_id : $clash->local_team_id;
+							$local_manager = $local_record >= $visitor_record ? $clash->visitorTeam->team->user->id : $clash->localTeam->team->user->id;
+							$visitor_team = $local_record >= $visitor_record ? $clash->local_team_id : $clash->visitor_team_id;
+							$visitor_manager = $local_record >= $visitor_record ? $clash->localTeam->team->user->id : $clash->visitorTeam->team->user->id;
+							$stadium = $local_record >= $visitor_record ? $clash->visitorTeam->team->stadium : $clash->localTeam->team->stadium;
 							break;
 					}
 					break;

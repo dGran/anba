@@ -6,6 +6,8 @@
 	    @include('stats.tops')
 
 	    @include('stats.top_AST')
+
+	    @include('stats.players_stats')
 	</div>
 
 </div>

@@ -1,0 +1,23 @@
+.players-stats {
+	@apply w-full font-condensed;
+	thead {
+		th {
+			@apply uppercase tracking-widest font-normal py-3 px-2 text-right;
+			font-size: 0.75rem;
+			line-height: 1rem;
+			min-width: 2.5rem;
+		}
+		.player {
+			@apply text-left;
+			// @apply w-48;
+			// min-width: 12rem;
+		}
+	}
+	tbody {
+		td {
+			@apply px-2 py-3;
+			font-size: 0.8rem;
+			line-height: 1.2rem;
+		}
+	}
+}
