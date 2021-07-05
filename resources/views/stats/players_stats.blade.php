@@ -5,14 +5,14 @@
 
 @if ($season)
 	@if ($players_stats->count() > 0)
-		<div class="bg-white dark:bg-gray-700 overflow-x-auto md:shadow-sm md:rounded-md md:mx-0 text-gray-900 dark:text-gray-200 border border-gray-200">
+		<div class="bg-white dark:bg-gray-700 overflow-x-auto md:shadow-sm md:rounded-md md:mx-0 text-gray-900 dark:text-gray-200 border border-gray-200 dark:border-gray-850">
 			<table class="players-stats">
 				<thead>
 					<tr class="text-gray-600 bg-gray-50 dark:bg-gray-650 dark:text-gray-100">
 						<th class="text-right" style="min-width: 1.5rem"></th>
 						<th class="player hover:bg-gray-650 hover:text-gray-100 dark:hover:bg-gray-900" style="width: 8rem; max-width: 8rem;">Jugador</th>
 						<th class="w-16 text-right hover:bg-gray-650 hover:text-gray-100 dark:hover:bg-gray-900" style="min-width: 4.5rem;">POS</th>
-						<th class="w-12 text-right hover:bg-gray-650 hover:text-gray-100 dark:hover:bg-gray-900" style="min-width: 3rem">Equipo</th>
+						<th class="w-16 text-right hover:bg-gray-650 hover:text-gray-100 dark:hover:bg-gray-900" style="min-width: 4.5rem">Equipo</th>
 						<th class="w-12 text-right hover:bg-gray-650 hover:text-gray-100 dark:hover:bg-gray-900" style="min-width: 3rem">Edad</th>
 						<th class="hover:bg-gray-650 hover:text-gray-100 dark:hover:bg-gray-900">PJ</th>
 						<th class="hover:bg-gray-650 hover:text-gray-100 dark:hover:bg-gray-900">MIN</th>
@@ -75,13 +75,14 @@
 								{{ number_format($stat->AVG_PTS, 1, ',', '.') }}
 							</td>
 							<td class="text-right">
-								{{ number_format($stat->AVG_FGM, 1, ',', '.') }}
+								{{ number_format($stat->SUM_FGM, 0, ',', '.') }}
 							</td>
 							<td class="text-right">
-								{{ number_format($stat->AVG_FGA, 1, ',', '.') }}
+								{{ number_format($stat->SUM_FGA, 0, ',', '.') }}
 							</td>
 							<td class="text-right">
-								{{ $stat->AVG_FGA > 0 ? number_format(($stat->AVG_FGM / $stat->AVG_FGA) *100, 1, ',', '.') : '0,0' }}
+								{{ number_format($stat->PER_FG, 1, ',', '.') }}
+								{{-- {{ $stat->AVG_FGA > 0 ? number_format(($stat->AVG_FGM / $stat->AVG_FGA) *100, 1, ',', '.') : '0,0' }} --}}
 							</td>
 							<td class="text-right">
 								{{ number_format($stat->AVG_TPM, 1, ',', '.') }}
