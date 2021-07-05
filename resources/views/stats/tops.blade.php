@@ -3,7 +3,7 @@
 </h4>
 <div class="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4 mb-2 md:mx-0" wire:loading.class="opacity-50">
 	{{-- left side --}}
-	<div class="bg-white dark:bg-gray-700 overflow-hidden md:shadow-md md:rounded-md text-gray-900 dark:text-gray-200 xs:col-span-2 lg:col-span-3">
+	<div class="bg-white dark:bg-gray-750 overflow-hidden md:shadow-md md:rounded-md text-gray-900 dark:text-gray-200 xs:col-span-2 lg:col-span-3">
 
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 my-4 px-4 gap-8">
 			<div class="">
@@ -163,7 +163,31 @@
 				</div>
 			</div>
 
-			<div></div>
+			<div class="">
+				<div class="border-b border-gray-200 dark:border-gray-650 mb-2 pb-2">
+					<a href="" class="text-base font-bold uppercase | text-blue-600 hover:text-blue-500 focus:text-blue-500 dark:text-dark-link dark:hover:text-blue-300 dark:focus:text-blue-300 | py-3">
+						MVP
+					</a>
+				</div>
+				<div>
+					@foreach ($tops_MVP as $top)
+						<div class="flex items-center py-0.5 {{ $loop->iteration == 1 ? 'font-bold' : '' }}">
+							<p class="flex-none w-4 text-right text-sm">
+								{{ $loop->iteration }}.
+							</p>
+							<p class="flex-none text-base ml-3">
+								{{ $top->player->name }}
+							</p>
+							<p class="flex-none text-xs ml-1.5 text-gray-400 uppercase font-normal pt-0.5">
+								{{ $top->seasonTeam->team->short_name }}
+							</p>
+							<p class="flex-grow text-right">
+								{{ number_format($top->AVG_TOTAL, 1, ',', '.') }}
+							</p>
+						</div>
+					@endforeach
+				</div>
+			</div>
 
 			<div class="">
 				<div class="border-b border-gray-200 dark:border-gray-650 mb-2 pb-2">
@@ -247,8 +271,14 @@
 	</div>
 
 	{{-- right side --}}
-	<div class="hidden lg:block bg-white dark:bg-gray-700 overflow-hidden md:shadow-md md:rounded-md text-gray-900 dark:text-gray-200 p-4">
-		Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum facere veniam qui illo iusto error aut autem consequuntur debitis quisquam facilis repellat rerum nam explicabo, eos sunt repudiandae animi est.
+	<div class="hidden lg:block bg-white dark:bg-gray-750 overflow-hidden md:shadow-md md:rounded-md text-gray-900 dark:text-gray-200 p-4">
+		<ul>
+			<li>Mejor Base</li>
+			<li>Mejor Escolta</li>
+			<li>Mejor Ålero</li>
+			<li>Mejor Ala-Pivot</li>
+			<li>Mejor Pivot</li>
+		</ul>
 	</div>
 </div>
 

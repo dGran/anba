@@ -5,41 +5,41 @@
 
 @if ($season)
 	@if ($players_stats->count() > 0)
-		<div class="bg-white dark:bg-gray-700 overflow-x-auto md:shadow-sm md:rounded-md md:mx-0 text-gray-900 dark:text-gray-200 border border-gray-200 dark:border-gray-850">
+		<div class="bg-white dark:bg-gray-750 overflow-x-auto md:shadow-sm md:rounded-md md:mx-0 text-gray-900 dark:text-gray-200 border border-gray-200 dark:border-gray-850">
 			<table class="players-stats">
 				<thead>
-					<tr class="text-gray-600 bg-gray-50 dark:bg-gray-650 dark:text-gray-100">
+					<tr class="text-gray-600 bg-gray-100 dark:bg-gray-700 dark:text-gray-100">
 						<th class="text-right" style="min-width: 1.5rem"></th>
-						<th class="player hover:bg-gray-650 hover:text-gray-100 dark:hover:bg-gray-900" style="width: 8rem; max-width: 8rem;">Jugador</th>
-						<th class="w-16 text-right hover:bg-gray-650 hover:text-gray-100 dark:hover:bg-gray-900" style="min-width: 4.5rem;">POS</th>
-						<th class="w-16 text-right hover:bg-gray-650 hover:text-gray-100 dark:hover:bg-gray-900" style="min-width: 4.5rem">Equipo</th>
-						<th class="w-12 text-right hover:bg-gray-650 hover:text-gray-100 dark:hover:bg-gray-900" style="min-width: 3rem">Edad</th>
-						<th class="hover:bg-gray-650 hover:text-gray-100 dark:hover:bg-gray-900">PJ</th>
-						<th class="hover:bg-gray-650 hover:text-gray-100 dark:hover:bg-gray-900">MIN</th>
-						<th class="hover:bg-gray-650 hover:text-gray-100 dark:hover:bg-gray-900">PTS</th>
-						<th class="hover:bg-gray-650 hover:text-gray-100 dark:hover:bg-gray-900">FGM</th>
-						<th class="hover:bg-gray-650 hover:text-gray-100 dark:hover:bg-gray-900">FGA</th>
-						<th class="hover:bg-gray-650 hover:text-gray-100 dark:hover:bg-gray-900">FG%</th>
-						<th class="hover:bg-gray-650 hover:text-gray-100 dark:hover:bg-gray-900">3PM</th>
-						<th class="hover:bg-gray-650 hover:text-gray-100 dark:hover:bg-gray-900">3PA</th>
-						<th class="hover:bg-gray-650 hover:text-gray-100 dark:hover:bg-gray-900">3P%</th>
-						<th class="hover:bg-gray-650 hover:text-gray-100 dark:hover:bg-gray-900">TLM</th>
-						<th class="hover:bg-gray-650 hover:text-gray-100 dark:hover:bg-gray-900">TLA</th>
-						<th class="hover:bg-gray-650 hover:text-gray-100 dark:hover:bg-gray-900">TL%</th>
-						<th class="hover:bg-gray-650 hover:text-gray-100 dark:hover:bg-gray-900">R.O</th>
-						<th class="hover:bg-gray-650 hover:text-gray-100 dark:hover:bg-gray-900">R.D</th>
-						<th class="hover:bg-gray-650 hover:text-gray-100 dark:hover:bg-gray-900">REB</th>
-						<th class="hover:bg-gray-650 hover:text-gray-100 dark:hover:bg-gray-900">AST</th>
-						<th class="hover:bg-gray-650 hover:text-gray-100 dark:hover:bg-gray-900">ROB</th>
-						<th class="hover:bg-gray-650 hover:text-gray-100 dark:hover:bg-gray-900">PER</th>
-						<th class="hover:bg-gray-650 hover:text-gray-100 dark:hover:bg-gray-900">TAP</th>
-						<th class="hover:bg-gray-650 hover:text-gray-100 dark:hover:bg-gray-900">FP</th>
-						<th class="hover:bg-gray-650 hover:text-gray-100 dark:hover:bg-gray-900">+/-</th>
+						<th class="player hover:bg-blue-100 dark:hover:bg-blue-800" style="width: 8rem; max-width: 8rem;">Jugador</th>
+						<th class="w-16 text-right hover:bg-blue-100 dark:hover:bg-blue-800" style="min-width: 4.5rem;">POS</th>
+						<th class="w-16 text-right hover:bg-blue-100 dark:hover:bg-blue-800" style="min-width: 4.5rem">Equipo</th>
+						<th class="w-12 text-right hover:bg-blue-100 dark:hover:bg-blue-800" style="min-width: 3rem">Edad</th>
+						<th class="hover:bg-blue-100 dark:hover:bg-blue-800">PJ</th>
+						<th class="hover:bg-blue-100 dark:hover:bg-blue-800">MIN</th>
+						<th class="{{ $order == 'AVG_PTS' ? 'bg-blue-100 dark:bg-blue-800' : '' }} hover:bg-blue-100 dark:hover:bg-blue-800">PTS</th>
+						<th class="hover:bg-blue-100 dark:hover:bg-blue-800">FGM</th>
+						<th class="hover:bg-blue-100 dark:hover:bg-blue-800">FGA</th>
+						<th class="hover:bg-blue-100 dark:hover:bg-blue-800">FG%</th>
+						<th class="hover:bg-blue-100 dark:hover:bg-blue-800">3PM</th>
+						<th class="hover:bg-blue-100 dark:hover:bg-blue-800">3PA</th>
+						<th class="hover:bg-blue-100 dark:hover:bg-blue-800">3P%</th>
+						<th class="hover:bg-blue-100 dark:hover:bg-blue-800">TLM</th>
+						<th class="hover:bg-blue-100 dark:hover:bg-blue-800">TLA</th>
+						<th class="hover:bg-blue-100 dark:hover:bg-blue-800">TL%</th>
+						<th class="hover:bg-blue-100 dark:hover:bg-blue-800">R.O</th>
+						<th class="hover:bg-blue-100 dark:hover:bg-blue-800">R.D</th>
+						<th class="hover:bg-blue-100 dark:hover:bg-blue-800">REB</th>
+						<th class="hover:bg-blue-100 dark:hover:bg-blue-800">AST</th>
+						<th class="hover:bg-blue-100 dark:hover:bg-blue-800">ROB</th>
+						<th class="hover:bg-blue-100 dark:hover:bg-blue-800">PER</th>
+						<th class="hover:bg-blue-100 dark:hover:bg-blue-800">TAP</th>
+						<th class="hover:bg-blue-100 dark:hover:bg-blue-800">FP</th>
+						<th class="hover:bg-blue-100 dark:hover:bg-blue-800">+/-</th>
 					</tr>
 				</thead>
 				<tbody wire:loading.class="opacity-50">
 					@foreach ($players_stats as $stat)
-						<tr class="hover:bg-gray-100 dark:hover:bg-gray-900 border-t border-gray-200 dark:border-gray-650">
+						<tr class="hover:bg-gray-50 dark:hover:bg-gray-700 border-t border-gray-200 dark:border-gray-700">
 							<td class="w-6 text-right" style="min-width: 1.7rem">
 								{{ $players_stats->currentPage() == 1 ? $loop->iteration : $loop->iteration + $players_stats->perPage() }}
 							</td>
@@ -71,7 +71,7 @@
 							<td class="text-right">
 								{{ number_format($stat->AVG_MIN, 1, ',', '.') }}
 							</td>
-							<td class="text-right">
+							<td class="text-right {{ $order == 'AVG_PTS' ? 'bg-blue-50 dark:bg-blue-800' : '' }}">
 								{{ number_format($stat->AVG_PTS, 1, ',', '.') }}
 							</td>
 							<td class="text-right">

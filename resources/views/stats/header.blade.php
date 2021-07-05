@@ -1,3 +1,21 @@
+<div class="overflow-x-auto">
+<div class="-mt-14 ml-32 pt-2 text-sm md:text-base md:-mt-16 md:ml-40 md:pt-1.5 z-40 fixed">
+	<ul>
+		<li class="inline-block">
+			<a href="">Inicio</a>
+		</li>
+		<li class="inline-block mx-2">/</li>
+		<li class="inline-block">
+			<a href="">Jugadores</a>
+		</li>
+		<li class="inline-block mx-2">/</li>
+		<li class="inline-block">
+			<a href="">Equipos</a>
+		</li>
+	</ul>
+</div>
+</div>
+
 <div class="my-2">
 	<div class="filters flex items-center select-none overflow-x-auto">
 		<div class="flex flex-col">

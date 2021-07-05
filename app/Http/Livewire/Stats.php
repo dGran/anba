@@ -228,6 +228,32 @@ class Stats extends Component
         return $stat;
     }
 
+    protected function getTopsMVP()
+    {
+        $stat = PlayerStat::with('player', 'seasonTeam')
+                ->join('matches', 'matches.id', 'players_stats.match_id')
+                ->select('player_id', 'season_team_id',
+                    \DB::raw('AVG(PTS) as AVG_PTS'),
+                    \DB::raw('AVG(REB) as AVG_REB'),
+                    \DB::raw('AVG(AST) as AVG_AST'),
+                    \DB::raw('SUM(PTS + REB + AST) / COUNT(player_id) as AVG_TOTAL')
+                );
+        if ($this->phase == "regular") {
+            $stat = $stat->whereNull('matches.clash_id');
+        } else {
+            $stat = $stat->whereNotNull('matches.clash_id');
+        }
+        $stat = $stat->where('players_stats.season_id', $this->season->id)
+            ->orderBy('AVG_TOTAL', 'desc')
+            ->orderBy('AVG_PTS', 'desc')
+            ->orderBy('AVG_REB', 'desc')
+            ->orderBy('AVG_AST', 'desc')
+            ->groupBy('player_id', 'season_team_id')
+            ->take(5)->get();
+
+        return $stat;
+    }
+
     public function getPlayersStats()
     {
         $stat = PlayerStat::with('player.team')
@@ -306,6 +332,7 @@ class Stats extends Component
             'tops_FG'      => $this->getTopsFG(),
             'tops_TP'      => $this->getTopsTP(),
             'tops_FT'      => $this->getTopsFT(),
+            'tops_MVP'      => $this->getTopsMVP(),
             'players_stats' => $this->getPlayersStats(),
             'teams_stats'   => $this->getTeamsStats(),
         ]);
