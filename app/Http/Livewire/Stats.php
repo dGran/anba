@@ -15,6 +15,26 @@ class Stats extends Component
 
     public $phase = "regular";
     public $order = "AVG_PTS";
+    public $order_direction = "desc";
+
+    public function change_order($order)
+    {
+        if ($this->order == $order) {
+            if ($this->order_direction == "asc") {
+                $this->order_direction = "desc";
+            } else {
+                $this->order_direction = "asc";
+            }
+        } else {
+            $this->order = $order;
+            if ($this->order != 'players.name' && $this->order != 'teams.short_name') {
+                $this->order_direction = "desc";
+            } else {
+                $this->order_direction = "asc";
+            }
+        }
+        $this->page = 1;
+    }
 
     // Pagination
     public function setNextPage()
@@ -256,9 +276,14 @@ class Stats extends Component
 
     public function getPlayersStats()
     {
-        $stat = PlayerStat::with('player.team')
+        $stat = PlayerStat::with('player', 'seasonTeam.team')
                 ->join('matches', 'matches.id', 'players_stats.match_id')
+                ->join('players', 'players.id', 'players_stats.player_id')
+                ->join('seasons_teams', 'seasons_teams.id', 'players_stats.season_team_id')
+                ->join('teams', 'teams.id', 'seasons_teams.team_id')
                 ->select('player_id', 'season_team_id',
+                    // \DB::raw('DATEDIFF(hour,@dob,GETDATE())/8766 AS AgeYearsIntTrunc'),
+                    \DB::raw('timestampdiff(YEAR, players.birthdate, now()) AS AGE'),
                     \DB::raw('AVG(PTS) as AVG_PTS'),
                     \DB::raw('SUM(PTS) as SUM_PTS'),
                     \DB::raw('SUM(MIN) as SUM_MIN'),
@@ -272,14 +297,18 @@ class Stats extends Component
                     \DB::raw('AVG(TPM) as AVG_TPM'),
                     \DB::raw('SUM(TPA) as SUM_TPA'),
                     \DB::raw('AVG(TPA) as AVG_TPA'),
+                    \DB::raw('(SUM(TPM) / SUM(TPA)) * 100 as PER_TP'),
                     \DB::raw('SUM(FTM) as SUM_FTM'),
                     \DB::raw('AVG(FTM) as AVG_FTM'),
                     \DB::raw('SUM(FTA) as SUM_FTA'),
                     \DB::raw('AVG(FTA) as AVG_FTA'),
+                    \DB::raw('(SUM(FTM) / SUM(FTA)) * 100 as PER_FT'),
                     \DB::raw('SUM(REB) as SUM_REB'),
                     \DB::raw('AVG(REB) as AVG_REB'),
                     \DB::raw('SUM(ORB) as SUM_ORB'),
                     \DB::raw('AVG(ORB) as AVG_ORB'),
+                    \DB::raw('SUM(REB) - SUM(ORB)  as SUM_DRB'),
+                    \DB::raw('AVG(REB) - AVG(ORB)  as AVG_DRB'),
                     \DB::raw('AVG(AST) as AVG_AST'),
                     \DB::raw('SUM(AST) as SUM_AST'),
                     \DB::raw('AVG(STL) as AVG_STL'),
@@ -300,8 +329,7 @@ class Stats extends Component
             $stat = $stat->whereNotNull('matches.clash_id');
         }
         $stat = $stat->where('players_stats.season_id', $this->season->id)
-            ->orderBy($this->order, 'desc')
-            ->orderBy('SUM_PTS', 'desc')
+            ->orderBy($this->order, $this->order_direction)
             ->groupBy('player_id', 'season_team_id')
             ->paginate(20);
 
