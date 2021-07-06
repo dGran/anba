@@ -201,7 +201,7 @@
 								</div>
 							</td>
 							<td class="text-right">
-								{{ $stat->player->getPosition() }}
+								{{ $stat->player->getPosition() ?: 'N/D' }}
 							</td>
 							<td class="text-right {{ $order == 'teams.short_name' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
 								<div class="flex items-center justify-end">
@@ -212,7 +212,7 @@
 								</div>
 							</td>
 							<td class="text-right {{ $order == 'AGE' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
-								{{ $stat->AGE }}
+								{{ $stat->AGE ?: 'N/D' }}
 							</td>
 							<td class="text-right {{ $order == 'PJ' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
 								{{ number_format($stat->PJ, 0, ',', '.') }}
