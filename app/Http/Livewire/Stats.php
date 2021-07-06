@@ -16,6 +16,10 @@ class Stats extends Component
     public $phase = "regular";
     public $order = "AVG_PTS";
     public $order_direction = "desc";
+    public $filter_AGE = null;
+    public $filter_PJ = 1;
+    public $filter_SUM_MIN = 1;
+    public $filter_AVG_MIN_min = 0.1;
 
     public function change_order($order)
     {
@@ -325,11 +329,28 @@ class Stats extends Component
                 );
         if ($this->phase == "regular") {
             $stat = $stat->whereNull('matches.clash_id');
+            // if ($this->order == "PER_FG" || $this->order == "PER_TP" || $this->order == "PER_FT") {
+            //     $stat = $stat->having('PJ', '>', 39);
+            // }
         } else {
             $stat = $stat->whereNotNull('matches.clash_id');
+            // if ($this->order == "PER_FG" || $this->order == "PER_TP" || $this->order == "PER_FT") {
+            //         $stat = $stat->having('PJ', '>', 6);
+            //     }
         }
-        $stat = $stat->where('players_stats.season_id', $this->season->id)
+        $stat = $stat->where('players_stats.season_id', $this->season->id);
+        if ($this->filter_SUM_MIN > 0) {
+            $stat = $stat->having('SUM_MIN', '>', $this->filter_SUM_MIN);
+        } else {
+            $stat = $stat->having('SUM_MIN', '>=', 1);
+            $this->filter_SUM_MIN = 1;
+        }
+        $stat = $stat->having('SUM_MIN', '>', $this->filter_SUM_MIN)
+            ->having('PJ', '>', $this->filter_PJ)
             ->orderBy($this->order, $this->order_direction)
+            ->orderBy('PJ', 'desc')
+            ->orderBy('SUM_MIN', 'asc')
+            ->orderBy('players.name', 'asc')
             ->groupBy('player_id', 'season_team_id')
             ->paginate(20);
 

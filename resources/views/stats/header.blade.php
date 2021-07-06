@@ -37,5 +37,17 @@
 				<option value="playoffs">Playoffs</option>
 			</select>
 		</div>
+		<div class="flex flex-col ml-4">
+			<label for="filter_PJ" class="text-xs uppercase">
+				PJ
+			</label>
+			<input type="number" id="filter_PJ" wire:model="filter_PJ" class="appearance-none rounded text-sm | py-1.5 px-3 mt-1 | bg-white dark:bg-gray-700 | border light:border-gray-300 dark:border-gray-850 light:focus:border-gray-400 light:hover:border-gray-400 dark:focus:border-gray-550 dark:hover:border-gray-550 | focus:outline-none">
+		</div>
+		<div class="flex flex-col ml-4">
+			<label for="filter_SUM_MIN" class="text-xs uppercase">
+				MIN
+			</label>
+			<input type="number" id="filter_SUM_MIN" wire:model="filter_SUM_MIN" class="appearance-none rounded text-sm | py-1.5 px-3 mt-1 | bg-white dark:bg-gray-700 | border light:border-gray-300 dark:border-gray-850 light:focus:border-gray-400 light:hover:border-gray-400 dark:focus:border-gray-550 dark:hover:border-gray-550 | focus:outline-none">
+		</div>
 	</div>
 </div>
