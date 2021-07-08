@@ -17,6 +17,7 @@ class players_stats extends Component
     public $phase = "regular";
     public $order = "AVG_PTS";
     public $order_direction = "desc";
+    public $per_page = 20;
     public $filter_AGE = null;
     public $filter_PJ = 1;
     public $filter_SUM_MIN = 1;
@@ -133,10 +134,10 @@ class players_stats extends Component
             ->having('PJ', '>', $this->filter_PJ)
             ->orderBy($this->order, $this->order_direction)
             ->orderBy('PJ', 'desc')
-            ->orderBy('SUM_MIN', 'asc')
+            ->orderBy('AVG_MIN', 'desc')
             ->orderBy('player_name', 'asc')
             ->groupBy('player_id')
-            ->paginate(20);
+            ->paginate($this->per_page);
 
         return $PlayersStats;
     }
