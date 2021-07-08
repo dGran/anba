@@ -42,6 +42,11 @@ class players_stats extends Component
         $this->page = 1;
     }
 
+    public function change_per_page()
+    {
+        $this->page = 1;
+    }
+
     // Pagination
     public function setNextPage()
     {

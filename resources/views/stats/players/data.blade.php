@@ -191,7 +191,7 @@
 						<tr class="hover:bg-gray-150 dark:hover:bg-gray-700 border-t border-gray-200 dark:border-gray-700">
 							<td class="w-6 text-right" style="min-width: 1.7rem">
 								@if ($order != 'player_name' && $order != 'teams.short_name' && $order != 'AGE')
-									{{ $players_stats->currentPage() == 1 ? $loop->iteration : $loop->iteration + $players_stats->perPage() }}
+									{{ $players_stats->currentPage() == 1 ? $loop->iteration : $loop->iteration + ($per_page * $page) }}
 								@endif
 							</td>
 							<td class="w-32 truncate {{-- pl-3 --}} {{ $order == 'player_name' ? 'bg-gray-100 dark:bg-gray-650' : '' }}" style="min-width: 4rem">
