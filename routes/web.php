@@ -35,6 +35,9 @@ Route::get('/clasificaciones', function () {
 Route::get('/estadisticas', function () {
     return view('stats');
 })->name('stats');
+Route::get('/estadisticas/jugadores', function () {
+    return view('stats_players');
+})->name('stats.players');
 Route::get('/jugadores', function () {
     return view('players');
 })->name('players');

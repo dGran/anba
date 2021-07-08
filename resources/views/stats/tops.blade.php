@@ -1,5 +1,5 @@
 <h4 class="text-base font-bold uppercase tracking-wide mt-6 pb-2">
-	tops jugadores
+	top jugadores
 </h4>
 <div class="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4 mb-2 md:mx-0" wire:loading.class="opacity-50">
 	{{-- left side --}}
@@ -27,7 +27,7 @@
 							<p class="flex-none w-4 text-right text-sm">
 								{{ $loop->iteration }}.
 							</p>
-							<p class="flex-none text-base ml-3">
+							<p class="flex-none text-base ml-3 hover:text-blue-500 dark:hover:text-blue-300 cursor-pointer">
 								{{ $top->player->name }}
 							</p>
 							<p class="flex-none text-xs ml-1.5 text-gray-400 uppercase font-normal pt-0.5">
@@ -62,7 +62,7 @@
 							<p class="flex-none w-4 text-right text-sm">
 								{{ $loop->iteration }}.
 							</p>
-							<p class="flex-none text-base ml-3">
+							<p class="flex-none text-base ml-3 hover:text-blue-500 dark:hover:text-blue-300 cursor-pointer">
 								{{ $top->player->name }}
 							</p>
 							<p class="flex-none text-xs ml-1.5 text-gray-400 uppercase font-normal pt-0.5">
@@ -97,7 +97,7 @@
 							<p class="flex-none w-4 text-right text-sm">
 								{{ $loop->iteration }}.
 							</p>
-							<p class="flex-none text-base ml-3">
+							<p class="flex-none text-base ml-3 hover:text-blue-500 dark:hover:text-blue-300 cursor-pointer">
 								{{ $top->player->name }}
 							</p>
 							<p class="flex-none text-xs ml-1.5 text-gray-400 uppercase font-normal pt-0.5">
@@ -123,7 +123,7 @@
 							<p class="flex-none w-4 text-right text-sm">
 								{{ $loop->iteration }}.
 							</p>
-							<p class="flex-none text-base ml-3">
+							<p class="flex-none text-base ml-3 hover:text-blue-500 dark:hover:text-blue-300 cursor-pointer">
 								{{ $top->player->name }}
 							</p>
 							<p class="flex-none text-xs ml-1.5 text-gray-400 uppercase font-normal pt-0.5">
@@ -149,7 +149,7 @@
 							<p class="flex-none w-4 text-right text-sm">
 								{{ $loop->iteration }}.
 							</p>
-							<p class="flex-none text-base ml-3">
+							<p class="flex-none text-base ml-3 hover:text-blue-500 dark:hover:text-blue-300 cursor-pointer">
 								{{ $top->player->name }}
 							</p>
 							<p class="flex-none text-xs ml-1.5 text-gray-400 uppercase font-normal pt-0.5">
@@ -175,7 +175,7 @@
 							<p class="flex-none w-4 text-right text-sm">
 								{{ $loop->iteration }}.
 							</p>
-							<p class="flex-none text-base ml-3">
+							<p class="flex-none text-base ml-3 hover:text-blue-500 dark:hover:text-blue-300 cursor-pointer">
 								{{ $top->player->name }}
 							</p>
 							<p class="flex-none text-xs ml-1.5 text-gray-400 uppercase font-normal pt-0.5">
@@ -201,7 +201,7 @@
 							<p class="flex-none w-4 text-right text-sm">
 								{{ $loop->iteration }}.
 							</p>
-							<p class="flex-none text-base ml-3">
+							<p class="flex-none text-base ml-3 hover:text-blue-500 dark:hover:text-blue-300 cursor-pointer">
 								{{ $top->player->name }}
 							</p>
 							<p class="flex-none text-xs ml-1.5 text-gray-400 uppercase font-normal pt-0.5">
@@ -227,7 +227,7 @@
 							<p class="flex-none w-4 text-right text-sm">
 								{{ $loop->iteration }}.
 							</p>
-							<p class="flex-none text-base ml-3">
+							<p class="flex-none text-base ml-3 hover:text-blue-500 dark:hover:text-blue-300 cursor-pointer">
 								{{ $top->player->name }}
 							</p>
 							<p class="flex-none text-xs ml-1.5 text-gray-400 uppercase font-normal pt-0.5">
@@ -253,7 +253,7 @@
 							<p class="flex-none w-4 text-right text-sm">
 								{{ $loop->iteration }}.
 							</p>
-							<p class="flex-none text-base ml-3">
+							<p class="flex-none text-base ml-3 hover:text-blue-500 dark:hover:text-blue-300 cursor-pointer">
 								{{ $top->player->name }}
 							</p>
 							<p class="flex-none text-xs ml-1.5 text-gray-400 uppercase font-normal pt-0.5">
@@ -272,12 +272,84 @@
 
 	{{-- right side --}}
 	<div class="hidden lg:block bg-white dark:bg-gray-750 overflow-hidden md:shadow-md md:rounded-md text-gray-900 dark:text-gray-200 p-4">
+		<h4 class="font-bold pb-2 uppercase">
+			Quinteto {{ $phase == "regular" ? 'liga regular' : '' }} {{ $phase == "playoffs" ? 'playoffs' : '' }}
+		</h4>
 		<ul>
-			<li>Mejor Base</li>
-			<li>Mejor Escolta</li>
-			<li>Mejor Ålero</li>
-			<li>Mejor Ala-Pivot</li>
-			<li>Mejor Pivot</li>
+			<li class="flex items-center">
+				<span class="w-6 text-sm text-gray-400 uppercase font-normal pt-0.5">
+					B
+				</span>
+				<p class="text-base hover:text-blue-500 dark:hover:text-blue-300 cursor-pointer">
+					{{ $top_PG->player->name }}
+				</p>
+				<p class="text-xs ml-1.5 text-gray-400 uppercase font-normal pt-0.5">
+					{{ $top_PG->seasonTeam->team->short_name }}
+				</p>
+			</li>
+			<li class="flex items-center">
+				<span class="w-6 text-sm text-gray-400 uppercase font-normal pt-0.5">
+					ES
+				</span>
+				<p class="text-base hover:text-blue-500 dark:hover:text-blue-300 cursor-pointer">
+					{{ $top_SG->player->name }}
+				</p>
+				<p class="text-xs ml-1.5 text-gray-400 uppercase font-normal pt-0.5">
+					{{ $top_SG->seasonTeam->team->short_name }}
+				</p>
+			</li>
+			<li class="flex items-center">
+				<span class="w-6 text-sm text-gray-400 uppercase font-normal pt-0.5">
+					AL
+				</span>
+				<p class="text-base hover:text-blue-500 dark:hover:text-blue-300 cursor-pointer">
+					{{ $top_SF->player->name }}
+				</p>
+				<p class="text-xs ml-1.5 text-gray-400 uppercase font-normal pt-0.5">
+					{{ $top_SF->seasonTeam->team->short_name }}
+				</p>
+			</li>
+			<li class="flex items-center">
+				<span class="w-6 text-sm text-gray-400 uppercase font-normal pt-0.5">
+					AP
+				</span>
+				<p class="text-base hover:text-blue-500 dark:hover:text-blue-300 cursor-pointer">
+					{{ $top_PF->player->name }}
+				</p>
+				<p class="text-xs ml-1.5 text-gray-400 uppercase font-normal pt-0.5">
+					{{ $top_PF->seasonTeam->team->short_name }}
+				</p>
+			</li>
+			<li class="flex items-center">
+				<span class="w-6 text-sm text-gray-400 uppercase font-normal pt-0.5">
+					P
+				</span>
+				<p class="text-base hover:text-blue-500 dark:hover:text-blue-300 cursor-pointer">
+					{{ $top_C->player->name }}
+				</p>
+				<p class="text-xs ml-1.5 text-gray-400 uppercase font-normal pt-0.5">
+					{{ $top_C->seasonTeam->team->short_name }}
+				</p>
+			</li>
+		</ul>
+
+		<h4 class="font-bold pt-6 uppercase border-b border-gray-200 dark:border-gray-650 mb-2 pb-2">
+			Total puntos
+		</h4>
+		<ul>
+{{-- 			@foreach ($array as $element)
+				<li class="flex items-center">
+					<p class="w-4 text-right text-sm">
+						{{ $loop->iteration }}.
+					</p>
+					<p class="text-base hover:text-blue-500 dark:hover:text-blue-300 cursor-pointer">
+						{{ $top_PG->player->name }}
+					</p>
+					<p class="text-xs ml-1.5 text-gray-400 uppercase font-normal pt-0.5">
+						{{ $top_PG->seasonTeam->team->short_name }}
+					</p>
+				</li>
+			@endforeach --}}
 		</ul>
 	</div>
 </div>

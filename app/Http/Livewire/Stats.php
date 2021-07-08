@@ -12,33 +12,7 @@ class Stats extends Component
     use WithPagination;
 
 	public $season;
-
     public $phase = "regular";
-    public $order = "AVG_PTS";
-    public $order_direction = "desc";
-    public $filter_AGE = null;
-    public $filter_PJ = 1;
-    public $filter_SUM_MIN = 1;
-    public $filter_AVG_MIN_min = 0.1;
-
-    public function change_order($order)
-    {
-        if ($this->order == $order) {
-            if ($this->order_direction == "asc") {
-                $this->order_direction = "desc";
-            } else {
-                $this->order_direction = "asc";
-            }
-        } else {
-            $this->order = $order;
-            if ($this->order != 'players.name' && $this->order != 'teams.short_name') {
-                $this->order_direction = "desc";
-            } else {
-                $this->order_direction = "asc";
-            }
-        }
-        $this->page = 1;
-    }
 
     // Pagination
     public function setNextPage()
@@ -252,28 +226,36 @@ class Stats extends Component
         return $stat;
     }
 
-    protected function getTopsMVP()
+    protected function getTopsMVP($position)
     {
         $stat = PlayerStat::with('player', 'seasonTeam')
                 ->join('matches', 'matches.id', 'players_stats.match_id')
+                ->join('players', 'players.id', 'players_stats.player_id')
                 ->select('player_id', 'season_team_id',
                     \DB::raw('AVG(PTS) as AVG_PTS'),
                     \DB::raw('AVG(REB) as AVG_REB'),
                     \DB::raw('AVG(AST) as AVG_AST'),
                     \DB::raw('SUM(PTS + REB + AST) / COUNT(player_id) as AVG_TOTAL')
                 );
+        $stat = $stat->where('players_stats.season_id', $this->season->id);
         if ($this->phase == "regular") {
             $stat = $stat->whereNull('matches.clash_id');
         } else {
             $stat = $stat->whereNotNull('matches.clash_id');
         }
-        $stat = $stat->where('players_stats.season_id', $this->season->id)
-            ->orderBy('AVG_TOTAL', 'desc')
+        if ($position != "all") {
+            $stat = $stat->where('players.position', $position);
+        }
+        $stat = $stat->orderBy('AVG_TOTAL', 'desc')
             ->orderBy('AVG_PTS', 'desc')
             ->orderBy('AVG_REB', 'desc')
             ->orderBy('AVG_AST', 'desc')
-            ->groupBy('player_id', 'season_team_id')
-            ->take(5)->get();
+            ->groupBy('player_id', 'season_team_id');
+        if ($position != "all") {
+            $stat = $stat->first();
+        } else {
+            $stat = $stat->take(5)->get();
+        }
 
         return $stat;
     }
@@ -286,7 +268,6 @@ class Stats extends Component
                 ->join('seasons_teams', 'seasons_teams.id', 'players_stats.season_team_id')
                 ->join('teams', 'teams.id', 'seasons_teams.team_id')
                 ->select('player_id', 'season_team_id',
-                    // \DB::raw('DATEDIFF(hour,@dob,GETDATE())/8766 AS AgeYearsIntTrunc'),
                     \DB::raw('timestampdiff(YEAR, players.birthdate, now()) AS AGE'),
                     \DB::raw('AVG(PTS) as AVG_PTS'),
                     \DB::raw('SUM(PTS) as SUM_PTS'),
@@ -329,26 +310,17 @@ class Stats extends Component
                 );
         if ($this->phase == "regular") {
             $stat = $stat->whereNull('matches.clash_id');
-            // if ($this->order == "PER_FG" || $this->order == "PER_TP" || $this->order == "PER_FT") {
-            //     $stat = $stat->having('PJ', '>', 39);
-            // }
         } else {
             $stat = $stat->whereNotNull('matches.clash_id');
-            // if ($this->order == "PER_FG" || $this->order == "PER_TP" || $this->order == "PER_FT") {
-            //         $stat = $stat->having('PJ', '>', 6);
-            //     }
         }
         $stat = $stat->where('players_stats.season_id', $this->season->id);
-        if ($this->filter_SUM_MIN > 0) {
-            $stat = $stat->having('SUM_MIN', '>', $this->filter_SUM_MIN);
-        } else {
-            $stat = $stat->having('SUM_MIN', '>=', 1);
-            $this->filter_SUM_MIN = 1;
-        }
-        $stat = $stat->having('SUM_MIN', '>', $this->filter_SUM_MIN)
-            ->having('PJ', '>', $this->filter_PJ)
-            ->orderBy($this->order, $this->order_direction)
-            ->orderBy('PJ', 'desc')
+        // if ($this->filter_SUM_MIN > 0) {
+        //     $stat = $stat->having('SUM_MIN', '>', $this->filter_SUM_MIN);
+        // } else {
+        //     $stat = $stat->having('SUM_MIN', '>=', 1);
+        //     $this->filter_SUM_MIN = 1;
+        // }
+        $stat = $stat->orderBy('PJ', 'desc')
             ->orderBy('SUM_MIN', 'asc')
             ->orderBy('players.name', 'asc')
             ->groupBy('player_id', 'season_team_id')
@@ -381,7 +353,12 @@ class Stats extends Component
             'tops_FG'      => $this->getTopsFG(),
             'tops_TP'      => $this->getTopsTP(),
             'tops_FT'      => $this->getTopsFT(),
-            'tops_MVP'      => $this->getTopsMVP(),
+            'tops_MVP'      => $this->getTopsMVP('all'),
+            'top_PG'      => $this->getTopsMVP('pg'),
+            'top_SG'      => $this->getTopsMVP('sg'),
+            'top_SF'      => $this->getTopsMVP('sf'),
+            'top_PF'      => $this->getTopsMVP('pf'),
+            'top_C'      => $this->getTopsMVP('c'),
             'players_stats' => $this->getPlayersStats(),
             'teams_stats'   => $this->getTeamsStats(),
         ]);
