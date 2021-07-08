@@ -135,7 +135,7 @@ class players_stats extends Component
             ->orderBy('PJ', 'desc')
             ->orderBy('SUM_MIN', 'asc')
             ->orderBy('player_name', 'asc')
-            ->groupBy('player_id', 'season_team_id')
+            ->groupBy('player_id')
             ->paginate(20);
 
         return $PlayersStats;
