@@ -183,13 +183,13 @@
 				</thead>
 				<tbody wire:loading.class="opacity-50">
 					@foreach ($players_stats as $key=>$stat)
-						<tr class="hover:bg-gray-150 dark:hover:bg-gray-700 border-t border-gray-200 dark:border-gray-700">
+						<tr class="group hover:bg-gray-150 dark:hover:bg-gray-700 border-t border-gray-200 dark:border-gray-700">
 							<td class="w-6 text-right" style="min-width: 1.7rem">
 								@if ($order != 'player_name' && $order != 'teams.short_name' && $order != 'AGE')
 									{{ $page == 1 ? $key+1 : (($page-1) * $per_page) + $key+1 }}
 								@endif
 							</td>
-							<td class="w-32 truncate {{-- pl-3 --}} {{ $order == 'player_name' ? 'bg-gray-100 dark:bg-gray-650' : 'bg-white dark:bg-gray-750' }}" style="width: 8rem; min-width: 8rem; max-width: 8rem; left: 0px; position: sticky; position: -webkit-sticky; text-align: left;">
+							<td class="w-32 truncate {{-- pl-3 --}} {{ $order == 'player_name' ? 'bg-gray-100 dark:bg-gray-650' : 'bg-white dark:bg-gray-750 group-hover:bg-gray-150 dark:group-hover:bg-gray-700' }}" style="width: 8rem; min-width: 8rem; max-width: 8rem; left: 0px; position: sticky; position: -webkit-sticky; text-align: left;">
 								<div class="flex items-center truncate">
 									<img src="{{ $stat->player->getImg() }}" alt="" class="h-6 w-6 object-cover rounded-full border border-gray-300 dark:border-gray-650">
 									<p class="pl-2 truncate w-32">
