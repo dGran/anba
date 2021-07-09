@@ -5,12 +5,12 @@
 				<thead>
 					<tr class="text-gray-600 bg-gray-150 dark:bg-gray-700 dark:text-gray-100 select-none">
 						<th class="text-right" style="min-width: 1.5rem"></th>
-						<th class="hover:bg-gray-800 hover:text-white dark:hover:bg-gray-650 cursor-pointer
+						<th class="bg-gray-150 dark:bg-gray-700 hover:bg-gray-800 hover:text-white dark:hover:bg-gray-650 cursor-pointer
 						{{ $order == 'player_name' ? 'bg-gray-800 text-white dark:bg-gray-650' : '' }}
 						{{ $order == 'player_name' && $order_direction == 'desc' ? 'sorted-desc' : '' }}
 						{{ $order == 'player_name' && $order_direction == 'asc' ? 'sorted-asc' : '' }}"
 						wire:click="change_order('player_name')"
-						style="width: 8rem; max-width: 8rem; text-align: left;">
+						style="width: 8rem; min-width: 8rem; max-width: 8rem; left: 0px; position: sticky; position: -webkit-sticky; text-align: left;">
 							Jugador
 						</th>
 						<th class="w-16 text-right" style="min-width: 4.5rem;">
@@ -189,7 +189,7 @@
 									{{ $page == 1 ? $key+1 : (($page-1) * $per_page) + $key+1 }}
 								@endif
 							</td>
-							<td class="w-32 truncate {{-- pl-3 --}} {{ $order == 'player_name' ? 'bg-gray-100 dark:bg-gray-650' : '' }}" style="min-width: 4rem">
+							<td class="w-32 truncate {{-- pl-3 --}} {{ $order == 'player_name' ? 'bg-gray-100 dark:bg-gray-650' : 'bg-white dark:bg-gray-750' }}" style="width: 8rem; min-width: 8rem; max-width: 8rem; left: 0px; position: sticky; position: -webkit-sticky; text-align: left;">
 								<div class="flex items-center truncate">
 									<img src="{{ $stat->player->getImg() }}" alt="" class="h-6 w-6 object-cover rounded-full border border-gray-300 dark:border-gray-650">
 									<p class="pl-2 truncate w-32">
