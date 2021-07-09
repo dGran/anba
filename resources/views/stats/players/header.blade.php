@@ -2,49 +2,51 @@
 
 	{{-- work in progress --}}
 	<figure class="pb-8">
-		<img src="https://lh3.googleusercontent.com/proxy/_50l1kcN9UCAq5pRIlSMM9HEWVLsowAHNmsRLBcQYWCPimaikchXP3T3zAkpu6O9rDp_jQARnMTutDTpMri5vriCUB1Izq6uPwZF7j4f1YmQSmACx8eqLUQkDQnZuBAPbaPmwXxzkLpdMQ" alt="" class="w-64 animate-pulse">
+		<img src="{{ asset('img/in_progress.png') }}" alt="" class="w-64 animate-pulse">
 		<figcaption class="italic text-sm">
 			*Tanto los datos mostrados como las opciones están en desarrollo
 		</figcaption>
 	</figure>
 
-	<div class="filters flex items-center select-none overflow-x-auto">
-		<div class="flex flex-col">
-			<label for="season" class="text-xs uppercase">
+
+	<h4 class="text-base font-bold uppercase tracking-wide mt-6">
+		Jugadores
+	</h4>
+
+	<div class="flex flex-col md:flex-row items-center select-none py-2">
+		<div class="flex-1 w-full flex flex-col relative">
+			<label for="season" class="text-xs uppercase absolute top-1.5 md:top-3 left-3 text-gray-500 dark:text-gray-300">
 				Temporada
 			</label>
-			<select id="season" class="appearance-none rounded text-sm | py-1.5 px-3 mt-1 | bg-white dark:bg-gray-700 | border light:border-gray-300 dark:border-gray-850 light:focus:border-gray-400 light:hover:border-gray-400 dark:focus:border-gray-550 dark:hover:border-gray-550 | focus:outline-none" wire:model="season">
-{{-- 					@foreach ($seasons as $season)
-					<option value="{{ $season->slug }}">{{ $season->name }}</option>
-				@endforeach --}}
+			<select id="season" class="appearance-none rounded text-sm text-blue-500 dark:text-dark-link font-bold | h-12 md:h-16 pt-4 px-3 | bg-white dark:bg-gray-700 | border border-gray-200 dark:border-gray-850 focus:border-gray-300 hover:border-gray-300 hover:bg-gray-50 focus:bg-gray-50 dark:focus:border-gray-600 dark:hover:border-gray-600 dark:hover:bg-gray-650 dark:focus:bg-gray-650 | focus:outline-none" wire:model="season">
 			</select>
 		</div>
-		<div class="flex flex-col ml-4">
-			<label for="phase" class="text-xs uppercase">
+		<div class="flex-1 w-full flex flex-col relative mt-0.5 md:mt-0 md:ml-0.5">
+			<label for="phase" class="text-xs uppercase absolute top-1.5 md:top-3 left-3 text-gray-500 dark:text-gray-300">
 				Fase
 			</label>
-			<select id="phase" class="appearance-none rounded text-sm | py-1.5 px-3 mt-1 | bg-white dark:bg-gray-700 | border light:border-gray-300 dark:border-gray-850 light:focus:border-gray-400 light:hover:border-gray-400 dark:focus:border-gray-550 dark:hover:border-gray-550 | focus:outline-none" wire:model="phase">
+			<select id="phase" class="appearance-none rounded text-sm text-blue-500 dark:text-dark-link font-bold | h-12 md:h-16 pt-4 px-3 | bg-white dark:bg-gray-700 | border border-gray-200 dark:border-gray-850 focus:border-gray-300 hover:border-gray-300 hover:bg-gray-50 focus:bg-gray-50 dark:focus:border-gray-600 dark:hover:border-gray-600 dark:hover:bg-gray-650 dark:focus:bg-gray-650 | focus:outline-none" wire:model="phase">
 				<option value="regular">Liga regular</option>
 				<option value="playoffs">Playoffs</option>
 			</select>
 		</div>
-		<div class="flex flex-col ml-4">
-			<label for="filter_PJ" class="text-xs uppercase">
+		<div class="flex-1 w-full flex flex-col relative mt-0.5 md:mt-0 md:ml-0.5">
+			<label for="filter_PJ" class="text-xs uppercase absolute top-1.5 md:top-3 left-3 text-gray-500 dark:text-gray-300">
 				PJ
 			</label>
-			<input type="number" id="filter_PJ" wire:model="filter_PJ" class="appearance-none rounded text-sm | py-1.5 px-3 mt-1 | bg-white dark:bg-gray-700 | border light:border-gray-300 dark:border-gray-850 light:focus:border-gray-400 light:hover:border-gray-400 dark:focus:border-gray-550 dark:hover:border-gray-550 | focus:outline-none">
+			<input type="number" id="filter_PJ" wire:model="filter_PJ" class="appearance-none rounded text-sm | h-12 md:h-16 pt-5 px-3 | bg-white dark:bg-gray-700 | border border-gray-200 dark:border-gray-850 focus:border-gray-300 hover:border-gray-300 hover:bg-gray-50 focus:bg-gray-50 dark:focus:border-gray-600 dark:hover:border-gray-600 dark:hover:bg-gray-650 dark:focus:bg-gray-650 | focus:outline-none | text-sm text-blue-500 dark:text-dark-link font-bold">
 		</div>
-		<div class="flex flex-col ml-4">
-			<label for="filter_SUM_MIN" class="text-xs uppercase">
+		<div class="flex-1 w-full flex flex-col relative mt-0.5 md:mt-0 md:ml-0.5">
+			<label for="filter_SUM_MIN" class="text-xs uppercase absolute top-1.5 md:top-3 left-3 text-gray-500 dark:text-gray-300">
 				MIN
 			</label>
-			<input type="number" id="filter_SUM_MIN" wire:model="filter_SUM_MIN" class="appearance-none rounded text-sm | py-1.5 px-3 mt-1 | bg-white dark:bg-gray-700 | border light:border-gray-300 dark:border-gray-850 light:focus:border-gray-400 light:hover:border-gray-400 dark:focus:border-gray-550 dark:hover:border-gray-550 | focus:outline-none">
+			<input type="number" id="filter_SUM_MIN" wire:model="filter_SUM_MIN" class="appearance-none rounded text-sm | h-12 md:h-16 pt-5 px-3 | bg-white dark:bg-gray-700 | border border-gray-200 dark:border-gray-850 focus:border-gray-300 hover:border-gray-300 hover:bg-gray-50 focus:bg-gray-50 dark:focus:border-gray-600 dark:hover:border-gray-600 dark:hover:bg-gray-650 dark:focus:bg-gray-650 | focus:outline-none | text-sm text-blue-500 dark:text-dark-link font-bold">
 		</div>
-		<div class="flex flex-col ml-4">
-			<label for="per_page" class="text-xs uppercase">
+		<div class="flex-1 w-full flex flex-col relative mt-0.5 md:mt-0 md:ml-0.5">
+			<label for="per_page" class="text-xs uppercase absolute top-1.5 md:top-3 left-3 text-gray-500 dark:text-gray-300">
 				Reg / Página
 			</label>
-			<select id="per_page" class="appearance-none rounded text-sm | py-1.5 px-3 mt-1 | bg-white dark:bg-gray-700 | border light:border-gray-300 dark:border-gray-850 light:focus:border-gray-400 light:hover:border-gray-400 dark:focus:border-gray-550 dark:hover:border-gray-550 | focus:outline-none" wire:model="per_page" wire:change="change_per_page">
+			<select id="per_page" class="appearance-none rounded text-sm text-blue-500 dark:text-dark-link font-bold | h-12 md:h-16 pt-4 px-3 | bg-white dark:bg-gray-700 | border border-gray-200 dark:border-gray-850 focus:border-gray-300 hover:border-gray-300 hover:bg-gray-50 focus:bg-gray-50 dark:focus:border-gray-600 dark:hover:border-gray-600 dark:hover:bg-gray-650 dark:focus:bg-gray-650 | focus:outline-none" wire:model="per_page">
 				<option value="10">10</option>
 				<option value="20">20</option>
 				<option value="30">30</option>
@@ -52,6 +54,11 @@
 				<option value="50">50</option>
 				<option value="100">100</option>
 			</select>
+		</div>
+		<div class="flex-1 w-full flex flex-col relative mt-0.5 md:mt-0 md:ml-0.5">
+			<a class="appearance-none rounded text-base text-right text-blue-500 dark:text-dark-link font-bold | h-12 md:h-16 pt-2.5 md:pt-5 px-3 | bg-white dark:bg-gray-700 | border border-gray-200 dark:border-gray-850 focus:border-gray-300 hover:border-gray-300 hover:bg-gray-50 focus:bg-gray-50 dark:focus:border-gray-600 dark:hover:border-gray-600 dark:hover:bg-gray-650 dark:focus:bg-gray-650 | focus:outline-none">
+				Filtros avanzados
+			</a>
 		</div>
 	</div>
 </div>
