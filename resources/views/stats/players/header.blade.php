@@ -13,12 +13,15 @@
 		Jugadores
 	</h4>
 
-	<div class="flex flex-col md:flex-row items-center select-none py-2">
+	<div class="flex flex-col md:flex-row items-center select-none pt-2">
 		<div class="flex-1 w-full flex flex-col relative">
 			<label for="season" class="text-xs uppercase absolute top-1.5 md:top-3 left-3 text-gray-500 dark:text-gray-300">
 				Temporada
 			</label>
-			<select id="season" class="appearance-none rounded text-sm text-blue-500 dark:text-dark-link font-bold | h-12 md:h-16 pt-4 px-3 | bg-white dark:bg-gray-700 | border border-gray-200 dark:border-gray-850 focus:border-gray-300 hover:border-gray-300 hover:bg-gray-50 focus:bg-gray-50 dark:focus:border-gray-600 dark:hover:border-gray-600 dark:hover:bg-gray-650 dark:focus:bg-gray-650 | focus:outline-none" wire:model="season">
+			<select id="season" class="appearance-none rounded text-sm text-blue-500 dark:text-dark-link font-bold | h-12 md:h-16 pt-4 px-3 | bg-white dark:bg-gray-700 | border border-gray-200 dark:border-gray-850 focus:border-gray-300 hover:border-gray-300 hover:bg-gray-50 focus:bg-gray-50 dark:focus:border-gray-600 dark:hover:border-gray-600 dark:hover:bg-gray-650 dark:focus:bg-gray-650 | focus:outline-none" wire:model="filter_season" wire:change="change_season">
+				@foreach ($seasons as $season)
+					<option value="{{ $season->slug }}">{{ $season->name }}</option>
+				@endforeach
 			</select>
 		</div>
 		<div class="flex-1 w-full flex flex-col relative mt-0.5 md:mt-0 md:ml-0.5">
@@ -28,6 +31,15 @@
 			<select id="phase" class="appearance-none rounded text-sm text-blue-500 dark:text-dark-link font-bold | h-12 md:h-16 pt-4 px-3 | bg-white dark:bg-gray-700 | border border-gray-200 dark:border-gray-850 focus:border-gray-300 hover:border-gray-300 hover:bg-gray-50 focus:bg-gray-50 dark:focus:border-gray-600 dark:hover:border-gray-600 dark:hover:bg-gray-650 dark:focus:bg-gray-650 | focus:outline-none" wire:model="phase">
 				<option value="regular">Liga regular</option>
 				<option value="playoffs">Playoffs</option>
+			</select>
+		</div>
+		<div class="flex-1 w-full flex flex-col relative mt-0.5 md:mt-0 md:ml-0.5">
+			<label for="mode" class="text-xs uppercase absolute top-1.5 md:top-3 left-3 text-gray-500 dark:text-gray-300">
+				Modo
+			</label>
+			<select id="mode" class="appearance-none rounded text-sm text-blue-500 dark:text-dark-link font-bold | h-12 md:h-16 pt-4 px-3 | bg-white dark:bg-gray-700 | border border-gray-200 dark:border-gray-850 focus:border-gray-300 hover:border-gray-300 hover:bg-gray-50 focus:bg-gray-50 dark:focus:border-gray-600 dark:hover:border-gray-600 dark:hover:bg-gray-650 dark:focus:bg-gray-650 | focus:outline-none" wire:model="mode" wire:change="change_mode">
+				<option value="per_game">Por partido</option>
+				<option value="totals">Totales</option>
 			</select>
 		</div>
 		<div class="flex-1 w-full flex flex-col relative mt-0.5 md:mt-0 md:ml-0.5">
@@ -61,4 +73,23 @@
 			</a>
 		</div>
 	</div>
+
+	<div class="flex flex-col md:flex-row items-center select-none py-2">
+		<div class="flex-1 w-full flex flex-col relative mt-0.5 md:mt-0 md:ml-0.5">
+			<label for="filter_name" class="text-xs uppercase absolute top-1.5 md:top-3 left-3 text-gray-500 dark:text-gray-300">
+				Nombre
+			</label>
+			<input type="search" id="filter_name" wire:model="filter_name" class="appearance-none rounded text-sm | h-12 md:h-16 pt-5 px-3 | bg-white dark:bg-gray-700 | border border-gray-200 dark:border-gray-850 focus:border-gray-300 hover:border-gray-300 hover:bg-gray-50 focus:bg-gray-50 dark:focus:border-gray-600 dark:hover:border-gray-600 dark:hover:bg-gray-650 dark:focus:bg-gray-650 | focus:outline-none | text-sm text-blue-500 dark:text-dark-link font-bold">
+		</div>
+	</div>
+
+{{-- 	<div class="py-2">
+		<p>
+			orden = {{ $order }}
+		</p>
+		<p>
+			orden_direction = {{ $order_direction }}
+		</p>
+
+	</div> --}}
 </div>

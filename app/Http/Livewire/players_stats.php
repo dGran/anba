@@ -13,18 +13,72 @@ class players_stats extends Component
     use WithPagination;
 
 	public $season;
-
+    public $filter_season;
     public $phase = "regular";
-    public $order = "AVG_PTS";
-    public $order_direction = "desc";
+    public $mode = "per_game";
+    public $order = "player_name";
+    public $order_direction = "asc";
     public $per_page = 20;
+    public $filter_name = null;
     public $filter_AGE = null;
     public $filter_PJ = 1;
     public $filter_SUM_MIN = 1;
     public $filter_AVG_MIN_min = 0.1;
 
+    // queryString
+    protected $queryString = [
+        'filter_season',
+        'phase' => ['except' => 'regular'],
+        'mode' => ['except' => 'per_game'],
+        'filter_name' => ['except' => ''],
+        'per_page' => ['except' => 20],
+        'order',
+        'order_direction',
+    ];
+
+    public function change_season()
+    {
+        $this->season = Season::where('slug', $this->filter_season)->first();
+    }
+
+    public function change_mode()
+    {
+        $pre_order = substr($this->order, 0, 3);
+        $rest_order = substr($this->order, 4, strlen($this->order));
+        if ($pre_order == 'AVG' || $pre_order == 'SUM') {
+            if ($this->mode == "per_game") {
+                $pre_order = 'AVG';
+            } else {
+                $pre_order = 'SUM';
+            }
+            // $order = $pre_order . $rest_order;
+            $this->change_order_mode($rest_order);
+        } else {
+            $this->change_order_mode($this->order);
+        }
+    }
+
+    public function change_order_mode($order)
+    {
+        if ($order != 'player_name' && $order != 'teams.short_name' && $order != 'AGE' && $order != 'PJ' && $order != 'PT' && $order != 'PER_FG' && $order != 'PER_TP' && $order != 'PER_FT') {
+            if ($this->mode == "per_game") {
+                $this->order = 'AVG_' . $order;
+            } else {
+                $this->order = 'SUM_' . $order;
+            }
+        }
+        $this->page = 1;
+    }
+
     public function change_order($order)
     {
+        if ($order != 'player_name' && $order != 'teams.short_name' && $order != 'AGE' && $order != 'PJ' && $order != 'PT' && $order != 'PER_FG' && $order != 'PER_TP' && $order != 'PER_FT') {
+            if ($this->mode == "per_game") {
+                $order = 'AVG_' . $order;
+            } else {
+                $order = 'SUM_' . $order;
+            }
+        }
         if ($this->order == $order) {
             if ($this->order_direction == "asc") {
                 $this->order_direction = "desc";
@@ -75,8 +129,6 @@ class players_stats extends Component
                     // \DB::raw("LEFT(players.name, POSITION(' ' IN players.name)-1) AS player_name"),
                     // \DB::raw("RIGHT(players.name, LENGTH(players.name) - POSITION(' ' IN players.name)) AS player_surname"),
                     \DB::raw("CONCAT(RIGHT(players.name, LENGTH(players.name) - POSITION(' ' IN players.name)), ', ', LEFT(players.name, POSITION(' ' IN players.name)-1)) AS player_name"),
-                    // POSITION(' ' IN players.name)
-                    // LEFT(players.name, 10)
                     \DB::raw('timestampdiff(YEAR, players.birthdate, now()) AS AGE'),
                     \DB::raw('SUM(MIN) as SUM_MIN'),
                     \DB::raw('AVG(MIN) as AVG_MIN'),
@@ -115,7 +167,8 @@ class players_stats extends Component
                     \DB::raw('SUM(PF) as SUM_PF'),
                     \DB::raw('AVG(ML) as AVG_ML'),
                     \DB::raw('SUM(ML) as SUM_ML'),
-                    \DB::raw('COUNT(player_id) as PJ')
+                    \DB::raw('COUNT(player_id) as PJ'),
+                    \DB::raw('SUM(headline) as PT'),
                 );
         if ($this->phase == "regular") {
             $PlayersStats = $PlayersStats->whereNull('matches.clash_id');
@@ -128,14 +181,17 @@ class players_stats extends Component
             //         $PlayersStats = $PlayersStats->having('PJ', '>', 6);
             //     }
         }
+        if ($this->filter_name != null) {
+            $PlayersStats = $PlayersStats->having('player_name', 'LIKE', "%$this->filter_name%");
+        }
         $PlayersStats = $PlayersStats->where('players_stats.season_id', $this->season->id);
         if ($this->filter_SUM_MIN > 0) {
-            $PlayersStats = $PlayersStats->having('SUM_MIN', '>', $this->filter_SUM_MIN);
+            $PlayersStats = $PlayersStats->where('players_stats.MIN', '>=', $this->filter_SUM_MIN);
         } else {
-            $PlayersStats = $PlayersStats->having('SUM_MIN', '>=', 1);
+            $PlayersStats = $PlayersStats->where('players_stats.MIN', '>=', 1);
             $this->filter_SUM_MIN = 1;
         }
-        $PlayersStats = $PlayersStats->having('SUM_MIN', '>', $this->filter_SUM_MIN)
+        $PlayersStats = $PlayersStats
             ->having('PJ', '>', $this->filter_PJ)
             ->orderBy($this->order, $this->order_direction)
             ->orderBy('PJ', 'desc')
@@ -151,12 +207,15 @@ class players_stats extends Component
 	{
 		if ($season = Season::where('current', 1)->first()) {
 			$this->season = $season;
+            $this->filter_season = $season->slug;
 		}
 	}
 
     public function render()
     {
+        $seasons = Season::orderBy('name', 'desc')->get();
         return view('stats.players.index', [
+            'seasons'       => $seasons,
             'players_stats' => $this->getPlayersStats(),
         ]);
     }
