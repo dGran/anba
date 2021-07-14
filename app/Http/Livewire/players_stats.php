@@ -6,31 +6,59 @@ use Livewire\Component;
 use Illuminate\Support\Collection;
 use App\Models\Season;
 use App\Models\PlayerStat;
+use App\Models\Player;
+use App\Models\SeasonTeam;
+use App\Models\SeasonDivision;
+use App\Models\SeasonConference;
+
 use Livewire\WithPagination;
 
 class players_stats extends Component
 {
     use WithPagination;
 
-	public $season;
-    public $filter_season;
+    public $advanced_filters = false;
+
+	public $currentSeason;
+    public $season;
     public $phase = "regular";
     public $mode = "per_game";
-    public $order = "player_name";
-    public $order_direction = "asc";
-    public $per_page = 20;
-    public $filter_name = null;
+
+    public $name = null;
+    public $position = "all";
+    public $nation = "all";
+    public $college = "all";
+    public $draft_year = "all";
+
+    public $team = "all";
+    public $division = "all";
+    public $conference = "all";
+
     public $filter_AGE = null;
     public $filter_PJ = 1;
     public $filter_SUM_MIN = 1;
     public $filter_AVG_MIN_min = 0.1;
 
+    public $per_page = 20;
+    public $order = "player_name";
+    public $order_direction = "asc";
+
     // queryString
     protected $queryString = [
-        'filter_season',
+        'season',
         'phase' => ['except' => 'regular'],
         'mode' => ['except' => 'per_game'],
-        'filter_name' => ['except' => ''],
+
+        'name' => ['except' => ''],
+        'position' => ['except' => 'all'],
+        'nation' => ['except' => 'all'],
+        'college' => ['except' => 'all'],
+        'draft_year' => ['except' => 'all'],
+
+        'team' => ['except' => 'all'],
+        'division' => ['except' => 'all'],
+        'conference' => ['except' => 'all'],
+
         'per_page' => ['except' => 20],
         'order',
         'order_direction',
@@ -38,7 +66,7 @@ class players_stats extends Component
 
     public function change_season()
     {
-        $this->season = Season::where('slug', $this->filter_season)->first();
+        $this->currentSeason = Season::where('slug', $this->season)->first();
     }
 
     public function change_mode()
@@ -123,6 +151,8 @@ class players_stats extends Component
                 ->join('matches', 'matches.id', 'players_stats.match_id')
                 ->join('players', 'players.id', 'players_stats.player_id')
                 ->join('seasons_teams', 'seasons_teams.id', 'players_stats.season_team_id')
+                ->join('seasons_divisions', 'seasons_divisions.id', 'seasons_teams.season_division_id')
+                ->join('seasons_conferences', 'seasons_conferences.id', 'seasons_divisions.season_conference_id')
                 ->join('teams', 'teams.id', 'seasons_teams.team_id')
                 ->select('player_id', 'season_team_id',
                     // \DB::raw("POSITION(' ' IN players.name) AS space_position"),
@@ -170,21 +200,38 @@ class players_stats extends Component
                     \DB::raw('COUNT(player_id) as PJ'),
                     \DB::raw('SUM(headline) as PT'),
                 );
+        $PlayersStats = $PlayersStats->where('players_stats.season_id', $this->currentSeason->id);
         if ($this->phase == "regular") {
             $PlayersStats = $PlayersStats->whereNull('matches.clash_id');
-            // if ($this->order == "PER_FG" || $this->order == "PER_TP" || $this->order == "PER_FT") {
-            //     $PlayersStats = $PlayersStats->having('PJ', '>', 39);
-            // }
         } else {
             $PlayersStats = $PlayersStats->whereNotNull('matches.clash_id');
-            // if ($this->order == "PER_FG" || $this->order == "PER_TP" || $this->order == "PER_FT") {
-            //         $PlayersStats = $PlayersStats->having('PJ', '>', 6);
-            //     }
         }
-        if ($this->filter_name != null) {
-            $PlayersStats = $PlayersStats->having('player_name', 'LIKE', "%$this->filter_name%");
+        if ($this->name != null) {
+            $PlayersStats = $PlayersStats->having('player_name', 'LIKE', "%$this->name%");
         }
-        $PlayersStats = $PlayersStats->where('players_stats.season_id', $this->season->id);
+        if ($this->position != "all") {
+            $PlayersStats = $PlayersStats->where('players.position', $this->position);
+        }
+        if ($this->nation != "all") {
+            $PlayersStats = $PlayersStats->where('players.nation_name', 'LIKE', "%$this->nation%");
+        }
+        if ($this->college != "all") {
+            $PlayersStats = $PlayersStats->where('players.college', 'LIKE', "%$this->college%");
+        }
+        if ($this->draft_year != "all") {
+            $PlayersStats = $PlayersStats->where('players.draft_year', $this->draft_year);
+        }
+
+        if ($this->team != "all") {
+            $PlayersStats = $PlayersStats->where('players_stats.season_team_id', $this->team);
+        }
+        if ($this->division != "all") {
+            $PlayersStats = $PlayersStats->where('seasons_teams.season_division_id', $this->division);
+        }
+        if ($this->conference != "all") {
+            $PlayersStats = $PlayersStats->where('seasons_divisions.season_conference_id', $this->conference);
+        }
+
         if ($this->filter_SUM_MIN > 0) {
             $PlayersStats = $PlayersStats->where('players_stats.MIN', '>=', $this->filter_SUM_MIN);
         } else {
@@ -206,17 +253,39 @@ class players_stats extends Component
 	public function mount()
 	{
 		if ($season = Season::where('current', 1)->first()) {
-			$this->season = $season;
-            $this->filter_season = $season->slug;
+			$this->currentSeason = $season;
+            $this->season = $season->slug;
 		}
 	}
 
     public function render()
     {
         $seasons = Season::orderBy('name', 'desc')->get();
+        $positions = collect([
+            ['id' => 'pg', 'name' => 'Base'],
+            ['id' => 'sg', 'name' => 'Escolta'],
+            ['id' => 'sf', 'name' => 'Alero'],
+            ['id' => 'pf', 'name' => 'Ala-Pivot'],
+            ['id' => 'c', 'name' => 'Pivot'],
+        ]);
+        $draft_years = Player::select('draft_year')->distinct()->whereNotNull('draft_year')->orderBy('draft_year', 'asc')->get();
+        $nations = Player::select('nation_name')->distinct()->whereNotNull('nation_name')->orderBy('nation_name', 'asc')->get();
+        $colleges = Player::select('college')->distinct()->whereNotNull('college')->orderBy('college', 'asc')->get();
+        $teams = SeasonTeam::join('teams', 'teams.id', 'seasons_teams.team_id')->select('seasons_teams.id as team_id', 'teams.name as team_name')->where('season_id', $this->currentSeason->id)->orderBy('teams.name', 'asc')->get();
+        $divisions = SeasonDivision::join('divisions', 'divisions.id', 'seasons_divisions.division_id')->select('seasons_divisions.id as division_id', 'divisions.name as division_name')->where('season_id', $this->currentSeason->id)->orderBy('divisions.name', 'asc')->get();
+        $conferences = SeasonConference::join('conferences', 'conferences.id', 'seasons_conferences.conference_id')->select('seasons_conferences.id as conference_id', 'conferences.name as conference_name')->where('season_id', $this->currentSeason->id)->orderBy('conferences.name', 'asc')->get();
+        $players_stats = $this->getPlayersStats();
+
         return view('stats.players.index', [
-            'seasons'       => $seasons,
-            'players_stats' => $this->getPlayersStats(),
+            'players_stats'     => $players_stats,
+            'positions'         => $positions,
+            'seasons'           => $seasons,
+            'nations'           => $nations,
+            'colleges'          => $colleges,
+            'draft_years'       => $draft_years,
+            'teams'             => $teams,
+            'divisions'         => $divisions,
+            'conferences'       => $conferences,
         ]);
     }
 }
