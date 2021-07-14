@@ -412,16 +412,16 @@
 			{{ $players_stats->links('vendor.pagination.tailwind') }}
 		</div>
 	@else
-		<div class="bg-white dark:bg-gray-700 overflow-hidden md:shadow-sm md:rounded-md md:mx-0 text-gray-900 dark:text-gray-200 border border-gray-200">
-			<p class="px-4 py-2">
-				No se han encontrado datos
+		<div class="bg-white dark:bg-gray-700 overflow-hidden md:shadow-sm md:rounded-md md:mx-0 text-gray-900 dark:text-gray-200 border border-gray-200 dark:border-gray-850">
+			<p class="px-4 py-8 text-xl md:text-3xl text-center">
+				No hay estadísticas disponibles para los filtros seleccionados.
 			</p>
 		</div>
 	@endif
 @else
-	<div class="bg-white dark:bg-gray-700 overflow-hidden md:shadow-sm md:rounded-md md:mx-0 text-gray-900 dark:text-gray-200 border border-gray-200">
-		<p class="px-4 py-2">
-			Temporada actual no encontrada
+	<div class="bg-white dark:bg-gray-700 overflow-hidden md:shadow-sm md:rounded-md md:mx-0 text-gray-900 dark:text-gray-200 border border-gray-200 dark:border-gray-850">
+		<p class="px-4 py-2 text-2xl">
+			Temporada no encontrada
 		</p>
 	</div>
 @endif
