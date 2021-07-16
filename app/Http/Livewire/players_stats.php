@@ -19,20 +19,25 @@ class players_stats extends Component
 
     public $advanced_filters = false;
 
-	public $currentSeason;
+	public $current_season;
     public $season;
     public $phase = "regular";
     public $mode = "per_game";
 
     public $name = null;
     public $position = "all";
-    public $nation = "all";
-    public $college = "all";
+    public $position_text = "todas";
+    public $experience = "all";
     public $draft_year = "all";
+    public $college = "all";
+    public $nation = "all";
 
     public $team = "all";
+    public $team_text = "todos";
     public $division = "all";
+    public $division_text = "todas";
     public $conference = "all";
+    public $conference_text = "todas";
 
     public $filter_AGE = null;
     public $filter_PJ = 1;
@@ -51,9 +56,10 @@ class players_stats extends Component
 
         'name' => ['except' => ''],
         'position' => ['except' => 'all'],
-        'nation' => ['except' => 'all'],
-        'college' => ['except' => 'all'],
+        'experience' => ['except' => 'all'],
         'draft_year' => ['except' => 'all'],
+        'college' => ['except' => 'all'],
+        'nation' => ['except' => 'all'],
 
         'team' => ['except' => 'all'],
         'division' => ['except' => 'all'],
@@ -64,9 +70,32 @@ class players_stats extends Component
         'order_direction',
     ];
 
+    public function reset_all_filters()
+    {
+        if ($season = Season::where('current', 1)->first()) {
+            $this->current_season = $season;
+            $this->season = $season->slug;
+        }
+        $this->phase = "regular";
+        $this->mode = "per_game";
+
+        $this->name = null;
+        $this->position = "all";
+        $this->experience = "all";
+        $this->draft_year = "all";
+        $this->college = "all";
+        $this->nation = "all";
+
+        $this->team = "all";
+        $this->division = "all";
+        $this->conference = "all";
+
+        $this->change_mode();
+    }
+
     public function change_season()
     {
-        $this->currentSeason = Season::where('slug', $this->season)->first();
+        $this->current_season = Season::where('slug', $this->season)->first();
     }
 
     public function change_mode()
@@ -200,26 +229,38 @@ class players_stats extends Component
                     \DB::raw('COUNT(player_id) as PJ'),
                     \DB::raw('SUM(headline) as PT'),
                 );
-        $PlayersStats = $PlayersStats->where('players_stats.season_id', $this->currentSeason->id);
+        $PlayersStats = $PlayersStats->where('players_stats.season_id', $this->current_season->id);
         if ($this->phase == "regular") {
             $PlayersStats = $PlayersStats->whereNull('matches.clash_id');
         } else {
             $PlayersStats = $PlayersStats->whereNotNull('matches.clash_id');
         }
-        if ($this->name != null) {
-            $PlayersStats = $PlayersStats->having('player_name', 'LIKE', "%$this->name%");
-        }
+
         if ($this->position != "all") {
             $PlayersStats = $PlayersStats->where('players.position', $this->position);
         }
-        if ($this->nation != "all") {
-            $PlayersStats = $PlayersStats->where('players.nation_name', 'LIKE', "%$this->nation%");
+        if ($this->experience != "all") {
+            switch ($this->experience) {
+                case 'rookie':
+                    // 0 años de experiencia
+                    // $PlayersStats = $PlayersStats->where('players.position', $this->position);
+                    break;
+                case 'sophomore':
+                    // 1 año de experiencia
+                    break;
+                case 'veterano':
+                    // 2 o mas años de experiencia
+                    break;
+            }
+        }
+        if ($this->draft_year != "all") {
+            $PlayersStats = $PlayersStats->where('players.draft_year', $this->draft_year);
         }
         if ($this->college != "all") {
             $PlayersStats = $PlayersStats->where('players.college', 'LIKE', "%$this->college%");
         }
-        if ($this->draft_year != "all") {
-            $PlayersStats = $PlayersStats->where('players.draft_year', $this->draft_year);
+        if ($this->nation != "all") {
+            $PlayersStats = $PlayersStats->where('players.nation_name', 'LIKE', "%$this->nation%");
         }
 
         if ($this->team != "all") {
@@ -238,6 +279,10 @@ class players_stats extends Component
             $PlayersStats = $PlayersStats->where('players_stats.MIN', '>=', 1);
             $this->filter_SUM_MIN = 1;
         }
+
+        if ($this->name != null) {
+            $PlayersStats = $PlayersStats->having('player_name', 'LIKE', "%$this->name%");
+        }
         $PlayersStats = $PlayersStats
             ->having('PJ', '>', $this->filter_PJ)
             ->orderBy($this->order, $this->order_direction)
@@ -250,16 +295,67 @@ class players_stats extends Component
         return $PlayersStats;
     }
 
+    public function cancel_season_filter()
+    {
+        if ($season = Season::where('current', 1)->first()) {
+            $this->current_season = $season;
+            $this->season = $season->slug;
+        }
+    }
+
+    public function set_filters_texts()
+    {
+        switch ($this->position) {
+            case 'all':
+                $this->position_text = "Todas";
+                break;
+            case 'pg':
+                $this->position_text = "Base";
+                break;
+            case 'sg':
+                $this->position_text = "Escolta";
+                break;
+            case 'sf':
+                $this->position_text = "Alero";
+                break;
+            case 'pf':
+                $this->position_text = "Ala-Pivot";
+                break;
+            case 'c':
+                $this->position_text = "Pivot";
+                break;
+        }
+
+        if ($this->team != "all") {
+            $this->team_text = SeasonTeam::find($this->team)->team->name;
+        }
+
+        if ($this->division != "all") {
+            $this->division_text = SeasonDivision::find($this->division)->division->name;
+        }
+
+        if ($this->conference != "all") {
+            $this->conference_text = SeasonConference::find($this->conference)->conference->name;
+        }
+    }
+
 	public function mount()
 	{
-		if ($season = Season::where('current', 1)->first()) {
-			$this->currentSeason = $season;
-            $this->season = $season->slug;
-		}
 	}
 
     public function render()
     {
+        if ($this->season == null) {
+            if ($season = Season::where('current', 1)->first()) {
+                $this->current_season = $season;
+                $this->season = $season->slug;
+            }
+        } else {
+            $season = Season::where('slug', $this->season)->first();
+            $this->current_season = $season;
+            $this->season = $season->slug;
+        }
+
         $seasons = Season::orderBy('name', 'desc')->get();
         $positions = collect([
             ['id' => 'pg', 'name' => 'Base'],
@@ -271,12 +367,14 @@ class players_stats extends Component
         $draft_years = Player::select('draft_year')->distinct()->whereNotNull('draft_year')->orderBy('draft_year', 'asc')->get();
         $nations = Player::select('nation_name')->distinct()->whereNotNull('nation_name')->orderBy('nation_name', 'asc')->get();
         $colleges = Player::select('college')->distinct()->whereNotNull('college')->orderBy('college', 'asc')->get();
-        $teams = SeasonTeam::join('teams', 'teams.id', 'seasons_teams.team_id')->select('seasons_teams.id as team_id', 'teams.name as team_name')->where('season_id', $this->currentSeason->id)->orderBy('teams.name', 'asc')->get();
-        $divisions = SeasonDivision::join('divisions', 'divisions.id', 'seasons_divisions.division_id')->select('seasons_divisions.id as division_id', 'divisions.name as division_name')->where('season_id', $this->currentSeason->id)->orderBy('divisions.name', 'asc')->get();
-        $conferences = SeasonConference::join('conferences', 'conferences.id', 'seasons_conferences.conference_id')->select('seasons_conferences.id as conference_id', 'conferences.name as conference_name')->where('season_id', $this->currentSeason->id)->orderBy('conferences.name', 'asc')->get();
+        $teams = SeasonTeam::join('teams', 'teams.id', 'seasons_teams.team_id')->select('seasons_teams.id as team_id', 'teams.name as team_name')->where('season_id', $this->current_season->id)->orderBy('teams.name', 'asc')->get();
+        $divisions = SeasonDivision::join('divisions', 'divisions.id', 'seasons_divisions.division_id')->select('seasons_divisions.id as division_id', 'divisions.name as division_name')->where('season_id', $this->current_season->id)->orderBy('divisions.name', 'asc')->get();
+        $conferences = SeasonConference::join('conferences', 'conferences.id', 'seasons_conferences.conference_id')->select('seasons_conferences.id as conference_id', 'conferences.name as conference_name')->where('season_id', $this->current_season->id)->orderBy('conferences.name', 'asc')->get();
         $players_stats = $this->getPlayersStats();
 
-        return view('stats.players.index', [
+        $this->set_filters_texts();
+
+        return view('stats.players', [
             'players_stats'     => $players_stats,
             'positions'         => $positions,
             'seasons'           => $seasons,

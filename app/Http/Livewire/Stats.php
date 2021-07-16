@@ -344,7 +344,7 @@ class Stats extends Component
 
     public function render()
     {
-        return view('stats.index', [
+        return view('stats.tops', [
         	'tops_PTS'      => $this->getTopsPTS(),
         	'tops_AST'      => $this->getTopsAST(),
         	'tops_REB'      => $this->getTopsREB(),

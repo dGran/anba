@@ -25,7 +25,6 @@
         </div>
     </x-slot>
 
-
     @livewire('players_stats')
 
 </x-app-layout>

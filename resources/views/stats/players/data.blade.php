@@ -275,28 +275,28 @@
 							<td class="text-right {{ $order == 'PT' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
 								{{ number_format($stat->PT, 0, ',', '.') }}
 							</td>
-							<td class="text-right {{ $order == 'AVG_MIN' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
+							<td class="text-right {{ $order == 'AVG_MIN' || $order == 'SUM_MIN' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
 								@if ($mode == 'per_game')
 									{{ number_format($stat->AVG_MIN, 1, ',', '.') }}
 								@else
 									{{ number_format($stat->SUM_MIN, 0, ',', '.') }}
 								@endif
 							</td>
-							<td class="text-right {{ $order == 'AVG_PTS' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
+							<td class="text-right {{ $order == 'AVG_PTS' || $order == 'SUM_PTS' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
 								@if ($mode == 'per_game')
 									{{ number_format($stat->AVG_PTS, 1, ',', '.') }}
 								@else
 									{{ number_format($stat->SUM_PTS, 0, ',', '.') }}
 								@endif
 							</td>
-							<td class="text-right {{ $order == 'AVG_FGM' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
+							<td class="text-right {{ $order == 'AVG_FGM' || $order == 'SUM_FGM' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
 								@if ($mode == 'per_game')
 									{{ number_format($stat->AVG_FGM, 1, ',', '.') }}
 								@else
 									{{ number_format($stat->SUM_FGM, 0, ',', '.') }}
 								@endif
 							</td>
-							<td class="text-right {{ $order == 'AVG_FGA' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
+							<td class="text-right {{ $order == 'AVG_FGA' || $order == 'SUM_FGA' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
 								@if ($mode == 'per_game')
 									{{ number_format($stat->AVG_FGA, 1, ',', '.') }}
 								@else
@@ -306,14 +306,14 @@
 							<td class="text-right {{ $order == 'PER_FG' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
 								{{ number_format($stat->PER_FG, 1, ',', '.') }}
 							</td>
-							<td class="text-right {{ $order == 'AVG_TPM' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
+							<td class="text-right {{ $order == 'AVG_TPM' || $order == 'SUM_TPM' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
 								@if ($mode == 'per_game')
 									{{ number_format($stat->AVG_TPM, 1, ',', '.') }}
 								@else
 									{{ number_format($stat->SUM_TPM, 0, ',', '.') }}
 								@endif
 							</td>
-							<td class="text-right {{ $order == 'AVG_TPA' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
+							<td class="text-right {{ $order == 'AVG_TPA' || $order == 'SUM_TPA' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
 								@if ($mode == 'per_game')
 									{{ number_format($stat->AVG_TPA, 1, ',', '.') }}
 								@else
@@ -323,14 +323,14 @@
 							<td class="text-right {{ $order == 'PER_TP' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
 								{{ number_format($stat->PER_TP, 1, ',', '.') }}
 							</td>
-							<td class="text-right {{ $order == 'AVG_FTM' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
+							<td class="text-right {{ $order == 'AVG_FTM' || $order == 'SUM_FTM' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
 								@if ($mode == 'per_game')
 									{{ number_format($stat->AVG_FTM, 1, ',', '.') }}
 								@else
 									{{ number_format($stat->SUM_FTM, 0, ',', '.') }}
 								@endif
 							</td>
-							<td class="text-right {{ $order == 'AVG_FTA' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
+							<td class="text-right {{ $order == 'AVG_FTA' || $order == 'SUM_FTA' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
 								@if ($mode == 'per_game')
 									{{ number_format($stat->AVG_FTA, 1, ',', '.') }}
 								@else
@@ -340,63 +340,63 @@
 							<td class="text-right {{ $order == 'PER_FT' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
 								{{ number_format($stat->PER_FT, 1, ',', '.') }}
 							</td>
-							<td class="text-right {{ $order == 'AVG_ORB' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
+							<td class="text-right {{ $order == 'AVG_ORB' || $order == 'SUM_ORB' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
 								@if ($mode == 'per_game')
 									{{ number_format($stat->AVG_ORB, 1, ',', '.') }}
 								@else
 									{{ number_format($stat->SUM_ORB, 0, ',', '.') }}
 								@endif
 							</td>
-							<td class="text-right {{ $order == 'AVG_DRB' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
+							<td class="text-right {{ $order == 'AVG_DRB' || $order == 'SUM_DRB' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
 								@if ($mode == 'per_game')
 									{{ number_format($stat->AVG_DRB, 1, ',', '.') }}
 								@else
 									{{ number_format($stat->SUM_DRB, 0, ',', '.') }}
 								@endif
 							</td>
-							<td class="text-right {{ $order == 'AVG_REB' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
+							<td class="text-right {{ $order == 'AVG_REB' || $order == 'SUM_REB' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
 								@if ($mode == 'per_game')
 									{{ number_format($stat->AVG_REB, 1, ',', '.') }}
 								@else
 									{{ number_format($stat->SUM_REB, 0, ',', '.') }}
 								@endif
 							</td>
-							<td class="text-right {{ $order == 'AVG_AST' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
+							<td class="text-right {{ $order == 'AVG_AST' || $order == 'SUM_AST' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
 								@if ($mode == 'per_game')
 									{{ number_format($stat->AVG_AST, 1, ',', '.') }}
 								@else
 									{{ number_format($stat->SUM_AST, 0, ',', '.') }}
 								@endif
 							</td>
-							<td class="text-right {{ $order == 'AVG_STL' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
+							<td class="text-right {{ $order == 'AVG_STL' || $order == 'SUM_STL' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
 								@if ($mode == 'per_game')
 									{{ number_format($stat->AVG_STL, 1, ',', '.') }}
 								@else
 									{{ number_format($stat->SUM_STL, 0, ',', '.') }}
 								@endif
 							</td>
-							<td class="text-right {{ $order == 'AVG_LOS' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
+							<td class="text-right {{ $order == 'AVG_LOS' || $order == 'SUM_LOS' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
 								@if ($mode == 'per_game')
 									{{ number_format($stat->AVG_LOS, 1, ',', '.') }}
 								@else
 									{{ number_format($stat->SUM_LOS, 0, ',', '.') }}
 								@endif
 							</td>
-							<td class="text-right {{ $order == 'AVG_BLK' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
+							<td class="text-right {{ $order == 'AVG_BLK' || $order == 'SUM_BLK' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
 								@if ($mode == 'per_game')
 									{{ number_format($stat->AVG_BLK, 1, ',', '.') }}
 								@else
 									{{ number_format($stat->SUM_BLK, 0, ',', '.') }}
 								@endif
 							</td>
-							<td class="text-right {{ $order == 'AVG_PF' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
+							<td class="text-right {{ $order == 'AVG_PF' || $order == 'SUM_PF' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
 								@if ($mode == 'per_game')
 									{{ number_format($stat->AVG_PF, 1, ',', '.') }}
 								@else
 									{{ number_format($stat->SUM_PF, 0, ',', '.') }}
 								@endif
 							</td>
-							<td class="text-right {{ $order == 'AVG_ML' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
+							<td class="text-right {{ $order == 'AVG_ML' || $order == 'SUM_ML' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
 								@if ($mode == 'per_game')
 									{{ number_format($stat->AVG_ML, 1, ',', '.') }}
 								@else
