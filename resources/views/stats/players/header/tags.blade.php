@@ -67,5 +67,9 @@
 	pending
 	<ul class="list-disc">
 		<li class="list-inside">query experience (subquery)</li>
+		<li class="list-inside">height filter</li>
+		<li class="list-inside">weight filter</li>
+		<li class="list-inside">stats filters</li>
+		<li class="list-inside">date range filter</li>
 	</ul>
 </div>
