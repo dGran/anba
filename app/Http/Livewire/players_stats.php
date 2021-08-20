@@ -295,6 +295,115 @@ class players_stats extends Component
         return $PlayersStats;
     }
 
+    public function getTeamsStats()
+    {
+        $TeamStats = PlayerStat::with('player', 'seasonTeam.team')
+                ->join('matches', 'matches.id', 'players_stats.match_id')
+                ->join('players', 'players.id', 'players_stats.player_id')
+                ->join('seasons_teams', 'seasons_teams.id', 'players_stats.season_team_id')
+                ->join('seasons_divisions', 'seasons_divisions.id', 'seasons_teams.season_division_id')
+                ->join('seasons_conferences', 'seasons_conferences.id', 'seasons_divisions.season_conference_id')
+                ->join('teams', 'teams.id', 'seasons_teams.team_id')
+                ->select('season_team_id',
+                    // \DB::raw("POSITION(' ' IN players.name) AS space_position"),
+                    // \DB::raw("LEFT(players.name, POSITION(' ' IN players.name)-1) AS player_name"),
+                    // \DB::raw("RIGHT(players.name, LENGTH(players.name) - POSITION(' ' IN players.name)) AS player_surname"),
+                    \DB::raw('SUM(MIN) as SUM_MIN'),
+                    \DB::raw('AVG(MIN) as AVG_MIN'),
+                    \DB::raw('SUM(PTS) / COUNT(DISTINCT(match_id)) as AVG_PTS'),
+                    \DB::raw('SUM(PTS) as SUM_PTS'),
+                    \DB::raw('SUM(FGM) as SUM_FGM'),
+                    \DB::raw('SUM(FGM) / COUNT(DISTINCT(match_id)) as AVG_FGM'),
+                    \DB::raw('SUM(FGA) as SUM_FGA'),
+                    \DB::raw('SUM(FGA) / COUNT(DISTINCT(match_id)) as AVG_FGA'),
+                    \DB::raw('(SUM(FGM) / SUM(FGA)) * 100 as PER_FG'),
+                    \DB::raw('SUM(TPM) as SUM_TPM'),
+                    \DB::raw('SUM(TPM) / COUNT(DISTINCT(match_id)) as AVG_TPM'),
+                    \DB::raw('SUM(TPA) as SUM_TPA'),
+                    \DB::raw('SUM(TPA) / COUNT(DISTINCT(match_id)) as AVG_TPA'),
+                    \DB::raw('(SUM(TPM) / SUM(TPA)) * 100 as PER_TP'),
+                    \DB::raw('SUM(FTM) as SUM_FTM'),
+                    \DB::raw('SUM(FTM) / COUNT(DISTINCT(match_id)) as AVG_FTM'),
+                    \DB::raw('SUM(FTA) as SUM_FTA'),
+                    \DB::raw('SUM(FTA) / COUNT(DISTINCT(match_id)) as AVG_FTA'),
+                    \DB::raw('(SUM(FTM) / SUM(FTA)) * 100 as PER_FT'),
+                    \DB::raw('SUM(REB) as SUM_REB'),
+                    \DB::raw('SUM(REB) / COUNT(DISTINCT(match_id)) as AVG_REB'),
+                    \DB::raw('SUM(ORB) as SUM_ORB'),
+                    \DB::raw('SUM(ORB) / COUNT(DISTINCT(match_id)) as AVG_ORB'),
+                    \DB::raw('SUM(REB) - SUM(ORB) as SUM_DRB'),
+                    \DB::raw('(SUM(REB) / COUNT(DISTINCT(match_id))) - (SUM(ORB) / COUNT(DISTINCT(match_id))) as AVG_DRB'),
+                    \DB::raw('SUM(AST) / COUNT(DISTINCT(match_id)) as AVG_AST'),
+                    \DB::raw('SUM(AST) as SUM_AST'),
+                    \DB::raw('SUM(STL) / COUNT(DISTINCT(match_id)) as AVG_STL'),
+                    \DB::raw('SUM(STL) as SUM_STL'),
+                    \DB::raw('SUM(BLK) / COUNT(DISTINCT(match_id)) as AVG_BLK'),
+                    \DB::raw('SUM(BLK) as SUM_BLK'),
+                    \DB::raw('SUM(LOS) / COUNT(DISTINCT(match_id)) as AVG_LOS'),
+                    \DB::raw('SUM(LOS) as SUM_LOS'),
+                    \DB::raw('SUM(PF) / COUNT(DISTINCT(match_id)) as AVG_PF'),
+                    \DB::raw('SUM(PF) as SUM_PF'),
+                    \DB::raw('SUM(ML) / COUNT(DISTINCT(match_id)) as AVG_ML'),
+                    \DB::raw('SUM(ML) as SUM_ML'),
+                    \DB::raw('COUNT(DISTINCT(match_id)) AS PJ'),
+                );
+        $TeamStats = $TeamStats->where('players_stats.season_id', $this->current_season->id);
+        if ($this->phase == "regular") {
+            $TeamStats = $TeamStats->whereNull('matches.clash_id');
+        } else {
+            $TeamStats = $TeamStats->whereNotNull('matches.clash_id');
+        }
+
+        if ($this->position != "all") {
+            $TeamStats = $TeamStats->where('players.position', $this->position);
+        }
+        if ($this->experience != "all") {
+            switch ($this->experience) {
+                case 'rookie':
+                    // 0 años de experiencia
+                    // $TeamStats = $TeamStats->where('players.position', $this->position);
+                    break;
+                case 'sophomore':
+                    // 1 año de experiencia
+                    break;
+                case 'veterano':
+                    // 2 o mas años de experiencia
+                    break;
+            }
+        }
+
+        if ($this->team != "all") {
+            $TeamStats = $TeamStats->where('players_stats.season_team_id', $this->team);
+        }
+        if ($this->division != "all") {
+            $TeamStats = $TeamStats->where('seasons_teams.season_division_id', $this->division);
+        }
+        if ($this->conference != "all") {
+            $TeamStats = $TeamStats->where('seasons_divisions.season_conference_id', $this->conference);
+        }
+
+        if ($this->filter_SUM_MIN > 0) {
+            $TeamStats = $TeamStats->where('players_stats.MIN', '>=', $this->filter_SUM_MIN);
+        } else {
+            $TeamStats = $TeamStats->where('players_stats.MIN', '>=', 1);
+            $this->filter_SUM_MIN = 1;
+        }
+
+        if ($this->name != null) {
+            $TeamStats = $TeamStats->having('player_name', 'LIKE', "%$this->name%");
+        }
+        $TeamStats = $TeamStats
+            ->having('PJ', '>', $this->filter_PJ)
+            ->orderBy($this->order, $this->order_direction)
+            ->orderBy('PJ', 'desc')
+            ->orderBy('AVG_MIN', 'desc')
+            ->orderBy('teams.name', 'asc')
+            ->groupBy('season_team_id')
+            ->paginate($this->per_page);
+
+        return $TeamStats;
+    }
+
     public function cancel_season_filter()
     {
         if ($season = Season::where('current', 1)->first()) {
@@ -371,11 +480,13 @@ class players_stats extends Component
         $divisions = SeasonDivision::join('divisions', 'divisions.id', 'seasons_divisions.division_id')->select('seasons_divisions.id as division_id', 'divisions.name as division_name')->where('season_id', $this->current_season->id)->orderBy('divisions.name', 'asc')->get();
         $conferences = SeasonConference::join('conferences', 'conferences.id', 'seasons_conferences.conference_id')->select('seasons_conferences.id as conference_id', 'conferences.name as conference_name')->where('season_id', $this->current_season->id)->orderBy('conferences.name', 'asc')->get();
         $players_stats = $this->getPlayersStats();
+        $teams_stats = $this->getTeamsStats();
 
         $this->set_filters_texts();
 
         return view('stats.players', [
             'players_stats'     => $players_stats,
+            'teams_stats'       => $teams_stats,
             'positions'         => $positions,
             'seasons'           => $seasons,
             'nations'           => $nations,
