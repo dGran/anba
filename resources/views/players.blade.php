@@ -6,7 +6,6 @@
         </h2>
     </x-slot>
 
-    <div>
-        {{-- @livewire('players') --}}
-    </div>
+    @livewire('players')
+
 </x-app-layout>
