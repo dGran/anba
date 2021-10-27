@@ -7,11 +7,13 @@ use App\Models\Player;
 
 class Players extends Component
 {
+    public $view = "table";
+
     public function render()
     {
         $injuriePlayers = Player::
             whereNotNull('injury_id')
-            ->orderBy('injury_days', 'asc')
+            ->orderBy('injury_matches', 'asc')
             ->orderBy('name', 'asc')
             ->get();
 
