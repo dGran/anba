@@ -27,7 +27,7 @@
                                 <p class="text-xl font-bold">ANBA</p>
                                 <p class="text-xs font-semibold text-yellow-400">{{ $currentSeason->name }}</p>
                             </div>
-                            <div class="text-xxs uppercase w-24 -mt-1">Adictos a la NBA</div>
+                            <div class="text-xxs uppercase -mt-1">Adictos a la NBA</div>
                         </div>
                     </a>
                 </div>
