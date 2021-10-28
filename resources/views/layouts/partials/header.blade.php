@@ -24,7 +24,7 @@
                         <img src="{{ asset('img/logo.png') }}" alt="logo" class="h-12 block w-auto focus:outline-none border border-transparent transform group-hover:scale-110 group-focus:scale-110 transition duration-150 ease-in-out" />
                         <div class="ml-2.5 w-full">
                             <p class="text-xl font-bold">ANBA</p>
-                            <p class="text-xs font-semibold text-yellow-400 uppercase -mt-1 whitespace-nowrap">2021-2022</p>
+                            <p class="text-xs font-semibold text-yellow-400 uppercase -mt-1 w-24">{{ $currentSeason->name }}</p>
                         </div>
                     </a>
                 </div>
