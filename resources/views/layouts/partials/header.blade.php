@@ -22,9 +22,12 @@
                 <div class="flex-1 ml-5 lg:ml-0 text-white flex items-center w-full">
                     <a href="{{ route('home') }}" class="group flex items-center h-full focus:outline-none">
                         <img src="{{ asset('img/logo.png') }}" alt="logo" class="h-12 block w-auto focus:outline-none border border-transparent transform group-hover:scale-110 group-focus:scale-110 transition duration-150 ease-in-out" />
-                        <div class="text-xl ml-3 leading-5  w-full">
-                            <p class="font-bold">ANBA</p>
-                            <div class="block text-xxs uppercase w-24">Adictos a la NBA</div>
+                        <div class="ml-2.5 w-full flex flex-col justify-center">
+                            <div class="flex items-center space-x-2.5">
+                                <p class="text-xl font-bold">ANBA</p>
+                                <p class="text-xs font-semibold text-yellow-400">{{ $currentSeason->name }}</p>
+                            </div>
+                            <div class="text-xxs uppercase w-24 -mt-1">Adictos a la NBA</div>
                         </div>
                     </a>
                 </div>
