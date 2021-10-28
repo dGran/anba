@@ -2,7 +2,10 @@
 
 	{{-- banner --}}
     <div class="max-w-7xl mx-auto md:px-6 lg:px-8 md:my-8">
-        <div class="bg-none bg-cover bg-no-repeat bg-top h-60 sm:h-72 md:h-80 lg:h-96 xl:h-96 text-white py-12 px-6 object-fill md:rounded-lg" style="background-image: url({{ asset('img/home_banner.jpg') }})">
+        <div class="relative bg-none bg-cover bg-no-repeat bg-top h-60 sm:h-72 md:h-80 lg:h-96 xl:h-96 text-white py-12 px-6 object-fill md:rounded-lg" style="background-image: url({{ asset('img/home_banner.jpg') }})">
+            <img src="https://cdn.2kgames.com/2021/07/14/60eee86a42397logo_nba2k22_L_1_8uhylkm0142.png" alt="" class="absolute top-0 left-0 m-3 w-32 md:w-40 lg:w-48">
+            <img src="https://cdn.phonehouse.es/res_static/logos/XBOX.png?auto=format" alt="" class="absolute top-0 left-0 mt-12 md:mt-14 ml-1 lg:mt-16 ml-0 h-6 md:h-8 lg:h-10">
+
         </div>
     </div>
 
