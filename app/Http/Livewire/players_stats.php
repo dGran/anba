@@ -306,7 +306,7 @@ class players_stats extends Component
                 ->join('teams', 'teams.id', 'seasons_teams.team_id')
                 ->select('season_team_id',
                     // \DB::raw("POSITION(' ' IN players.name) AS space_position"),
-                    // \DB::raw("LEFT(players.name, POSITION(' ' IN players.name)-1) AS player_name"),
+                    \DB::raw("LEFT(players.name, POSITION(' ' IN players.name)-1) AS player_name"),
                     // \DB::raw("RIGHT(players.name, LENGTH(players.name) - POSITION(' ' IN players.name)) AS player_surname"),
                     \DB::raw('SUM(MIN) as SUM_MIN'),
                     \DB::raw('AVG(MIN) as AVG_MIN'),

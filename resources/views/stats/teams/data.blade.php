@@ -1,5 +1,5 @@
 @if ($season)
-	@if (count($players_stats) > 0)
+	@if (count($teams_stats) > 0)
 		<div class="bg-white dark:bg-gray-750 overflow-x-auto md:shadow-sm md:rounded-md md:mx-0 text-gray-900 dark:text-gray-200 border border-gray-200 dark:border-gray-850">
 			<table class="players-stats">
 				<thead>
@@ -13,38 +13,12 @@
 						style="width: 8rem; min-width: 8rem; max-width: 8rem; left: 0px; position: sticky; position: -webkit-sticky; text-align: left;">
 							Jugador
 						</th>
-						<th class="w-16 text-right" style="min-width: 4.5rem;">
-							POS
-						</th>
-						<th class="w-16 text-right hover:bg-gray-800 hover:text-white dark:hover:bg-gray-650 cursor-pointer
-						{{ $order == 'teams.short_name' ? 'bg-gray-800 text-white dark:bg-gray-650' : '' }}
-						{{ $order == 'teams.short_name' && $order_direction == 'desc' ? 'sorted-desc' : '' }}
-						{{ $order == 'teams.short_name' && $order_direction == 'asc' ? 'sorted-asc' : '' }}"
-						wire:click="change_order('teams.short_name')"
-						style="min-width: 4.5rem">
-							Equipo
-						</th>
-						<th class="w-12 text-right hover:bg-gray-800 hover:text-white dark:hover:bg-gray-650 cursor-pointer
-						{{ $order == 'AGE' ? 'bg-gray-800 text-white dark:bg-gray-650' : '' }}
-						{{ $order == 'AGE' && $order_direction == 'desc' ? 'sorted-desc' : '' }}
-						{{ $order == 'AGE' && $order_direction == 'asc' ? 'sorted-asc' : '' }}"
-						wire:click="change_order('AGE')"
-						style="min-width: 3rem">
-							Edad
-						</th>
 						<th class="w-12 text-right hover:bg-gray-800 hover:text-white dark:hover:bg-gray-650 cursor-pointer
 						{{ $order == 'PJ' ? 'bg-gray-800 text-white dark:bg-gray-650' : '' }}
 						{{ $order == 'PJ' && $order_direction == 'desc' ? 'sorted-desc' : '' }}
 						{{ $order == 'PJ' && $order_direction == 'asc' ? 'sorted-asc' : '' }}"
 						wire:click="change_order('PJ')">
 							PJ
-						</th>
-						<th class="w-12 text-right hover:bg-gray-800 hover:text-white dark:hover:bg-gray-650 cursor-pointer
-						{{ $order == 'PT' ? 'bg-gray-800 text-white dark:bg-gray-650' : '' }}
-						{{ $order == 'PT' && $order_direction == 'desc' ? 'sorted-desc' : '' }}
-						{{ $order == 'PT' && $order_direction == 'asc' ? 'sorted-asc' : '' }}"
-						wire:click="change_order('PT')">
-							PT
 						</th>
 						<th class="hover:bg-gray-800 hover:text-white dark:hover:bg-gray-650 cursor-pointer
 						{{ $mode == 'per_game' && $order == 'AVG_MIN' ? 'bg-gray-800 text-white dark:bg-gray-650' : '' }}
@@ -240,7 +214,7 @@
 					</tr>
 				</thead>
 				<tbody wire:loading.class="opacity-50">
-					@foreach ($players_stats as $key=>$stat)
+					@foreach ($teams_stats as $key=>$stat)
 						<tr class="group hover:bg-gray-150 dark:hover:bg-gray-700 border-t border-gray-200 dark:border-gray-700">
 							<td class="w-6 text-right" style="min-width: 1.7rem">
 								@if ($order != 'player_name' && $order != 'teams.short_name' && $order != 'AGE')
@@ -249,31 +223,14 @@
 							</td>
 							<td class="w-32 truncate {{ $order == 'player_name' ? 'bg-gray-100 dark:bg-gray-650' : 'bg-white dark:bg-gray-750 group-hover:bg-gray-150 dark:group-hover:bg-gray-700' }}" style="width: 8rem; min-width: 8rem; max-width: 8rem; left: 0px; position: sticky; position: -webkit-sticky; text-align: left;">
 								<div class="flex items-center truncate">
-									<img src="{{ $stat->player->getImg() }}" alt="" class="h-6 w-6 object-cover rounded-full border border-gray-300 dark:border-gray-650">
+									<img src="{{ $stat->seasonTeam->team->getImg() }}" alt="" class="h-6 w-6 object-cover rounded-full border border-gray-300 dark:border-gray-650">
 									<p class="pl-2 truncate w-32">
-										{{ $stat->player_name }}
+										{{ $stat->seasonTeam->team->name }}
 									</p>
 								</div>
-							</td>
-							<td class="text-right">
-								{{ $stat->player->getPosition() ?: 'N/D' }}
-							</td>
-							<td class="text-right {{ $order == 'teams.short_name' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
-								<div class="flex items-center justify-end">
-									<img src="{{ $stat->seasonTeam->team->getImg() }}" alt="" class="h-6 w-6 object-cover">
-									<p class="w-6 pl-1">
-										{{ $stat->seasonTeam->team->short_name }}
-									</p>
-								</div>
-							</td>
-							<td class="text-right {{ $order == 'AGE' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
-								{{ $stat->AGE ?: 'N/D' }}
 							</td>
 							<td class="text-right {{ $order == 'PJ' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
 								{{ number_format($stat->PJ, 0, ',', '.') }}
-							</td>
-							<td class="text-right {{ $order == 'PT' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
-								{{ number_format($stat->PT, 0, ',', '.') }}
 							</td>
 							<td class="text-right {{ $order == 'AVG_MIN' || $order == 'SUM_MIN' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
 								@if ($mode == 'per_game')
@@ -409,7 +366,7 @@
 			</table>
 		</div>
 		<div class="pagination-wrapper text-sm pt-4">
-			{{ $players_stats->links('vendor.pagination.tailwind') }}
+			{{ $teams_stats->links('vendor.pagination.tailwind') }}
 		</div>
 	@else
 		<div class="bg-white dark:bg-gray-700 overflow-hidden md:shadow-sm md:rounded-md md:mx-0 text-gray-900 dark:text-gray-200 border border-gray-200 dark:border-gray-850">
@@ -418,7 +375,6 @@
 			</p>
 		</div>
 	@endif
-
 @else
 	<div class="bg-white dark:bg-gray-700 overflow-hidden md:shadow-sm md:rounded-md md:mx-0 text-gray-900 dark:text-gray-200 border border-gray-200 dark:border-gray-850">
 		<p class="px-4 py-2 text-2xl">
