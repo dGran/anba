@@ -34,10 +34,9 @@
 							</td>
 							<td class="px-3 py-1.5 border-b border-gray-200 dark:border-gray-700 | text-sm"  style="min-width: 150px;">
 								<div class="flex items-center space-x-3">
-									<img src="{{ $player->team->getImg() }}" alt="" class="w-8 object-cover">
-									<span class="md:hidden">{{ $player->team->medium_name }}</span>
-									<span class="hidden md:block">{{ $player->team->name }}</span>
-
+									<img src="{{ $player->team ? $player->team->getImg() : asset('storage/teams/default.png') }}" alt="" class="w-8 object-cover">
+									<span class="md:hidden {{ $player->team ?: 'text-gray-400' }}">{{ $player->team ? $player->team->medium_name : 'Sin equipo' }}</span>
+									<span class="hidden md:block {{ $player->team ?: 'text-gray-400' }}">{{ $player->team ? $player->team->name : 'Sin equipo' }}</span>
 								</div>
 							</td>
 							<td class="px-3 py-1.5 border-b border-gray-200 dark:border-gray-700 | text-sm | text-center">
@@ -60,9 +59,9 @@
 					<div>
 						<div class="bg-gray-150 dark:bg-gray-700 border rounded relative | border border-gray-200 dark:border-gray-700">
 							<img src="{{ $player->getImg() }}" alt="" class="h-20 mx-auto mt-1.5">
-							<div class="text-white rounded-b | py-1 px-3 | text-center" style="background-color: {{ $player->team->color }}">
+							<div class="text-white rounded-b | py-1 px-3 | text-center" style="background-color: {{ $player->team ? $player->team->color : '' }}">
 								<p>{{ $player->name }}</p>
-								<p class="text-xs">{{ $player->team->name }}</p>
+								<p class="text-xs">{{ $player->team ? $player->team->name : 'Sin equipo' }}</p>
 							</div>
 							<span class="absolute top-0 left-0 mt-1 ml-1.5">
 								<i class="fas fa-briefcase-medical text-lg {{ $player->injury_playable ? 'text-yellow-400 dark:text-yellow-300' : 'text-pretty-red' }}" title="{{ $player->injury_playable ? 'Jugable' : 'No jugable' }}"></i>
