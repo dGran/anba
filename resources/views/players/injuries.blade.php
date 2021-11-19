@@ -1,14 +1,18 @@
 <div>
 	<div class="max-w-7xl mx-auto p-4 mb-2 sm:px-6 lg:px-8 border-b md:border-b-0 border-gray-300 dark:border-gray-650">
-		<div class="flex items-center justify-between space-x-3">
+{{-- 		<div class=""> --}}
 			<h4 class="text-lg font-semibold mb-1.5">
 				Jugadores lesionados
 			</h4>
-			<div class="flex items-center justify-end space-x-1.5">
-				<button class="text-lg | cursor-pointer | {{ $view == 'table' ? 'opacity-50 pointer-events-none cursor-not-allowed' : '' }} focus:outline-none" wire:click="$set('view', 'table')">
+		{{-- </div> --}}
+
+		<div class="flex items-center justify-between space-x-3 | my-2.5 pb-3">
+			<input type="search" class="appearance-none rounded text-sm | py-1.5 px-3 | w-full | bg-white dark:bg-gray-700 | border border-gray-300 dark:border-gray-850 focus:border-gray-400 hover:border-gray-400 dark:focus:border-gray-550 dark:hover:border-gray-550 | focus:outline-none" placeholder='Buscar...' wire:model="search" autofocus>
+			<div class="flex items-center space-x-2.5">
+				<button class="text-2xl | cursor-pointer | {{ $view == 'table' ? 'opacity-50 pointer-events-none cursor-not-allowed' : '' }} focus:outline-none" wire:click="$set('view', 'table')">
 					<i class="fas fa-table"></i>
 				</button>
-				<button class="text-lg | cursor-pointer | {{ $view != 'table' ? 'opacity-50 pointer-events-none cursor-not-allowed' : '' }} focus:outline-none" wire:click="$set('view', 'bio')">
+				<button class="text-2xl | cursor-pointer | {{ $view != 'table' ? 'opacity-50 pointer-events-none cursor-not-allowed' : '' }} focus:outline-none" wire:click="$set('view', 'bio')">
 					<i class="fas fa-address-card"></i>
 				</button>
 			</div>
@@ -27,7 +31,7 @@
 				</thead>
 				<tbody class="{{-- border-l border-r border-gray-200 dark:border-gray-700 --}}">
 					@foreach ($injuriePlayers as $player)
-						<tr>
+						<tr class="hover:bg-blue-100 dark:hover:bg-dark-link dark:hover:text-gray-900">
 							<td class="px-3 py-1.5 | border-b border-gray-200 dark:border-gray-700 | text-sm | flex items-center justify-start space-x-3" style="min-width: 180px;">
 								<img src="{{ $player->getImg() }}" alt="" class="h-9 w-9 object-cover rounded-full border border-gray-200 dark:border-gray-700">
 								<span class="truncate">{{ $player->name }}</span>
