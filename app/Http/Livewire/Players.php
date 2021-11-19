@@ -19,6 +19,7 @@ class Players extends Component
             ->whereNotNull('team_id')
             ->name($this->search)
             ->orderBy('team_id', 'asc')
+            ->orderBy('injury_playable', 'desc')
             ->orderBy('injury_matches', 'asc')
             ->orderBy('name', 'asc')
             ->get();
