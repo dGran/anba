@@ -755,8 +755,16 @@ class PlayerCrud extends Component
 			    			$cat_name = 'Lesión';
 				    		$description = $reg->injury->name;
 				    		if ($reg->injury_playable) {
-				    			$title = $player . ' sufre una leve lesión';
-				    			$description .= ', que no le impedirá estar disponible para el siguiente partido.';
+				    			if ($reg->injury_matches == 1) {
+				    				$title = $player . ' sufre una leve lesión';
+				    			} else {
+				    				$title = $player . ' sufre una leve lesión para los próximos ' . $reg->injury_matches . ' partidos.';
+				    			}
+				    			if ($reg->injury_days == 1) {
+				    				$description .= ', que no le impedirá estar disponible para el siguiente partido';
+				    			} else {
+				    				$description .= ', que no le impedirá estar disponible en los partidos de los próximos ' . $reg->injury_days . ' días';
+				    			}
 				    		} else {
 				    			if ($reg->injury_matches == 1) {
 									$title = $player . ' lesionado para el siguiente partido.';
