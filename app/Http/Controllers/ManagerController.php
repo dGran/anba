@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Models\Season;
 use App\Models\Match;
+use App\Models\User;
 use Carbon\Carbon;
 
 class ManagerController extends Controller
@@ -81,4 +82,17 @@ class ManagerController extends Controller
     {
 		return view('manager.pending_matches');
     }
+
+	public function readyToPlaySwitcher($user_id)
+	{
+		$user = User::findOrFail($user_id);
+		if ($user->readyToPlay()) {
+			$user->ready_to_play = null;
+		} else {
+			$user->ready_to_play = Carbon::now()->addHour();
+		}
+		$user->save();
+
+		return back();
+	}
 }

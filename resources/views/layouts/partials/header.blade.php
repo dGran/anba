@@ -58,6 +58,15 @@
                         }
                     }
                 </script> --}}
+                @auth
+                    @if (auth()->user()->readyToPlay())
+                        <div class="flex flex-col items-center | text-green-400 | mr-3">
+                            <i class="fas fa-gamepad text-xl"></i>
+                            <span class="text-xxs uppercase">lobby</span>
+                        </div>
+                    @endauth
+                @endauth
+
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
 
@@ -65,8 +74,8 @@
                             @auth
                                 <div class="relative">
                                     @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                                        <button class="group flex text-sm rounded-full focus:outline-none border border-transparent">
-                                            <img class="h-10 w-10 border border-gray-500 dark:border-gray-700 rounded-full object-cover transform group-hover:scale-110 group-focus:scale-110 transition duration-150 ease-in-out" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                                        <button class="group flex text-sm rounded-full focus:outline-none {{ auth()->user()->readyToPlay() ? 'border-2 border-green-400' : 'border-2 border-gray-500 dark:border-gray-700' }}">
+                                            <img class="h-10 w-10 rounded-full object-cover transform group-hover:scale-110 group-focus:scale-110 transition duration-150 ease-in-out" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
                                         </button>
                                     @else
                                         <button class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
@@ -117,6 +126,12 @@
                                 @endif
                             @endhasrole
 
+                            @auth
+                                <x-dropdown-link href="{{ route('manager.ready_to_play_switcher', auth()->user()->id) }}" class="flex items-center">
+                                    <i class="fas fa-circle text-sm w-6 mr-1.5 text-center {{ auth()->user()->readyToPlay() ? 'text-green-400' : 'text-gray-500' }}"></i><span>{{ __('Listo para jugar') }}</span>
+                                </x-dropdown-link>
+                            @endauth
+
                             @hasanyrole('super-admin|admin')
                                 <div class="block px-4 py-2 text-xs text-gray-400 dark:text-gray-300">
                                     {{ __('Administración') }}
@@ -124,16 +139,19 @@
                                 <x-dropdown-link href="{{ route('admin') }}" class="flex items-center">
                                     <i class="icon-admin text-base w-6 mr-1.5 text-center"></i><span>{{ __('AdminANBA') }}</span>
                                 </x-dropdown-link>
+                                <x-dropdown-link href="{{ route('lobby') }}" class="flex items-center">
+                                    <i class="fas fa-gamepad text-base w-6 mr-1.5 text-center"></i><span>{{ __('Sala de espera') }}</span>
+                                </x-dropdown-link>
                                 @if (isset($currentSeason))
                                     <x-dropdown-link href="{{ route('admin.matches', $currentSeason->slug) }}" class="flex items-center">
-                                        <i class="icon-cog text-sm w-6 mr-1.5 text-right"></i><span>{{ __('Partidos') }}</span>
+                                        <i class="icon-cog text-sm w-6 mr-1.5 text-center"></i><span>{{ __('Partidos') }}</span>
                                     </x-dropdown-link>
                                 @endif
                                 <x-dropdown-link href="{{ route('admin.teams') }}" class="flex items-center">
-                                    <i class="icon-cog text-sm w-6 mr-1.5 text-right"></i><span>{{ __('Equipos') }}</span>
+                                    <i class="icon-cog text-sm w-6 mr-1.5 text-center"></i><span>{{ __('Equipos') }}</span>
                                 </x-dropdown-link>
                                 <x-dropdown-link href="{{ route('admin.players') }}" class="flex items-center">
-                                    <i class="icon-cog text-sm w-6 mr-1.5 text-right"></i><span>{{ __('Jugadores') }}</span>
+                                    <i class="icon-cog text-sm w-6 mr-1.5 text-center"></i><span>{{ __('Jugadores') }}</span>
                                 </x-dropdown-link>
                             @endhasanyrole
 

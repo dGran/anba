@@ -173,6 +173,18 @@ class User extends Authenticatable implements MustVerifyEmail
         return $pending_reports;
     }
 
+    public function readyToPlay()
+    {
+        if ($this->ready_to_play) {
+            $limit = Carbon::parse($this->ready_to_play);
+            if (Carbon::now()->lt($limit))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public function canDestroy()
     {
         // apply logic

@@ -61,6 +61,8 @@ Route::get('/reglamento', function () {
     return view('rules');
 })->name('rules');
 
+Route::get('listo-para-jugar-switcher/{user_id}', [ManagerController::class, 'readyToPlaySwitcher'])->name('manager.ready_to_play_switcher');
+
 Route::middleware(['auth:sanctum', 'verified', 'role:manager'])->prefix('manager')->group(function() {
 	Route::get('reportes-pendientes', [ManagerController::class, 'pendingReports'])->name('manager.pending_reports');
 	Route::get('partidos-pendientes', [ManagerController::class, 'pendingMatches'])->name('manager.pending_matches');
@@ -84,4 +86,8 @@ Route::middleware(['auth:sanctum', 'verified', 'role:super-admin|admin', 'passwo
 	Route::get('temporadas/{season:slug}/playoffs', PlayoffCrud::class)->name('admin.playoffs');
 
 	Route::get('configuracion/notificaciones', ConfigNotificationsCrud::class)->name('admin.config.notifications');
+
+	Route::get('sala-de-espera', function () {
+	    return view('lobby');
+	})->name('lobby');
 });
