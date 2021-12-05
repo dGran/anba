@@ -63,7 +63,7 @@ class Season extends Model
         if (SeasonDivision::where('season_id', $this->id)->count() > 0) { return false; }
         if (SeasonTeam::where('season_id', $this->id)->count() > 0) { return false; }
         if (Statement::where('season_id', $this->id)->count() > 0) { return false; }
-        if (Match::where('season_id', $this->id)->count() > 0) { return false; }
+        if (\App\Models\Match::where('season_id', $this->id)->count() > 0) { return false; }
         if (TeamStat::where('season_id', $this->id)->count() > 0) { return false; }
         if (PlayerStat::where('season_id', $this->id)->count() > 0) { return false; }
         if (Round::where('season_id', $this->id)->count() > 0) { return false; }
@@ -327,7 +327,7 @@ class Season extends Model
             "streak" => 0,
         ];
 
-        $matches = Match::with('scores')
+        $matches = \App\Models\Match::with('scores')
             ->join('scores', 'scores.match_id', 'matches.id')
 
             ->join('seasons_teams as local_seasons_teams', 'local_seasons_teams.id', 'matches.local_team_id')
