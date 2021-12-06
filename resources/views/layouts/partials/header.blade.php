@@ -126,11 +126,11 @@
                                 @endif
                             @endhasrole
 
-                            @auth
+                            @hasrole('manager')
                                 <x-dropdown-link href="{{ route('manager.ready_to_play_switcher', auth()->user()->id) }}" class="flex items-center">
                                     <i class="fas fa-circle text-sm w-6 mr-1.5 text-center {{ auth()->user()->readyToPlay() ? 'text-green-400' : 'text-gray-500' }}"></i><span>{{ __('Listo para jugar') }}</span>
                                 </x-dropdown-link>
-                            @endauth
+                            @endhasrole
 
                             @hasanyrole('super-admin|admin')
                                 <div class="block px-4 py-2 text-xs text-gray-400 dark:text-gray-300">
