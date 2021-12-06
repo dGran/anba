@@ -2,7 +2,7 @@
     <h4 class="text-lg font-semibold mb-1.5">Managers conectados ({{ $seasonTeams->count() }})</h4>
     <ul class="text-sm | grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
         @foreach ($seasonTeams as $seasonTeam)
-            <li class="flex flex-col justify-center items-center | border rounded | py-1.5 {{ $filterTeam == $seasonTeam->id ? 'border-green-400 dark:border-green-400 | hover:border-grenn-400 dark:hover:border-green-400 | bg-green-100 dark:bg-green-900' : 'border-gray-200 | hover:border-blue-400 dark:hover:border-dark-link | bg-white' }} select-none | cursor-pointer" wire:click="setFilterTeam({{ $seasonTeam->id }})">
+            <li class="flex flex-col justify-center items-center | border rounded | py-1.5 {{ $filterTeam == $seasonTeam->id ? 'border-green-400 dark:border-green-400 | hover:border-grenn-400 dark:hover:border-green-400 | bg-green-100 dark:bg-green-900' : 'border-gray-200 dark:border-gray-700 | hover:border-blue-400 dark:hover:border-dark-link | bg-white dark:bg-gray-750' }} select-none | cursor-pointer" wire:click="setFilterTeam({{ $seasonTeam->id }})">
                 <img src="{{ $seasonTeam->team->getImg() }}" alt="" class="w-16 mx-auto">
                 <p>{{ $seasonTeam->team->medium_name }}</p>
                 <p class="text-xs text-gray-400 dark:text-gray-300">{{ $seasonTeam->team->user->name }}</p>
