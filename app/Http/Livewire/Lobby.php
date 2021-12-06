@@ -96,8 +96,6 @@ class Lobby extends Component
                     }
                 }
             }
-
-            // dd($matches);
         }
 
         return $matchesFound = MatchModel::whereIn('id', $matches)->orderBy('id', 'asc')->get();
