@@ -23,6 +23,31 @@ class Lobby extends Component
 
     public function render()
     {
+        $current_season_id = Season::where('current', 1)->first()->id;
+        $user_id = 2;
+        $matches = [];
+        $matchesTeam = MatchModel::
+            // leftJoin('seasons_teams as local_season_team', 'local_season_team.id', 'matches.local_team_id')
+            // ->leftJoin('seasons_teams as visitor_season_team', 'visitor_season_team.id', 'matches.visitor_team_id')
+            // ->leftJoin('teams as local_team', 'teams.id', 'local_season_team.team_id')
+            // ->leftJoin('teams as visitor_team', 'teams.id', 'visitor_season_team.team_id')
+            leftJoin('users as local_manager', 'local_manager.id', 'matches.local_manager_id')
+            ->leftJoin('users as visitor_manager', 'visitor_manager.id', 'matches.visitor_manager_id')
+            ->where('matches.season_id', $current_season_id)
+            ->where(function ($query) use ($user_id) {
+                $query->where('matches.local_manager_id', $user_id)
+                      ->where('visitor_manager.ready_to_play', '>', now())
+                      ->where('matches.played', 0);
+            })
+            // ->orWhere(function ($query) use ($user_id) {
+            //     $query->where('local_manager.ready_to_play', '>', now())
+            //           ->where('matches.visitor_manager_id', $user_id)
+            //           ->where('matches.played', 0);
+            // })
+            ->get();
+
+        // dd($matchesTeam);
+
     	$seasonTeams = $this->getSeasonTeams();
     	$matches = $this->getMatches();
 
