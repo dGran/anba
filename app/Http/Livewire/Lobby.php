@@ -10,6 +10,7 @@ use App\Models\Match as MatchModel;
 use App\Http\Traits\PostTrait;
 use App\Events\PostStored;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
 
 class Lobby extends Component
 {
@@ -23,37 +24,14 @@ class Lobby extends Component
 
     public function render()
     {
-        $current_season_id = Season::where('current', 1)->first()->id;
-        $user_id = 2;
-        $matches = [];
-        $matchesTeam = MatchModel::
-            // leftJoin('seasons_teams as local_season_team', 'local_season_team.id', 'matches.local_team_id')
-            // ->leftJoin('seasons_teams as visitor_season_team', 'visitor_season_team.id', 'matches.visitor_team_id')
-            // ->leftJoin('teams as local_team', 'teams.id', 'local_season_team.team_id')
-            // ->leftJoin('teams as visitor_team', 'teams.id', 'visitor_season_team.team_id')
-            leftJoin('users as local_manager', 'local_manager.id', 'matches.local_manager_id')
-            ->leftJoin('users as visitor_manager', 'visitor_manager.id', 'matches.visitor_manager_id')
-            ->where('matches.season_id', $current_season_id)
-            ->where(function ($query) use ($user_id) {
-                $query->where('matches.local_manager_id', $user_id)
-                      ->where('visitor_manager.ready_to_play', '>', now())
-                      ->where('matches.played', 0);
-            })
-            // ->orWhere(function ($query) use ($user_id) {
-            //     $query->where('local_manager.ready_to_play', '>', now())
-            //           ->where('matches.visitor_manager_id', $user_id)
-            //           ->where('matches.played', 0);
-            // })
-            ->get();
-
-        // dd($matchesTeam);
-
     	$seasonTeams = $this->getSeasonTeams();
     	$matches = $this->getMatches();
+        $priorityMatch = $this->getPriorityMatch();
 
         return view('admin.lobby', [
         	'seasonTeams' => $seasonTeams,
             'matches' => $matches,
+            'priorityMatch' => $priorityMatch,
         ]);
     }
 
@@ -124,6 +102,62 @@ class Lobby extends Component
         }
 
         return $matchesFound = MatchModel::whereIn('id', $matches)->orderBy('id', 'asc')->get();
+    }
+
+    public function getPriorityMatch()
+    {
+        if ($this->filterTeam) {
+            $current_season_id = Season::where('current', 1)->first()->id;
+            $filterSeasonTeam = SeasonTeam::find($this->filterTeam);
+            $user_id = $filterSeasonTeam->team->user->id;
+            $seasonTeams = $this->getSeasonTeams();
+
+            foreach ($seasonTeams as $key => $seasonTeam) {
+                $userTeam_id = $seasonTeam->team->user->id;
+                if ($user_id != $userTeam_id) {
+                    $priorityMatch = MatchModel::
+                        where('season_id', $current_season_id)
+                        ->where(function ($query) use ($user_id, $userTeam_id) {
+                            $query->where('local_manager_id', $user_id)
+                                  ->where('visitor_manager_id', $userTeam_id)
+                                  ->where('played', 0);
+                        })
+                        ->orWhere(function ($query) use ($user_id, $userTeam_id) {
+                            $query->where('local_manager_id', $userTeam_id)
+                                  ->where('visitor_manager_id', $user_id)
+                                  ->where('played', 0);
+                        })
+                        ->select('*')
+                        ->first();
+
+                    if ($priorityMatch) {
+                        return $priorityMatch;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public function priorityMatchNotification($match_id)
+    {
+        $match = MatchModel::find($match_id);
+        $webhook = config('discord.webhook_dev');
+        $title = 'Partido encontrado!';
+        $description = 'Los ' . $match->localTeam->team->medium_name . ' y los ' . $match->visitorTeam->team->medium_name . ' en la sala de espera listos para jugar.';
+        $link = route('match', $match_id);
+
+        return Http::post($webhook, [
+            'embeds' => [
+                [
+                    'title' => $title,
+                    'description' => $description,
+                    'url' => $link,
+                    'color' => '7506394',
+                ]
+            ],
+        ]);
     }
 
     public function setFilterTeam($id)

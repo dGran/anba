@@ -91,11 +91,11 @@ class ManagerController extends Controller
 			$user->ready_to_play = null;
 		} else {
 			$user->ready_to_play = Carbon::now()->addHour();
+			// $user_id = 1;
+			// $match = $this->checkMatches($user_id);
+			// dd($match);
 		}
 		$user->save();
-
-		$match = $this->checkMatches($user_id);
-		// dd($match);
 
 		return back();
 	}
@@ -103,51 +103,53 @@ class ManagerController extends Controller
 	public function checkMatches($user_id)
 	{
     	$current_season_id = Season::where('current', 1)->first()->id;
-    	// $seasonTeams = SeasonTeam::
-    	// 	with('team', 'team.user')
-    	// 	->leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
-    	// 	->leftJoin('users', 'users.id', 'teams.manager_id')
-    	// 	->where('seasons_teams.season_id', $current_season_id)
-    	// 	->where('users.ready_to_play', '>', now())
-     //        ->select('seasons_teams.*')
-    	// 	->orderBy('users.ready_to_play', 'asc')
-    	// 	->get();
+    	$seasonTeams = SeasonTeam::
+    		with('team', 'team.user')
+    		->leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
+    		->leftJoin('users', 'users.id', 'teams.manager_id')
+    		->where('seasons_teams.season_id', $current_season_id)
+    		->where('users.ready_to_play', '>', now())
+            ->select('seasons_teams.*')
+    		->orderBy('users.ready_to_play', 'asc')
+    		->get();
 
-     //    $teams = [];
-     //    foreach ($seasonTeams as $key => $team) {
-     //        $teams[$key] = $team->id;
-     //    }
+    	// dd($seasonTeams);
 
-        $matches = [];
-        $matchesTeam = MatchModel::
-			// leftJoin('seasons_teams as local_season_team', 'local_season_team.id', 'matches.local_team_id')
-			// ->leftJoin('seasons_teams as visitor_season_team', 'visitor_season_team.id', 'matches.visitor_team_id')
-			// ->leftJoin('teams as local_team', 'teams.id', 'local_season_team.team_id')
-			// ->leftJoin('teams as visitor_team', 'teams.id', 'visitor_season_team.team_id')
-			leftJoin('users as local_manager', 'local_manager.id', 'matches.local_manager_id')
-			->leftJoin('users as visitor_manager', 'visitor_manager.id', 'matches.visitor_manager_id')
-	        ->where('matches.season_id', $current_season_id)
-	        ->where(function ($query) use ($user_id) {
-	            $query->where('matches.local_manager_id', $user_id)
-	                  ->where('visitor_manager.ready_to_play', '>', now())
-	                  ->where('played', 0);
-	        })
-	        ->orWhere(function ($query) use ($user_id) {
-	            $query->where('local_manager.ready_to_play', '>', now())
-	                  ->where('matches.visitor_manager_id', $user_id)
-	                  ->where('played', 0);
-	        })
-	        ->get();
+    	foreach ($seasonTeams as $key => $seasonTeam) {
+    		$userTeam_id = $seasonTeam->team->user->id;
+    		if ($user_id != $userTeam_id) {
+		        $matchesTeam = MatchModel::
+		            // leftJoin('seasons_teams as local_season_team', 'local_season_team.id', 'matches.local_team_id')
+		            // ->leftJoin('seasons_teams as visitor_season_team', 'visitor_season_team.id', 'matches.visitor_team_id')
+		            // ->leftJoin('teams as local_team', 'local_team.id', 'local_season_team.team_id')
+		            // ->leftJoin('teams as visitor_team', 'visitor_team.id', 'visitor_season_team.team_id')
+		            // ->leftJoin('users as local_manager', 'local_manager.id', 'local_team.manager_id')
+		            // ->leftJoin('users as visitor_manager', 'visitor_manager.id', 'visitor_team.manager_id')
+		            where('season_id', $current_season_id)
+		            ->where(function ($query) use ($user_id, $userTeam_id) {
+		                $query->where('local_manager_id', $user_id)
+		                      ->where('visitor_manager_id', $userTeam_id)
+		                      ->where('played', 0);
+		            })
+		            ->orWhere(function ($query) use ($user_id, $userTeam_id) {
+		                $query->where('local_manager_id', $userTeam_id)
+		                      ->where('visitor_manager_id', $user_id)
+		                      ->where('played', 0);
+		            })
+		            ->select('*')
+		            ->get();
 
-	    dd($matches);
+		        // dd($matchesTeam);
+    		}
+    	}
 
-        if ($matchesTeam->count() > 0) {
-            foreach ($matchesTeam as $key => $match) {
-                $matches[$key] = $match->id;
-            }
+   //      if ($matchesTeam->count() > 0) {
+   //          foreach ($matchesTeam as $key => $match) {
+   //              $matches[$key] = $match->id;
+   //          }
 
-			return $matchesFound = MatchModel::whereIn('id', $matches)->orderBy('id', 'asc')->get();
-        }
+			// return $matchesFound = MatchModel::whereIn('id', $matches)->orderBy('id', 'asc')->get();
+   //      }
 
         return false;
 	}
