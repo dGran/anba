@@ -16,7 +16,7 @@ class Lobby extends Component
 {
 	use PostTrait;
 
-    public $filterTeam;
+    public $filterTeam, $filterTeamName;
 
     protected $queryString = [
         'filterTeam' => ['except' => null],
@@ -166,6 +166,7 @@ class Lobby extends Component
             $this->filterTeam = null;
         } else {
             $this->filterTeam = $id;
+            $this->filterTeamName = SeasonTeam::find($this->filterTeam)->team->name;
         }
     }
 }
