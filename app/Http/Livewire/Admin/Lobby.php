@@ -140,18 +140,19 @@ class Lobby extends Component
     public function priorityMatchNotification($match_id)
     {
         $match = MatchModel::find($match_id);
-        $webhook = config('discord.webhook_dev');
-        $title = 'Partido encontrado!';
-        $description = 'Los ' . $match->localTeam->team->medium_name . ' y los ' . $match->visitorTeam->team->medium_name . ' en la sala de espera listos para jugar.';
-        $link = route('match', $match_id);
 
+        $webhook = config('discord.webhook_general');
+        $title = $match->localTeam->team->short_name . ' vs ' . $match->visitorTeam->team->short_name;
+        $description = 'Los ' . $match->localTeam->team->medium_name . ' y los ' . $match->visitorTeam->team->medium_name . ' saltan a la cancha.';
+        $link = route('match', $match->id);
         return Http::post($webhook, [
+            'content' => 'Próximo partido: ' . $match->localTeam->team->medium_name . ' vs ' . $match->visitorTeam->team->medium_name . ' <@&486604867293544458>',
             'embeds' => [
                 [
                     'title' => $title,
                     'description' => $description,
                     'url' => $link,
-                    'color' => '7506394',
+                    // 'color' => '7506394',
                 ]
             ],
         ]);
@@ -164,105 +165,6 @@ class Lobby extends Component
         } else {
             $this->filterTeam = $id;
             $this->filterTeamName = SeasonTeam::find($this->filterTeam)->team->name;
-        }
-    }
-
-    public function readyToPlaySwitcher($user_id)
-    {
-        $user = User::findOrFail($user_id);
-        if ($user->readyToPlay()) {
-            $user->ready_to_play = null;
-            $user->save();
-            $this->disconectedNotification($user);
-        } else {
-            $user->ready_to_play = Carbon::now()->addHour();
-            $user->save();
-            $this->conectedNotification($user);
-            $this->checkMatches($user_id);
-        }
-
-        // $user->save();
-        // return back();
-    }
-
-    public function conectedNotification($user)
-    {
-        $webhook = config('discord.webhook_dev');
-        return Http::post($webhook, [
-            'embeds' => [
-                [
-                    'title' => $user->name . ', listo para jugar',
-                    'description' => 'Los ' . $user->team->medium_name . ' conectado en el vestíbulo de partidos ' . '<@&486604867293544458>',
-                    'color' => '7506394',
-                ]
-            ],
-        ]);
-    }
-
-    public function disconectedNotification($user)
-    {
-        $webhook = config('discord.webhook_dev');
-        return Http::post($webhook, [
-            'content' => 'Los ' . $user->team->medium_name . ' abandona el vestíbulo de partidos ' . '<@&486604867293544458>',
-            'embeds'  => [
-                [
-                    'title' => $user->name . ', ya no está disponible para jugar',
-                    // 'description' => 'Los ' . $user->team->medium_name . ' abandona el vestíbulo de partidos ' . '<@&486604867293544458>',
-                    'color' => '7506394',
-                ]
-            ],
-        ]);
-    }
-
-    public function checkMatches($user_id)
-    {
-        $current_season_id = Season::where('current', 1)->first()->id;
-        $seasonTeams = SeasonTeam::
-            with('team', 'team.user')
-            ->leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
-            ->leftJoin('users', 'users.id', 'teams.manager_id')
-            ->where('seasons_teams.season_id', $current_season_id)
-            ->where('users.ready_to_play', '>', now())
-            ->select('seasons_teams.*')
-            ->orderBy('users.ready_to_play', 'asc')
-            ->get();
-
-        foreach ($seasonTeams as $key => $seasonTeam) {
-            $userTeam_id = $seasonTeam->team->user->id;
-            if ($user_id != $userTeam_id) {
-                $priorityMatch = MatchModel::
-                    where('season_id', $current_season_id)
-                    ->where(function ($query) use ($user_id, $userTeam_id) {
-                        $query->where('local_manager_id', $user_id)
-                              ->where('visitor_manager_id', $userTeam_id)
-                              ->where('played', 0);
-                    })
-                    ->orWhere(function ($query) use ($user_id, $userTeam_id) {
-                        $query->where('local_manager_id', $userTeam_id)
-                              ->where('visitor_manager_id', $user_id)
-                              ->where('played', 0);
-                    })
-                    ->select('*')
-                    ->first();
-
-                if ($priorityMatch) {
-                    $webhook = config('discord.webhook_dev');
-                    $title = 'Partido encontrado!';
-                    $description = 'Los ' . $priorityMatch->localTeam->team->medium_name . ' y los ' . $priorityMatch->visitorTeam->team->medium_name . ' en la sala de espera listos para jugar.';
-                    $link = route('match', $priorityMatch->id);
-
-                    return Http::post($webhook, [
-                        'embeds' => [
-                            [
-                                'title' => $title,
-                                'description' => $description,
-                                'url' => $link,
-                                'color' => '7506394',
-                            ]
-                        ],
-                    ]);
-                }
-            }
         }
     }
 }
