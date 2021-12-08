@@ -112,14 +112,14 @@
                                 <div class="block px-4 py-2 text-xs text-gray-400 dark:text-gray-300">
                                     {{ __('Manager') }}
                                 </div>
-{{--                                 <x-dropdown-link href="{{ route('manager.ready_to_play_switcher', auth()->user()->id) }}" class="flex items-center">
-                                    <i class="fas fa-circle text-sm w-6 mr-1.5 text-center {{ auth()->user()->readyToPlay() ? 'text-green-400' : 'text-gray-500' }}"></i><span>{{ __('Listo para jugar') }}</span>
-                                </x-dropdown-link> --}}
+                              <x-dropdown-link href="{{ route('manager.ready_to_play_switcher', auth()->user()->id) }}" class="flex items-center">
+                                    <i class="{{ auth()->user()->readyToPlay() ? 'fas fa-door-open' : 'fas fa-basketball-ball' }} text-sm w-6 mr-1.5 text-center"></i><span>{{ auth()->user()->readyToPlay() ? 'Abandonar el lobby' : 'Buscar partido' }}</span>
+                                </x-dropdown-link>
                                 <x-dropdown-link href="#" class="flex items-center">
                                     <i class="fas fa-shield-alt text-base w-6 mr-1.5 text-center"></i><span>{{ __('Mi equipo') }}</span>
                                 </x-dropdown-link>
                                 <x-dropdown-link href="{{ route('manager.pending_matches') }}" class="flex items-center">
-                                    <i class="fas fa-basketball-ball text-base w-6 mr-1.5 text-center"></i><span>{{ __('Partidos pendientes') }}</span>
+                                    <i class="icon-gamepad text-base w-6 mr-1.5 text-center"></i><span>{{ __('Partidos pendientes') }}</span>
                                 </x-dropdown-link>
                                 @if (Auth::user()->pendingMatchesReports() > 0)
                                     <x-dropdown-link href="{{ route('manager.pending_reports') }}" class="flex items-center animate-pulse">
@@ -127,9 +127,6 @@
                                         <span>{{ Auth::user()->pendingMatchesReports() }}{{ Auth::user()->pendingMatchesReports() == 1 ? ' reporte pendiente' : ' reportes pendientes' }}</span>
                                     </x-dropdown-link>
                                 @endif
-                                <x-dropdown-link href="{{ route('lobby') }}" class="flex items-center">
-                                    <i class="icon-gamepad text-base w-6 mr-1.5 text-center"></i><span>{{ __('Vestíbulo de partidos') }}</span>
-                                </x-dropdown-link>
                             @endhasrole
 
                             @hasanyrole('super-admin|admin')
@@ -149,6 +146,9 @@
                                 </x-dropdown-link>
                                 <x-dropdown-link href="{{ route('admin.players') }}" class="flex items-center">
                                     <i class="icon-cog text-sm w-6 mr-1.5 text-center"></i><span>{{ __('Jugadores') }}</span>
+                                </x-dropdown-link>
+                                <x-dropdown-link href="{{ route('lobby') }}" class="flex items-center">
+                                    <i class="fas fa-user-clock text-base w-6 mr-1.5 text-center"></i><span>{{ __('Lobby') }}</span>
                                 </x-dropdown-link>
                             @endhasanyrole
 

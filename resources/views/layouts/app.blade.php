@@ -71,6 +71,8 @@
             @include('cookieConsent::index')
         </div>
 
+        @include('layouts.partials.session_messages')
+
         @stack('modals')
 
         @livewireScripts

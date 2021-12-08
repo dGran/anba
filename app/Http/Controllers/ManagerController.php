@@ -90,33 +90,36 @@ class ManagerController extends Controller
 		$user = User::findOrFail($user_id);
 		if ($user->readyToPlay()) {
 			$user->ready_to_play = null;
+			$user->save();
+			$message_type = 'info';
+			$message = 'Has abandonado el lobby';
 		} else {
-			$user->ready_to_play = Carbon::now()->addHour();
-			$match = $this->checkMatches($user_id);
-			if ($match) {
-		        $webhook = config('discord.webhook_dev');
-		        $title = 'Partido encontrado!';
-		        $description = 'Los ' . $match->localTeam->team->medium_name . ' y los ' . $match->visitorTeam->team->medium_name . ' en la sala de espera listos para jugar.';
-		        $link = route('match', $match->id);
-
-		        return Http::post($webhook, [
-		            'embeds' => [
-		                [
-		                    'title' => $title,
-		                    'description' => $description,
-		                    'url' => $link,
-		                    'color' => '7506394',
-		                ]
-		            ],
-		        ]);
+			if (!$user->pendingMatchesReports()) {
+				$user->ready_to_play = Carbon::now()->addHour();
+				$user->save();
+				$match = $this->searchMatch($user_id);
+				if ($match) {
+					$this->notifyMatch($match);
+					$match->localManager->ready_to_play = null;
+					$match->localManager->save();
+					$match->visitorManager->ready_to_play = null;
+					$match->visitorManager->save();
+					$message_type = 'success';
+					$message = 'Partido encontrado!. Revisa el canal de discord!';
+				} else {
+					$message_type = 'info';
+					$message = 'No se han encontrado partido, permanecerás en el lobby esperando rival durante 1 hora';
+				}
+			} else {
+				$message_type = 'error';
+				$message = 'No puedes buscar partido con reportes de partido pendientes';
 			}
 		}
 
-		$user->save();
-		return back();
+		return redirect()->back()->with($message_type, $message);
 	}
 
-	public function checkMatches($user_id)
+	public function searchMatch($user_id)
 	{
         $current_season_id = Season::where('current', 1)->first()->id;
     	$seasonTeams = SeasonTeam::
@@ -148,11 +151,32 @@ class ManagerController extends Controller
                     ->first();
 
                 if ($priorityMatch) {
-                    return $priorityMatch;
+                	return $priorityMatch;
                 }
             }
         }
-
         return false;
 	}
+
+	public function notifyMatch($match)
+	{
+	    $webhook = config('discord.webhook_general');
+	    $title = $match->localTeam->team->short_name . ' vs ' . $match->visitorTeam->team->short_name;
+	    $description = 'Los ' . $match->localTeam->team->medium_name . ' y los ' . $match->visitorTeam->team->medium_name . ' saltan a la cancha.';
+	    $link = route('match', $match->id);
+
+	    return Http::post($webhook, [
+	    	'content' => 'Próximo partido: ' . $match->localTeam->team->medium_name . ' vs ' . $match->visitorTeam->team->medium_name . ' <@&486604867293544458>',
+	        'embeds' => [
+	            [
+	                'title' => $title,
+	                'description' => $description,
+	                'url' => $link,
+	                // 'color' => '7506394',
+	            ]
+	        ],
+	    ]);
+	}
+
+
 }
