@@ -112,7 +112,7 @@
                                 <div class="block px-4 py-2 text-xs text-gray-400 dark:text-gray-300">
                                     {{ __('Manager') }}
                                 </div>
-                              <x-dropdown-link href="{{ route('manager.ready_to_play_switcher', auth()->user()->id) }}" class="flex items-center">
+                                <x-dropdown-link href="{{ route('manager.ready_to_play_switcher', auth()->user()->id) }}" class="flex items-center">
                                     <i class="{{ auth()->user()->readyToPlay() ? 'fas fa-door-open' : 'fas fa-basketball-ball' }} text-sm w-6 mr-1.5 text-center"></i><span>{{ auth()->user()->readyToPlay() ? 'Abandonar el lobby' : 'Buscar partido' }}</span>
                                 </x-dropdown-link>
                                 <x-dropdown-link href="#" class="flex items-center">

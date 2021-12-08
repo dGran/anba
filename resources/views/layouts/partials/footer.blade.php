@@ -66,6 +66,9 @@
                     x-transition:leave-start="opacity-100 transform scale-y-100"
                     x-transition:leave-end="opacity-0 transform scale-y-0">
                     <ul class="flex flex-col leading-6 list-none text-sm tracking-wide text-gray-350">
+                        <li class="py-1"><a href="{{ route('manager.ready_to_play_switcher', auth()->user()->id) }}" class="block outline-none hover:text-white focus:text-white">
+                            {{ auth()->user()->readyToPlay() ? 'Abandonar el lobby' : 'Buscar partido' }}
+                        </a></li>
                         <li class="py-1"><a href="#" class="block outline-none hover:text-white focus:text-white">Mi equipo</a></li>
                         <li class="py-1"><a href="{{ route('manager.pending_matches') }}" class="block outline-none hover:text-white focus:text-white">Partidos pendientes</a></li>
                         <li class="py-1"><a href="{{ route('manager.pending_reports') }}" class="block outline-none hover:text-white focus:text-white">Reportes pendientes</a></li>
@@ -132,6 +135,9 @@
             <div class="px-4 md:px-6 lg:px-8 ml-8 lg:ml-12 xl:ml-16">
                 <h4 class="text-gray-200 font-bold uppercase">manager</h4>
                 <ul class="flex flex-col leading-6 list-none text-sm tracking-wide text-gray-350 mt-1.5">
+                    <li class="py-1"><a href="{{ route('manager.ready_to_play_switcher', auth()->user()->id) }}" class="block outline-none hover:text-white focus:text-white">
+                        {{ auth()->user()->readyToPlay() ? 'Abandonar el lobby' : 'Buscar partido' }}
+                    </a></li>
                     <li class="py-1"><a href="#" class="block outline-none hover:text-white focus:text-white">Mi equipo</a></li>
                     <li class="py-1"><a href="{{ route('manager.pending_matches') }}" class="block outline-none hover:text-white focus:text-white">Partidas pendientes</a></li>
                     <li class="py-1"><a href="{{ route('manager.pending_reports') }}" class="block outline-none hover:text-white focus:text-white">Reportes pendientes</a></li>
