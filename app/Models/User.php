@@ -65,6 +65,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'profile_photo_url',
     ];
 
+    public function team()
+    {
+        return $this->hasOne('App\Models\Team', 'manager_id', 'id');
+    }
+
     public function scopeName($query, $value)
     {
         if (trim($value) != "") {

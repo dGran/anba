@@ -8,7 +8,7 @@
                     <p>{{ $seasonTeam->team->medium_name }}</p>
                     <p class="text-xs text-gray-400 dark:text-gray-300">{{ $seasonTeam->team->user->name }}</p>
                     <p class="text-xs font-semibold | py-1" wire:poll.1000ms>
-                        Expira
+                        expira
                         {{ Carbon\Carbon::parse($seasonTeam->team->user['ready_to_play'])->diffForHumans() }}
                     </p>
                 </li>

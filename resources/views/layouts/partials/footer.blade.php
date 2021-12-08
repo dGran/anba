@@ -69,6 +69,7 @@
                         <li class="py-1"><a href="#" class="block outline-none hover:text-white focus:text-white">Mi equipo</a></li>
                         <li class="py-1"><a href="{{ route('manager.pending_matches') }}" class="block outline-none hover:text-white focus:text-white">Partidos pendientes</a></li>
                         <li class="py-1"><a href="{{ route('manager.pending_reports') }}" class="block outline-none hover:text-white focus:text-white">Reportes pendientes</a></li>
+                        <li class="py-1"><a href="{{ route('lobby') }}" class="block outline-none hover:text-white focus:text-white">Vestíbulo de partidos</a></li>
                     </ul>
                 </div>
             </li>
@@ -135,6 +136,7 @@
                     <li class="py-1"><a href="#" class="block outline-none hover:text-white focus:text-white">Mi equipo</a></li>
                     <li class="py-1"><a href="{{ route('manager.pending_matches') }}" class="block outline-none hover:text-white focus:text-white">Partidas pendientes</a></li>
                     <li class="py-1"><a href="{{ route('manager.pending_reports') }}" class="block outline-none hover:text-white focus:text-white">Reportes pendientes</a></li>
+                    <li class="py-1"><a href="{{ route('lobby') }}" class="block outline-none hover:text-white focus:text-white">Vestíbulo de partidos</a></li>
                 </ul>
             </div>
             @endhasrole

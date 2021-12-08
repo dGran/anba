@@ -112,11 +112,14 @@
                                 <div class="block px-4 py-2 text-xs text-gray-400 dark:text-gray-300">
                                     {{ __('Manager') }}
                                 </div>
+{{--                                 <x-dropdown-link href="{{ route('manager.ready_to_play_switcher', auth()->user()->id) }}" class="flex items-center">
+                                    <i class="fas fa-circle text-sm w-6 mr-1.5 text-center {{ auth()->user()->readyToPlay() ? 'text-green-400' : 'text-gray-500' }}"></i><span>{{ __('Listo para jugar') }}</span>
+                                </x-dropdown-link> --}}
                                 <x-dropdown-link href="#" class="flex items-center">
                                     <i class="fas fa-shield-alt text-base w-6 mr-1.5 text-center"></i><span>{{ __('Mi equipo') }}</span>
                                 </x-dropdown-link>
                                 <x-dropdown-link href="{{ route('manager.pending_matches') }}" class="flex items-center">
-                                    <i class="icon-gamepad text-base w-6 mr-1.5 text-center"></i><span>{{ __('Partidos pendientes') }}</span>
+                                    <i class="fas fa-basketball-ball text-base w-6 mr-1.5 text-center"></i><span>{{ __('Partidos pendientes') }}</span>
                                 </x-dropdown-link>
                                 @if (Auth::user()->pendingMatchesReports() > 0)
                                     <x-dropdown-link href="{{ route('manager.pending_reports') }}" class="flex items-center animate-pulse">
@@ -124,11 +127,8 @@
                                         <span>{{ Auth::user()->pendingMatchesReports() }}{{ Auth::user()->pendingMatchesReports() == 1 ? ' reporte pendiente' : ' reportes pendientes' }}</span>
                                     </x-dropdown-link>
                                 @endif
-                            @endhasrole
-
-                            @hasrole('manager')
-                                <x-dropdown-link href="{{ route('manager.ready_to_play_switcher', auth()->user()->id) }}" class="flex items-center">
-                                    <i class="fas fa-circle text-sm w-6 mr-1.5 text-center {{ auth()->user()->readyToPlay() ? 'text-green-400' : 'text-gray-500' }}"></i><span>{{ __('Listo para jugar') }}</span>
+                                <x-dropdown-link href="{{ route('lobby') }}" class="flex items-center">
+                                    <i class="icon-gamepad text-base w-6 mr-1.5 text-center"></i><span>{{ __('Vestíbulo de partidos') }}</span>
                                 </x-dropdown-link>
                             @endhasrole
 
@@ -138,9 +138,6 @@
                                 </div>
                                 <x-dropdown-link href="{{ route('admin') }}" class="flex items-center">
                                     <i class="icon-admin text-base w-6 mr-1.5 text-center"></i><span>{{ __('AdminANBA') }}</span>
-                                </x-dropdown-link>
-                                <x-dropdown-link href="{{ route('lobby') }}" class="flex items-center">
-                                    <i class="fas fa-gamepad text-base w-6 mr-1.5 text-center"></i><span>{{ __('Sala de espera') }}</span>
                                 </x-dropdown-link>
                                 @if (isset($currentSeason))
                                     <x-dropdown-link href="{{ route('admin.matches', $currentSeason->slug) }}" class="flex items-center">
