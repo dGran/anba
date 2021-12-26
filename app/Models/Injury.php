@@ -16,6 +16,21 @@ class Injury extends Model
         'name'
     ];
 
+    public function scopeName($query, $value)
+    {
+        if (trim($value) != "") {
+            return $query->where(function($q) use ($value) {
+                            $q->where('injuries.name', 'LIKE', "%{$value}%")
+                                ->orWhere('injuries.id', 'LIKE', "%{$value}%");
+                            });
+        }
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
     public function canDestroy()
     {
         // apply logic

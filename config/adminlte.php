@@ -343,10 +343,8 @@ return [
         ['header' => 'CONFIGURACION'],
         [
             'text'        => 'Lesiones',
-            'route'       => 'home',
+            'route'       => 'admin.injuries',
             'icon'        => 'fas fa-briefcase-medical',
-            'label'       => 'PENDING',
-            'label_color' => 'warning',
         ],
         [
             'text'        => 'General',
