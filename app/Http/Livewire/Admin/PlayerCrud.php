@@ -1136,6 +1136,8 @@ class PlayerCrud extends Component
     	$colleges = Player::select('college')->distinct()->whereNotNull('college')->orderBy('college', 'asc')->get();
     	$injuries = Injury::orderBy('name', 'asc')->get();
 
+    	$currentYear = date("Y");
+
         return view('admin.players', [
         			'regs' => $this->getData(),
         			'regsSelected' => $this->getDataSelected(),
@@ -1148,6 +1150,7 @@ class PlayerCrud extends Component
         			'filterOutNBAName' => $this->filterOutNBAName(),
         			'firstRenderSaved' => $firstRenderSaved,
         			'currentModal' => $this->currentModal,
+        			'currentYear' => $currentYear,
         		])->layout('adminlte::page');
     }
 

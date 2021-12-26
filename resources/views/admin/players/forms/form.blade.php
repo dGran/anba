@@ -102,7 +102,7 @@
     </div>
     <div class="form-group col-md-6">
         <label class="text-sm text-uppercase tracking-wide">Año draft</label>
-        <input type="number" class="form-control text-sm" min="1995" max="2020" placeholder="Año draft" wire:model="draft_year">
+        <input type="number" class="form-control text-sm" min="1995" max="{{ $currentYear }}" placeholder="Año draft" wire:model="draft_year">
     </div>
 </div>
 
