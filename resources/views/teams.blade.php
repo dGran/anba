@@ -6,7 +6,4 @@
         </h2>
     </x-slot>
 
-    <div>
-        @livewire('teams', ['season' => $currentSeason])
-    </div>
 </x-app-layout>

@@ -269,6 +269,18 @@ class Player extends Model
         }
     }
 
+    public function getBirthdate()
+    {
+        $date = Carbon::parse($this->birthdate)->locale(app()->getLocale());
+        return $date->format('d/m/Y');
+    }
+
+    function getYearsPro()
+    {
+        $current_year = date("Y");
+        return ($current_year - $this->draft_year) + 1;
+    }
+
     public function getCreatedAtDate()
     {
         $date = Carbon::parse($this->created_at)->locale(app()->getLocale());

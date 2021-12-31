@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\TeamController;
+use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\MatchController;
 use App\Http\Controllers\ManagerController;
 
@@ -39,15 +40,19 @@ Route::get('/estadisticas', function () {
 Route::get('/estadisticas/jugadores', function () {
     return view('stats_players');
 })->name('stats.players');
-Route::get('/jugadores', function () {
-    return view('players');
-})->name('players');
-Route::get('/equipos', function () {
-    return view('teams');
-})->name('teams');
-Route::get('/equipos/{seasonTeam:id}/{team:slug}', function () {
-    return view('team');
-})->name('team');
+
+Route::prefix('jugadores')->group(function() {
+	Route::get('/', function () {
+	    return view('players');
+	})->name('players');
+	Route::get('/{player:slug}', [PlayerController::class, 'index'])->name('player');
+});
+
+Route::prefix('equipos')->group(function() {
+	Route::get('/', [TeamController::class, 'teams'])->name('teams');
+	Route::get('/{team:slug}', [TeamController::class, 'team'])->name('team');
+});
+
 Route::get('/managers', function () {
     return view('managers');
 })->name('managers');

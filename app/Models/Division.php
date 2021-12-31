@@ -22,6 +22,11 @@ class Division extends Model
         return $this->belongsTo('App\Models\Conference');
     }
 
+    public function teams()
+    {
+        return $this->hasMany('App\Models\Team');
+    }
+
     public function scopeName($query, $value)
     {
         if (trim($value) != "") {
