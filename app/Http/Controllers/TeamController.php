@@ -20,9 +20,23 @@ class TeamController extends Controller
         return view('teams.teams.index', ['divisions' => $divisions]);
     }
 
-    public function team($slug, $op = null) {
+    public function roster($slug) {
         $team = Team::where('slug', $slug)->first();
+    	return view('team.roster', ['team' => $team]);
+    }
 
-    	return view('team', ['team' => $team, 'op' => $op]);
+    public function leaders($slug) {
+        $team = Team::where('slug', $slug)->first();
+        return view('team.leaders', ['team' => $team]);
+    }
+
+    public function teamStats($slug) {
+        $team = Team::where('slug', $slug)->first();
+        return view('team.team_stats', ['team' => $team]);
+    }
+
+    public function playerStats($slug) {
+        $team = Team::where('slug', $slug)->first();
+        return view('team.player_stats', ['team' => $team]);
     }
 }

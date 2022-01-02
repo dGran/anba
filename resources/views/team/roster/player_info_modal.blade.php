@@ -80,12 +80,12 @@
             </div>
 
             @if ($playerInfo->injury_id)
-                <div class="p-4 | border-t border-gray-150 dark:border-gray-700">
+                <div class="px-4 py-3 | border-t border-gray-150 dark:border-gray-700">
                     <div class="flex items-center space-x-3">
                         <span class="text-3xl | pr-3 | {{ $playerInfo->injury_playable ? 'text-yellow-300' : 'text-pretty-red' }} | border-r border-gray-150 dark:border-gray-650">
                             <i class="fas fa-briefcase-medical"></i>
                         </span>
-                        <span class="text-sm | leading-4 | flex flex-col">
+                        <span class="text-xs | leading-4 | flex flex-col">
                             <span>{{ $playerInfo->injury->name }}</span>
                             <span>{{ $playerInfo->injury_days }} {{ $playerInfo->injury_days == 1 ? 'día' : 'días' }}, {{ $playerInfo->injury_matches }} {{ $playerInfo->injury_matches == 1 ? 'partido' : 'partidos' }}</span>
                         </span>

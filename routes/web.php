@@ -50,7 +50,10 @@ Route::prefix('jugadores')->group(function() {
 
 Route::prefix('equipos')->group(function() {
 	Route::get('/', [TeamController::class, 'teams'])->name('teams');
-	Route::get('/{team:slug}', [TeamController::class, 'team'])->name('team');
+	Route::get('/{team:slug}/plantilla', [TeamController::class, 'roster'])->name('team.roster');
+	Route::get('/{team:slug}/lideres', [TeamController::class, 'leaders'])->name('team.leaders');
+	Route::get('/{team:slug}/estadisticas-de-equipo', [TeamController::class, 'teamStats'])->name('team.team_stats');
+	Route::get('/{team:slug}/estadisticas-de-jugadores', [TeamController::class, 'playerStats'])->name('team.player_stats');
 });
 
 Route::get('/managers', function () {

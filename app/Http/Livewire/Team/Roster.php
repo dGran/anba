@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Team;
 
 use Livewire\Component;
 use App\Models\Team;
@@ -8,37 +8,12 @@ use App\Models\Player;
 use App\Models\PlayerStat;
 use App\Models\Season;
 
-class Team_manage extends Component
+class Roster extends Component
 {
     public $team;
 
     public $playerInfo, $playerInfoStats;
     public $playerInfoModal = false;
-    public $op = 'roster';
-
-    // queryString
-    protected $queryString = [
-        'op',
-        // 'op' => ['except' => ''],
-    ];
-
-	public function mount($team)
-	{
-		$this->team = $team;
-	}
-
-    public function render()
-    {
-        $players = Player::where('team_id', $this->team->id)->orderBy('position', 'asc')->orderBy('name', 'asc')->get();
-        return view('teams.team.index', [
-            'players' => $players,
-        ]);
-    }
-
-    public function changeOp($op)
-    {
-        $this->op = $op;
-    }
 
     public function openPlayerInfo($player_id)
     {
@@ -60,5 +35,18 @@ class Team_manage extends Component
 
 
         $this->playerInfoModal = true;
+    }
+
+	public function mount($team)
+	{
+		$this->team = $team;
+	}
+
+    public function render()
+    {
+        $players = Player::where('team_id', $this->team->id)->orderBy('position', 'asc')->orderBy('name', 'asc')->get();
+        return view('team.roster.index', [
+            'players' => $players,
+        ]);
     }
 }

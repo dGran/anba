@@ -11,7 +11,6 @@
 							@include('teams.teams.item')
 						@endforeach
 					</div>
-
 				@endforeach
 			</div>
 		</div>
