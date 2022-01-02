@@ -16,6 +16,31 @@ class Leaders extends Component
     public $season;
     public $seasonType = "regular";
 
+    public $playerInfo, $playerInfoStats;
+    public $playerInfoModal = false;
+
+    public function openPlayerInfo($player_id)
+    {
+        $this->playerInfo = Player::find($player_id);
+        $current_season = Season::where('current', 1)->first();
+
+        $this->playerInfoStats = PlayerStat::
+            join('matches', 'matches.id', 'players_stats.match_id')
+            ->select('player_id',
+                \DB::raw('AVG(PTS) as AVG_PTS'),
+                \DB::raw('AVG(REB) as AVG_REB'),
+                \DB::raw('AVG(AST) as AVG_AST'),
+                \DB::raw('COUNT(player_id) as PJ')
+            )
+            ->where('player_id', $this->playerInfo->id)
+            ->whereNull('matches.clash_id')
+            ->where('players_stats.season_id', $current_season->id)
+            ->get();
+
+
+        $this->playerInfoModal = true;
+    }
+
     public function getPPG()
     {
         return $stat = PlayerStat::with('player')

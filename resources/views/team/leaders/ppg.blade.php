@@ -18,7 +18,7 @@
                 <li class="flex items-center justify-between">
                     <div class="">
                         <span class="font-mono font-bold">{{ $key+1 }}.</span>
-                        <span class="ml-0.5 {{ $key+1 == 1 ? 'font-bold' : '' }}">{{ $stat->player->name }}</span>
+                        <a class="ml-0.5 {{ $key+1 == 1 ? 'font-bold' : '' }} cursor-pointer | hover:underline focus:underline" wire:click="openPlayerInfo({{ $stat->player->id }})">{{ $stat->player->name }}</a>
                     </div>
                     <span class="font-bold font-mono">
                         {{ number_format($stat->AVG_PTS, 1, ',', '.') }}

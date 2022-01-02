@@ -22,5 +22,7 @@
 	    </div>
 	</div>
 
+	@include('team.partials.player_info_modal')
+
 </div>
 

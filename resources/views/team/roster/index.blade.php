@@ -22,7 +22,7 @@
 	    </div>
 	</div>
 
-	@include('team.roster.player_info_modal')
+	@include('team.partials.player_info_modal')
 
 </div>
 
