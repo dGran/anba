@@ -13,7 +13,7 @@
             <img src="{{ $stats_APG->first()->player->getImg() }}" alt="" class="rounded-full border border-gray-200 dark:border-gray-700 object-cover w-20 md:w-24 h-20 md:h-24">
         </div>
 
-        <ul class="px-3 pt-4 mt-4 border-t border-gray-150 dark:border-gray-700">
+        <ul class="px-3 pt-4 mt-4 border-t border-gray-150 dark:border-gray-700 | text-sm">
             @foreach ($stats_APG as $key=>$stat)
                 <li class="flex items-center justify-between">
                     <div class="">
