@@ -4,7 +4,7 @@
     <div class="p-4">
         <div class="flex items-center justify-between px-3">
             <div class="flex flex-col">
-                <span class="text-4xl lg:text-5xl font-bold font-miriam">
+                <span class="text-4xl lg:text-5xl font-bold font-roboto">
                     {{ number_format($stats_PPG->first()->AVG_PTS, 1, ',', '.') }}
                 </span>
                 <span class="font-semibold">{{ $stats_PPG->first()->player->name }}</span>

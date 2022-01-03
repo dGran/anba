@@ -3,7 +3,15 @@
 
         @include('team.leaders.ppg')
         @include('team.leaders.rpg')
+
         @include('team.leaders.apg')
+        @include('team.leaders.fgpg')
+
+        @include('team.leaders.ftpg')
+        @include('team.leaders.tppg')
+
+        @include('team.leaders.spg')
+        @include('team.leaders.bpg')
 
     </div>
 </span>
