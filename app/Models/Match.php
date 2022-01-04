@@ -127,6 +127,23 @@ class Match extends Model
         }
     }
 
+    public function scopeTeamAndRival($query, $team, $rival)
+    {
+        if ($rival != 'all') {
+            return $query->where(function($q) use ($team, $rival) {
+                            $q->where('matches.local_team_id', '=', $team)
+                                ->where('matches.visitor_team_id', '=', $rival);
+                            $q->orWhere('matches.local_team_id', '=', $rival)
+                                ->Where('matches.visitor_team_id', '=', $team);
+                            });
+        } else {
+            return $query->where(function($q) use ($team) {
+                            $q->where('matches.local_team_id', '=', $team)
+                                ->orWhere('matches.visitor_team_id', '=', $team);
+                            });
+        }
+    }
+
     public function scopeUser($query, $value)
     {
         if ($value != 'all') {

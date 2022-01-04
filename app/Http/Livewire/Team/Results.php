@@ -16,6 +16,15 @@ class Results extends Component
     public $season;
     public $current_season;
     public $phase = "regular";
+    public $rival = 'all';
+    public $rivals;
+
+    public function change_season()
+    {
+        $this->current_season = Season::where('slug', $this->season)->first();
+        $this->season_team = SeasonTeam::where('season_id', $this->current_season->id)->where('team_id', $this->team->id)->first();
+        $this->rivals = SeasonTeam::where('season_id', $this->current_season->id)->where('team_id', '<>', $this->team->id)->get();
+    }
 
     public function getResults()
     {
@@ -35,7 +44,8 @@ class Results extends Component
             ->season($this->current_season->slug)
             // ->phase($this->phase)
             // ->phase($this->phase)
-            ->team($this->season_team->id)
+            // ->team($this->season_team->id)
+            ->teamandrival($this->season_team->id, $this->rival)
             // ->user($this->manager)
             // ->hidePlayed($this->hidePlayed)
             ->where('played', 1)
@@ -54,13 +64,17 @@ class Results extends Component
             $this->current_season = $season;
             $this->season = $season->slug;
             $this->season_team = SeasonTeam::where('season_id', $this->current_season->id)->where('team_id', $this->team->id)->first();
+            $this->rivals = SeasonTeam::where('season_id', $this->current_season->id)->where('team_id', '<>', $this->team->id)->get();
         }
 	}
 
     public function render()
     {
+        $seasons = Season::orderBy('name', 'desc')->get();
+
         return view('team.results.index', [
-            'results' => $this->getResults()
+            'results' => $this->getResults(),
+            'seasons' => $seasons,
         ]);
     }
 }
