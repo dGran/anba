@@ -1,0 +1,66 @@
+<?php
+
+namespace App\Http\Livewire\Team;
+
+use Livewire\Component;
+use App\Models\Team;
+use App\Models\Season;
+use App\Models\SeasonTeam;
+use App\Models\Match;
+
+class Results extends Component
+{
+    public $team;
+
+    public $season_team;
+    public $season;
+    public $current_season;
+    public $phase = "regular";
+
+    public function getResults()
+    {
+        $regs = Match::
+            with('localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager', 'scores', 'playerStats.player', 'playerStats.seasonTeam.team')
+            ->leftJoin('scores', 'scores.match_id', 'matches.id')
+            ->leftJoin('seasons_teams', function($join){
+                $join->on('seasons_teams.id','=','matches.local_team_id');
+                $join->orOn('seasons_teams.id','=','matches.visitor_team_id');
+            })
+            ->leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
+            ->leftJoin('users', function($join){
+                $join->on('users.id','=','matches.local_manager_id');
+                $join->orOn('users.id','=','matches.visitor_manager_id');
+            })
+
+            ->season($this->current_season->slug)
+            // ->phase($this->phase)
+            // ->phase($this->phase)
+            ->team($this->season_team->id)
+            // ->user($this->manager)
+            // ->hidePlayed($this->hidePlayed)
+            ->where('played', 1)
+            ->select('matches.*')
+            // ->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
+            ->orderBy('matches.id', 'desc')
+            ->groupBy('matches.id', 'scores.created_at')
+            ->get();
+
+        return $regs;
+    }
+
+	public function mount($team)
+	{
+        if ($season = Season::where('current', 1)->first()) {
+            $this->current_season = $season;
+            $this->season = $season->slug;
+            $this->season_team = SeasonTeam::where('season_id', $this->current_season->id)->where('team_id', $this->team->id)->first();
+        }
+	}
+
+    public function render()
+    {
+        return view('team.results.index', [
+            'results' => $this->getResults()
+        ]);
+    }
+}

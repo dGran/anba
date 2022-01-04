@@ -38,6 +38,12 @@ class Score extends Model
         return $date->isoFormat("D MMMM YYYY");
     }
 
+    public function getCreatedAtDateShort()
+    {
+        $date = Carbon::parse($this->created_at)->locale(app()->getLocale());
+        return $date->isoFormat("D, MMM YY");
+    }
+
     public function getCreatedAtTime()
     {
         $date = Carbon::parse($this->created_at)->locale(app()->getLocale());

@@ -39,4 +39,9 @@ class TeamController extends Controller
         $team = Team::where('slug', $slug)->first();
         return view('team.player_stats', ['team' => $team]);
     }
+
+    public function results($slug) {
+        $team = Team::where('slug', $slug)->first();
+        return view('team.results', ['team' => $team]);
+    }
 }

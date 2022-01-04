@@ -6,11 +6,11 @@
 		<h4 class="px-3 sm:px-0 pb-3 text-pretty-red text-2xl">Work in progress...</h4>
 		{{-- work in progress mark... --}}
 
-		@include('team.partials.menu', ['routeName' => 'team.team_stats'])
+		@include('team.partials.menu', ['routeName' => 'team.results'])
 
-        @include('team.team_stats.data')
+        @include('team.results.data')
 
-        @include('team.partials.footer', ['route' => 'team.team_stats'])
+        @include('team.partials.footer', ['route' => 'team.results'])
 	</div>
 
 </div>
