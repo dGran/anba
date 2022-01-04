@@ -41,7 +41,7 @@ class Results extends Component
             ->where('played', 1)
             ->select('matches.*')
             // ->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
-            ->orderBy('matches.id', 'desc')
+            ->orderBy('scores.created_at', 'desc')
             ->groupBy('matches.id', 'scores.created_at')
             ->get();
 
