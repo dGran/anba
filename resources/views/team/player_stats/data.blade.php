@@ -29,9 +29,9 @@
     </div>
 </div>
 
-<h4 class="px-3 sm:px-0 uppercase font-normal font-roboto text-base pb-2">
+{{-- <h4 class="px-3 sm:px-0 uppercase font-normal font-roboto text-base pb-2">
     {{ $season }} player statistics
-</h4>
+</h4> --}}
 
 @if ($season)
     @if (count($players_stats) > 0)
@@ -267,7 +267,7 @@
                         <tr class="group hover:bg-gray-150 dark:hover:bg-gray-700 border-t border-gray-200 dark:border-gray-700">
                             <td class="w-56 truncate {{ $order == 'player_name' ? 'bg-gray-100 dark:bg-gray-650' : 'bg-white dark:bg-gray-750 group-hover:bg-gray-150 dark:group-hover:bg-gray-700' }}" style="width: 14rem; min-width: 14rem; max-width: 14rem; left: 0px; position: sticky; position: -webkit-sticky; text-align: left;">
                                 <div class="flex items-center truncate">
-                                    <img src="{{ $stat->player->getImg() }}" alt="" class="h-12 w-auto object-cover mt-2">
+                                    <img src="{{ $stat->player->getImg() }}" alt="" class="h-9 w-auto object-cover mt-2">
                                     <p class="pl-2 truncate w-56 | flex flex-col">
                                         <span class="truncate font-semibold | cursor-pointer | hover:underline focus:underline" wire:click="openPlayerInfo({{ $stat->player->id }})">
                                             {{ $stat->player_name }}
