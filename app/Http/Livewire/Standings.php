@@ -40,11 +40,11 @@ class Standings extends Component
 
 	public function change_season()
 	{
-		if ($this->phase != "regular") {
-			$current_season = Season::where('slug', $this->season)->first();
-			if ($current_season->playoffs->count() == 0 || Playoff::where('season_id', $current_season->id)->where('id', $this->phase)->count() > 0) {
-				$this->phase = "regular";
-			}
+		$current_season = Season::where('slug', $this->season)->first();
+		if ($current_season->playoffs->count() > 0) {
+			$this->phase = Playoff::where('season_id', $current_season->id)->orderBy('id', 'desc')->first()->id;
+		} else {
+			$this->phase = "regular";
 		}
 	}
 
