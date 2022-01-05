@@ -7,9 +7,9 @@
 						<label for="season" class="text-xs uppercase">
 							Temporada
 						</label>
-						<select id="season" class="appearance-none rounded text-sm | py-1.5 px-3 mt-1 | bg-white dark:bg-gray-700 | border light:border-gray-300 dark:border-gray-850 light:focus:border-gray-400 light:hover:border-gray-400 dark:focus:border-gray-550 dark:hover:border-gray-550 | focus:outline-none" wire:model="season">
-							@foreach ($seasons as $season)
-								<option value="{{ $season->slug }}">{{ $season->name }}</option>
+						<select id="season" class="appearance-none rounded text-sm | py-1.5 px-3 mt-1 | bg-white dark:bg-gray-700 | border light:border-gray-300 dark:border-gray-850 light:focus:border-gray-400 light:hover:border-gray-400 dark:focus:border-gray-550 dark:hover:border-gray-550 | focus:outline-none" wire:model="season" wire:change="change_season">
+							@foreach ($seasons as $seas)
+								<option value="{{ $seas->slug }}">{{ $seas->name }}</option>
 							@endforeach
 						</select>
 					</div>
@@ -19,7 +19,7 @@
 						</label>
 						<select id="phase" class="appearance-none rounded text-sm | py-1.5 px-3 mt-1 | bg-white dark:bg-gray-700 | border light:border-gray-300 dark:border-gray-850 light:focus:border-gray-400 light:hover:border-gray-400 dark:focus:border-gray-550 dark:hover:border-gray-550 | focus:outline-none" wire:model="phase">
 							<option value="regular">Liga regular</option>
-							@foreach ($season->playoffs->sortBy('order') as $playoff)
+							@foreach ($current_season->playoffs->sortBy('order') as $playoff)
 								<option value="{{ $playoff->id }}">{{ $playoff->name }}</option>
 							@endforeach
 						</select>

@@ -38,6 +38,16 @@ class Standings extends Component
     	$this->order = $name;
 	}
 
+	public function change_season()
+	{
+		if ($this->phase != "regular") {
+			$current_season = Season::where('slug', $this->season)->first();
+			if ($current_season->playoffs->count() == 0 || Playoff::where('season_id', $current_season->id)->where('id', $this->phase)->count() > 0) {
+				$this->phase = "regular";
+			}
+		}
+	}
+
 	public function mount()
 	{
 		if ($season = Season::where('current', 1)->first()) {
@@ -63,7 +73,7 @@ class Standings extends Component
     {
     	if (!$this->blank_view) {
     		$current_season = Season::where('slug', $this->season)->first();
-    		$seasons = Season::orderBy('id', 'desc')->get();
+    		$seasons = Season::orderBy('name', 'desc')->get();
 	    	$seasons_conferences = SeasonConference::
 	    		leftJoin('conferences', 'conferences.id', 'seasons_conferences.conference_id')
 	    		->select('seasons_conferences.*', 'conferences.name')
