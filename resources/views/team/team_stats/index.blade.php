@@ -3,7 +3,7 @@
 		<div class="max-w-7xl mx-auto sm:px-3 sm:px-6 lg:px-8">
 			@include('team.partials.breadcrumb')
 			<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between | pt-4 lg:pb-4">
-	    		@include('team.partials.header')
+	    		@include('team.partials.header', ['route' => 'team.team_stats'])
 				@include('team.partials.menu', ['routeName' => 'team.team_stats'])
 			</div>
     	</div>
