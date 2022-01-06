@@ -20,6 +20,11 @@ class TeamController extends Controller
         return view('teams.teams.index', ['divisions' => $divisions]);
     }
 
+    public function home($slug) {
+        $team = Team::where('slug', $slug)->first();
+        return view('team.home', ['team' => $team]);
+    }
+
     public function roster($slug) {
         $team = Team::where('slug', $slug)->first();
     	return view('team.roster', ['team' => $team]);
@@ -40,8 +45,8 @@ class TeamController extends Controller
         return view('team.player_stats', ['team' => $team]);
     }
 
-    public function results($slug) {
+    public function schedule($slug) {
         $team = Team::where('slug', $slug)->first();
-        return view('team.results', ['team' => $team]);
+        return view('team.schedule', ['team' => $team]);
     }
 }

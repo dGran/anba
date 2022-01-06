@@ -1,9 +1,4 @@
-<x-app-layout blockHeader="1" title="{{ $team->name }} - Team Stats">
-
-    <x-slot name="header">
-        @include('team.partials.header')
-    </x-slot>
-
+<x-app-layout blockHeader="0" title="{{ $team->name }} - Team Stats">
     <div>
         @livewire('team.team-stats', ['team' => $team])
     </div>

@@ -29,10 +29,6 @@
     </div>
 </div>
 
-{{-- <h4 class="px-3 sm:px-0 uppercase font-normal font-roboto text-base pb-2">
-    {{ $season }} player statistics
-</h4> --}}
-
 @if ($season)
     @if (count($players_stats) > 0)
         <div class="bg-white dark:bg-gray-750 overflow-x-auto md:shadow-sm md:rounded-md md:mx-0 text-gray-900 dark:text-gray-200 border border-gray-200 dark:border-gray-850">

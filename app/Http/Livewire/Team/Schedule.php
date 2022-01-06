@@ -8,7 +8,7 @@ use App\Models\Season;
 use App\Models\SeasonTeam;
 use App\Models\Match;
 
-class Results extends Component
+class Schedule extends Component
 {
     public $team;
 
@@ -72,7 +72,7 @@ class Results extends Component
     {
         $seasons = Season::orderBy('name', 'desc')->get();
 
-        return view('team.results.index', [
+        return view('team.schedule.index', [
             'results' => $this->getResults(),
             'seasons' => $seasons,
         ]);

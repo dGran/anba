@@ -1,0 +1,71 @@
+<?php
+
+namespace App\Http\Livewire\Team;
+
+use Livewire\Component;
+use App\Models\Team;
+use App\Models\Player;
+use App\Models\PlayerStat;
+use App\Models\Season;
+use App\Models\SeasonTeam;
+
+class Home extends Component
+{
+    public $team;
+
+    public $season_team;
+    public $season;
+    public $current_season;
+    public $phase = "regular";
+
+    public $playerInfo, $playerInfoStats;
+    public $playerInfoModal = false;
+
+    public function openPlayerInfo($player_id)
+    {
+        $this->playerInfo = Player::find($player_id);
+        $current_season = Season::where('current', 1)->first();
+
+        $this->playerInfoStats = PlayerStat::
+            join('matches', 'matches.id', 'players_stats.match_id')
+            ->select('player_id',
+                \DB::raw('AVG(PTS) as AVG_PTS'),
+                \DB::raw('AVG(REB) as AVG_REB'),
+                \DB::raw('AVG(AST) as AVG_AST'),
+                \DB::raw('COUNT(player_id) as PJ')
+            )
+            ->where('player_id', $this->playerInfo->id)
+            ->whereNull('matches.clash_id')
+            ->where('players_stats.season_id', $current_season->id)
+            ->get();
+
+
+        $this->playerInfoModal = true;
+    }
+
+    public function change_season()
+    {
+        $this->current_season = Season::where('slug', $this->season)->first();
+        $this->season_team = SeasonTeam::where('season_id', $this->current_season->id)->where('team_id', $this->team->id)->first();
+    }
+
+	public function mount($team)
+	{
+		$this->team = $team;
+
+        if ($season = Season::where('current', 1)->first()) {
+            $this->current_season = $season;
+            $this->season = $season->slug;
+            $this->season_team = SeasonTeam::where('season_id', $this->current_season->id)->where('team_id', $this->team->id)->first();
+        }
+	}
+
+    public function render()
+    {
+        $seasons = Season::orderBy('name', 'desc')->get();
+
+        return view('team.home.index', [
+            'seasons'           => $seasons
+        ]);
+    }
+}

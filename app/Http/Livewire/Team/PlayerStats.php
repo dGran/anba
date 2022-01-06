@@ -19,8 +19,8 @@ class PlayerStats extends Component
     public $phase = "regular";
     public $mode = "per_game";
 
-    public $order = "player_name";
-    public $order_direction = "asc";
+    public $order = "AVG_PTS";
+    public $order_direction = "desc";
 
     public $playerInfo, $playerInfoStats;
     public $playerInfoModal = false;
