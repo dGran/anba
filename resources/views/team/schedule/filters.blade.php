@@ -30,4 +30,14 @@
             @endforeach
         </select>
     </div>
+    <div class="flex-1 w-full flex flex-col relative mt-0.5 md:mt-0 md:ml-0.5">
+        <label for="mode" class="text-xs uppercase absolute top-1.5 md:top-3 left-3 text-gray-500 dark:text-gray-300">
+            Partidos
+        </label>
+        <select id="mode" class="appearance-none sm:rounded text-sm text-blue-500 dark:text-dark-link font-bold | h-12 md:h-16 pt-4 px-3 | bg-white dark:bg-gray-700 | border-t border-b sm:border border-gray-200 dark:border-gray-850 focus:border-gray-300 hover:border-gray-300 hover:bg-gray-50 focus:bg-gray-50 dark:focus:border-gray-600 dark:hover:border-gray-600 dark:hover:bg-gray-650 dark:focus:bg-gray-650 | focus:outline-none" wire:model="matches_state">
+            <option value="all">Todos</option>
+            <option value="played">Disputados</option>
+            <option value="pendent">Pendientes</option>
+        </select>
+    </div>
 </div>

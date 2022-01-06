@@ -18,6 +18,7 @@ class Schedule extends Component
     public $phase = "all";
     public $rival = 'all';
     public $rivals;
+    public $matches_state = 'all';
 
     public function change_season()
     {
@@ -37,7 +38,7 @@ class Schedule extends Component
 
     }
 
-    public function getResults()
+    public function getSchedule()
     {
         $regs = Match::
             with('localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager', 'scores', 'playerStats.player', 'playerStats.seasonTeam.team')
@@ -55,6 +56,13 @@ class Schedule extends Component
             ->season($this->current_season->slug);
             if ($this->phase != 'all') {
                 $regs = $regs->phase($this->phase);
+            }
+            if ($this->matches_state != 'all') {
+                if ($this->matches_state == 'played') {
+                    $regs = $regs->where('played', 1);
+                } else {
+                    $regs = $regs->where('played', 0);
+                }
             }
             $regs = $regs
             ->teamandrival($this->season_team->id, $this->rival)
@@ -116,7 +124,7 @@ class Schedule extends Component
         }
 
         return view('team.schedule.index', [
-            'results'           => $this->getResults(),
+            'results'           => $this->getSchedule(),
             'seasons'           => $seasons,
             'more_teams'        => $more_teams,
             'prior_team'        => $prior_team,
