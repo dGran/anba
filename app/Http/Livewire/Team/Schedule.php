@@ -15,7 +15,7 @@ class Schedule extends Component
     public $season_team;
     public $season;
     public $current_season;
-    public $phase = "regular";
+    public $phase = "all";
     public $rival = 'all';
     public $rivals;
 
@@ -23,7 +23,18 @@ class Schedule extends Component
     {
         $this->current_season = Season::where('slug', $this->season)->first();
         $this->season_team = SeasonTeam::where('season_id', $this->current_season->id)->where('team_id', $this->team->id)->first();
-        $this->rivals = SeasonTeam::where('season_id', $this->current_season->id)->where('team_id', '<>', $this->team->id)->get();
+        $this->rivals = SeasonTeam::
+            join('teams', 'teams.id', 'seasons_teams.team_id')
+            ->select('seasons_teams.*')
+            ->where('seasons_teams.season_id', $this->current_season->id)
+            ->where('seasons_teams.id', '<>', $this->season_team->id)
+            ->orderBy('teams.medium_name')
+            ->get();
+        if ($this->rival != 'all') {
+            $rival = SeasonTeam::find($this->rival);
+            $this->rival = SeasonTeam::where('season_id', $this->current_season->id)->where('team_id', $rival->team->id)->first()->id;
+        }
+
     }
 
     public function getResults()
@@ -41,17 +52,15 @@ class Schedule extends Component
                 $join->orOn('users.id','=','matches.visitor_manager_id');
             })
 
-            ->season($this->current_season->slug)
-            // ->phase($this->phase)
-            // ->phase($this->phase)
-            // ->team($this->season_team->id)
+            ->season($this->current_season->slug);
+            if ($this->phase != 'all') {
+                $regs = $regs->phase($this->phase);
+            }
+            $regs = $regs
             ->teamandrival($this->season_team->id, $this->rival)
-            // ->user($this->manager)
-            // ->hidePlayed($this->hidePlayed)
-            ->where('played', 1)
             ->select('matches.*')
-            // ->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
             ->orderBy('scores.created_at', 'desc')
+            ->orderBy('matches.id', 'asc')
             ->groupBy('matches.id', 'scores.created_at')
             ->get();
 
@@ -60,11 +69,20 @@ class Schedule extends Component
 
 	public function mount($team)
 	{
+        $this->team = $team;
+
         if ($season = Season::where('current', 1)->first()) {
             $this->current_season = $season;
             $this->season = $season->slug;
             $this->season_team = SeasonTeam::where('season_id', $this->current_season->id)->where('team_id', $this->team->id)->first();
-            $this->rivals = SeasonTeam::where('season_id', $this->current_season->id)->where('team_id', '<>', $this->team->id)->get();
+            // $this->rivals = SeasonTeam::where('season_id', $this->current_season->id)->where('team_id', '<>', $this->team->id)->get();
+            $this->rivals = SeasonTeam::
+                join('teams', 'teams.id', 'seasons_teams.team_id')
+                ->select('seasons_teams.*')
+                ->where('seasons_teams.season_id', $this->current_season->id)
+                ->where('seasons_teams.id', '<>', $this->season_team->id)
+                ->orderBy('teams.medium_name')
+                ->get();
         }
 	}
 
