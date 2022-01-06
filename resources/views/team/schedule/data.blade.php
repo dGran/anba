@@ -1,6 +1,11 @@
 @include('team.schedule.filters')
 
+
 @if ($results->count() > 0)
+    <p class="pb-3 mx-4 sm:mx-1 | text-xs md:text-sm uppercase tracking-wider">
+        {{ $results->count() }} partidos
+    </p>
+
     <ul class="flex flex-col space-y-2 mx-3 sm:mx-0">
         @foreach ($results as $result)
             <li class="relative h-20 rounded-md border border-gray-200 dark:border-transparent flex justify-end {{ $result->localTeam->id == $season_team->id ? 'bg-white dark:bg-gray-700' : 'bg-gray-150 dark:bg-gray-750' }}">
