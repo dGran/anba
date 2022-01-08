@@ -46,35 +46,35 @@
         </div>
         <div class="p-6">
             <div class="flex items-center space-x-2 md:space-x-4 justify-center | border-b border-gray-200 dark:border-gray-700 pb-6">
-                <p class="rounded-full bg-blue-500 dark:bg-dark-link w-12 h-12 sm:w-20 sm:h-20 | flex flex-col items-center justify-center | leading-4 sm:leading-6 | border border-blue-600 dark:border-blue-300">
+                <p class="rounded-md sm:rounded-full bg-blue-500 dark:bg-dark-link w-14 h-14 sm:w-20 sm:h-20 | flex flex-col items-center justify-center | leading-5 sm:leading-6 | border border-blue-600 dark:border-blue-300">
                     <span class="hidden sm:block text-xs uppercase | text-gray-100 dark:text-gray-700">JUGADORES</span>
-                    <span class="sm:hidden text-xs uppercase | text-gray-100 dark:text-gray-700">J</span>
-                    <span class="text-lg sm:text-3xl font-bold | text-white dark:text-gray-900">{{ $season_team->team->players->count() }}</span>
+                    <span class="sm:hidden text-sm uppercase | text-gray-100 dark:text-gray-700">J</span>
+                    <span class="text-xl sm:text-3xl font-bold | text-white dark:text-gray-900">{{ $season_team->team->players->count() }}</span>
                 </p>
-                <p class="rounded-full bg-gray-150 dark:bg-gray-650 w-12 h-12 sm:w-20 sm:h-20 | flex flex-col items-center justify-center | leading-4 sm:leading-6 | border border-gray-200 dark:border-gray-600">
+                <p class="rounded-md sm:rounded-full bg-gray-150 dark:bg-gray-650 w-14 h-14 sm:w-20 sm:h-20 | flex flex-col items-center justify-center | leading-5 sm:leading-6 | border border-gray-200 dark:border-gray-600">
                     <span class="hidden sm:block text-xs uppercase | text-gray-600 dark:text-gray-200">BASES</span>
-                    <span class="sm:hidden text-xs uppercase | text-gray-600 dark:text-gray-200">B</span>
-                    <span class="text-lg sm:text-3xl font-bold">{{ $total_pg }}</span>
+                    <span class="sm:hidden text-sm uppercase | text-gray-600 dark:text-gray-200">B</span>
+                    <span class="text-xl sm:text-3xl font-bold">{{ $total_pg }}</span>
                 </p>
-                <p class="rounded-full bg-gray-150 dark:bg-gray-650 w-12 h-12 sm:w-20 sm:h-20 | flex flex-col items-center justify-center | leading-4 sm:leading-6 | border border-gray-200 dark:border-gray-600">
+                <p class="rounded-md sm:rounded-full bg-gray-150 dark:bg-gray-650 w-14 h-14 sm:w-20 sm:h-20 | flex flex-col items-center justify-center | leading-5 sm:leading-6 | border border-gray-200 dark:border-gray-600">
                     <span class="hidden sm:block text-xs uppercase | text-gray-600 dark:text-gray-200">ESCOLTAS</span>
-                    <span class="sm:hidden text-xs uppercase | text-gray-600 dark:text-gray-200">e</span>
-                    <span class="text-lg sm:text-3xl font-bold">{{ $total_sg }}</span>
+                    <span class="sm:hidden text-sm uppercase | text-gray-600 dark:text-gray-200">e</span>
+                    <span class="text-xl sm:text-3xl font-bold">{{ $total_sg }}</span>
                 </p>
-                <p class="rounded-full bg-gray-150 dark:bg-gray-650 w-12 h-12 sm:w-20 sm:h-20 | flex flex-col items-center justify-center | leading-4 sm:leading-6 | border border-gray-200 dark:border-gray-600">
+                <p class="rounded-md sm:rounded-full bg-gray-150 dark:bg-gray-650 w-14 h-14 sm:w-20 sm:h-20 | flex flex-col items-center justify-center | leading-5 sm:leading-6 | border border-gray-200 dark:border-gray-600">
                     <span class="hidden sm:block text-xs uppercase | text-gray-600 dark:text-gray-200">ALEROS</span>
-                    <span class="sm:hidden text-xs uppercase | text-gray-600 dark:text-gray-200">a</span>
-                    <span class="text-lg sm:text-3xl font-bold">{{ $total_sf }}</span>
+                    <span class="sm:hidden text-sm uppercase | text-gray-600 dark:text-gray-200">a</span>
+                    <span class="text-xl sm:text-3xl font-bold">{{ $total_sf }}</span>
                 </p>
-                <p class="rounded-full bg-gray-150 dark:bg-gray-650 w-12 h-12 sm:w-20 sm:h-20 | flex flex-col items-center justify-center | leading-4 sm:leading-6 | border border-gray-200 dark:border-gray-600">
+                <p class="rounded-md sm:rounded-full bg-gray-150 dark:bg-gray-650 w-14 h-14 sm:w-20 sm:h-20 | flex flex-col items-center justify-center | leading-5 sm:leading-6 | border border-gray-200 dark:border-gray-600">
                     <span class="hidden sm:block text-xs uppercase | text-gray-600 dark:text-gray-200">ALA-PIVOTS</span>
-                    <span class="sm:hidden text-xs uppercase | text-gray-600 dark:text-gray-200">ap</span>
-                    <span class="text-lg sm:text-3xl font-bold">{{ $total_pf }}</span>
+                    <span class="sm:hidden text-sm uppercase | text-gray-600 dark:text-gray-200">ap</span>
+                    <span class="text-xl sm:text-3xl font-bold">{{ $total_pf }}</span>
                 </p>
-                <p class="rounded-full bg-gray-150 dark:bg-gray-650 w-12 h-12 sm:w-20 sm:h-20 | flex flex-col items-center justify-center | leading-4 sm:leading-6 | border border-gray-200 dark:border-gray-600">
+                <p class="rounded-md sm:rounded-full bg-gray-150 dark:bg-gray-650 w-14 h-14 sm:w-20 sm:h-20 | flex flex-col items-center justify-center | leading-5 sm:leading-6 | border border-gray-200 dark:border-gray-600">
                     <span class="hidden sm:block text-xs uppercase | text-gray-600 dark:text-gray-200">PIVOTS</span>
-                    <span class="sm:hidden text-xs uppercase | text-gray-600 dark:text-gray-200">p</span>
-                    <span class="text-lg sm:text-3xl font-bold">{{ $total_c }}</span>
+                    <span class="sm:hidden text-sm uppercase | text-gray-600 dark:text-gray-200">p</span>
+                    <span class="text-xl sm:text-3xl font-bold">{{ $total_c }}</span>
                 </p>
             </div>
 
