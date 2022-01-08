@@ -26,14 +26,10 @@
                     <span>{{ $season_team->seasonDivision->division->name }}</span>
                 </p>
                 <p>
-                    <span class="text-xs md:text-sm uppercase text-gray-400 font-medium mr-2">Ciudad</span>
-                    <span></span>
-                </p>
-                <p class="pt-4">
                     <span class="text-xs md:text-sm uppercase text-gray-400 font-medium mr-2">manager</span>
                     <a href="#" class="hover:underline focus:underline focus:outline-none">{{ $season_team->team->user->name }}</a>
                 </p>
-                <p class="pt-4">
+                <p>
                     <span class="text-xs md:text-sm uppercase text-gray-400 font-medium mr-2">Estadio</span>
                     <span>{{ $season_team->team->stadium }}</span>
                 </p>
