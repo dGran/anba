@@ -8,7 +8,7 @@
 							{{ $division->name }}
 						</p>
 						@foreach ($division->teams as $team)
-							@include('teams.teams.item')
+							@include('teams.item')
 						@endforeach
 					</div>
 				@endforeach

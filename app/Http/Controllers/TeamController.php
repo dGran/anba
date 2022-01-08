@@ -17,7 +17,7 @@ class TeamController extends Controller
             ->orderBy('divisions.name', 'asc')
             ->get();
 
-        return view('teams.teams.index', ['divisions' => $divisions]);
+        return view('teams.index', ['divisions' => $divisions]);
     }
 
     public function home($slug) {

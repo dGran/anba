@@ -14,7 +14,6 @@ class Home extends Component
     public $team;
 
     public $season_team;
-    public $season;
     public $current_season;
     public $phase = "regular";
 
@@ -43,10 +42,9 @@ class Home extends Component
         $this->playerInfoModal = true;
     }
 
-    public function change_season()
+    public function getTotalPlayersPosition($pos)
     {
-        $this->current_season = Season::where('slug', $this->season)->first();
-        $this->season_team = SeasonTeam::where('season_id', $this->current_season->id)->where('team_id', $this->team->id)->first();
+        return $total = Player::where('team_id', $this->season_team->team_id)->where('position', $pos)->count();
     }
 
 	public function mount($team)
@@ -55,20 +53,47 @@ class Home extends Component
 
         if ($season = Season::where('current', 1)->first()) {
             $this->current_season = $season;
-            $this->season = $season->slug;
             $this->season_team = SeasonTeam::where('season_id', $this->current_season->id)->where('team_id', $this->team->id)->first();
         }
 	}
 
+   public function getHeadline()
+    {
+        $PlayersStats = PlayerStat::with('player')
+                ->join('matches', 'matches.id', 'players_stats.match_id')
+                ->join('players', 'players.id', 'players_stats.player_id')
+                ->select('player_id',
+                    \DB::raw("CONCAT(LEFT(players.name, 1), '. ', RIGHT(players.name, LENGTH(players.name) - POSITION(' ' IN players.name))) AS player_name"),
+                    \DB::raw('(CASE
+                                WHEN players.position = "pg" THEN 1
+                                WHEN players.position = "sg" THEN 2
+                                WHEN players.position = "sf" THEN 3
+                                WHEN players.position = "pf" THEN 4
+                                WHEN players.position = "c" THEN 5
+                                END) AS POS'),
+                    \DB::raw('COUNT(player_id) as PJ'),
+                    \DB::raw('SUM(headline) as PT'),
+                );
+        $PlayersStats = $PlayersStats->where('players_stats.season_id', $this->current_season->id);
+        $PlayersStats = $PlayersStats->where('players_stats.season_team_id', $this->season_team->id);
+        $PlayersStats = $PlayersStats
+            ->having('PJ', '>', 1)
+            ->orderBy('PT', 'desc')
+            ->orderBy('PJ', 'desc')
+            ->groupBy('player_id')
+            ->take(5)
+            ->get();
+
+        return $PlayersStats;
+    }
+
     public function render()
     {
-        $seasons = Season::orderBy('name', 'desc')->get();
 
         $more_teams = SeasonTeam::
             leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
             ->select('seasons_teams.*')
             ->where('seasons_teams.season_id', $this->current_season->id)
-            // ->where('seasons_teams.id', '<>', $this->season_team->id)
             ->orderBy('teams.short_name')
             ->get();
 
@@ -91,10 +116,15 @@ class Home extends Component
         }
 
         return view('team.home.index', [
-            'seasons'           => $seasons,
             'more_teams'        => $more_teams,
             'prior_team'        => $prior_team,
-            'next_team'         => $next_team
+            'next_team'         => $next_team,
+            'total_pg'          => $this->getTotalPlayersPosition('pg'),
+            'total_sg'          => $this->getTotalPlayersPosition('sg'),
+            'total_sf'          => $this->getTotalPlayersPosition('sf'),
+            'total_pf'          => $this->getTotalPlayersPosition('pf'),
+            'total_c'           => $this->getTotalPlayersPosition('c'),
+            'headline'          => $this->getHeadline()
         ]);
     }
 }
