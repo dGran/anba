@@ -16,118 +16,14 @@
             ficha
         </div>
         <div class="p-6 | flex flex-col lg:flex-row items-start justify-between">
-            <div>
-                <p>
-                    <span class="text-xs md:text-sm uppercase text-gray-400 font-medium mr-2">Temporadas</span>
-                    <span>{{ $team_seasons->count() }}</span>
-                    <span class="text-xs md:text-sm ml-1.5">({{ $team_seasons->first()->season->name }} to {{ $team_seasons->last()->season->name }})</span>
-                </p>
-                <p>
-                    <span class="text-xs md:text-sm uppercase text-gray-400 font-medium mr-2">record</span>
-                    <span>{{ $team_all_seasons_record['w'] }}-{{ $team_all_seasons_record['l'] }}</span>
-                    <span class="text-xs md:text-sm ml-1.5">({{ number_format($team_all_seasons_record_percent, 2, ',', '.') }}% G-P)</span>
-                </p>
-                <p>
-                    <span class="text-xs md:text-sm uppercase text-gray-400 font-medium mr-2">apariciones en playoffs</span>
-                    <span>{{ $season_team->team->get_playoffs_apparences() }}</span>
-                </p>
-                <p>
-                    <span class="text-xs md:text-sm uppercase text-gray-400 font-medium mr-2">campeonatos</span>
-                    <span>{{ $season_team->team->get_championships() }}</span>
-                </p>
-                <p class="pt-4">
-                    <span class="text-xs md:text-sm uppercase text-gray-400 font-medium mr-2">Conferencia</span>
-                    <span>{{ $season_team->seasonDivision->seasonConference->conference->name }}</span>
-                </p>
-                <p>
-                    <span class="text-xs md:text-sm uppercase text-gray-400 font-medium mr-2">Division</span>
-                    <span>{{ $season_team->seasonDivision->division->name }}</span>
-                </p>
-                <p>
-                    <span class="text-xs md:text-sm uppercase text-gray-400 font-medium mr-2">manager</span>
-                    <a href="#" class="hover:underline focus:underline focus:outline-none">{{ $season_team->team->user->name }}</a>
-                </p>
-                <p>
-                    <span class="text-xs md:text-sm uppercase text-gray-400 font-medium mr-2">Estadio</span>
-                    <span>{{ $season_team->team->stadium }}</span>
-                </p>
-            </div>
-            <img src="https://ak.picdn.net/shutterstock/videos/18325363/thumb/1.jpg" alt="" class="w-full h-auto md:w-96 md:h-60 object-cover rounded | pt-6 lg:pt-0">
+            @include('team.home.card')
         </div>
 
         <div class="bg-gray-100 dark:bg-gray-700 | border-t border-b border-gray-200 dark:border-gray-700 | px-4 py-3 | uppercase text-sm md:text-base tracking-wider">
             roster
         </div>
         <div class="p-6">
-            <div class="flex items-center space-x-2 md:space-x-4 justify-center | border-b border-gray-200 dark:border-gray-700 pb-6">
-                <p class="rounded-md sm:rounded-full bg-blue-500 dark:bg-dark-link w-14 h-14 sm:w-20 sm:h-20 | flex flex-col items-center justify-center | leading-5 sm:leading-6 | border border-blue-600 dark:border-blue-300">
-                    <span class="hidden sm:block text-xs uppercase | text-gray-100 dark:text-gray-700">JUGADORES</span>
-                    <span class="sm:hidden text-sm uppercase | text-gray-100 dark:text-gray-700">J</span>
-                    <span class="text-xl sm:text-3xl font-bold | text-white dark:text-gray-900">{{ $season_team->team->players->count() }}</span>
-                </p>
-                <p class="rounded-md sm:rounded-full bg-gray-150 dark:bg-gray-650 w-14 h-14 sm:w-20 sm:h-20 | flex flex-col items-center justify-center | leading-5 sm:leading-6 | border border-gray-200 dark:border-gray-600">
-                    <span class="hidden sm:block text-xs uppercase | text-gray-600 dark:text-gray-200">BASES</span>
-                    <span class="sm:hidden text-sm uppercase | text-gray-600 dark:text-gray-200">B</span>
-                    <span class="text-xl sm:text-3xl font-bold">{{ $total_pg }}</span>
-                </p>
-                <p class="rounded-md sm:rounded-full bg-gray-150 dark:bg-gray-650 w-14 h-14 sm:w-20 sm:h-20 | flex flex-col items-center justify-center | leading-5 sm:leading-6 | border border-gray-200 dark:border-gray-600">
-                    <span class="hidden sm:block text-xs uppercase | text-gray-600 dark:text-gray-200">ESCOLTAS</span>
-                    <span class="sm:hidden text-sm uppercase | text-gray-600 dark:text-gray-200">e</span>
-                    <span class="text-xl sm:text-3xl font-bold">{{ $total_sg }}</span>
-                </p>
-                <p class="rounded-md sm:rounded-full bg-gray-150 dark:bg-gray-650 w-14 h-14 sm:w-20 sm:h-20 | flex flex-col items-center justify-center | leading-5 sm:leading-6 | border border-gray-200 dark:border-gray-600">
-                    <span class="hidden sm:block text-xs uppercase | text-gray-600 dark:text-gray-200">ALEROS</span>
-                    <span class="sm:hidden text-sm uppercase | text-gray-600 dark:text-gray-200">a</span>
-                    <span class="text-xl sm:text-3xl font-bold">{{ $total_sf }}</span>
-                </p>
-                <p class="rounded-md sm:rounded-full bg-gray-150 dark:bg-gray-650 w-14 h-14 sm:w-20 sm:h-20 | flex flex-col items-center justify-center | leading-5 sm:leading-6 | border border-gray-200 dark:border-gray-600">
-                    <span class="hidden sm:block text-xs uppercase | text-gray-600 dark:text-gray-200">ALA-PIVOTS</span>
-                    <span class="sm:hidden text-sm uppercase | text-gray-600 dark:text-gray-200">ap</span>
-                    <span class="text-xl sm:text-3xl font-bold">{{ $total_pf }}</span>
-                </p>
-                <p class="rounded-md sm:rounded-full bg-gray-150 dark:bg-gray-650 w-14 h-14 sm:w-20 sm:h-20 | flex flex-col items-center justify-center | leading-5 sm:leading-6 | border border-gray-200 dark:border-gray-600">
-                    <span class="hidden sm:block text-xs uppercase | text-gray-600 dark:text-gray-200">PIVOTS</span>
-                    <span class="sm:hidden text-sm uppercase | text-gray-600 dark:text-gray-200">p</span>
-                    <span class="text-xl sm:text-3xl font-bold">{{ $total_c }}</span>
-                </p>
-            </div>
-
-            <div class="py-6 border-b border-gray-200 dark:border-gray-700">
-                <p class="uppercase text-sm md:text-base tracking-wider | text-center | pb-2">
-                    quinteto inicial
-                </p>
-                <ul class="flex items-center justify-center space-x-0.5">
-                    @foreach ($headline->sortBy('POS') as $ps)
-                        <li class="group cursor-pointer w-16 sm:w-20 md:w-28 lg:w-32 border border-gray-200 dark:border-gray-600 rounded | bg-gray-100 dark:bg-gray-650" wire:click="openPlayerInfo({{ $ps->player->id }})">
-                            <img src="{{ $ps->player->getImg() }}" alt="{{ $ps->player->name }}" class="mt-3 w-16 h-32 sm:w-20 sm:h-40 md:w-28 md:h-56 lg:w-32 lg:h-64 object-cover | transform origin-bottom group-hover:scale-105 group-focus:scale-105 transition duration-300 ease-in-out">
-                            <div class="flex flex-col items-center px-2 py-2 | border-t border-gray-200 dark:border-gray-600">
-                                <span class="uppercase text-xs sm:text-sm text-center | w-14 sm:16 md:w-24 lg:w-28 truncate ">{{ $ps->player_name }}</span>
-                                <span class="hidden sm:block uppercase text-xxs md:text-xs text-center text-gray-500 dark:text-gray-300">{{ $ps->player->getPosition() }}</span>
-                                <span class="sm:hidden uppercase text-xxxs sm:text-xs text-center text-gray-500 dark:text-gray-300">{{ $ps->player->getPosition() }}</span>
-                            </div>
-                        </li>
-                        {{-- <p>{{ $player->player->name }}</p> --}}
-                    @endforeach
-                </ul>
-            </div>
-
-            <div>mvp</div>
-
-            <div class="flex items-center | space-x-4">
-                <div class="">
-                    jóvenes
-                    @foreach ($season_team->team->players->sortByDesc('birthdate')->take(3) as $player)
-                        <p>{{ $player->name }}, {{ $player->Age() }}</p>
-                    @endforeach
-                </div>
-                <div class="">
-                    veteranos
-                    @foreach ($season_team->team->players->sortBy('birthdate')->take(3) as $player)
-                        <p>{{ $player->name }}, {{ $player->Age() }}</p>
-                    @endforeach
-                </div>
-
-            </div>
+            @include('team.home.roster')
         </div>
 
         <div class="bg-gray-100 dark:bg-gray-700 | border-t border-b border-gray-200 dark:border-gray-700 | px-4 py-3 | uppercase text-sm md:text-base tracking-wider">
@@ -143,41 +39,7 @@
             histórico
         </div>
         <div class="p-6">
-            <table class="">
-                <thead class="border-l border-t border-b border-gray-200 dark:border-gray-700 | uppercase text-sm tracking-wider font-medium">
-                    <th class="px-2 py-0.5 border-r border-gray-200 dark:border-gray-700 text-left">Temporada</th>
-                    <th class="px-2 py-0.5 border-r border-gray-200 dark:border-gray-700 text-left">Liga</th>
-                    <th class="px-2 py-0.5 border-r border-gray-200 dark:border-gray-700 text-left">Equipo</th>
-                    <th class="px-2 py-0.5 w-8 border-r border-gray-200 dark:border-gray-700 text-center">G</th>
-                    <th class="px-2 py-0.5 w-8 border-r border-gray-200 dark:border-gray-700 text-center">P</th>
-                    <th class="px-2 py-0.5 w-12 border-r border-gray-200 dark:border-gray-700 text-center">G/P%</th>
-                </thead>
-                <tbody class="text-sm | border-l border-b border-gray-200 dark:border-gray-700">
-                    @foreach ($team_seasons->sortByDesc('season_name') as $ts)
-                        <tr>
-                            @php
-                                $season_team_record = $season_team->team->get_season_team_record($ts->season->id);
-                                $season_team_matches = $season_team->team->get_season_team_matches($ts->season->id)->count();
-                            @endphp
-                            <td class="px-2 py-0.5 border-r border-gray-200 dark:border-gray-700 text-left">
-                                <x-link href="#" class="hover:underline focus:underline">{{ $ts->season->name }}</x-link>
-                            </td>
-                            <td class="px-2 py-0.5 border-r border-gray-200 dark:border-gray-700 text-left"><x-link href="#" class="hover:underline focus:underline">ANBA</x-link></td>
-                            <td class="px-2 py-0.5 border-r border-gray-200 dark:border-gray-700 text-left"><x-link href="#" class="hover:underline focus:underline">{{ $season_team->team->name }}</x-link></td>
-                            <td class="px-2 py-0.5 w-8 border-r border-gray-200 dark:border-gray-700 text-center">
-                                {{ $season_team_record['w'] }}
-                            </td>
-                            <td class="px-2 py-0.5 w-8 border-r border-gray-200 dark:border-gray-700 text-center">
-                                {{ $season_team_record['l'] }}
-                            </td>
-                            <td class="px-2 py-0.5 w-12 border-r border-gray-200 dark:border-gray-700 text-center">
-                                {{ number_format(($season_team_record['w'] / $season_team_matches) * 100, 2, ',', '.') }}
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-
+            @include('team.home.history')
         </div>
 
     </div>

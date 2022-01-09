@@ -125,6 +125,7 @@ class Home extends Component
         $team_all_seasons_matches = $this->season_team->team->get_all_seasons_team_matches()->count();
         $team_all_seasons_record = $this->season_team->team->get_all_seasons_team_record();
         $team_all_seasons_record_percent = ($team_all_seasons_record['w'] / $team_all_seasons_matches) * 100;
+        $team_mvp = $this->season_team->team->top_season_mvp($this->current_season->id);
 
         return view('team.home.index', [
             'more_teams'        => $more_teams,
@@ -138,7 +139,8 @@ class Home extends Component
             'headline'          => $this->getHeadline(),
             'team_seasons'       => $team_seasons,
             'team_all_seasons_record'   => $team_all_seasons_record,
-            'team_all_seasons_record_percent'   => $team_all_seasons_record_percent
+            'team_all_seasons_record_percent'   => $team_all_seasons_record_percent,
+            'team_mvp'          => $team_mvp
         ]);
     }
 }

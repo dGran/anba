@@ -292,6 +292,31 @@ class Team extends Model
         return $data;
     }
 
+    public function top_season_mvp($season_id)
+    {
+        $team_id = $this->id;
+
+        return $top = PlayerStat::with('player')
+            ->join('matches', 'matches.id', 'players_stats.match_id')
+            ->leftJoin('seasons_teams', 'seasons_teams.id', 'players_stats.season_team_id')
+            ->leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
+            ->select('players_stats.player_id', 'players_stats.season_team_id',
+                \DB::raw('AVG(PTS) as AVG_PTS'),
+                \DB::raw('AVG(REB) as AVG_REB'),
+                \DB::raw('AVG(AST) as AVG_AST'),
+                \DB::raw('SUM(PTS + REB + AST) / COUNT(player_id) as AVG_TOTAL')
+            )
+            ->whereNull('matches.clash_id')
+            ->where('players_stats.season_id', $season_id)
+            ->where('teams.id', $team_id)
+            ->orderBy('AVG_TOTAL', 'desc')
+            ->orderBy('AVG_PTS', 'desc')
+            ->orderBy('AVG_REB', 'desc')
+            ->orderBy('AVG_AST', 'desc')
+            ->groupBy('player_id', 'season_team_id')
+            ->first();
+    }
+
     public function canDestroy()
     {
         // apply logic
