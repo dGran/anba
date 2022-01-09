@@ -145,6 +145,153 @@ class Team extends Model
         return $result;
     }
 
+    public function get_playoffs_apparences()
+    {
+        $team_id = $this->id;
+
+        $playoffs = Playoff::
+            join('playoffs_rounds', 'playoffs_rounds.playoff_id', 'playoffs.id')
+            ->join('playoffs_clashes', 'playoffs_clashes.round_id', 'playoffs_rounds.id')
+            ->leftJoin('seasons_teams as localSeasonTeam', 'localSeasonTeam.id', 'playoffs_clashes.local_team_id')
+            ->leftJoin('seasons_teams as visitorSeasonTeam', 'visitorSeasonTeam.id', 'playoffs_clashes.visitor_team_id')
+            ->leftJoin('teams as localTeam', 'localTeam.id', 'localSeasonTeam.team_id')
+            ->leftJoin('teams as visitorTeam', 'visitorTeam.id', 'visitorSeasonTeam.team_id')
+            ->select('playoffs.*')
+            ->whereNull('playoffs.playin_place')
+            ->where(function($q) use ($team_id) {
+                $q->where('localTeam.id', $team_id)
+                    ->orWhere('visitorTeam.id', $team_id);
+                })
+            ->groupBy('playoffs.season_id')
+            ->get()->count();
+
+        return $playoffs;
+    }
+
+    public function get_championships()
+    {
+        $team_id = $this->id;
+
+        $counter = 0;
+        $playoffs = Playoff::whereNull('playin_place')->get();
+        foreach ($playoffs as $playoff) {
+            if ($playoff->winner()->team->id == $team_id) {
+                $counter++;
+            }
+        }
+
+        return $counter;
+    }
+
+    public function get_all_seasons_team_matches()
+    {
+        $team_id = $this->id;
+
+        $matches = Match::
+            with('scores')
+            ->select('matches.*')
+            ->leftJoin('seasons_teams as localSeasonTeam', 'localSeasonTeam.id', 'matches.local_team_id')
+            ->leftJoin('seasons_teams as visitorSeasonTeam', 'visitorSeasonTeam.id', 'matches.visitor_team_id')
+            ->leftJoin('teams as localTeam', 'localTeam.id', 'localSeasonTeam.team_id')
+            ->leftJoin('teams as visitorTeam', 'visitorTeam.id', 'visitorSeasonTeam.team_id')
+            ->whereNull('matches.clash_id')
+            ->where('matches.played', 1)
+            ->where(function($q) use ($team_id) {
+                $q->where('localTeam.id', $team_id)
+                    ->orWhere('visitorTeam.id', $team_id);
+                })
+            ->get();
+
+        return $matches;
+    }
+
+    public function get_all_seasons_team_record()
+    {
+        $data = [
+            "w" => 0,
+            "l" => 0,
+        ];
+
+        $team_id = $this->id;
+        $matches = $this->get_all_seasons_team_matches();
+
+        foreach ($matches as $key => $match) {
+            if ($match->played()) {
+                $local_score = $match->scores->sum('local_score');
+                $visitor_score = $match->scores->sum('visitor_score');
+                if ($team_id == $match->localTeam->team_id) {
+                    if ($local_score > $visitor_score) {
+                        $data['w'] += 1;
+                    } else {
+                        $data['l'] += 1;
+                    }
+                } else {
+                    if ($local_score > $visitor_score) {
+                        $data['l'] += 1;
+                    } else {
+                        $data['w'] += 1;
+                    }
+                }
+            }
+        }
+
+        return $data;
+    }
+
+    public function get_season_team_matches($season_id)
+    {
+        $team_id = $this->id;
+        $matches = Match::
+            with('scores')
+            ->select('matches.*')
+            ->leftJoin('seasons_teams as localSeasonTeam', 'localSeasonTeam.id', 'matches.local_team_id')
+            ->leftJoin('seasons_teams as visitorSeasonTeam', 'visitorSeasonTeam.id', 'matches.visitor_team_id')
+            ->leftJoin('teams as localTeam', 'localTeam.id', 'localSeasonTeam.team_id')
+            ->leftJoin('teams as visitorTeam', 'visitorTeam.id', 'visitorSeasonTeam.team_id')
+            ->whereNull('matches.clash_id')
+            ->where('matches.played', 1)
+            ->where('matches.season_id', $season_id)
+            ->where(function($q) use ($team_id) {
+                $q->where('localTeam.id', $team_id)
+                    ->orWhere('visitorTeam.id', $team_id);
+                })
+            ->get();
+
+        return $matches;
+    }
+
+    public function get_season_team_record($season_id)
+    {
+        $team_id = $this->id;
+        $matches = $this->get_season_team_matches($season_id);
+        $data = [
+            "w" => 0,
+            "l" => 0,
+        ];
+
+        foreach ($matches as $key => $match) {
+            if ($match->played()) {
+                $local_score = $match->scores->sum('local_score');
+                $visitor_score = $match->scores->sum('visitor_score');
+                if ($team_id == $match->localTeam->team_id) {
+                    if ($local_score > $visitor_score) {
+                        $data['w'] += 1;
+                    } else {
+                        $data['l'] += 1;
+                    }
+                } else {
+                    if ($local_score > $visitor_score) {
+                        $data['l'] += 1;
+                    } else {
+                        $data['w'] += 1;
+                    }
+                }
+            }
+        }
+
+        return $data;
+    }
+
     public function canDestroy()
     {
         // apply logic

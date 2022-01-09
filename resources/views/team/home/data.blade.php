@@ -18,6 +18,24 @@
         <div class="p-6 | flex flex-col lg:flex-row items-start justify-between">
             <div>
                 <p>
+                    <span class="text-xs md:text-sm uppercase text-gray-400 font-medium mr-2">Temporadas</span>
+                    <span>{{ $team_seasons->count() }}</span>
+                    <span class="text-xs md:text-sm ml-1.5">({{ $team_seasons->first()->season->name }} to {{ $team_seasons->last()->season->name }})</span>
+                </p>
+                <p>
+                    <span class="text-xs md:text-sm uppercase text-gray-400 font-medium mr-2">record</span>
+                    <span>{{ $team_all_seasons_record['w'] }}-{{ $team_all_seasons_record['l'] }}</span>
+                    <span class="text-xs md:text-sm ml-1.5">({{ number_format($team_all_seasons_record_percent, 2, ',', '.') }}% G-P)</span>
+                </p>
+                <p>
+                    <span class="text-xs md:text-sm uppercase text-gray-400 font-medium mr-2">apariciones en playoffs</span>
+                    <span>{{ $season_team->team->get_playoffs_apparences() }}</span>
+                </p>
+                <p>
+                    <span class="text-xs md:text-sm uppercase text-gray-400 font-medium mr-2">campeonatos</span>
+                    <span>{{ $season_team->team->get_championships() }}</span>
+                </p>
+                <p class="pt-4">
                     <span class="text-xs md:text-sm uppercase text-gray-400 font-medium mr-2">Conferencia</span>
                     <span>{{ $season_team->seasonDivision->seasonConference->conference->name }}</span>
                 </p>
@@ -34,7 +52,7 @@
                     <span>{{ $season_team->team->stadium }}</span>
                 </p>
             </div>
-            <img src="https://cdn.themedizine.com/2020/07/united-centerr.jpg" alt="" class="w-full h-auto md:w-96 md:h-60 object-cover rounded | pt-6 lg:pt-0">
+            <img src="https://ak.picdn.net/shutterstock/videos/18325363/thumb/1.jpg" alt="" class="w-full h-auto md:w-96 md:h-60 object-cover rounded | pt-6 lg:pt-0">
         </div>
 
         <div class="bg-gray-100 dark:bg-gray-700 | border-t border-b border-gray-200 dark:border-gray-700 | px-4 py-3 | uppercase text-sm md:text-base tracking-wider">
@@ -119,6 +137,47 @@
             <div>racha</div>
             <div>total ganados / perdidos</div>
             <div>grafico </div>
+        </div>
+
+        <div class="bg-gray-100 dark:bg-gray-700 | border-t border-b border-gray-200 dark:border-gray-700 | px-4 py-3 | uppercase text-sm md:text-base tracking-wider">
+            histórico
+        </div>
+        <div class="p-6">
+            <table class="">
+                <thead class="border-l border-t border-b border-gray-200 dark:border-gray-700 | uppercase text-sm tracking-wider font-medium">
+                    <th class="px-2 py-0.5 border-r border-gray-200 dark:border-gray-700 text-left">Temporada</th>
+                    <th class="px-2 py-0.5 border-r border-gray-200 dark:border-gray-700 text-left">Liga</th>
+                    <th class="px-2 py-0.5 border-r border-gray-200 dark:border-gray-700 text-left">Equipo</th>
+                    <th class="px-2 py-0.5 w-8 border-r border-gray-200 dark:border-gray-700 text-center">G</th>
+                    <th class="px-2 py-0.5 w-8 border-r border-gray-200 dark:border-gray-700 text-center">P</th>
+                    <th class="px-2 py-0.5 w-12 border-r border-gray-200 dark:border-gray-700 text-center">G/P%</th>
+                </thead>
+                <tbody class="text-sm | border-l border-b border-gray-200 dark:border-gray-700">
+                    @foreach ($team_seasons->sortByDesc('season_name') as $ts)
+                        <tr>
+                            @php
+                                $season_team_record = $season_team->team->get_season_team_record($ts->season->id);
+                                $season_team_matches = $season_team->team->get_season_team_matches($ts->season->id)->count();
+                            @endphp
+                            <td class="px-2 py-0.5 border-r border-gray-200 dark:border-gray-700 text-left">
+                                <x-link href="#" class="hover:underline focus:underline">{{ $ts->season->name }}</x-link>
+                            </td>
+                            <td class="px-2 py-0.5 border-r border-gray-200 dark:border-gray-700 text-left"><x-link href="#" class="hover:underline focus:underline">ANBA</x-link></td>
+                            <td class="px-2 py-0.5 border-r border-gray-200 dark:border-gray-700 text-left"><x-link href="#" class="hover:underline focus:underline">{{ $season_team->team->name }}</x-link></td>
+                            <td class="px-2 py-0.5 w-8 border-r border-gray-200 dark:border-gray-700 text-center">
+                                {{ $season_team_record['w'] }}
+                            </td>
+                            <td class="px-2 py-0.5 w-8 border-r border-gray-200 dark:border-gray-700 text-center">
+                                {{ $season_team_record['l'] }}
+                            </td>
+                            <td class="px-2 py-0.5 w-12 border-r border-gray-200 dark:border-gray-700 text-center">
+                                {{ number_format(($season_team_record['w'] / $season_team_matches) * 100, 2, ',', '.') }}
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+
         </div>
 
     </div>

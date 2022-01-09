@@ -115,6 +115,17 @@ class Home extends Component
             }
         }
 
+        $team_seasons = SeasonTeam::
+            join('seasons', 'seasons.id', 'seasons_teams.season_id')
+            ->select('seasons_teams.*', 'seasons.name as season_name')
+            ->where('team_id', $season_team->team_id)
+            ->orderBy('season_name')
+            ->get();
+
+        $team_all_seasons_matches = $this->season_team->team->get_all_seasons_team_matches()->count();
+        $team_all_seasons_record = $this->season_team->team->get_all_seasons_team_record();
+        $team_all_seasons_record_percent = ($team_all_seasons_record['w'] / $team_all_seasons_matches) * 100;
+
         return view('team.home.index', [
             'more_teams'        => $more_teams,
             'prior_team'        => $prior_team,
@@ -124,7 +135,10 @@ class Home extends Component
             'total_sf'          => $this->getTotalPlayersPosition('sf'),
             'total_pf'          => $this->getTotalPlayersPosition('pf'),
             'total_c'           => $this->getTotalPlayersPosition('c'),
-            'headline'          => $this->getHeadline()
+            'headline'          => $this->getHeadline(),
+            'team_seasons'       => $team_seasons,
+            'team_all_seasons_record'   => $team_all_seasons_record,
+            'team_all_seasons_record_percent'   => $team_all_seasons_record_percent
         ]);
     }
 }
