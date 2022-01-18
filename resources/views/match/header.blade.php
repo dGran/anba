@@ -10,6 +10,11 @@
 		</div>
 		<div class="flex-initial px-3 md:px-6">
 			@if ($match->clash_id)
+				@if ($currentSeason->id != $match->season->id  )
+					<p class="hidden md:block text-sm text-center font-semibold text-gray-600 dark:text-gray-300">
+						Season: {{ $match->season->name }}
+					</p>
+				@endif
 				<p class="text-center hidden md:block font-bold text-gray-600 dark:text-gray-300">
 					<span>{{ $match->clash->round->playoff->name }}</span> - <span>{{ $match->clash->round->name }}</span>
 				</p>
@@ -19,6 +24,11 @@
 					</p>
 				@endif
 			@else
+				@if ($currentSeason->id != $match->season->id  )
+					<p class="hidden md:block text-sm text-center font-semibold text-gray-600 dark:text-gray-300">
+						Season: {{ $match->season->name }}
+					</p>
+				@endif
 				<p class="text-center hidden md:block font-bold text-gray-600 dark:text-gray-300">
 					Liga regular
 				</p>
@@ -53,6 +63,11 @@
 		<div class="md:hidden text-center px-4 py-2 flex flex-col items-center md:flex-row justify-between border-t text-center border-gray-150 dark:border-gray-650">
 			<div class="pb-2">
 				@if ($match->clash_id)
+					@if ($currentSeason->id != $match->season->id  )
+						<p class="text-sm text-center font-semibold text-gray-600 dark:text-gray-300">
+							Season: {{ $match->season->name }}
+						</p>
+					@endif
 					<p class="text-center font-bold text-gray-600 dark:text-gray-300">
 						<span>{{ $match->clash->round->playoff->name }}</span> - <span>{{ $match->clash->round->name }}</span>
 					</p>
@@ -62,6 +77,11 @@
 						</p>
 					@endif
 				@else
+					@if ($currentSeason->id != $match->season->id  )
+						<p class="text-sm text-center font-semibold text-gray-600 dark:text-gray-300">
+							Season: {{ $match->season->name }}
+						</p>
+					@endif
 					<p class="text-center font-bold text-gray-600 dark:text-gray-300">
 						Liga regular
 					</p>

@@ -1,6 +1,3 @@
-@include('team.schedule.filters')
-
-
 @if ($results->count() > 0)
     <p class="pb-3 mx-4 sm:mx-1 | text-xs md:text-sm uppercase tracking-wider">
         {{ $results->count() }} partidos

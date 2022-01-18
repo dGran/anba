@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Division;
 use App\Models\Team;
+use App\Models\Season;
 use Illuminate\Http\Request;
 
 class TeamController extends Controller
@@ -45,8 +46,10 @@ class TeamController extends Controller
         return view('team.player_stats', ['team' => $team]);
     }
 
-    public function schedule($slug) {
+    public function schedule(Request $request) {
+        $slug = $request->t;
         $team = Team::where('slug', $slug)->first();
-        return view('team.schedule', ['team' => $team]);
+        $season = $request->season;
+        return view('team.schedule', ['t' => $slug, 'team' => $team, 'season' => $season]);
     }
 }

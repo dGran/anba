@@ -15,7 +15,7 @@
                     $season_team_matches = $season_team->team->get_season_team_matches($ts->season->id)->count();
                 @endphp
                 <td class="px-2 py-0.5 border-r border-gray-200 dark:border-gray-700 text-left">
-                    <x-link href="#" class="hover:underline focus:underline">{{ $ts->season->name }}</x-link>
+                    <x-link href="{{ route('team.schedule', ['t' => $team->slug, 'season' => $ts->season->slug]) }}" class="hover:underline focus:underline">{{ $ts->season->name }}</x-link>
                 </td>
                 <td class="px-2 py-0.5 border-r border-gray-200 dark:border-gray-700 text-left"><x-link href="#" class="hover:underline focus:underline">ANBA</x-link></td>
                 <td class="px-2 py-0.5 border-r border-gray-200 dark:border-gray-700 text-left"><x-link href="#" class="hover:underline focus:underline">{{ $season_team->team->name }}</x-link></td>

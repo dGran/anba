@@ -8,7 +8,7 @@ use App\Models\Season;
 use App\Models\SeasonTeam;
 use App\Models\Match;
 
-class Schedule extends Component
+class Test extends Component
 {
     public $t;
     public $team;
@@ -102,8 +102,8 @@ class Schedule extends Component
         return $regs;
     }
 
-    public function mount($team, $t, $season)
-    {
+	public function mount($team, $t, $season)
+	{
         $this->team = $team;
         $this->t = $t;
         if (!$season) {
@@ -121,7 +121,7 @@ class Schedule extends Component
             ->where('seasons_teams.id', '<>', $this->season_team->id)
             ->orderBy('teams.short_name')
             ->get();
-    }
+	}
 
     public function render()
     {
@@ -140,19 +140,19 @@ class Schedule extends Component
 
             if ($season_team->id == $this->season_team->id) {
                 if ($index-1 >= 0) {
-                    $prior_team = $more_teams[$index-1]->id;
+                    $prior_team = $more_teams[$index-1]->team->slug;
                 } else {
-                    $prior_team = $more_teams[$more_teams->count()-1]->id;
+                    $prior_team = $more_teams[$more_teams->count()-1]->team->slug;
                 }
                 if ($index+1 < $more_teams->count()) {
-                    $next_team = $more_teams[$index+1]->id;
+                    $next_team = $more_teams[$index+1]->team->slug;
                 } else {
-                    $next_team = $more_teams[0]->id;
+                    $next_team = $more_teams[0]->team->slug;
                 }
             }
         }
 
-        return view('team.schedule.index', [
+        return view('team.test.index', [
             'results'           => $this->getSchedule(),
             'seasons'           => $seasons,
             'more_teams'        => $more_teams,
