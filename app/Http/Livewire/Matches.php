@@ -127,7 +127,7 @@ class Matches extends Component
     		}
     		$current_season = Season::where('slug', $this->season)->first();
 
-    		$seasons = Season::orderBy('id', 'desc')->get();
+    		$seasons = Season::orderBy('name', 'desc')->get();
 
 	    	$season_teams = SeasonTeam::
 	    	with('team')
