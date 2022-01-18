@@ -54,9 +54,10 @@ class Roster extends Component
         $this->playerInfoModal = true;
     }
 
-	public function mount($team)
+	public function mount($team, $t)
 	{
 		$this->team = $team;
+        $this->t = $t;
 
         if ($season = Season::where('current', 1)->first()) {
             $this->current_season = $season;
