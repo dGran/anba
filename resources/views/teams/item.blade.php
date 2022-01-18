@@ -4,7 +4,7 @@
         <a href="{{ route('team.home', [$team->slug]) }}" class="font-semibold text-base md:text-lg hover:underline focus:underline">{{ $team->name }}</a>
         <ul class="flex items-center space-x-2 lg:space-x-4">
             <li>
-                <x-link href="{{ route('team.roster', $team->slug) }}" class="text-sm text-gray-500 dark:text-gray-400 hover:underline focus:underline">Roster</x-link>
+                <x-link href="{{ route('team.roster', ['t' => $team->slug]) }}" class="text-sm text-gray-500 dark:text-gray-400 hover:underline focus:underline">Roster</x-link>
             </li>
             <li>
                 <x-link href="{{ route('team.schedule', ['t' => $team->slug, 'season' => null]) }}" class="text-sm text-gray-500 dark:text-gray-400 hover:underline focus:underline">Schedule</x-link>
