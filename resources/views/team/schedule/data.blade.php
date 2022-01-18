@@ -15,7 +15,7 @@
                 @if ($result->played)
                     <div class="flex-1 pr-2 md:pr-0 my-auto flex flex-col">
                         <div class="md:px-4 | font-roboto text-xs md:text-sm | text-gray-500 dark:text-gray-400">
-                            {{ $result->clash_id ? 'PlayOffs: ' . $result->clash->round->name .' (P. ' . $result->order . ')' : 'Liga regular' }}
+                            {{ $result->clash_id ? $result->clash->round->playoff->name. ': ' . $result->clash->round->name .' (P. ' . $result->order . ')' : 'Liga regular' }}
                         </div>
 
                         <div class="md:hidden flex items-center">
