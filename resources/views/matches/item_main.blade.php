@@ -19,7 +19,10 @@
 		<div class="flex-1">
 			<img src="{{ $reg->localTeam->team->getImg() }}" alt="{{ $reg->localTeam->team->short_name }}" style="width: 52px; height: 52px" class="mb-3 mx-auto">
 
-			<div class="text-center text-sm">{{ $reg->localTeam->team->medium_name }}</div>
+			<div class="text-center text-sm">
+				<a href="{{ route('team.home', $reg->localTeam->team->slug) }}" class="hover:underline focus:underline focus:outline-none">{{ $reg->localTeam->team->medium_name }}</a>
+			</div>
+
 			@php
 				$local_played_matches = $current_season->get_table_data_team_record($reg->localTeam->id);
 			@endphp
@@ -51,7 +54,9 @@
 
 	    <div class="flex-1">
 			<img src="{{ $reg->visitorTeam->team->getImg() }}" alt="{{ $reg->visitorTeam->team->short_name }}" style="width: 52px; height: 52px" class="mb-3 mx-auto">
-			<div class="text-center text-sm">{{ $reg->visitorTeam->team->medium_name }}</div>
+			<div class="text-center text-sm">
+				<a href="{{ route('team.home', $reg->visitorTeam->team->slug) }}" class="hover:underline focus:underline focus:outline-none">{{ $reg->visitorTeam->team->medium_name }}</a>
+			</div>
 			@php
 				$visitor_played_matches = $current_season->get_table_data_team_record($reg->visitorTeam->id);
 			@endphp

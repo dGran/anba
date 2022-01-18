@@ -39,8 +39,14 @@
 							<td class="px-3 py-1.5 border-b border-gray-200 dark:border-gray-700 | text-sm"  style="min-width: 150px;">
 								<div class="flex items-center space-x-3">
 									<img src="{{ $player->team ? $player->team->getImg() : asset('storage/teams/default.png') }}" alt="" class="w-8 object-cover">
-									<span class="md:hidden {{ $player->team ?: 'text-gray-400' }}">{{ $player->team ? $player->team->medium_name : 'Sin equipo' }}</span>
-									<span class="hidden md:block {{ $player->team ?: 'text-gray-400' }}">{{ $player->team ? $player->team->name : 'Sin equipo' }}</span>
+									@if ($player->team)
+										<a href="{{ route('team.home', $player->team->slug) }}" class="hover:underline focus:underline focus:outline-none">
+											<span class="md:hidden">{{ $player->team->medium_name }}</span>
+											<span class="hidden md:block">{{ $player->team->name }}</span>
+										</a>
+									@else
+										<span class="text-gray-400">Sin equipo</span>
+									@endif
 								</div>
 							</td>
 							<td class="px-3 py-1.5 border-b border-gray-200 dark:border-gray-700 | text-sm | text-center">

@@ -3,18 +3,30 @@
         @if ($position == 'left')
             <img src="{{ $clash->visitorTeam ? $clash->visitorTeam->team->getImg() : asset('storage/teams/default.png') }}" alt="{{ $clash->visitorTeam ? $clash->visitorTeam->team->short_name : '' }}" class="w-8 h-8 object-cover">
             <div class="ml-1.5 flex flex-col text-left truncate">
-                <p class="text-xs uppercase leading-4">
-                    {{ $clash->visitorTeam ? '(' . $clash->regular_position_visitor . ') ' . $clash->visitorTeam->team->short_name : 'N/D' }}
-                </p>
+                <div class="text-xs uppercase leading-4">
+                    @if ($clash->visitorTeam)
+                        <a href="{{ route('team.home', $clash->visitorTeam->team->slug) }}" class="hover:underline focus:underline focus:outline-none">
+                            ({{ $clash->regular_position_visitor }}) {{ $clash->visitorTeam->team->short_name }}
+                        </a>
+                    @else
+                        <span>N/D</span>
+                    @endif
+                </div>
                 <p class="text-xxs truncate text-gray-600 dark:text-gray-350">
                     {{ $clash->visitorManager ? $clash->visitorManager->name : '' }}
                 </p>
             </div>
         @else
             <div class="mr-1.5 flex flex-col text-right truncate">
-                <p class="text-xs uppercase leading-4">
-                    {{ $clash->visitorTeam ? $clash->visitorTeam->team->short_name . ' (' . $clash->regular_position_visitor . ')' : 'N/D' }}
-                </p>
+                <div class="text-xs uppercase leading-4">
+                    @if ($clash->visitorTeam)
+                        <a href="{{ route('team.home', $clash->visitorTeam->team->slug) }}" class="hover:underline focus:underline focus:outline-none">
+                            {{ $clash->visitorTeam->team->short_name }} ({{ $clash->regular_position_visitor }})
+                        </a>
+                    @else
+                        <span>N/D</span>
+                    @endif
+                </div>
                 <p class="text-xxs truncate text-gray-600 dark:text-gray-350">
                     {{ $clash->visitorManager ? $clash->visitorManager->name : '' }}
                 </p>

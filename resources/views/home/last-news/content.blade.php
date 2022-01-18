@@ -25,7 +25,7 @@
                         <span class="text-xxs md:text-xs text-gray-700 dark:text-white">{{ $post->created_at->diffForHumans() }}</span>
                     </div>
                     @if ($post->match_id)
-                        <a href="{{ route('match', $post->match_id) }}" class="text-base md:text-xl font-bold leading-4 my-1 md:pb-1 whitespace-pre-line underline focus:outline-none">{{ $post->title }}</a>
+                        <a href="{{ route('match', $post->match_id) }}" class="text-base md:text-xl font-bold leading-4 my-1 md:pb-1 whitespace-pre-line hover:underline focus:underline focus:outline-none">{{ $post->title }}</a>
                     @else
                         <h4 class="text-base md:text-xl font-bold leading-4 my-1 md:pb-1 whitespace-pre-line">{{ $post->title }}</h4>
                     @endif

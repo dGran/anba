@@ -527,6 +527,7 @@ class Season extends Model
                 'team_name' => $team->team->name,
                 'team_medium_name' => $team->team->medium_name,
                 'team_short_name' => $team->team->short_name,
+                'team_slug' => $team->team->slug,
                 'team_img' => $team->team->getImg(),
                 'team_with_manager' => $team->team->user ? true : false,
                 'team_manager' => $team->team->user ? $team->team->user->name : 'Sin manager',
