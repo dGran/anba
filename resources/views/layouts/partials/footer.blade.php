@@ -47,7 +47,7 @@
                         <li class="py-1"><a href="{{ route('players') }}" class="block outline-none hover:text-white focus:text-white">Jugadores</a></li>
                         <li class="py-1"><a href="{{ route('teams') }}" class="block outline-none hover:text-white focus:text-white">Equipos</a></li>
                         <li class="py-1"><a href="{{ route('managers') }}" class="block outline-none hover:text-white focus:text-white">Managers</a></li>
-                        <li class="py-1"><a href="http://anba2k.es/phpBB3/index.php" target="_blank" class="block outline-none hover:text-white focus:text-white">Foro</a></li>
+                        {{-- <li class="py-1"><a href="http://anba2k.es/phpBB3/index.php" target="_blank" class="block outline-none hover:text-white focus:text-white">Foro</a></li> --}}
                     </ul>
                 </div>
             </li>
@@ -127,7 +127,7 @@
                     <li class="py-1"><a href="{{ route('players') }}" class="block outline-none hover:text-white focus:text-white">Jugadores</a></li>
                     <li class="py-1"><a href="{{ route('teams') }}" class="block outline-none hover:text-white focus:text-white">Equipos</a></li>
                     <li class="py-1"><a href="{{ route('managers') }}" class="block outline-none hover:text-white focus:text-white">Managers</a></li>
-                    <li class="py-1"><a href="http://anba2k.es/phpBB3/index.php" target="_blank" class="block outline-none hover:text-white focus:text-white">Foro</a></li>
+                    {{-- <li class="py-1"><a href="http://anba2k.es/phpBB3/index.php" target="_blank" class="block outline-none hover:text-white focus:text-white">Foro</a></li> --}}
                 </ul>
             </div>
 

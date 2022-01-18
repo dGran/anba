@@ -1,11 +1,11 @@
 @php
     $navLinks = [
-        ['href' => '/partidos', 'name' => 'matches', 'text' => 'Partidos', 'class' => '', 'icon' => 'icon-ball'],
-        ['href' => '/clasificaciones', 'name' => 'standings', 'text' => 'Clasificaciones', 'class' => '', 'icon' => 'icon-league-table'],
-        ['href' => '/estadisticas', 'name' => 'stats', 'text' => 'Estadísticas', 'class' => '', 'icon' => 'icon-stats'],
-        ['href' => '/jugadores', 'name' => 'players', 'text' => 'Jugadores', 'class' => 'hidden md:inline-flex', 'icon' => 'icon-player'],
-        ['href' => '/equipos', 'name' => 'teams', 'text' => 'Equipos', 'class' => 'hidden lg:inline-flex', 'icon' => 'icon-shirt'],
-        ['href' => '/managers', 'name' => 'managers', 'text' => 'Managers', 'class' => 'hidden lg:inline-flex', 'icon' => 'icon-coach'],
+        ['href' => 'partidos', 'name' => 'matches', 'text' => 'Partidos', 'class' => '', 'icon' => 'icon-ball'],
+        ['href' => 'clasificaciones', 'name' => 'standings', 'text' => 'Clasificaciones', 'class' => '', 'icon' => 'icon-league-table'],
+        ['href' => 'estadisticas', 'name' => 'stats', 'text' => 'Estadísticas', 'class' => '', 'icon' => 'icon-stats'],
+        ['href' => 'jugadores', 'name' => 'players', 'text' => 'Jugadores', 'class' => 'hidden md:inline-flex', 'icon' => 'icon-player'],
+        ['href' => 'equipos', 'name' => 'teams', 'text' => 'Equipos', 'class' => 'hidden lg:inline-flex', 'icon' => 'icon-shirt'],
+        ['href' => 'managers', 'name' => 'managers', 'text' => 'Managers', 'class' => 'hidden lg:inline-flex', 'icon' => 'icon-coach'],
     ]
 @endphp
 
@@ -32,13 +32,16 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-4 sm:-my-px sm:ml-10 sm:flex">
                     @foreach ($navLinks as $link)
-                        <x-nav-link :href="$link['href']" :active="request()->routeIs($link['name'])" :class="$link['class']">
+                        @php
+                            $active = Str::startsWith(request()->route()->uri, $link['href']) ? true : false;
+                        @endphp
+                        <x-nav-link :href="route($link['name'])" :active="$active" :class="$link['class']">
                             {{ __($link['text']) }}
                         </x-nav-link>
                     @endforeach
-                    <a href="http://anba2k.es/phpBB3/index.php" target="_blank" class="uppercase inline-flex items-center px-1 pt-1 text-sm font-medium leading-5 text-gray-300 hover:text-white focus:text-white focus:outline-none transition duration-150 ease-in-out transform hover:translate-y-0.5 hidden lg:inline-flex">
+{{--                     <a href="http://anba2k.es/phpBB3/index.php" target="_blank" class="uppercase inline-flex items-center px-1 pt-1 text-sm font-medium leading-5 text-gray-300 hover:text-white focus:text-white focus:outline-none transition duration-150 ease-in-out transform hover:translate-y-0.5 hidden lg:inline-flex">
                         Foro
-                    </a>
+                    </a> --}}
                 </div>
             </div>
 
@@ -236,20 +239,23 @@
         x-transition:leave-end="opacity-0 transform scale-x-0">
         <ul class="bg-header-bg-light dark:bg-gray-900 shadow-lg w-full" @click.away="open = false">
             @foreach ($navLinks as $link)
-                <x-responsive-nav-link :href="$link['href']" :active="request()->routeIs($link['name'])">
+                @php
+                    $active = Str::startsWith(request()->route()->uri, $link['href']) ? true : false;
+                @endphp
+                <x-responsive-nav-link :href="route($link['name'])" :active="$active">
                     <x-slot name="icon">
                         {{ $link['icon'] }}
                     </x-slot>
                     {{ __($link['text']) }}
                 </x-responsive-nav-link>
             @endforeach
-            <li class="text-sm uppercase border-b border-header-bg-dark dark:border-gray-800">
+{{--             <li class="text-sm uppercase border-b border-header-bg-dark dark:border-gray-800">
                 <a href="http://anba2k.es/phpBB3/index.php" target="_blank" class="group flex items-center justify-between px-6 py-3 text-sm uppercase text-gray-300 leading-4 focus:outline-none transition duration-150 ease-in-out hover:text-white focus:text-white transform hover:-translate-x-1 focus:-translate-x-1 hover:bg-header-bg-lighter focus:bg-header-bg-lighter active:bg-header-bg-lighter dark:hover:bg-gray-800 dark:focus:bg-gray-800 dark:active:bg-gray-800">
                     <span><i class="icon-forum mr-4 text-xl"></i></span>
                     <span class="flex-1">Foro</span>
                     <i class="fas fa-chevron-right text-gray-400 dark:text-gray-500 group-hover:text-white group-focus:text-white"></i>
                 </a>
-            </li>
+            </li> --}}
         </ul>
     </div>
 
