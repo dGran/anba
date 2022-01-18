@@ -11,6 +11,7 @@ use App\Models\SeasonTeam;
 
 class Roster extends Component
 {
+    public $t;
     public $team;
 
     public $season_team;
@@ -18,6 +19,18 @@ class Roster extends Component
 
     public $playerInfo, $playerInfoStats;
     public $playerInfoModal = false;
+
+    // queryString
+    protected $queryString = [
+        't'
+    ];
+
+    public function change_team($team)
+    {
+        $this->season_team = SeasonTeam::find($team);
+        $this->t = $this->season_team->team->slug;
+        $this->team = $this->season_team->team;
+    }
 
     public function openPlayerInfo($player_id)
     {
@@ -58,7 +71,6 @@ class Roster extends Component
             leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
             ->select('seasons_teams.*')
             ->where('seasons_teams.season_id', $this->current_season->id)
-            // ->where('seasons_teams.id', '<>', $this->season_team->id)
             ->orderBy('teams.short_name')
             ->get();
 
@@ -68,14 +80,14 @@ class Roster extends Component
 
             if ($season_team->id == $this->season_team->id) {
                 if ($index-1 >= 0) {
-                    $prior_team = $more_teams[$index-1]->team->slug;
+                    $prior_team = $more_teams[$index-1]->id;
                 } else {
-                    $prior_team = $more_teams[$more_teams->count()-1]->team->slug;
+                    $prior_team = $more_teams[$more_teams->count()-1]->id;
                 }
                 if ($index+1 < $more_teams->count()) {
-                    $next_team = $more_teams[$index+1]->team->slug;
+                    $next_team = $more_teams[$index+1]->id;
                 } else {
-                    $next_team = $more_teams[0]->team->slug;
+                    $next_team = $more_teams[0]->id;
                 }
             }
         }

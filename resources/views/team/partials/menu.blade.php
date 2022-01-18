@@ -3,7 +3,7 @@
         <a class="truncate focus:outline-none pb-1 border-b-2 transition duration-150 ease-in-out {{ $routeName == 'team.home' ? 'border-blue-500 dark:border-dark-link | pointer-events-none' : 'border-transparent cursor-pointer hover:border-blue-500 dark:hover:border-dark-link focus:border-blue-500 dark:focus:border-dark-link' }}" href="{{ route('team.home', $team->slug) }}">Home</a>
     </li>
     <li class="">
-        <a class="truncate focus:outline-none pb-1 border-b-2 transition duration-150 ease-in-out {{ $routeName == 'team.roster' ? 'border-blue-500 dark:border-dark-link | pointer-events-none' : 'border-transparent cursor-pointer hover:border-blue-500 dark:hover:border-dark-link focus:border-blue-500 dark:focus:border-dark-link' }}" href="{{ route('team.roster', $team->slug) }}">Roster</a>
+        <a class="truncate focus:outline-none pb-1 border-b-2 transition duration-150 ease-in-out {{ $routeName == 'team.roster' ? 'border-blue-500 dark:border-dark-link | pointer-events-none' : 'border-transparent cursor-pointer hover:border-blue-500 dark:hover:border-dark-link focus:border-blue-500 dark:focus:border-dark-link' }}" href="{{ route('team.roster', ['t' => $team->slug]) }}">Roster</a>
     </li>
     <li class="">
         <a class="truncate focus:outline-none pb-1 border-b-2 transition duration-150 ease-in-out {{ $routeName == 'team.schedule' ? 'border-blue-500 dark:border-dark-link | pointer-events-none' : 'border-transparent cursor-pointer hover:border-blue-500 dark:hover:border-dark-link focus:border-blue-500 dark:focus:border-dark-link' }}" href="{{ route('team.schedule', ['t' => $team->slug, 'season' => null]) }}">Schedule</a>

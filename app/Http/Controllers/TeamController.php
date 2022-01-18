@@ -26,9 +26,15 @@ class TeamController extends Controller
         return view('team.home', ['team' => $team]);
     }
 
-    public function roster($slug) {
+    // public function roster($slug) {
+    //     $team = Team::where('slug', $slug)->first();
+    // 	return view('team.roster', ['team' => $team]);
+    // }
+
+    public function roster(Request $request) {
+        $slug = $request->t;
         $team = Team::where('slug', $slug)->first();
-    	return view('team.roster', ['team' => $team]);
+        return view('team.roster', ['t' => $slug, 'team' => $team]);
     }
 
     public function leaders($slug) {

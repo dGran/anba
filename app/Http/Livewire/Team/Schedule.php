@@ -130,7 +130,6 @@ class Schedule extends Component
             leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
             ->select('seasons_teams.*')
             ->where('seasons_teams.season_id', $this->current_season->id)
-            // ->where('seasons_teams.id', '<>', $this->season_team->id)
             ->orderBy('teams.short_name')
             ->get();
 
