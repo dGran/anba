@@ -17,12 +17,15 @@ class Roster extends Component
     public $season_team;
     public $current_season;
 
+    public $view = "card";
+
     public $playerInfo, $playerInfoStats;
     public $playerInfoModal = false;
 
     // queryString
     protected $queryString = [
-        't'
+        't',
+        'view' => ['except' => "card"],
     ];
 
     public function change_team($team)
