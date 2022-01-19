@@ -50,12 +50,12 @@ Route::prefix('jugadores')->group(function() {
 
 Route::prefix('equipos')->group(function() {
 	Route::get('/', [TeamController::class, 'teams'])->name('teams');
-	Route::get('/plantilla', [TeamController::class, 'roster'])->name('team.roster');
-	Route::get('/calendario', [TeamController::class, 'schedule'])->name('team.schedule');
-	Route::get('/lideres', [TeamController::class, 'leaders'])->name('team.leaders');
-	Route::get('/{team:slug}', [TeamController::class, 'home'])->name('team.home');
-	Route::get('/{team:slug}/estadisticas-de-equipo', [TeamController::class, 'teamStats'])->name('team.team_stats');
-	Route::get('/{team:slug}/estadisticas-de-jugadores', [TeamController::class, 'playerStats'])->name('team.player_stats');
+	Route::get('/home', [TeamController::class, 'home'])->name('team.home');
+	Route::get('/roster', [TeamController::class, 'roster'])->name('team.roster');
+	Route::get('/schedule', [TeamController::class, 'schedule'])->name('team.schedule');
+	Route::get('/leaders', [TeamController::class, 'leaders'])->name('team.leaders');
+	Route::get('/team-stats', [TeamController::class, 'teamStats'])->name('team.team_stats');
+	Route::get('/player-stats', [TeamController::class, 'playerStats'])->name('team.player_stats');
 });
 
 Route::get('/managers', function () {

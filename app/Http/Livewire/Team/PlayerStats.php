@@ -11,14 +11,14 @@ use App\Models\SeasonTeam;
 
 class PlayerStats extends Component
 {
+    public $t;
     public $team;
 
     public $season_team;
     public $season;
     public $current_season;
-    public $phase = "regular";
+    public $phase = "all";
     public $mode = "per_game";
-
     public $order = "AVG_PTS";
     public $order_direction = "desc";
 
@@ -27,6 +27,10 @@ class PlayerStats extends Component
 
     // queryString
     protected $queryString = [
+        't',
+        'season',
+        'phase' => ['except' => "all"],
+        'mode' => ['except' => "per_game"],
         'order',
         'order_direction',
     ];
@@ -51,6 +55,19 @@ class PlayerStats extends Component
 
 
         $this->playerInfoModal = true;
+    }
+
+    public function change_team($team)
+    {
+        $this->season_team = SeasonTeam::find($team);
+        $this->t = $this->season_team->team->slug;
+        $this->team = $this->season_team->team;
+    }
+
+    public function change_season()
+    {
+        $this->current_season = Season::where('slug', $this->season)->first();
+        $this->season_team = SeasonTeam::where('season_id', $this->current_season->id)->where('team_id', $this->team->id)->first();
     }
 
     public function change_order($order)
@@ -89,7 +106,6 @@ class PlayerStats extends Component
             } else {
                 $pre_order = 'SUM';
             }
-            // $order = $pre_order . $rest_order;
             $this->change_order_mode($rest_order);
         } else {
             $this->change_order_mode($this->order);
@@ -106,12 +122,6 @@ class PlayerStats extends Component
             }
         }
         $this->page = 1;
-    }
-
-    public function change_season()
-    {
-        $this->current_season = Season::where('slug', $this->season)->first();
-        $this->season_team = SeasonTeam::where('season_id', $this->current_season->id)->where('team_id', $this->team->id)->first();
     }
 
     public function getPlayersStats()
@@ -163,10 +173,12 @@ class PlayerStats extends Component
                     \DB::raw('SUM(headline) as PT'),
                 );
         $PlayersStats = $PlayersStats->where('players_stats.season_id', $this->current_season->id);
-        if ($this->phase == "regular") {
-            $PlayersStats = $PlayersStats->whereNull('matches.clash_id');
-        } else {
-            $PlayersStats = $PlayersStats->whereNotNull('matches.clash_id');
+        if ($this->phase != 'all') {
+            if ($this->phase == "regular") {
+                $PlayersStats = $PlayersStats->whereNull('matches.clash_id');
+            } else {
+                $PlayersStats = $PlayersStats->whereNotNull('matches.clash_id');
+            }
         }
 
         $PlayersStats = $PlayersStats->where('players_stats.season_team_id', $this->season_team->id);
@@ -183,15 +195,18 @@ class PlayerStats extends Component
         return $PlayersStats;
     }
 
-	public function mount($team)
+	public function mount($team, $t, $season)
 	{
-		$this->team = $team;
-
-        if ($season = Season::where('current', 1)->first()) {
-            $this->current_season = $season;
-            $this->season = $season->slug;
-            $this->season_team = SeasonTeam::where('season_id', $this->current_season->id)->where('team_id', $this->team->id)->first();
+        $this->team = $team;
+        $this->t = $t;
+        if (!$season) {
+            $this->season = Season::where('current', 1)->first()->slug;
+        } else {
+            $this->season = $season;
         }
+
+        $this->current_season = Season::where('slug', $this->season)->first();
+        $this->season_team = SeasonTeam::where('season_id', $this->current_season->id)->where('team_id', $this->team->id)->first();
 	}
 
     public function render()
@@ -201,7 +216,6 @@ class PlayerStats extends Component
             leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
             ->select('seasons_teams.*')
             ->where('seasons_teams.season_id', $this->current_season->id)
-            // ->where('seasons_teams.id', '<>', $this->season_team->id)
             ->orderBy('teams.short_name')
             ->get();
 
@@ -211,14 +225,14 @@ class PlayerStats extends Component
 
             if ($season_team->id == $this->season_team->id) {
                 if ($index-1 >= 0) {
-                    $prior_team = $more_teams[$index-1]->team->slug;
+                    $prior_team = $more_teams[$index-1]->id;
                 } else {
-                    $prior_team = $more_teams[$more_teams->count()-1]->team->slug;
+                    $prior_team = $more_teams[$more_teams->count()-1]->id;
                 }
                 if ($index+1 < $more_teams->count()) {
-                    $next_team = $more_teams[$index+1]->team->slug;
+                    $next_team = $more_teams[$index+1]->id;
                 } else {
-                    $next_team = $more_teams[0]->team->slug;
+                    $next_team = $more_teams[0]->id;
                 }
             }
         }

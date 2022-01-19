@@ -62,7 +62,6 @@ class Schedule extends Component
             $rival = SeasonTeam::find($this->rival);
             $this->rival = SeasonTeam::where('season_id', $this->current_season->id)->where('team_id', $rival->team->id)->first()->id;
         }
-
     }
 
     public function getSchedule()

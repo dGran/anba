@@ -21,15 +21,11 @@ class TeamController extends Controller
         return view('teams.index', ['divisions' => $divisions]);
     }
 
-    public function home($slug) {
+    public function home(Request $request) {
+        $slug = $request->t;
         $team = Team::where('slug', $slug)->first();
-        return view('team.home', ['team' => $team]);
+        return view('team.home', ['t' => $slug, 'team' => $team]);
     }
-
-    // public function roster($slug) {
-    //     $team = Team::where('slug', $slug)->first();
-    // 	return view('team.roster', ['team' => $team]);
-    // }
 
     public function roster(Request $request) {
         $slug = $request->t;
@@ -44,14 +40,18 @@ class TeamController extends Controller
         return view('team.leaders', ['t' => $slug, 'team' => $team, 'season' => $season]);
     }
 
-    public function teamStats($slug) {
+    public function teamStats(Request $request) {
+        $slug = $request->t;
         $team = Team::where('slug', $slug)->first();
-        return view('team.team_stats', ['team' => $team]);
+        $season = $request->season;
+        return view('team.team_stats', ['t' => $slug, 'team' => $team, 'season' => $season]);
     }
 
-    public function playerStats($slug) {
+    public function playerStats(Request $request) {
+        $slug = $request->t;
         $team = Team::where('slug', $slug)->first();
-        return view('team.player_stats', ['team' => $team]);
+        $season = $request->season;
+        return view('team.player_stats', ['t' => $slug, 'team' => $team, 'season' => $season]);
     }
 
     public function schedule(Request $request) {
