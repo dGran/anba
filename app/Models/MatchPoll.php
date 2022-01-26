@@ -14,7 +14,7 @@ class MatchPoll extends Model
 
     public function match()
     {
-        return $this->belongsTo('App\Models\Match');
+        return $this->belongsTo('App\Models\MatchModel', 'match_id', 'id');
     }
 
     public function user()

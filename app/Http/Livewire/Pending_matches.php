@@ -7,7 +7,7 @@ use Illuminate\Support\Collection;
 use Auth;
 use App\Models\Season;
 use App\Models\SeasonTeam;
-use App\Models\Match;
+use App\Models\MatchModel;
 use Carbon\Carbon;
 
 
@@ -49,7 +49,7 @@ class Pending_matches extends Component
 	{
         $this->pending_matches = collect();
         $user_id = Auth::id();
-        $matches = Match::with('localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager')
+        $matches = MatchModel::with('localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager')
         	->where('season_id', $this->current_season->id)
         	->where('played', 0)
             ->where(function($q) use ($user_id) {

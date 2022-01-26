@@ -9,7 +9,7 @@ use App\Models\SeasonConference;
 use App\Models\Playoff;
 use App\Models\PlayoffRound;
 use App\Models\PlayoffClash;
-use App\Models\Match;
+use App\Models\MatchModel;
 
 class Standings extends Component
 {
@@ -132,7 +132,7 @@ class Standings extends Component
     	$team_id = $team;
     	$seasonTeam = \App\Models\SeasonTeam::find($team_id);
 
-        $matches = \App\Models\Match::with('scores', 'localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager')
+        $matches = \App\Models\MatchModel::with('scores', 'localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager')
             ->join('scores', 'scores.match_id', 'matches.id')
 
             ->join('seasons_teams as local_seasons_teams', 'local_seasons_teams.id', 'matches.local_team_id')
@@ -382,7 +382,7 @@ class Standings extends Component
 				"destiny_clash_local"      	=> null,
 			]);
 			if ($clash->local_team_id && $clash->visitor_team_id) {
-				$match = Match::create([
+				$match = MatchModel::create([
 					'season_id' 		 	=> $current_season->id,
 					'clash_id' 			 	=> $clash->id,
 					'local_team_id' 	 	=> $clash->local_team_id,
@@ -427,7 +427,7 @@ class Standings extends Component
 				"destiny_clash_local"       => null,
 			]);
 			if ($clash->local_team_id && $clash->visitor_team_id) {
-				$match = Match::create([
+				$match = MatchModel::create([
 					'season_id' 		    => $current_season->id,
 					'clash_id' 			    => $clash->id,
 					'local_team_id' 	    => $clash->local_team_id,
@@ -484,7 +484,7 @@ class Standings extends Component
 				"destiny_clash_local" 	    => false,
 			]);
 			if ($clash->local_team_id && $clash->visitor_team_id) {
-				$match = Match::create([
+				$match = MatchModel::create([
 					'season_id' 		 	=> $current_season->id,
 					'clash_id' 			 	=> $clash->id,
 					'local_team_id' 	 	=> $clash->local_team_id,
@@ -560,7 +560,7 @@ class Standings extends Component
 				"destiny_clash_local"  	   	=> false,
 			]);
 			if ($clash->local_team_id && $clash->visitor_team_id) {
-				$match = Match::create([
+				$match = MatchModel::create([
 					'season_id' 		 	=> $current_season->id,
 					'clash_id' 			 	=> $clash->id,
 					'local_team_id' 	 	=> $clash->local_team_id,
@@ -871,7 +871,7 @@ class Standings extends Component
 		$current_season = Season::where('slug', $this->season)->first();
 		foreach ($playoff->rounds->first()->clashes as $clash) {
 			if ($clash->local_team_id && $clash->visitor_team_id) {
-				$match = Match::create([
+				$match = MatchModel::create([
 					'season_id' 		 => $current_season->id,
 					'clash_id' 			 => $clash->id,
 					'local_team_id' 	 => $clash->regular_position_local <= $clash->regular_position_visitor ? $clash->local_team_id : $clash->visitor_team_id,

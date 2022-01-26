@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Models\Season;
 use App\Models\SeasonTeam;
-use App\Models\Match as MatchModel;
+use App\Models\MatchModel;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;

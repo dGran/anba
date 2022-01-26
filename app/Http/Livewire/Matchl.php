@@ -13,7 +13,7 @@ use App\Models\PlayerStat;
 use App\Http\Traits\PostTrait;
 use App\Events\PostStored;
 
-class Match extends Component
+class Matchl extends Component
 {
 	use PostTrait;
 
@@ -198,7 +198,7 @@ class Match extends Component
 			]);
 		}
 
-		$match = \App\Models\Match::find($this->match->id);
+		$match = \App\Models\MatchModel::find($this->match->id);
 		$match->extra_times = $this->extra_times ?: 0;
 		$match->played = $match->played() ? 1 : 0;
 		$match->save();
@@ -206,7 +206,7 @@ class Match extends Component
 
 	protected function createMatchPosts($match_id)
 	{
-		$match = \App\Models\Match::find($match_id);
+		$match = \App\Models\MatchModel::find($match_id);
 
 		if ($match->winner()) {
 			$this->createResultPost($match);
@@ -305,7 +305,7 @@ class Match extends Component
 
 				if ($nextClash->local_team_id && $nextClash->visitor_team_id) {
 					//generate first match
-					$match = \App\Models\Match::create([
+					$match = \App\Models\MatchModel::create([
 						'season_id' 		 => $season->id,
 						'clash_id' 			 => $nextClash->id,
 						'local_team_id' 	 => $nextClash->regular_position_local >= $nextClash->regular_position_visitor ? $nextClash->local_team_id : $nextClash->visitor_team_id,
@@ -321,7 +321,7 @@ class Match extends Component
 				}
 			}
 		} else {
-			$order = \App\Models\Match::where('clash_id', $clash->id)->count() + 1;
+			$order = \App\Models\MatchModel::where('clash_id', $clash->id)->count() + 1;
 			$matches_to_win = $clash->round->matches_to_win;
 
 			// generate next match
@@ -374,7 +374,7 @@ class Match extends Component
 					// code...
 					break;
 			}
-			$match = \App\Models\Match::create([
+			$match = \App\Models\MatchModel::create([
 				'season_id' 		 => $clash->round->playoff->season_id,
 				'clash_id' 			 => $clash->id,
 				'local_team_id' 	 => $local_team,
@@ -393,7 +393,7 @@ class Match extends Component
 
 	protected function createClashPosts($match_id)
 	{
-		$match = \App\Models\Match::find($match_id);
+		$match = \App\Models\MatchModel::find($match_id);
 
 		if ($match->winner()) {
 			$this->createClashResultPost($match);
@@ -1056,7 +1056,7 @@ class Match extends Component
 	    		$this->calcVisitorPlayerStatsTotals();
 			}
 		} else {
-			$this->match = \App\Models\Match::find($this->match->id);
+			$this->match = \App\Models\MatchModel::find($this->match->id);
 		}
 
 		$this->loadStats();

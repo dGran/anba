@@ -3,7 +3,7 @@
 		<p class="m-0 text-right mr-3 font-semibold w-6 md:w-8">{{ $loop->iteration }}</p>
 		<img src="{{ $position['team']->team->getImg() }}" alt="{{ $position['team']->team->short_name }}" class="mr-2 w-8 h-8">
 		<p class="truncate">
-			<a href="{{ route('team.home', $position['team']->team->slug) }}" class="hover:underline focus:underline focus:outline-none">
+			<a href="{{ route('team.home', ['t' => $position['team']->team->slug]) }}" class="hover:underline focus:underline focus:outline-none">
 				<span class="hidden md:block">{{ $position['team']->team->name }}</span>
 				<span class="md:hidden">{{ $position['team']->team->medium_name }}</span>
 			</a>

@@ -63,7 +63,7 @@ class Season extends Model
         if (SeasonDivision::where('season_id', $this->id)->count() > 0) { return false; }
         if (SeasonTeam::where('season_id', $this->id)->count() > 0) { return false; }
         if (Statement::where('season_id', $this->id)->count() > 0) { return false; }
-        if (\App\Models\Match::where('season_id', $this->id)->count() > 0) { return false; }
+        if (\App\Models\MatchModel::where('season_id', $this->id)->count() > 0) { return false; }
         if (TeamStat::where('season_id', $this->id)->count() > 0) { return false; }
         if (PlayerStat::where('season_id', $this->id)->count() > 0) { return false; }
         if (Round::where('season_id', $this->id)->count() > 0) { return false; }
@@ -327,7 +327,7 @@ class Season extends Model
             "streak" => 0,
         ];
 
-        $matches = \App\Models\Match::with('scores')
+        $matches = \App\Models\MatchModel::with('scores')
             ->join('scores', 'scores.match_id', 'matches.id')
 
             ->join('seasons_teams as local_seasons_teams', 'local_seasons_teams.id', 'matches.local_team_id')
@@ -460,7 +460,7 @@ class Season extends Model
             "l" => 0,
         ];
 
-        $matches = Match::
+        $matches = MatchModel::
             with('scores')
             ->where('season_id', $this->id)
             ->whereNull('clash_id')
@@ -665,7 +665,7 @@ class Season extends Model
 
     public function regular_finished()
     {
-        $pending_regular_matches = Match::where('season_id', $this->id)->whereNull('clash_id')->where('played', 0)->count();
+        $pending_regular_matches = MatchModel::where('season_id', $this->id)->whereNull('clash_id')->where('played', 0)->count();
         if ($pending_regular_matches == 0) {
             return true;
         }

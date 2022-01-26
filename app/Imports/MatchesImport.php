@@ -4,7 +4,7 @@ namespace App\Imports;
 
 use App\Models\User;
 use App\Models\Season;
-use App\Models\Match;
+use App\Models\MatchModel;
 use App\Models\SeasonTeam;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -27,7 +27,7 @@ class MatchesImport implements ToModel, WithHeadingRow
                 if ($local_team->count() > 0 && $visitor_team->count() > 0) {
                     $stadium = $local_team->first()->team->stadium;
 
-                    $reg = Match::create([
+                    $reg = MatchModel::create([
                         'season_id'          => $row['season_id'],
                         'clash_id'           => $row['clash_id'],
                         'local_team_id'      => $row['local_team_id'],
@@ -45,7 +45,7 @@ class MatchesImport implements ToModel, WithHeadingRow
                 }
             }
         } else {
-            if ($reg = Match::find($row['id'])) {
+            if ($reg = MatchModel::find($row['id'])) {
                 $before = $reg->toJson(JSON_PRETTY_PRINT);
                 $local_team = SeasonTeam::where('season_id', $reg->season_id)->where('id', $row['local_team_id'])->get();
                 $visitor_team = SeasonTeam::where('season_id', $reg->season_id)->where('id', $row['visitor_team_id'])->get();

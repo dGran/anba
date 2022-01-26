@@ -6,7 +6,7 @@ use Livewire\Component;
 use App\Models\Team;
 use App\Models\Season;
 use App\Models\SeasonTeam;
-use App\Models\Match;
+use App\Models\MatchModel;
 
 class Schedule extends Component
 {
@@ -66,7 +66,7 @@ class Schedule extends Component
 
     public function getSchedule()
     {
-        $regs = Match::
+        $regs = MatchModel::
             with('localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager', 'scores', 'playerStats.player', 'playerStats.seasonTeam.team')
             ->leftJoin('scores', 'scores.match_id', 'matches.id')
             ->leftJoin('seasons_teams', function($join){

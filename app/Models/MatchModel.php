@@ -5,9 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Match extends Model
+class MatchModel extends Model
 {
     use HasFactory;
+
+    protected $table = "matches";
 
     protected $fillable = [
         'season_id',
@@ -46,7 +48,7 @@ class Match extends Model
 
     public function scores()
     {
-        return $this->hasMany('App\Models\Score');
+        return $this->hasMany('App\Models\Score', 'match_id', 'id');
     }
 
     public function season()
@@ -66,17 +68,17 @@ class Match extends Model
 
     public function playerStats()
     {
-        return $this->hasMany('App\Models\PlayerStat');
+        return $this->hasMany('App\Models\PlayerStat', 'match_id', 'id');
     }
 
     public function teamStats()
     {
-        return $this->hasMany('App\Models\TeamStat');
+        return $this->hasMany('App\Models\TeamStat', 'match_id', 'id');
     }
 
     public function posts()
     {
-        return $this->hasMany('App\Models\Post');
+        return $this->hasMany('App\Models\Post', 'match_id', 'id');
     }
 
     public function scopeSeason($query, $value)
@@ -521,7 +523,7 @@ class Match extends Model
     public function lastClashes()
     {
         $current = $this;
-        return Match::
+        return MatchModel::
             leftJoin('scores', 'scores.match_id', 'matches.id')
             ->leftJoin('seasons_teams', function($join){
                 $join->on('seasons_teams.id','=','matches.local_team_id');
@@ -546,7 +548,7 @@ class Match extends Model
     public function lastClashes_wins()
     {
         $current = $this;
-        $regs = Match::
+        $regs = MatchModel::
             leftJoin('scores', 'scores.match_id', 'matches.id')
             ->leftJoin('seasons_teams', function($join){
                 $join->on('seasons_teams.id','=','matches.local_team_id');

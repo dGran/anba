@@ -3,7 +3,7 @@
 namespace App\Imports;
 
 use App\Models\Post;
-use App\Models\Match;
+use App\Models\MatchModel;
 use App\Models\Statement;
 use App\Models\Transfer;
 use Illuminate\Support\Str;
@@ -27,7 +27,7 @@ class PostsImport implements ToModel, WithHeadingRow
                 'title'          => $row['title'],
                 'description'    => $row['description'],
                 'img'            => $row['img'],
-                'match_id'       => Match::find($row['match_id']) ? $row['match_id'] : null,
+                'match_id'       => MatchModel::find($row['match_id']) ? $row['match_id'] : null,
                 'statement_id'   => Statement::find($row['statement_id']) ? $row['statement_id'] : null,
                 'transfer_id'    => Transfer::find($row['transfer_id']) ? $row['transfer_id'] : null,
                 'slug'           => Str::slug($row['title'], '-')

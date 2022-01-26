@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\Match;
+use App\Models\MatchModel;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -23,7 +23,7 @@ class MatchesExport implements FromCollection, WithHeadings
     */
     public function collection()
     {
-        return $this->regs ?: Match::all();
+        return $this->regs ?: MatchModel::all();
     }
 
     public function headings(): array

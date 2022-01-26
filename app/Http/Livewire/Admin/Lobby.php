@@ -6,7 +6,7 @@ use Livewire\Component;
 use App\Models\User;
 use App\Models\Season;
 use App\Models\SeasonTeam;
-use App\Models\Match as MatchModel;
+use App\Models\MatchModel;
 use App\Events\PostStored;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;

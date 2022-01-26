@@ -27,7 +27,7 @@ class Post extends Model
 
     public function match()
     {
-        return $this->belongsTo('App\Models\Match');
+        return $this->belongsTo('App\Models\MatchModel', 'match_id', 'id');
     }
 
     public function statement()
@@ -103,7 +103,28 @@ class Post extends Model
                 return $this->img;
             }
         } else {
-            return $default;
+            switch ($this->type) {
+                case 'general': return $default; break;
+                case 'resultados': return $default; break;
+                case 'records': return $default; break;
+                case 'rachas': return $default; break;
+                case 'lesiones':
+                    if ($this->player_id) {
+                        return $this->player->getImg();
+                    } else {
+                        return $default;
+                    }
+                    break;
+                case 'movimientos': return $default; break;
+                case 'destacados':
+                    if ($this->team_id) {
+                        return $this->team->getImg();
+                    } else {
+                        return $default;
+                    }
+                    break;
+                case 'declaraciones': return $default; break;
+            }
         }
     }
 

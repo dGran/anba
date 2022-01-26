@@ -52,7 +52,7 @@ class PlayoffClash extends Model
 
     public function matches()
     {
-        return $this->hasMany('App\Models\Match', 'clash_id', 'id');
+        return $this->hasMany('App\Models\MatchModel', 'clash_id', 'id');
     }
 
     public function result()

@@ -146,7 +146,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $currentSeason = Season::where('current', 1)->first();
         $user_id = $this->id;
-        $matches = Match::where('season_id', $currentSeason->id)
+        $matches = MatchModel::where('season_id', $currentSeason->id)
             ->where(function($q) use ($user_id) {
                 $q->where('matches.local_manager_id', $user_id)
                     ->orWhere('matches.visitor_manager_id', $user_id);
@@ -195,7 +195,7 @@ class User extends Authenticatable implements MustVerifyEmail
         // apply logic
         if (Team::where('manager_id', $this->id)->count() > 0) { return false; }
         if (Statement::where('manager_id', $this->id)->count() > 0) { return false; }
-        if (Match::where('local_manager_id', $this->id)->orWhere('visitor_manager_id', $this->id)->count() > 0) { return false; }
+        if (MatchModel::where('local_manager_id', $this->id)->orWhere('visitor_manager_id', $this->id)->count() > 0) { return false; }
         if (MatchPoll::where('user_id', $this->id)->count() > 0) { return false; }
         if (Score::where('updated_user_id', $this->id)->count() > 0) { return false; }
         if (TeamStat::where('updated_user_id', $this->id)->count() > 0) { return false; }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\Admin;
 
-use App\Models\Match;
+use App\Models\MatchModel;
 use App\Models\MatchPoll;
 use App\Models\Score;
 use App\Models\Player;
@@ -88,9 +88,9 @@ class MatchCrud extends Component
 	public $filenameExportSelected = '';
 
 	public function checkMatchesState() {
-		$regs = Match::all();
+		$regs = MatchModel::all();
 		foreach ($regs as $reg) {
-			$match = Match::find($reg->id);
+			$match = MatchModel::find($reg->id);
 			$match->played = $reg->played() ? 1 : 0;
 			$match->teamStats_state = $reg->checkTeamStats();
 			$match->playerStats_state = $reg->checkPlayerStats();
@@ -250,7 +250,7 @@ class MatchCrud extends Component
 
 	public function checkAll()
 	{
-    	$regs = Match::
+    	$regs = MatchModel::
     		with('localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager', 'scores', 'playerStats.player', 'teamStats')
    			->leftjoin('seasons_teams', function($join){
                 $join->on('seasons_teams.id','=','matches.local_team_id');
@@ -422,7 +422,7 @@ class MatchCrud extends Component
 		$validatedData['teamStats_state'] = 'error';
 		$validatedData['playerStats_state'] = 'error';
 
-        $reg = Match::create($validatedData);
+        $reg = MatchModel::create($validatedData);
 
         // create match_poll
 
@@ -457,7 +457,7 @@ class MatchCrud extends Component
     	$this->resetFields();
 		$this->resetValidation();
 
-    	$reg = Match::find($id);
+    	$reg = MatchModel::find($id);
 		$this->reg_id = $reg->id;
     	$this->season_id = $reg->season_id;
     	$this->local_team_id = $reg->local_team_id;
@@ -475,7 +475,7 @@ class MatchCrud extends Component
 
     public function update()
     {
-    	$reg = Match::find($this->reg_id);
+    	$reg = MatchModel::find($this->reg_id);
     	$before = $reg->toJson(JSON_PRETTY_PRINT);
 
         $validatedData = $this->validate([
@@ -527,7 +527,7 @@ class MatchCrud extends Component
     	$regs_to_delete = count($this->regsSelectedArray);
 		$regs_deleted = 0;
 		foreach ($this->regsSelectedArray as $reg) {
-			if ($reg = Match::find($reg)) {
+			if ($reg = MatchModel::find($reg)) {
 				if ($reg->canDestroy()) {
 					//restore injuries
 					foreach ($reg->playerStats as $player_stat) {
@@ -568,14 +568,14 @@ class MatchCrud extends Component
     // View
     public function view($id)
     {
-    	$this->regView = Match::find($id);
+    	$this->regView = MatchModel::find($id);
     	$this->emit('openViewModal');
     }
 
     // View
     public function boxscore($id)
     {
-    	$this->regView = Match::find($id);
+    	$this->regView = MatchModel::find($id);
 
     	if ($this->regView->scores->count() > 0 || $this->regView->teamStats->count() > 0 || $this->regView->playerStats->count() > 0) {
     		$this->update_match_managers = false;
@@ -618,7 +618,7 @@ class MatchCrud extends Component
     	if (count($this->regsSelectedArray) > 1) {
     		$counter = 0;
 			foreach ($this->regsSelectedArray as $reg) {
-	            if ($original = Match::find($reg)) {
+	            if ($original = MatchModel::find($reg)) {
 	            	$counter++;
 	                $reg = $original->replicate();
 	                //set current managers
@@ -635,7 +635,7 @@ class MatchCrud extends Component
 				session()->flash('error', 'Los registros que querías duplicar ya no existen.');
 			}
 		} elseif (count($this->regsSelectedArray) == 1) {
-            if ($original = Match::find(reset($this->regsSelectedArray))) {
+            if ($original = MatchModel::find(reset($this->regsSelectedArray))) {
                 $reg = $original->replicate();
                 //set current managers
                 $reg->local_manager_id = $original->localTeam->team->manager_id;
@@ -666,7 +666,7 @@ class MatchCrud extends Component
 
     	$filename = $this->filenameExportTable ?: 'partidos';
 
-    	$regs = Match::
+    	$regs = MatchModel::
     		with('localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager', 'scores', 'playerStats.player', 'teamStats')
    			->leftjoin('seasons_teams', function($join){
                 $join->on('seasons_teams.id','=','matches.local_team_id');
@@ -708,7 +708,7 @@ class MatchCrud extends Component
 
     	$filename = $this->filenameExportSelected ?: 'partidos_seleccionados';
 
-    	$regs = Match::
+    	$regs = MatchModel::
     		with('localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager', 'scores', 'playerStats.player', 'teamStats')
    			->leftjoin('seasons_teams', function($join){
                 $join->on('seasons_teams.id','=','matches.local_team_id');
@@ -758,7 +758,7 @@ class MatchCrud extends Component
 
     public function checkMatches()
     {
-    	$matches = Match::with('localTeam.team')->with('visitorTeam.team')->where('matches.season_id', $this->season->id)->get();
+    	$matches = MatchModel::with('localTeam.team')->with('visitorTeam.team')->where('matches.season_id', $this->season->id)->get();
     	$counter = 0;
     	foreach ($matches as $match) {
     		if (!$match->played()) {
@@ -913,7 +913,7 @@ class MatchCrud extends Component
     // Helpers
 	protected function getData()
 	{
-    	$regs = Match::
+    	$regs = MatchModel::
     		with('localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager', 'scores', 'playerStats.player', 'teamStats')
     		->withCount('teamStats')
     		->withCount('playerStats')
@@ -947,7 +947,7 @@ class MatchCrud extends Component
 			$this->page = $regs->lastPage();
 		}
 
-    	$regs = Match::
+    	$regs = MatchModel::
     		with('localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager', 'scores', 'playerStats.player', 'teamStats')
    			->leftjoin('seasons_teams', function($join){
                 $join->on('seasons_teams.id','=','matches.local_team_id');
@@ -977,7 +977,7 @@ class MatchCrud extends Component
 
 	protected function setCheckAllSelector()
 	{
-    	$regs = Match::
+    	$regs = MatchModel::
     		with('localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager', 'scores', 'playerStats.player', 'teamStats')
    			->leftjoin('seasons_teams', function($join){
                 $join->on('seasons_teams.id','=','matches.local_team_id');
@@ -1012,7 +1012,7 @@ class MatchCrud extends Component
 
 	protected function getDataSelected()
 	{
-    	return Match::
+    	return MatchModel::
     		with('localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager', 'scores', 'playerStats.player', 'teamStats')
    			->leftjoin('seasons_teams', function($join){
                 $join->on('seasons_teams.id','=','matches.local_team_id');
@@ -1121,7 +1121,7 @@ class MatchCrud extends Component
 
 		//update local and visitor manager_id
 		if ($this->update_match_managers) {
-			$match = Match::find($this->regView->id);
+			$match = MatchModel::find($this->regView->id);
 			$match->local_manager_id = $match->localTeam->team->manager_id;
 			$match->visitor_manager_id = $match->visitorTeam->team->manager_id;
 			$match->save();
@@ -1147,7 +1147,7 @@ class MatchCrud extends Component
 			]);
 		}
 
-		$match = Match::find($this->regView->id);
+		$match = MatchModel::find($this->regView->id);
 		$match->extra_times = $this->extra_times ?: 0;
 		$match->played = $match->played() ? 1 : 0;
 		$match->save();
@@ -1238,7 +1238,7 @@ class MatchCrud extends Component
 			}
 		}
 
-		$this->regView = Match::find($this->regView->id);
+		$this->regView = MatchModel::find($this->regView->id);
 		$this->regView->teamStats_state = $this->regView->checkTeamStats();
 		$this->regView->playerStats_state = $this->regView->checkPlayerStats();
 		$this->regView->save();
@@ -1267,7 +1267,7 @@ class MatchCrud extends Component
 			]);
 		}
 
-		$this->regView = Match::find($this->regView->id);
+		$this->regView = MatchModel::find($this->regView->id);
 		$this->regView->teamStats_state = $this->regView->checkTeamStats();
 		$this->regView->playerStats_state = $this->regView->checkPlayerStats();
 		$this->regView->save();
@@ -1275,7 +1275,7 @@ class MatchCrud extends Component
 
 	public function updateMatch($id)
 	{
-		$match = Match::find($id);
+		$match = MatchModel::find($id);
 
 		if ($match->scores->count() > 0) {
 			$this->updateResult($match);
@@ -1370,7 +1370,7 @@ class MatchCrud extends Component
 			$playerStat->save();
 		}
 
-		$match = Match::find($match->id);
+		$match = MatchModel::find($match->id);
 		$match->teamStats_state = $match->checkTeamStats();
 		$match->playerStats_state = $match->checkPlayerStats();
 		$match->save();
@@ -1398,7 +1398,7 @@ class MatchCrud extends Component
 			}
 		}
 
-		$match = Match::find($match->id);
+		$match = MatchModel::find($match->id);
 		$match->teamStats_state = $match->checkTeamStats();
 		$match->playerStats_state = $match->checkPlayerStats();
 		$match->save();
@@ -1417,7 +1417,7 @@ class MatchCrud extends Component
 		$regs_reset = 0;
 		foreach ($this->regsSelectedArray as $reg) {
 	    	// $before = $reg->toJson(JSON_PRETTY_PRINT);
-			if ($reg = Match::find($reg)) {
+			if ($reg = MatchModel::find($reg)) {
 				if ($reg->scores()->count() > 0 || $reg->playerStats()->count() > 0 || $reg->teamStats()->count() > 0) {
 					$reg->scores()->delete();
 					//restore injuries
@@ -1476,7 +1476,7 @@ class MatchCrud extends Component
 		$regs_reset = 0;
 		foreach ($this->regsSelectedArray as $reg) {
 	    	// $before = $reg->toJson(JSON_PRETTY_PRINT);
-			if ($reg = Match::find($reg)) {
+			if ($reg = MatchModel::find($reg)) {
 				if ($reg->scores()->count() > 0) {
 					$reg->scores()->delete();
 					foreach ($reg->posts as $post) {
@@ -1812,7 +1812,7 @@ class MatchCrud extends Component
 
 	protected function createMatchPosts($match_id)
 	{
-		$match = Match::find($match_id);
+		$match = MatchModel::find($match_id);
 
 		if ($match->winner()) {
 			$this->createResultPost($match);
@@ -1823,7 +1823,7 @@ class MatchCrud extends Component
 
 	protected function createResetMatchPosts($match_id)
 	{
-		$match = Match::find($match_id);
+		$match = MatchModel::find($match_id);
 
     	$post = $this->storePost(
 			'general',
@@ -1842,7 +1842,7 @@ class MatchCrud extends Component
 
 	protected function createResetScorePosts($match_id)
 	{
-		$match = Match::find($match_id);
+		$match = MatchModel::find($match_id);
 
     	$post = $this->storePost(
 			'general',

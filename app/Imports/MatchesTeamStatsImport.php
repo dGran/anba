@@ -3,7 +3,7 @@
 namespace App\Imports;
 
 use App\Models\TeamStat;
-use App\Models\Match;
+use App\Models\MatchModel;
 use App\Models\User;
 use App\Models\SeasonTeam;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -19,7 +19,7 @@ class MatchesTeamStatsImport implements ToModel, WithHeadingRow
 
     public function model(array $row)
     {
-        $match = Match::find($row['match_id']);
+        $match = MatchModel::find($row['match_id']);
         $before = $match->toJson(JSON_PRETTY_PRINT);
         $season_team = SeasonTeam::find($row['season_team_id']);
         if ($match && $season_team && ($season_team->id == $match->local_team_id || $season_team->id == $match->visitor_team_id)) {

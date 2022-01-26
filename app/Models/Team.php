@@ -187,7 +187,7 @@ class Team extends Model
     {
         $team_id = $this->id;
 
-        $matches = Match::
+        $matches = MatchModel::
             with('scores')
             ->select('matches.*')
             ->leftJoin('seasons_teams as localSeasonTeam', 'localSeasonTeam.id', 'matches.local_team_id')
@@ -241,7 +241,7 @@ class Team extends Model
     public function get_season_team_matches($season_id)
     {
         $team_id = $this->id;
-        $matches = Match::
+        $matches = MatchModel::
             with('scores')
             ->select('matches.*')
             ->leftJoin('seasons_teams as localSeasonTeam', 'localSeasonTeam.id', 'matches.local_team_id')

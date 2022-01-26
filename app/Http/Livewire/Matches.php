@@ -4,7 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\User;
-use App\Models\Match;
+use App\Models\MatchModel;
 use App\Models\MatchPoll;
 use App\Models\Season;
 use App\Models\SeasonTeam;
@@ -107,7 +107,7 @@ class Matches extends Component
 
 	public function openForecastsModal($match_id)
 	{
-		if ($this->regEdit = Match::find($match_id)) {
+		if ($this->regEdit = MatchModel::find($match_id)) {
 			$this->forecastsModal = true;
 		}
 	}
@@ -137,8 +137,8 @@ class Matches extends Component
 	    	->orderBy('teams.medium_name', 'asc')
 	    	->get();
 
-	    	$local_managers = Match::select('local_manager_id')->distinct()->where('season_id', $current_season->id)->get();
-	    	$visitor_managers = Match::select('visitor_manager_id')->distinct()->where('season_id', $current_season->id)->get();
+	    	$local_managers = MatchModel::select('local_manager_id')->distinct()->where('season_id', $current_season->id)->get();
+	    	$visitor_managers = MatchModel::select('visitor_manager_id')->distinct()->where('season_id', $current_season->id)->get();
 
     		$managers = \App\Models\User::select("*")
 	            ->whereIn('id', $local_managers)
@@ -166,7 +166,7 @@ class Matches extends Component
 	{
 		$current_season = Season::where('slug', $this->season)->first()->slug;
 
-    	$regs = Match::
+    	$regs = MatchModel::
     		with('localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager', 'scores', 'playerStats.player', 'playerStats.seasonTeam.team')
             ->leftJoin('scores', 'scores.match_id', 'matches.id')
    			->leftJoin('seasons_teams', function($join){
@@ -199,7 +199,7 @@ class Matches extends Component
 			$this->page = $regs->lastPage();
 		}
 
-    	$regs = Match::
+    	$regs = MatchModel::
     		with('localTeam.team', 'visitorTeam.team', 'localManager', 'visitorManager', 'scores', 'playerStats.player', 'playerStats.seasonTeam.team')
             ->leftJoin('scores', 'scores.match_id', 'matches.id')
    			->leftJoin('seasons_teams', function($join){

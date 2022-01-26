@@ -37,7 +37,7 @@ class SeasonTeam extends Model
 
     public function lastMatches()
     {
-        return $regs = Match::
+        return $regs = MatchModel::
             leftJoin('scores', 'scores.match_id', 'matches.id')
             ->leftJoin('seasons_teams', function($join){
                 $join->on('seasons_teams.id','=','matches.local_team_id');
@@ -63,7 +63,7 @@ class SeasonTeam extends Model
         if (Transfer::where('season_team_from', $this->id)->orWhere('season_team_to', $this->id)->count() > 0) { return false; }
         if (TeamStat::where('season_team_id', $this->id)->count() > 0) { return false; }
         if (PlayerStat::where('season_team_id', $this->id)->count() > 0) { return false; }
-        if (Match::where('local_team_id', $this->id)->orWhere('visitor_team_id', $this->id)->count() > 0) { return false; }
+        if (MatchModel::where('local_team_id', $this->id)->orWhere('visitor_team_id', $this->id)->count() > 0) { return false; }
         //pending
         // RoundParticipant
         // RoundClash
