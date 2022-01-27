@@ -17,7 +17,8 @@ class Roster extends Component
     public $season_team;
     public $current_season;
 
-    public $view = "card";
+    public $view = "table";
+    public $order = 'position';
 
     public $playerInfo, $playerInfoStats;
     public $playerInfoModal = false;
@@ -25,7 +26,8 @@ class Roster extends Component
     // queryString
     protected $queryString = [
         't',
-        'view' => ['except' => "card"],
+        'view' => ['except' => "table"],
+        'order' => ['except' => "position"],
     ];
 
     public function change_team($team)
@@ -57,6 +59,81 @@ class Roster extends Component
         $this->playerInfoModal = true;
     }
 
+    public function setOrder($order)
+    {
+        $this->order = $order;
+    }
+
+    protected function getOrder($order) {
+        $order_ext = [
+            'name' => [
+                'field'     => 'name',
+                'direction' => 'asc'
+            ],
+            'name_desc' => [
+                'field'     => 'name',
+                'direction' => 'desc'
+            ],
+            'position' => [
+                'field'     => 'position',
+                'direction' => 'asc'
+            ],
+            'position_desc' => [
+                'field'     => 'position',
+                'direction' => 'desc'
+            ],
+            'height' => [
+                'field'     => 'height',
+                'direction' => 'asc'
+            ],
+            'height_desc' => [
+                'field'     => 'height',
+                'direction' => 'desc'
+            ],
+            'weight' => [
+                'field'     => 'weight',
+                'direction' => 'asc'
+            ],
+            'weight_desc' => [
+                'field'     => 'weight',
+                'direction' => 'desc'
+            ],
+            'age' => [
+                'field'     => 'birthdate',
+                'direction' => 'desc'
+            ],
+            'age_desc' => [
+                'field'     => 'birthdate',
+                'direction' => 'asc'
+            ],
+            'exp' => [
+                'field'     => 'draft_year',
+                'direction' => 'desc'
+            ],
+            'exp_desc' => [
+                'field'     => 'draft_year',
+                'direction' => 'asc'
+            ],
+            'nation' => [
+                'field'     => 'nation_name',
+                'direction' => 'asc'
+            ],
+            'nation_desc' => [
+                'field'     => 'nation_name',
+                'direction' => 'desc'
+            ],
+            'college' => [
+                'field'     => 'college',
+                'direction' => 'asc'
+            ],
+            'college_desc' => [
+                'field'     => 'college',
+                'direction' => 'desc'
+            ],
+        ];
+        return $order_ext[$order];
+    }
+
 	public function mount($team, $t)
 	{
 		$this->team = $team;
@@ -70,7 +147,12 @@ class Roster extends Component
 
     public function render()
     {
-        $players = Player::where('team_id', $this->team->id)->orderBy('position', 'asc')->orderBy('name', 'asc')->get();
+        $players = Player::where('team_id', $this->team->id)
+            ->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
+            ->orderBy('name', 'asc')
+            ->get();
+
+
         $more_teams = SeasonTeam::
             leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
             ->select('seasons_teams.*')

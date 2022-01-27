@@ -6,11 +6,11 @@
         </a>
     </div>
     <div class="flex items-center space-x-2.5">
-        <button class="text-2xl | text-blue-500 dark:text-dark-link cursor-pointer | {{ $view == 'card' ? 'opacity-100 pointer-events-none cursor-not-allowed' : 'opacity-50 hover:opacity-75' }} focus:outline-none" wire:click="$set('view', 'card')" title="Card">
-            <i class="fas fa-address-card"></i>
-        </button>
         <button class="text-2xl | text-blue-500 dark:text-dark-link cursor-pointer | {{ $view == 'table' ? 'opacity-100 pointer-events-none cursor-not-allowed' : 'opacity-50 hover:opacity-75' }} focus:outline-none" wire:click="$set('view', 'table')" title="Tabla">
             <i class="fas fa-table"></i>
+        </button>
+        <button class="text-2xl | text-blue-500 dark:text-dark-link cursor-pointer | {{ $view == 'card' ? 'opacity-100 pointer-events-none cursor-not-allowed' : 'opacity-50 hover:opacity-75' }} focus:outline-none" wire:click="$set('view', 'card')" title="Card">
+            <i class="fas fa-address-card"></i>
         </button>
     </div>
 </div>
