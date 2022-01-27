@@ -33,7 +33,7 @@
                     </div>
                     <div class="grid grid-cols-2 gap-4 | text-xs">
                         <span class="truncate text-right sm:text-left font-semibold text-gray-700 dark:text-gray-400">Fecha Nacimiento</span>
-                        <span class="truncate">{{ $playerInfo->getBirthdate() }}</span>
+                        <span class="truncate">{{ $playerInfo->birthdate != 0 ? $playerInfo->getBirthdate() : 'N/D' }}</span>
                     </div>
                     <div class="grid grid-cols-2 gap-4 | text-xs">
                         <span class="truncate text-right sm:text-left font-semibold text-gray-700 dark:text-gray-400">Universidad</span>

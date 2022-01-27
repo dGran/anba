@@ -119,7 +119,7 @@
                         {{ $player->weight }} lbs
                     </td>
                     <td class="px-3 w-24" style="min-width: 5rem; max-width: 5rem">
-                        {{ $player->age() }} años
+                        {{ $player->birthdate != 0 ? $player->age() . ' años' : 'N/D' }}
                     </td>
                     <td class="px-3 w-24 text-center" style="min-width: 5rem; max-width: 5rem">
                         {{ $player->getYearsPro() }}
