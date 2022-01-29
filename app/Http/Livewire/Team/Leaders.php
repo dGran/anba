@@ -123,10 +123,9 @@ class Leaders extends Component
                 $stat = $stat->whereNotNull('matches.clash_id');
             }
         }
+        $stat = $stat->where('players_stats.season_team_id', $this->season_team->id);
         if ($this->current_roster && $this->season_is_current) {
             $stat = $stat->where('players.team_id', $this->team->id);
-        } else {
-            $stat = $stat->where('players_stats.season_team_id', $this->season_team->id);
         }
         $stat = $stat->where('players_stats.season_id', $this->current_season->id)
             ->whereNotNull('players_stats.MIN')
@@ -156,10 +155,9 @@ class Leaders extends Component
                 $stat = $stat->whereNotNull('matches.clash_id');
             }
         }
+        $stat = $stat->where('players_stats.season_team_id', $this->season_team->id);
         if ($this->current_roster && $this->season_is_current) {
             $stat = $stat->where('players.team_id', $this->team->id);
-        } else {
-            $stat = $stat->where('players_stats.season_team_id', $this->season_team->id);
         }
         $stat = $stat->where('players_stats.season_id', $this->current_season->id)
             ->whereNotNull('players_stats.MIN')
@@ -189,10 +187,9 @@ class Leaders extends Component
                 $stat = $stat->whereNotNull('matches.clash_id');
             }
         }
+        $stat = $stat->where('players_stats.season_team_id', $this->season_team->id);
         if ($this->current_roster && $this->season_is_current) {
             $stat = $stat->where('players.team_id', $this->team->id);
-        } else {
-            $stat = $stat->where('players_stats.season_team_id', $this->season_team->id);
         }
         $stat = $stat->where('players_stats.season_id', $this->current_season->id)
             ->whereNotNull('players_stats.MIN')
