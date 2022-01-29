@@ -51,17 +51,19 @@ class Leaders extends Component
 
         $this->playerInfoStats = PlayerStat::
             join('matches', 'matches.id', 'players_stats.match_id')
+            ->join('players', 'players.id', 'players_stats.player_id')
             ->select('player_id',
                 \DB::raw('AVG(PTS) as AVG_PTS'),
                 \DB::raw('AVG(REB) as AVG_REB'),
                 \DB::raw('AVG(AST) as AVG_AST'),
                 \DB::raw('COUNT(player_id) as PJ')
             )
-            ->where('player_id', $this->playerInfo->id)
+            ->where('players_stats.player_id', $this->playerInfo->id)
             ->whereNull('matches.clash_id')
             ->where('players_stats.season_id', $current_season->id)
+            ->whereNotNull('players_stats.MIN')
+            ->where('players.team_id', $this->team->id)
             ->get();
-
 
         $this->playerInfoModal = true;
     }
