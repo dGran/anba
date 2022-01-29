@@ -84,10 +84,9 @@ class Leaders extends Component
             ->where('players_stats.season_id', $this->current_season->id)
             ->whereNotNull('players_stats.MIN');
 
+        $result = $result->where('players_stats.season_team_id', $this->season_team->id);
         if ($this->current_roster && $this->season_is_current) {
             $result = $result->where('players.team_id', $this->team->id);
-        } else {
-            $result = $result->where('players_stats.season_team_id', $this->season_team->id);
         }
         if ($this->phase != 'all') {
             if ($this->phase == "regular") {
