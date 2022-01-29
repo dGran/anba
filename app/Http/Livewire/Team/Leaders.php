@@ -119,9 +119,9 @@ class Leaders extends Component
             }
         }
         $stat = $stat->where('players_stats.season_id', $this->current_season->id)
-            // ->where('players_stats.season_team_id', $this->season_team->id)
+            ->where('players_stats.season_team_id', $this->season_team->id)
             ->whereNotNull('players_stats.MIN')
-            ->where('players.team_id', $this->team->id)
+            // ->where('players.team_id', $this->team->id)
             ->orderBy('PER_FG', 'desc')
             ->orderBy('SUM_FGA', 'desc')
             ->groupBy('player_id')
@@ -149,9 +149,9 @@ class Leaders extends Component
             }
         }
         $stat = $stat->where('players_stats.season_id', $this->current_season->id)
-            // ->where('players_stats.season_team_id', $this->season_team->id)
+            ->where('players_stats.season_team_id', $this->season_team->id)
             ->whereNotNull('players_stats.MIN')
-            ->where('players.team_id', $this->team->id)
+            // ->where('players.team_id', $this->team->id)
             ->orderBy('PER_FT', 'desc')
             ->orderBy('SUM_FTA', 'desc')
             ->groupBy('player_id')
@@ -179,9 +179,9 @@ class Leaders extends Component
             }
         }
         $stat = $stat->where('players_stats.season_id', $this->current_season->id)
-            // ->where('players_stats.season_team_id', $this->season_team->id)
+            ->where('players_stats.season_team_id', $this->season_team->id)
             ->whereNotNull('players_stats.MIN')
-            ->where('players.team_id', $this->team->id)
+            // ->where('players.team_id', $this->team->id)
             ->orderBy('PER_TP', 'desc')
             ->orderBy('SUM_TPA', 'desc')
             ->groupBy('player_id')
