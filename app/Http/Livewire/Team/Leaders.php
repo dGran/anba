@@ -79,9 +79,9 @@ class Leaders extends Component
                 \DB::raw('COUNT(player_id) as PJ')
             )
             ->where('players_stats.season_id', $this->current_season->id)
-            // ->where('players_stats.season_team_id', $this->season_team->id)
-            ->whereNotNull('players_stats.MIN')
-            ->where('players.team_id', $this->team->id);
+            ->where('players_stats.season_team_id', $this->season_team->id)
+            ->whereNotNull('players_stats.MIN');
+            // ->where('players.team_id', $this->team->id);
 
         if ($this->phase != 'all') {
             if ($this->phase == "regular") {
