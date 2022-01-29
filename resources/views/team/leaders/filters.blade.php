@@ -1,4 +1,4 @@
-<div class="flex flex-col md:flex-row items-center select-none pb-4">
+<div class="flex flex-col md:flex-row items-center select-none {{ $season_is_current ?: 'pb-4' }}">
     <div class="flex-1 w-full flex flex-col relative">
         <label for="season" class="text-xs uppercase absolute top-1.5 md:top-3 left-3 text-gray-500 dark:text-gray-300">
             Temporada
