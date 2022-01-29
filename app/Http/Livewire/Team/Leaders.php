@@ -62,7 +62,7 @@ class Leaders extends Component
             ->whereNull('matches.clash_id')
             ->where('players_stats.season_id', $current_season->id)
             ->whereNotNull('players_stats.MIN')
-            ->where('players.team_id', $this->team->id)
+            ->where('players_stats.season_team_id', $this->season_team->id)
             ->get();
 
         $this->playerInfoModal = true;
