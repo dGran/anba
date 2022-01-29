@@ -17,7 +17,8 @@ class Leaders extends Component
     public $season_team;
     public $season;
     public $current_season;
-    public $phase = "regular";
+    public $phase = "all";
+    public $mode = "per_game";
 
     public $playerInfo, $playerInfoStats;
     public $playerInfoModal = false;
@@ -25,8 +26,16 @@ class Leaders extends Component
     // queryString
     protected $queryString = [
         't',
-        'season'
+        'season',
+        'phase' => ['except' => "all"],
+        'mode' => ['except' => "per_game"],
     ];
+
+    public function change_season()
+    {
+        $this->current_season = Season::where('slug', $this->season)->first();
+        $this->season_team = SeasonTeam::where('season_id', $this->current_season->id)->where('team_id', $this->team->id)->first();
+    }
 
     public function change_team($team)
     {
@@ -59,20 +68,31 @@ class Leaders extends Component
 
     public function getTopsSimpleStat($stat)
     {
-        return $stat = PlayerStat::with('player')
+        $result = PlayerStat::with('player')
             ->join('matches', 'matches.id', 'players_stats.match_id')
             ->select('player_id',
                 \DB::raw('AVG('.$stat.') as AVG_'.$stat),
                 \DB::raw('SUM('.$stat.') as SUM_'.$stat),
                 \DB::raw('COUNT(player_id) as PJ')
             )
-            ->whereNull('matches.clash_id')
             ->where('players_stats.season_id', $this->current_season->id)
-            ->where('players_stats.season_team_id', $this->season_team->id)
-            ->orderBy('AVG_'.$stat, 'desc')
-            ->orderBy('SUM_'.$stat, 'desc')
-            ->groupBy('player_id')
-            ->take(3)->get();
+            ->where('players_stats.season_team_id', $this->season_team->id);
+
+        if ($this->phase != 'all') {
+            if ($this->phase == "regular") {
+                $result = $result->whereNull('matches.clash_id');
+            } else {
+                $result = $result->whereNotNull('matches.clash_id');
+            }
+        }
+        if ($this->mode == "per_game") {
+            $result = $result->orderBy('AVG_'.$stat, 'desc')->orderBy('SUM_'.$stat, 'desc');
+        } else {
+            $result = $result->orderBy('SUM_'.$stat, 'desc')->orderBy('AVG_'.$stat, 'desc');
+        }
+        $result = $result->groupBy('player_id')->take(3)->get();
+
+        return $result;
     }
 
     protected function getTopsFG()
@@ -85,11 +105,13 @@ class Leaders extends Component
                     \DB::raw('(SUM(FGM) / SUM(FGA)) * 100 as PER_FG'),
                     \DB::raw('COUNT(player_id) as PJ')
                 );
-        // if ($this->phase == "regular") {
-            $stat = $stat->whereNull('matches.clash_id');
-        // } else {
-            // $stat = $stat->whereNotNull('matches.clash_id');
-        // }
+        if ($this->phase != 'all') {
+            if ($this->phase == "regular") {
+                $stat = $stat->whereNull('matches.clash_id');
+            } else {
+                $stat = $stat->whereNotNull('matches.clash_id');
+            }
+        }
         $stat = $stat->where('players_stats.season_id', $this->current_season->id)
             ->where('players_stats.season_team_id', $this->season_team->id)
             ->orderBy('PER_FG', 'desc')
@@ -110,11 +132,13 @@ class Leaders extends Component
                     \DB::raw('(SUM(FTM) / SUM(FTA)) * 100 as PER_FT'),
                     \DB::raw('COUNT(player_id) as PJ')
                 );
-        // if ($this->phase == "regular") {
-            $stat = $stat->whereNull('matches.clash_id');
-        // } else {
-            // $stat = $stat->whereNotNull('matches.clash_id');
-        // }
+        if ($this->phase != 'all') {
+            if ($this->phase == "regular") {
+                $stat = $stat->whereNull('matches.clash_id');
+            } else {
+                $stat = $stat->whereNotNull('matches.clash_id');
+            }
+        }
         $stat = $stat->where('players_stats.season_id', $this->current_season->id)
             ->where('players_stats.season_team_id', $this->season_team->id)
             ->orderBy('PER_FT', 'desc')
@@ -135,11 +159,13 @@ class Leaders extends Component
                     \DB::raw('(SUM(TPM) / SUM(TPA)) * 100 as PER_TP'),
                     \DB::raw('COUNT(player_id) as PJ')
                 );
-        // if ($this->phase == "regular") {
-            $stat = $stat->whereNull('matches.clash_id');
-        // } else {
-            // $stat = $stat->whereNotNull('matches.clash_id');
-        // }
+        if ($this->phase != 'all') {
+            if ($this->phase == "regular") {
+                $stat = $stat->whereNull('matches.clash_id');
+            } else {
+                $stat = $stat->whereNotNull('matches.clash_id');
+            }
+        }
         $stat = $stat->where('players_stats.season_id', $this->current_season->id)
             ->where('players_stats.season_team_id', $this->season_team->id)
             ->orderBy('PER_TP', 'desc')
@@ -166,6 +192,7 @@ class Leaders extends Component
 
     public function render()
     {
+        $seasons = Season::orderBy('name', 'desc')->get();
         $more_teams = SeasonTeam::
             leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
             ->select('seasons_teams.*')
@@ -200,6 +227,7 @@ class Leaders extends Component
             'stats_FGPG'        => $this->getTopsFG(),
             'stats_FTPG'        => $this->getTopsFT(),
             'stats_TPPG'        => $this->getTopsTP(),
+            'seasons'           => $seasons,
             'more_teams'        => $more_teams,
             'prior_team'        => $prior_team,
             'next_team'         => $next_team
