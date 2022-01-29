@@ -1,8 +1,8 @@
 <div class="border-t border-b sm:border border-gray-200 dark:border-gray-700 sm:rounded bg-white dark:bg-gray-750 | overflow-x-auto">
     <table class="w-full">
-        <thead class="font-semibold tracking-wider uppercase text-sm select-none">
+        <thead class="font-semibold tracking-wider uppercase text-sm select-none | bg-gray-100 dark:bg-gray-700">
             <tr>
-                <th class="text-left bg-white dark:bg-gray-750" style="width: 275px; min-width: 200px; max-width: 275px; left: 0px; position: sticky; position: -webkit-sticky;">
+                <th class="text-left bg-gray-100 dark:bg-gray-700" style="width: 275px; min-width: 200px; max-width: 275px; left: 0px; position: sticky; position: -webkit-sticky;">
                     <div class="px-3 py-2.5 flex items-center space-x-1 | border-r border-gray-200 dark:border-gray-700">
 
                             @if ($order == 'name')
@@ -10,7 +10,7 @@
                             @elseif ($order == 'name_desc')
                                 <span class="cursor-pointer" wire:click="setOrder('name')">Jugador</span><i class="fas fa-sort-down"></i>
                             @else
-                                <span class="cursor-pointer" wire:click="setOrder('name')">Jugador</span><i class="fas fa-sort opacity-25"></i>
+                                <span class="cursor-pointer" wire:click="setOrder('name')">Jugador</span><i class="fas fa-sort text-gray-300 dark:text-gray-500"></i>
                             @endif
                     </div>
                 </th>
@@ -21,7 +21,7 @@
                         @elseif ($order == 'position_desc')
                             <span class="cursor-pointer" wire:click="setOrder('position')">Pos.</span><i class="fas fa-sort-down"></i>
                         @else
-                            <span class="cursor-pointer" wire:click="setOrder('position')">Pos.</span><i class="fas fa-sort opacity-25"></i>
+                            <span class="cursor-pointer" wire:click="setOrder('position')">Pos.</span><i class="fas fa-sort text-gray-300 dark:text-gray-500"></i>
                         @endif
                     </div>
                 </th>
@@ -32,7 +32,7 @@
                         @elseif ($order == 'height_desc')
                             <span class="cursor-pointer" wire:click="setOrder('height')">Altura</span><i class="fas fa-sort-down"></i>
                         @else
-                            <span class="cursor-pointer" wire:click="setOrder('height')">Altura</span><i class="fas fa-sort opacity-25"></i>
+                            <span class="cursor-pointer" wire:click="setOrder('height')">Altura</span><i class="fas fa-sort text-gray-300 dark:text-gray-500"></i>
                         @endif
                     </div>
                 </th>
@@ -43,7 +43,7 @@
                         @elseif ($order == 'weight_desc')
                             <span class="cursor-pointer" wire:click="setOrder('weight')">Peso</span><i class="fas fa-sort-down"></i>
                         @else
-                            <span class="cursor-pointer" wire:click="setOrder('weight')">Peso</span><i class="fas fa-sort opacity-25"></i>
+                            <span class="cursor-pointer" wire:click="setOrder('weight')">Peso</span><i class="fas fa-sort text-gray-300 dark:text-gray-500"></i>
                         @endif
                     </div>
                 </th>
@@ -54,7 +54,7 @@
                         @elseif ($order == 'age_desc')
                             <span class="cursor-pointer" wire:click="setOrder('age')">Edad</span><i class="fas fa-sort-down"></i>
                         @else
-                            <span class="cursor-pointer" wire:click="setOrder('age')">Edad</span><i class="fas fa-sort opacity-25"></i>
+                            <span class="cursor-pointer" wire:click="setOrder('age')">Edad</span><i class="fas fa-sort text-gray-300 dark:text-gray-500"></i>
                         @endif
                     </div>
                 </th>
@@ -65,7 +65,7 @@
                         @elseif ($order == 'exp_desc')
                             <span class="cursor-pointer" wire:click="setOrder('exp')">Exp.</span><i class="fas fa-sort-down"></i>
                         @else
-                            <span class="cursor-pointer" wire:click="setOrder('exp')">Exp.</span><i class="fas fa-sort opacity-25"></i>
+                            <span class="cursor-pointer" wire:click="setOrder('exp')">Exp.</span><i class="fas fa-sort text-gray-300 dark:text-gray-500"></i>
                         @endif
                     </div>
                 </th>
@@ -76,7 +76,7 @@
                         @elseif ($order == 'nation_desc')
                             <span class="cursor-pointer" wire:click="setOrder('nation')">Pais</span><i class="fas fa-sort-down"></i>
                         @else
-                            <span class="cursor-pointer" wire:click="setOrder('nation')">Pais</span><i class="fas fa-sort opacity-25"></i>
+                            <span class="cursor-pointer" wire:click="setOrder('nation')">Pais</span><i class="fas fa-sort text-gray-300 dark:text-gray-500"></i>
                         @endif
                     </div>
                 </th>
@@ -87,7 +87,7 @@
                         @elseif ($order == 'college_desc')
                             <span class="cursor-pointer" wire:click="setOrder('college')">Universidad</span><i class="fas fa-sort-down"></i>
                         @else
-                            <span class="cursor-pointer" wire:click="setOrder('college')">Universidad</span><i class="fas fa-sort opacity-25"></i>
+                            <span class="cursor-pointer" wire:click="setOrder('college')">Universidad</span><i class="fas fa-sort text-gray-300 dark:text-gray-500"></i>
                         @endif
                     </div>
                 </th>

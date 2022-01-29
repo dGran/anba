@@ -1,7 +1,7 @@
 <div class="px-3 sm:px-0 | flex items-center justify-between">
     <h2 class="flex items-center justify-start | font-semibold text-xl md:text-2xl">
         @if ($prior_team)
-            <x-link href="{{ route($route, $prior_team) }}">
+            <x-link class="cursor-pointer" wire:click="change_team({{ $prior_team }})">
                 <i class="fas fa-chevron-left"></i>
             </x-link>
         @else
@@ -13,7 +13,7 @@
             <img src="{{ $team->getImg() }}" alt="{{ $team->medium_name }}" class="h-12 md:h-16 w-auto object-cover mx-auto">
         </figure>
         @if ($next_team)
-            <x-link href="{{ route($route, $next_team) }}">
+            <x-link class="cursor-pointer" wire:click="change_team({{ $next_team }})">
                 <i class="fas fa-chevron-right"></i>
             </x-link>
         @else

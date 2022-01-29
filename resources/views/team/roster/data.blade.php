@@ -1,4 +1,4 @@
-<div class="px-3 py-1.5 mb-3 flex items-center justify-between bg-white dark:bg-gray-750 border-t border-b sm:border sm:rounded border-gray-200 dark:border-gray-700">
+<div class="px-3 py-1.5 mb-3 flex items-center justify-between bg-white dark:bg-gray-700 border-t border-b sm:border sm:rounded border-gray-200 dark:border-gray-700">
     <div class="flex items-center space-x-2">
         <h4 class="tracking-wider font-medium uppercase text-gray-400">Manager: </h4>
         <a href="#" class="hover:underline focus:underline focus:outline-none transition duration-150 ease-in-out">
