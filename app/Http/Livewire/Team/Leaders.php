@@ -72,13 +72,16 @@ class Leaders extends Component
     {
         $result = PlayerStat::with('player')
             ->join('matches', 'matches.id', 'players_stats.match_id')
+            ->join('players', 'players.id', 'players_stats.player_id')
             ->select('player_id',
                 \DB::raw('AVG('.$stat.') as AVG_'.$stat),
                 \DB::raw('SUM('.$stat.') as SUM_'.$stat),
                 \DB::raw('COUNT(player_id) as PJ')
             )
             ->where('players_stats.season_id', $this->current_season->id)
-            ->where('players_stats.season_team_id', $this->season_team->id);
+            ->where('players_stats.season_team_id', $this->season_team->id)
+            ->whereNotNull('players_stats.MIN')
+            ->where('players.team_id', $this->team->id);
 
         if ($this->phase != 'all') {
             if ($this->phase == "regular") {
@@ -101,12 +104,15 @@ class Leaders extends Component
     {
          $stat = PlayerStat::with('player')
                 ->join('matches', 'matches.id', 'players_stats.match_id')
+                ->join('players', 'players.id', 'players_stats.player_id')
                 ->select('player_id',
                     \DB::raw('SUM(FGM) as SUM_FGM'),
                     \DB::raw('SUM(FGA) as SUM_FGA'),
                     \DB::raw('(SUM(FGM) / SUM(FGA)) * 100 as PER_FG'),
                     \DB::raw('COUNT(player_id) as PJ')
-                );
+                )
+                ->whereNotNull('players_stats.MIN')
+                ->where('players.team_id', $this->team->id);
         if ($this->phase != 'all') {
             if ($this->phase == "regular") {
                 $stat = $stat->whereNull('matches.clash_id');
@@ -128,12 +134,15 @@ class Leaders extends Component
     {
          $stat = PlayerStat::with('player')
                 ->join('matches', 'matches.id', 'players_stats.match_id')
+                ->join('players', 'players.id', 'players_stats.player_id')
                 ->select('player_id',
                     \DB::raw('SUM(FTM) as SUM_FTM'),
                     \DB::raw('SUM(FTA) as SUM_FTA'),
                     \DB::raw('(SUM(FTM) / SUM(FTA)) * 100 as PER_FT'),
                     \DB::raw('COUNT(player_id) as PJ')
-                );
+                )
+                ->whereNotNull('players_stats.MIN')
+                ->where('players.team_id', $this->team->id);
         if ($this->phase != 'all') {
             if ($this->phase == "regular") {
                 $stat = $stat->whereNull('matches.clash_id');
@@ -155,12 +164,15 @@ class Leaders extends Component
     {
          $stat = PlayerStat::with('player')
                 ->join('matches', 'matches.id', 'players_stats.match_id')
+                ->join('players', 'players.id', 'players_stats.player_id')
                 ->select('player_id',
                     \DB::raw('SUM(TPM) as SUM_TPM'),
                     \DB::raw('SUM(TPA) as SUM_TPA'),
                     \DB::raw('(SUM(TPM) / SUM(TPA)) * 100 as PER_TP'),
                     \DB::raw('COUNT(player_id) as PJ')
-                );
+                )
+                ->whereNotNull('players_stats.MIN')
+                ->where('players.team_id', $this->team->id);
         if ($this->phase != 'all') {
             if ($this->phase == "regular") {
                 $stat = $stat->whereNull('matches.clash_id');
