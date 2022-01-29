@@ -28,7 +28,6 @@
             <option value="totals">Totales</option>
         </select>
     </div>
-
 </div>
 
 <div class="flex-auto flex flex-col | select-none | py-4 | {{ $season_is_current ?: 'hidden' }}">

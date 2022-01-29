@@ -29,3 +29,10 @@
         </select>
     </div>
 </div>
+
+<div class="flex-auto flex flex-col | select-none | py-4 | {{ $season_is_current ?: 'hidden' }}">
+    <label class="flex items-center justify-end cursor-pointer">
+        <input type="checkbox" class="toggle appearance-none relative w-10 h-5 transition-all duration-200 ease-in-out bg-gray-300 hover:bg-gray-400 focus:bg-gray-400 rounded-full shadow-inner outline-none" wire:model="current_roster"/>
+        <span class="ml-2 text-xs uppercase">Plantilla actual</span>
+    </label>
+</div>

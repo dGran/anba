@@ -17,8 +17,10 @@ class Leaders extends Component
     public $season_team;
     public $season;
     public $current_season;
+    public $season_is_current = true;
     public $phase = "all";
     public $mode = "per_game";
+    public $current_roster = true;
 
     public $playerInfo, $playerInfoStats;
     public $playerInfoModal = false;
@@ -29,6 +31,7 @@ class Leaders extends Component
         'season',
         'phase' => ['except' => "all"],
         'mode' => ['except' => "per_game"],
+        'current_roster' => ['except' => true],
     ];
 
     public function change_season()
@@ -79,10 +82,13 @@ class Leaders extends Component
                 \DB::raw('COUNT(player_id) as PJ')
             )
             ->where('players_stats.season_id', $this->current_season->id)
-            ->where('players_stats.season_team_id', $this->season_team->id)
             ->whereNotNull('players_stats.MIN');
-            // ->where('players.team_id', $this->team->id);
 
+        if ($this->current_roster && $this->season_is_current) {
+            $result = $result->where('players.team_id', $this->team->id);
+        } else {
+            $result = $result->where('players_stats.season_team_id', $this->season_team->id);
+        }
         if ($this->phase != 'all') {
             if ($this->phase == "regular") {
                 $result = $result->whereNull('matches.clash_id');
@@ -118,10 +124,13 @@ class Leaders extends Component
                 $stat = $stat->whereNotNull('matches.clash_id');
             }
         }
+        if ($this->current_roster && $this->season_is_current) {
+            $stat = $stat->where('players.team_id', $this->team->id);
+        } else {
+            $stat = $stat->where('players_stats.season_team_id', $this->season_team->id);
+        }
         $stat = $stat->where('players_stats.season_id', $this->current_season->id)
-            ->where('players_stats.season_team_id', $this->season_team->id)
             ->whereNotNull('players_stats.MIN')
-            // ->where('players.team_id', $this->team->id)
             ->orderBy('PER_FG', 'desc')
             ->orderBy('SUM_FGA', 'desc')
             ->groupBy('player_id')
@@ -148,10 +157,13 @@ class Leaders extends Component
                 $stat = $stat->whereNotNull('matches.clash_id');
             }
         }
+        if ($this->current_roster && $this->season_is_current) {
+            $stat = $stat->where('players.team_id', $this->team->id);
+        } else {
+            $stat = $stat->where('players_stats.season_team_id', $this->season_team->id);
+        }
         $stat = $stat->where('players_stats.season_id', $this->current_season->id)
-            ->where('players_stats.season_team_id', $this->season_team->id)
             ->whereNotNull('players_stats.MIN')
-            // ->where('players.team_id', $this->team->id)
             ->orderBy('PER_FT', 'desc')
             ->orderBy('SUM_FTA', 'desc')
             ->groupBy('player_id')
@@ -178,10 +190,13 @@ class Leaders extends Component
                 $stat = $stat->whereNotNull('matches.clash_id');
             }
         }
+        if ($this->current_roster && $this->season_is_current) {
+            $stat = $stat->where('players.team_id', $this->team->id);
+        } else {
+            $stat = $stat->where('players_stats.season_team_id', $this->season_team->id);
+        }
         $stat = $stat->where('players_stats.season_id', $this->current_season->id)
-            ->where('players_stats.season_team_id', $this->season_team->id)
             ->whereNotNull('players_stats.MIN')
-            // ->where('players.team_id', $this->team->id)
             ->orderBy('PER_TP', 'desc')
             ->orderBy('SUM_TPA', 'desc')
             ->groupBy('player_id')
@@ -206,6 +221,9 @@ class Leaders extends Component
 
     public function render()
     {
+        $current = Season::where('current', 1)->first();
+        $this->season_is_current = $this->current_season->id == $current->id;
+
         $seasons = Season::orderBy('name', 'desc')->get();
         $more_teams = SeasonTeam::
             leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
