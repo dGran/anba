@@ -20,7 +20,7 @@ class PlayerStats extends Component
     public $season_is_current = true;
     public $phase = "all";
     public $mode = "per_game";
-    public $current_roster = false;
+    public $current_roster = true;
     public $order = "AVG_PTS";
     public $order_direction = "desc";
 
@@ -33,7 +33,7 @@ class PlayerStats extends Component
         'season',
         'phase' => ['except' => "all"],
         'mode' => ['except' => "per_game"],
-        'current_roster' => ['except' => false],
+        'current_roster' => ['except' => true],
         'order',
         'order_direction',
     ];
