@@ -17,8 +17,10 @@ class PlayerStats extends Component
     public $season_team;
     public $season;
     public $current_season;
+    public $season_is_current = true;
     public $phase = "all";
     public $mode = "per_game";
+    public $current_roster = false;
     public $order = "AVG_PTS";
     public $order_direction = "desc";
 
@@ -31,6 +33,7 @@ class PlayerStats extends Component
         'season',
         'phase' => ['except' => "all"],
         'mode' => ['except' => "per_game"],
+        'current_roster' => ['except' => false],
         'order',
         'order_direction',
     ];
@@ -173,6 +176,13 @@ class PlayerStats extends Component
                     \DB::raw('SUM(headline) as PT'),
                 );
         $PlayersStats = $PlayersStats->where('players_stats.season_id', $this->current_season->id);
+        $PlayersStats = $PlayersStats->whereNotNull('players_stats.MIN');
+        $PlayersStats = $PlayersStats->where('players_stats.season_team_id', $this->season_team->id);
+
+        if ($this->current_roster && $this->season_is_current) {
+            $PlayersStats = $PlayersStats->where('players.team_id', $this->team->id);
+        }
+
         if ($this->phase != 'all') {
             if ($this->phase == "regular") {
                 $PlayersStats = $PlayersStats->whereNull('matches.clash_id');
@@ -180,8 +190,6 @@ class PlayerStats extends Component
                 $PlayersStats = $PlayersStats->whereNotNull('matches.clash_id');
             }
         }
-
-        $PlayersStats = $PlayersStats->where('players_stats.season_team_id', $this->season_team->id);
 
         $PlayersStats = $PlayersStats
             ->having('PJ', '>', 1)
@@ -211,6 +219,9 @@ class PlayerStats extends Component
 
     public function render()
     {
+        $current = Season::where('current', 1)->first();
+        $this->season_is_current = $this->current_season->id == $current->id;
+
         $seasons = Season::orderBy('name', 'desc')->get();
         $more_teams = SeasonTeam::
             leftJoin('teams', 'teams.id', 'seasons_teams.team_id')
