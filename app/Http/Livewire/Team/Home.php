@@ -91,6 +91,7 @@ class Home extends Component
                 );
         $PlayersStats = $PlayersStats->where('players_stats.season_id', $this->current_season->id);
         $PlayersStats = $PlayersStats->where('players_stats.season_team_id', $this->season_team->id);
+        $PlayersStats = $PlayersStats->where('players.team_id', $this->team->id);
         $PlayersStats = $PlayersStats
             ->having('PJ', '>', 1)
             ->orderBy('PT', 'desc')

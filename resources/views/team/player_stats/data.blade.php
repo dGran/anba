@@ -1,5 +1,5 @@
 @if ($season)
-    @if (count($players_stats) > 0)
+    @if ($players_stats->count() > 0)
         <div class="bg-white dark:bg-gray-750 overflow-x-auto md:shadow-sm md:rounded-md md:mx-0 text-gray-900 dark:text-gray-200 border border-gray-200 dark:border-gray-850">
             <table class="team-players-stats font-roboto">
                 <thead>
@@ -234,7 +234,7 @@
                                 <div class="flex items-center truncate">
                                     <img src="{{ $stat->player->getImg() }}" alt="" class="h-9 w-auto object-cover mt-2">
                                     <p class="pl-2 truncate w-56 | flex flex-col">
-                                        <span class="truncate font-semibold | cursor-pointer | hover:underline focus:underline" wire:click="openPlayerInfo({{ $stat->player->id }})">
+                                        <span class="truncate font-semibold | cursor-pointer | hover:underline focus:underline {{ $season_is_current && $stat->player->team != $team ? 'text-pretty-red' : '' }}" wire:click="openPlayerInfo({{ $stat->player->id }})">
                                             {{ $stat->player_name }}
                                         </span>
                                         <span class="text-xs uppercase">{{ $stat->player->position ?: 'N/D' }}</span>
