@@ -194,7 +194,7 @@ class PlayerStats extends Component
         }
 
         $PlayersStats = $PlayersStats
-            ->having('PJ', '>', 1)
+            ->having('PJ', '>', 0)
             ->orderBy($this->order, $this->order_direction)
             ->orderBy('PJ', 'desc')
             ->orderBy('AVG_MIN', 'desc')
