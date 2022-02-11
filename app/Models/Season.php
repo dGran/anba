@@ -587,6 +587,7 @@ class Season extends Model
     {
         return $top = PlayerStat::with('player')
             ->join('matches', 'matches.id', 'players_stats.match_id')
+            ->join('players', 'players.id', 'players_stats.player_id')
             ->select('player_id', 'season_team_id',
                 \DB::raw('AVG(PTS) as AVG_PTS'),
                 \DB::raw('AVG(REB) as AVG_REB'),
@@ -595,6 +596,7 @@ class Season extends Model
             )
             ->whereNull('matches.clash_id')
             ->where('players_stats.season_id', $this->id)
+            ->where('players_stats.MIN', '>', 0)
             ->orderBy('AVG_TOTAL', 'desc')
             ->orderBy('AVG_PTS', 'desc')
             ->orderBy('AVG_REB', 'desc')
@@ -607,6 +609,7 @@ class Season extends Model
     {
         return $top = PlayerStat::with('player')
             ->join('matches', 'matches.id', 'players_stats.match_id')
+            ->join('players', 'players.id', 'players_stats.player_id')
             ->select('player_id',
                 \DB::raw('AVG(PTS) as AVG_PTS'),
                 \DB::raw('SUM(PTS) as SUM_PTS'),
@@ -614,6 +617,7 @@ class Season extends Model
             )
             ->whereNull('matches.clash_id')
             ->where('players_stats.season_id', $this->id)
+            ->where('players_stats.MIN', '>', 0)
             ->orderBy('AVG_PTS', 'desc')
             ->orderBy('SUM_PTS', 'desc')
             ->groupBy('player_id')
@@ -624,6 +628,7 @@ class Season extends Model
     {
         return $top = PlayerStat::with('player')
             ->join('matches', 'matches.id', 'players_stats.match_id')
+            ->join('players', 'players.id', 'players_stats.player_id')
             ->select('player_id',
                 \DB::raw('AVG(REB) as AVG_REB'),
                 \DB::raw('SUM(REB) as SUM_REB'),
@@ -631,6 +636,7 @@ class Season extends Model
             )
             ->whereNull('matches.clash_id')
             ->where('players_stats.season_id', $this->id)
+            ->where('players_stats.MIN', '>', 0)
             ->orderBy('AVG_REB', 'desc')
             ->orderBy('SUM_REB', 'desc')
             ->groupBy('player_id')
@@ -641,6 +647,7 @@ class Season extends Model
     {
         return $top = PlayerStat::with('player')
             ->join('matches', 'matches.id', 'players_stats.match_id')
+            ->join('players', 'players.id', 'players_stats.player_id')
             ->select('player_id',
                 \DB::raw('AVG(AST) as AVG_AST'),
                 \DB::raw('SUM(AST) as SUM_AST'),
@@ -648,6 +655,7 @@ class Season extends Model
             )
             ->whereNull('matches.clash_id')
             ->where('players_stats.season_id', $this->id)
+            ->where('players_stats.MIN', '>', 0)
             ->orderBy('AVG_AST', 'desc')
             ->orderBy('SUM_AST', 'desc')
             ->groupBy('player_id',)
