@@ -178,7 +178,7 @@ class PlayerStats extends Component
                     \DB::raw('SUM(headline) as PT'),
                 );
         $PlayersStats = $PlayersStats->where('players_stats.season_id', $this->current_season->id);
-        $PlayersStats = $PlayersStats->whereNotNull('players_stats.MIN');
+        $PlayersStats = $PlayersStats->where('players_stats.MIN', '>', 0);
         $PlayersStats = $PlayersStats->where('players_stats.season_team_id', $this->season_team->id);
 
         if ($this->current_roster && $this->season_is_current) {

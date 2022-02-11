@@ -82,7 +82,7 @@ class Leaders extends Component
                 \DB::raw('COUNT(player_id) as PJ')
             )
             ->where('players_stats.season_id', $this->current_season->id)
-            ->whereNotNull('players_stats.MIN');
+            ->where('players_stats.MIN', '>', 0);
 
         $result = $result->where('players_stats.season_team_id', $this->season_team->id);
         if ($this->current_roster && $this->season_is_current) {
@@ -128,7 +128,7 @@ class Leaders extends Component
             $stat = $stat->where('players.team_id', $this->team->id);
         }
         $stat = $stat->where('players_stats.season_id', $this->current_season->id)
-            ->whereNotNull('players_stats.MIN')
+            ->where('players_stats.MIN', '>', 0)
             ->orderBy('PER_FG', 'desc')
             ->orderBy('SUM_FGA', 'desc')
             ->groupBy('player_id')
@@ -160,7 +160,7 @@ class Leaders extends Component
             $stat = $stat->where('players.team_id', $this->team->id);
         }
         $stat = $stat->where('players_stats.season_id', $this->current_season->id)
-            ->whereNotNull('players_stats.MIN')
+            ->where('players_stats.MIN', '>', 0)
             ->orderBy('PER_FT', 'desc')
             ->orderBy('SUM_FTA', 'desc')
             ->groupBy('player_id')
@@ -192,7 +192,7 @@ class Leaders extends Component
             $stat = $stat->where('players.team_id', $this->team->id);
         }
         $stat = $stat->where('players_stats.season_id', $this->current_season->id)
-            ->whereNotNull('players_stats.MIN')
+            ->where('players_stats.MIN', '>', 0)
             ->orderBy('PER_TP', 'desc')
             ->orderBy('SUM_TPA', 'desc')
             ->groupBy('player_id')
