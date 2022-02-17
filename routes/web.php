@@ -45,6 +45,9 @@ Route::prefix('jugadores')->group(function() {
 	Route::get('/', function () {
 	    return view('players');
 	})->name('players');
+	Route::get('/lesionados', function () {
+	    return view('injuries');
+	})->name('players.injuries');
 	Route::get('/{player:slug}', [PlayerController::class, 'index'])->name('player');
 });
 

@@ -4,6 +4,6 @@
     </x-slot>
 
     <div>
-        @livewire('players.index')
+        @livewire('players.injuries')
     </div>
 </x-app-layout>

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Players;
 
 use Livewire\Component;
 use App\Models\Player;
 
-class Players extends Component
+class Injuries extends Component
 {
     public $view = "table";
     public $search;
