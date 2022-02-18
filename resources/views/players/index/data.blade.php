@@ -1,9 +1,13 @@
+<div class="mb-2">
+    @include('players.index.navigation')
+</div>
+
 @if ($players->count() > 0)
     <div class="border-t border-b sm:border border-gray-200 dark:border-gray-700 sm:rounded bg-white dark:bg-gray-750 | overflow-x-auto">
         <table class="w-full">
-            <thead class="font-semibold tracking-wider uppercase text-sm select-none | bg-gray-100 dark:bg-gray-700">
+            <thead class="font-semibold tracking-wider uppercase text-sm select-none | bg-gray-200 dark:bg-gray-700">
                 <tr>
-                    <th class="text-left bg-gray-100 dark:bg-gray-700" style="width: 275px; min-width: 200px; max-width: 275px; left: 0px; position: sticky; position: -webkit-sticky;">
+                    <th class="text-left bg-gray-200 dark:bg-gray-700" style="width: 275px; min-width: 200px; max-width: 275px; left: 0px; position: sticky; position: -webkit-sticky;">
                         <div class="px-3 py-2.5 flex items-center space-x-1 | border-r border-gray-200 dark:border-gray-700">
                                 @if ($order == 'name')
                                     <span class="cursor-pointer" wire:click="setOrder('name_desc')">Jugador</span><i class="fas fa-sort-up"></i>
@@ -82,13 +86,13 @@
                     </th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody wire:loading.class="opacity-50">
                 @foreach ($players as $player)
                     <tr class="group border-t border-gray-200 dark:border-gray-700 text-sm md:text-base hover:bg-gray-50 dark:hover:bg-gray-700 h-10">
                         <td class="bg-white dark:bg-gray-750 group-hover:bg-gray-50 dark:group-hover:bg-gray-700" style="width: 275px; min-width: 200px; max-width: 275px; left: 0px; position: sticky; position: -webkit-sticky;">
                             <div class="relative px-3 py-1.5 flex items-center space-x-3 | border-r border-gray-200 dark:border-gray-700">
                                 <img src="{{ $player->getImg() }}" alt="{{ $player->name }}" class="w-8 h-8 object-cover">
-                                    <x-link href="{{ route('player', $player->slug) }}" class="{{ $player->team ?: 'pointer-events-none' }}">
+                                    <x-link href="{{ route('player', $player->slug) }}" class="hover:underline focus:underline {{ $player->team ?: 'pointer-events-none' }}">
                                         {{ $player->name }}
                                     </x-link>
 
@@ -101,7 +105,7 @@
                         </td>
                         <td class="px-3 w-32" style="min-width: 8rem; max-width: 8rem">
                             @if ($player->team)
-                                <x-link href="{{ route('team.home', ['t' => $player->team->slug]) }}">
+                                <x-link href="{{ route('team.home', ['t' => $player->team->slug]) }}" class="hover:underline focus:underline">
                                   {{ $player->team->short_name }}
                                 </x-link>
                             @else
@@ -133,11 +137,15 @@
         </table>
     </div>
 
-    <div class="mt-6">
+    <div class="mt-2">
+        @include('players.index.navigation')
+    </div>
+
+{{--     <div class="mt-6">
         <div class="pagination-wrapper">
             {{ $players->links('vendor.pagination.tailwind') }}
         </div>
-    </div>
+    </div> --}}
 @else
     <div class="bg-white dark:bg-gray-750 | rounded border border-gray-200 dark:border-gray-700 | flex flex-col items-center space-y-1.5 | py-8">
         <span class="font-bold text-xl">No se han encontrado jugadores</span>

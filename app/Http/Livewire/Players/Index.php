@@ -39,6 +39,29 @@ class Index extends Component
         $this->resetPage();
     }
 
+    public function setCurrentPage(){
+        // $this->setPage($this->page);
+        $this->gotoPage($this->page);
+    }
+
+    public function nextPage($lastPage)
+    {
+        if (($this->page + 1) <= $lastPage) {
+            $this->setPage($this->page + 1);
+        } else {
+            $this->setPage(1);
+        }
+    }
+
+    public function previousPage($lastPage)
+    {
+        if ($this->page > 1) {
+            $this->setPage($this->page - 1);
+        } else {
+            $this->setPage($lastPage);
+        }
+    }
+
     public function applyFilter()
     {
         $this->resetPage();
