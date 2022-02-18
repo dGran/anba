@@ -12,7 +12,7 @@
             <button wire:click="previousPage({{ $players->lastPage() }})" class="bg-white dark:bg-gray-750 hover:bg-gray-200 dark:hover:bg-gray-700 focus:bg-gray-200 dark:focus:bg-gray-700 | h-9 w-10 | border border-gray-200 dark:border-gray-650 | rounded-l-md | focus:outline-none">
                 <i class="fas fa-chevron-left"></i>
             </button>
-            <select class="appearance-none font-bold text-center | h-9 w-12 | bg-white dark:bg-gray-750 hover:bg-gray-200 dark:hover:bg-gray-700 focus:bg-gray-200 dark:focus:bg-gray-700 | border-t border-b border-gray-200 dark:border-gray-650 | focus:outline-none" wire:model="page" wire:change="setCurrentPage">
+            <select class="appearance-none font-bold | h-9 w-12 | bg-white dark:bg-gray-750 hover:bg-gray-200 dark:hover:bg-gray-700 focus:bg-gray-200 dark:focus:bg-gray-700 | border-t border-b border-gray-200 dark:border-gray-650 | focus:outline-none" wire:model="page" wire:change="setCurrentPage" style="text-align-last: center;">
                 @for ($i = 1; $i < $players->lastPage()+1 ; $i++)
                     <option value="{{ $i }}">{{ $i }}</option>
                 @endfor
