@@ -2,13 +2,13 @@
     <div class="max-w-7xl mx-auto sm:px-3 sm:px-6 lg:px-8 | relative">
         @if (!$player->retired)
             <div style="position: absolute; width: 100%; opacity: 0.1; transform: translateY(-20%);">
-                <img src="{{ $player->getTeamImg() }}" style="width: 40%; margin-left: -0%; z-index: 2">
+                <img src="{{ $player->getTeamImg() }}" style="width: 40%; margin-left: -0%; z-index: 3">
             </div>
         @endif
 
         <div class="flex items-center pt-8 md:pt-16">
             <img src="{{ $player->team->getImg() }}" alt="{{ $player->team->medium_name }}"
-            class="h-auto | absolute top-0 left-0 ml-6 mt-4" style="width: 11%; z-index: 1;">
+            class="h-auto | absolute top-0 left-0 ml-6 mt-4" style="width: 11%; z-index: 2;">
             <img src="{{ $player->getImg() }}" alt="{{ $player->name }}" class="ml-6 h-auto" style="z-index: 1; width: 28%">
             <div class="flex flex-col justify-center px-3">
                 <span class="text-white text-xs sm:text-sm lg:text-base xl:text-lg font-semibold -mb-1 sm:mb-0 lg:mb-2 xl:mb-4">
