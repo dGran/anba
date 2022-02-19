@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto sm:px-3 sm:px-6 lg:px-8 | relative">
         @if (!$player->retired)
             <div style="position: absolute; width: 100%; opacity: 0.1; transform: translateY(-20%);">
-                <img src="{{ $player->getTeamImg() }}" style="width: 40%; margin-left: -0%; z-index: 3">
+                <img src="{{ $player->getTeamImg() }}" style="width: 35%; margin-left: -0%; z-index: 3">
             </div>
         @endif
 
