@@ -29,7 +29,7 @@
             </div>
 
             <div class="flex-1 lg:border-l xl:border-r" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
-                <div class="border-t lg:border-t-0" style="{{ $player->team ? "background-color: " . $player->team->getDarkenColor(-.2) : '' }}; {{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
+                <div class="border-t lg:border-t-0" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
                     <div class="max-w-7xl mx-auto | relative">
                         <div class="grid grid-cols-2 sm:grid-cols-4">
                             <div class=" | py-3 | text-white | flex flex-col items-center justify-center | font-roboto" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
@@ -52,7 +52,7 @@
                     </div>
                 </div>
 
-                <div class="border-t" style="{{ $player->team ? "background-color: " . $player->team->getDarkenColor(-.2) : '' }}; {{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
+                <div class="border-t" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
                     <div class="max-w-7xl mx-auto | relative">
                         <div class="grid grid-cols-2 sm:grid-cols-4">
                             <div class=" | py-3 | text-white | flex flex-col items-center justify-center | font-roboto" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">

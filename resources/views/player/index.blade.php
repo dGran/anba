@@ -1,6 +1,6 @@
 <div>
-    @include('player.header_top')
-    @include('player.header_bottom')
+    @include('player.header.top')
+    @include('player.header.bottom')
 
     @include('player.data')
 </div>

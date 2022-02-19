@@ -36,10 +36,21 @@ class Player_manage extends Component
             ->get();
     }
 
+    public function getMoreTeamPlayers()
+    {
+        return $players = Player::
+            where('team_id', $this->player->team_id)
+            ->where('id', '!=', $this->player->id)
+            ->orderBy('position', 'asc')
+            ->get();
+    }
+
     public function render()
     {
+        $moreTeamPlayers = $this->getMoreTeamPlayers();
+
         return view('player.index', [
-            //..
+            'moreTeamPlayers' => $moreTeamPlayers
         ]);
     }
 }

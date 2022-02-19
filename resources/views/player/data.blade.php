@@ -3,6 +3,7 @@
     <h4 class="px-3 sm:px-0 pb-3 text-2xl | animate-pulse">
         Work in progress...
     </h4>
-    {{-- work in progress mark... --}}
+
+    @include('player.data.more_team_players')
 </div>
 
