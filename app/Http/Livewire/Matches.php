@@ -75,11 +75,13 @@ class Matches extends Component
     public function setNextPage()
     {
     	$this->page++;
+    	// $this->setPage($this->page + 1);
     }
 
     public function setPreviousPage()
     {
 		$this->page--;
+		// $this->setPage($this->page - 1);
     }
 
 	public function setOrder($name)

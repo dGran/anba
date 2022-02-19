@@ -5,9 +5,9 @@
 @if ($players->count() > 0)
     <div class="border-t border-b sm:border border-gray-200 dark:border-gray-700 sm:rounded bg-white dark:bg-gray-750 | overflow-x-auto">
         <table class="w-full">
-            <thead class="font-semibold tracking-wider uppercase text-sm select-none | bg-gray-200 dark:bg-gray-700">
+            <thead class="font-semibold tracking-wider uppercase text-sm select-none | bg-gray-200 dark:bg-gray-650">
                 <tr>
-                    <th class="text-left bg-gray-200 dark:bg-gray-700" style="width: 275px; min-width: 200px; max-width: 275px; left: 0px; position: sticky; position: -webkit-sticky;">
+                    <th class="text-left bg-gray-200 dark:bg-gray-650" style="width: 275px; min-width: 200px; max-width: 275px; left: 0px; position: sticky; position: -webkit-sticky;">
                         <div class="px-3 py-2.5 flex items-center space-x-1 | border-r border-gray-200 dark:border-gray-700">
                                 @if ($order == 'name')
                                     <span class="cursor-pointer" wire:click="setOrder('name_desc')">Jugador</span><i class="fas fa-sort-up"></i>
@@ -86,21 +86,15 @@
                     </th>
                 </tr>
             </thead>
-            <tbody wire:loading.class="opacity-50">
+            <tbody wire:loading.class="opacity-75">
                 @foreach ($players as $player)
                     <tr class="group border-t border-gray-200 dark:border-gray-700 text-sm md:text-base hover:bg-gray-50 dark:hover:bg-gray-700 h-10">
                         <td class="bg-white dark:bg-gray-750 group-hover:bg-gray-50 dark:group-hover:bg-gray-700" style="width: 275px; min-width: 200px; max-width: 275px; left: 0px; position: sticky; position: -webkit-sticky;">
                             <div class="relative px-3 py-1.5 flex items-center space-x-3 | border-r border-gray-200 dark:border-gray-700">
-                                <img src="{{ $player->getImg() }}" alt="{{ $player->name }}" class="w-8 h-8 object-cover">
-                                    <x-link href="{{ route('player', $player->slug) }}" class="hover:underline focus:underline {{ $player->team ?: 'pointer-events-none' }}">
-                                        {{ $player->name }}
-                                    </x-link>
-
-    {{--                             @if ($player->injury_id)
-                                    <span class="absolute bottom-0 right-0 pr-1.5 pb-0.5 | text-sm sm:text-base | {{ $player->injury_playable ? 'text-yellow-300' : 'text-pretty-red' }}">
-                                        <i class="fas fa-briefcase-medical"></i>
-                                    </span>
-                                @endif --}}
+                                <img src="{{ $player->getImg() }}" alt="{{ $player->name }}" class="w-10 h-10 object-cover | rounded-full | border border-gray-200 dark:border-gray-700 | bg-gray-100 dark:bg-gray-800 group-hover:bg-white dark:group-hover:bg-gray-850 | p-0.5">
+                                <x-link href="{{ route('player', $player->slug) }}" class="hover:underline focus:underline {{ $player->team ?: 'pointer-events-none' }}">
+                                    {{ $player->name }}
+                                </x-link>
                             </div>
                         </td>
                         <td class="px-3 w-32" style="min-width: 8rem; max-width: 8rem">

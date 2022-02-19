@@ -44,6 +44,11 @@ class Index extends Component
         $this->gotoPage($this->page);
     }
 
+    public function toPage($page)
+    {
+        $this->gotoPage($page);
+    }
+
     public function nextPage($lastPage)
     {
         if (($this->page + 1) <= $lastPage) {
