@@ -1,8 +1,18 @@
 <div class="px-3 sm:px-0">
 
-    <h4 class="font-bold text-xl | border-b border-gray-200 dark:border-gray-700 | pb-1.5">
-        Por partido
-    </h4>
+    <div class="flex items-end justify-between">
+        <h4 class="font-bold text-xl">
+            Por partido
+        </h4>
+        <div class="flex items-center space-x-3">
+            <button class="text-xs uppercase font-bold | text-blue-500 dark:text-dark-link cursor-pointer | transition duration-150 ease-in-out | {{ $statsPerGame_phase == 'regular' ? 'underline opacity-100 pointer-events-none cursor-not-allowed' : 'opacity-50 hover:opacity-75  hover:underline focus:underline' }} focus:outline-none" wire:click="$set('statsPerGame_phase', 'regular')">
+                regular season
+            </button>
+            <button class="text-xs uppercase font-bold | text-blue-500 dark:text-dark-link cursor-pointer | transition duration-150 ease-in-out | {{ $statsPerGame_phase == 'playoffs' ? 'opacity-100 pointer-events-none cursor-not-allowed' : 'opacity-50 hover:opacity-75  hover:underline focus:underline' }} focus:outline-none" wire:click="$set('statsPerGame_phase', 'playoffs')">
+                playoffs
+            </button>
+        </div>
+    </div>
 
     <div class="pt-3">
         @if ($statsPerGame->count() > 0)
@@ -210,66 +220,138 @@
                                 <td class="text-right {{ $statsPerGame_order == 'PT' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
                                     {{ number_format($stat->PT, 0, ',', '.') }}
                                 </td>
-                                <td class="text-right {{ $statsPerGame_order == 'AVG_MIN' || $statsPerGame_order == 'SUM_MIN' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
+                                <td class="text-right {{ $statsPerGame_order == 'AVG_MIN' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
                                     {{ number_format($stat->AVG_MIN, 1, ',', '.') }}
                                 </td>
-                                <td class="text-right {{ $statsPerGame_order == 'AVG_PTS' || $statsPerGame_order == 'SUM_PTS' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
+                                <td class="text-right {{ $statsPerGame_order == 'AVG_PTS' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
                                     {{ number_format($stat->AVG_PTS, 1, ',', '.') }}
                                 </td>
-                                <td class="text-right {{ $statsPerGame_order == 'AVG_FGM' || $statsPerGame_order == 'SUM_FGM' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
+                                <td class="text-right {{ $statsPerGame_order == 'AVG_FGM' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
                                     {{ number_format($stat->AVG_FGM, 1, ',', '.') }}
                                 </td>
-                                <td class="text-right {{ $statsPerGame_order == 'AVG_FGA' || $statsPerGame_order == 'SUM_FGA' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
+                                <td class="text-right {{ $statsPerGame_order == 'AVG_FGA' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
                                     {{ number_format($stat->AVG_FGA, 1, ',', '.') }}
                                 </td>
                                 <td class="text-right {{ $statsPerGame_order == 'PER_FG' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
                                     {{ number_format($stat->PER_FG, 1, ',', '.') }}
                                 </td>
-                                <td class="text-right {{ $statsPerGame_order == 'AVG_TPM' || $statsPerGame_order == 'SUM_TPM' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
+                                <td class="text-right {{ $statsPerGame_order == 'AVG_TPM' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
                                     {{ number_format($stat->AVG_TPM, 1, ',', '.') }}
                                 </td>
-                                <td class="text-right {{ $statsPerGame_order == 'AVG_TPA' || $statsPerGame_order == 'SUM_TPA' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
+                                <td class="text-right {{ $statsPerGame_order == 'AVG_TPA' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
                                     {{ number_format($stat->AVG_TPA, 1, ',', '.') }}
                                 </td>
                                 <td class="text-right {{ $statsPerGame_order == 'PER_TP' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
                                     {{ number_format($stat->PER_TP, 1, ',', '.') }}
                                 </td>
-                                <td class="text-right {{ $statsPerGame_order == 'AVG_FTM' || $statsPerGame_order == 'SUM_FTM' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
+                                <td class="text-right {{ $statsPerGame_order == 'AVG_FTM' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
                                     {{ number_format($stat->AVG_FTM, 1, ',', '.') }}
                                 </td>
-                                <td class="text-right {{ $statsPerGame_order == 'AVG_FTA' || $statsPerGame_order == 'SUM_FTA' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
+                                <td class="text-right {{ $statsPerGame_order == 'AVG_FTA' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
                                     {{ number_format($stat->AVG_FTA, 1, ',', '.') }}
                                 </td>
                                 <td class="text-right {{ $statsPerGame_order == 'PER_FT' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
                                     {{ number_format($stat->PER_FT, 1, ',', '.') }}
                                 </td>
-                                <td class="text-right {{ $statsPerGame_order == 'AVG_ORB' || $statsPerGame_order == 'SUM_ORB' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
+                                <td class="text-right {{ $statsPerGame_order == 'AVG_ORB' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
                                     {{ number_format($stat->AVG_ORB, 1, ',', '.') }}
                                 </td>
-                                <td class="text-right {{ $statsPerGame_order == 'AVG_DRB' || $statsPerGame_order == 'SUM_DRB' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
+                                <td class="text-right {{ $statsPerGame_order == 'AVG_DRB' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
                                     {{ number_format($stat->AVG_DRB, 1, ',', '.') }}
                                 </td>
-                                <td class="text-right {{ $statsPerGame_order == 'AVG_REB' || $statsPerGame_order == 'SUM_REB' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
+                                <td class="text-right {{ $statsPerGame_order == 'AVG_REB' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
                                     {{ number_format($stat->AVG_REB, 1, ',', '.') }}
                                 </td>
-                                <td class="text-right {{ $statsPerGame_order == 'AVG_AST' || $statsPerGame_order == 'SUM_AST' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
+                                <td class="text-right {{ $statsPerGame_order == 'AVG_AST' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
                                     {{ number_format($stat->AVG_AST, 1, ',', '.') }}
                                 </td>
-                                <td class="text-right {{ $statsPerGame_order == 'AVG_STL' || $statsPerGame_order == 'SUM_STL' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
+                                <td class="text-right {{ $statsPerGame_order == 'AVG_STL' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
                                     {{ number_format($stat->AVG_STL, 1, ',', '.') }}
                                 </td>
-                                <td class="text-right {{ $statsPerGame_order == 'AVG_LOS' || $statsPerGame_order == 'SUM_LOS' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
+                                <td class="text-right {{ $statsPerGame_order == 'AVG_LOS' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
                                     {{ number_format($stat->AVG_LOS, 1, ',', '.') }}
                                 </td>
-                                <td class="text-right {{ $statsPerGame_order == 'AVG_BLK' || $statsPerGame_order == 'SUM_BLK' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
+                                <td class="text-right {{ $statsPerGame_order == 'AVG_BLK' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
                                     {{ number_format($stat->AVG_BLK, 1, ',', '.') }}
                                 </td>
-                                <td class="text-right {{ $statsPerGame_order == 'AVG_PF' || $statsPerGame_order == 'SUM_PF' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
+                                <td class="text-right {{ $statsPerGame_order == 'AVG_PF' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
                                     {{ number_format($stat->AVG_PF, 1, ',', '.') }}
                                 </td>
-                                <td class="text-right {{ $statsPerGame_order == 'AVG_ML' || $statsPerGame_order == 'SUM_ML' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
+                                <td class="text-right {{ $statsPerGame_order == 'AVG_ML' ? 'bg-gray-150 dark:bg-gray-650' : '' }}">
                                     {{ number_format($stat->AVG_ML, 1, ',', '.') }}
                                 </td>
+                            </tr>
+                        @endforeach
+
+                        {{-- by team totals --}}
+                        @foreach ($statsPerGame_team_totals as $key=>$stat)
+                            <tr class="border-t border-gray-300 dark:border-gray-650 | bg-gray-200 dark:bg-gray-700 | font-bold">
+                                <td class="bg-gray-200 dark:bg-gray-700"
+                                    style="width: 7rem; min-width: 7rem; max-width: 7rem; left: 0px; position: sticky; position: -webkit-sticky; text-align: left;">
+                                    <div class="border-r border-gray-200 dark:border-gray-700 -mr-2">
+
+                                    </div>
+                                </td>
+                                <td class="py-1.5">{{ $stat->team_name }}</td>
+                                <td class="text-right"></td>
+                                <td class="text-right">{{ number_format($stat->PJ, 0, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->PT, 0, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_MIN, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_PTS, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_FGM, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_FGA, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->PER_FG, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_TPM, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_TPA, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->PER_TP, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_FTM, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_FTA, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->PER_FT, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_ORB, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_DRB, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_REB, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_AST, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_STL, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_LOS, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_BLK, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_PF, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_ML, 1, ',', '.') }}</td>
+                            </tr>
+                        @endforeach
+
+                        {{-- carrer totals --}}
+                        @foreach ($statsPerGame_totals as $key=>$stat)
+                            <tr class="border-t border-gray-300 dark:border-gray-650 | bg-gray-200 dark:bg-gray-700 | font-bold">
+                                <td class="bg-gray-200 dark:bg-gray-700"
+                                    style="width: 7rem; min-width: 7rem; max-width: 7rem; left: 0px; position: sticky; position: -webkit-sticky; text-align: left;">
+                                    <div class="border-r border-gray-200 dark:border-gray-700 py-2 -mr-2">
+                                        Carrera
+                                    </div>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td class="text-right">{{ number_format($stat->PJ, 0, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->PT, 0, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_MIN, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_PTS, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_FGM, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_FGA, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->PER_FG, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_TPM, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_TPA, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->PER_TP, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_FTM, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_FTA, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->PER_FT, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_ORB, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_DRB, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_REB, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_AST, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_STL, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_LOS, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_BLK, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_PF, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_ML, 1, ',', '.') }}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -277,7 +359,7 @@
             </div>
         @else
             <div class="bg-white dark:bg-gray-700 overflow-hidden md:shadow-sm md:rounded-md md:mx-0 text-gray-900 dark:text-gray-200 border border-gray-200 dark:border-gray-850">
-                <p class="px-4 py-8 text-xl md:text-3xl text-center">
+                <p class="px-4 py-8 text-lg md:text-2xl text-center">
                     No hay estadísticas disponibles para los filtros seleccionados.
                 </p>
             </div>
