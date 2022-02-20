@@ -5,5 +5,6 @@
     </h4>
 
     @include('player.data.more_team_players')
+    @include('player.data.more_team_players')
 </div>
 

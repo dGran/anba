@@ -11,7 +11,7 @@
 	<div class="max-w-7xl mx-auto sm:px-3 sm:px-6 lg:px-8 my-4 md:my-8">
 		@include('team.partials.more_teams')
 		@include('team.schedule.filters')
-		<div wire:loading.class="opacity-50">
+		<div wire:loading.class="opacity-75">
         	@include('team.schedule.data')
         </div>
 	</div>

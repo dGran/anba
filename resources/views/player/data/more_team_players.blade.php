@@ -1,4 +1,4 @@
-<div class="px-3 sm:px-0">
+<div class="px-3 sm:px-0 | mt-6">
     <h4 class="font-bold text-xl | border-b border-gray-200 dark:border-gray-700 | pb-1.5">
         Explora más jugadores de los {{ $player->team->medium_name }}
     </h4>
