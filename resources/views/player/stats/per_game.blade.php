@@ -283,6 +283,42 @@
                             </tr>
                         @endforeach
 
+                        {{-- carrer totals --}}
+                        @foreach ($statsPerGame_totals as $key=>$stat)
+                            <tr class="border-t border-gray-300 dark:border-gray-650 | bg-gray-200 dark:bg-gray-700 | font-bold">
+                                <td class="bg-gray-200 dark:bg-gray-700"
+                                    style="width: 7rem; min-width: 7rem; max-width: 7rem; left: 0px; position: sticky; position: -webkit-sticky; text-align: left;">
+                                    <div class="border-r border-gray-200 dark:border-gray-700 py-2 -mr-2">
+                                        Carrera
+                                    </div>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td class="text-right">{{ number_format($stat->PJ, 0, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->PT, 0, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_MIN, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_PTS, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_FGM, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_FGA, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->PER_FG, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_TPM, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_TPA, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->PER_TP, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_FTM, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_FTA, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->PER_FT, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_ORB, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_DRB, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_REB, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_AST, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_STL, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_LOS, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_BLK, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_PF, 1, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($stat->AVG_ML, 1, ',', '.') }}</td>
+                            </tr>
+                        @endforeach
+
                         {{-- by team totals --}}
                         @foreach ($statsPerGame_team_totals as $key=>$stat)
                             <tr class="border-t border-gray-300 dark:border-gray-650 | bg-gray-200 dark:bg-gray-700 | font-bold">
@@ -319,41 +355,6 @@
                             </tr>
                         @endforeach
 
-                        {{-- carrer totals --}}
-                        @foreach ($statsPerGame_totals as $key=>$stat)
-                            <tr class="border-t border-gray-300 dark:border-gray-650 | bg-gray-200 dark:bg-gray-700 | font-bold">
-                                <td class="bg-gray-200 dark:bg-gray-700"
-                                    style="width: 7rem; min-width: 7rem; max-width: 7rem; left: 0px; position: sticky; position: -webkit-sticky; text-align: left;">
-                                    <div class="border-r border-gray-200 dark:border-gray-700 py-2 -mr-2">
-                                        Carrera
-                                    </div>
-                                </td>
-                                <td></td>
-                                <td></td>
-                                <td class="text-right">{{ number_format($stat->PJ, 0, ',', '.') }}</td>
-                                <td class="text-right">{{ number_format($stat->PT, 0, ',', '.') }}</td>
-                                <td class="text-right">{{ number_format($stat->AVG_MIN, 1, ',', '.') }}</td>
-                                <td class="text-right">{{ number_format($stat->AVG_PTS, 1, ',', '.') }}</td>
-                                <td class="text-right">{{ number_format($stat->AVG_FGM, 1, ',', '.') }}</td>
-                                <td class="text-right">{{ number_format($stat->AVG_FGA, 1, ',', '.') }}</td>
-                                <td class="text-right">{{ number_format($stat->PER_FG, 1, ',', '.') }}</td>
-                                <td class="text-right">{{ number_format($stat->AVG_TPM, 1, ',', '.') }}</td>
-                                <td class="text-right">{{ number_format($stat->AVG_TPA, 1, ',', '.') }}</td>
-                                <td class="text-right">{{ number_format($stat->PER_TP, 1, ',', '.') }}</td>
-                                <td class="text-right">{{ number_format($stat->AVG_FTM, 1, ',', '.') }}</td>
-                                <td class="text-right">{{ number_format($stat->AVG_FTA, 1, ',', '.') }}</td>
-                                <td class="text-right">{{ number_format($stat->PER_FT, 1, ',', '.') }}</td>
-                                <td class="text-right">{{ number_format($stat->AVG_ORB, 1, ',', '.') }}</td>
-                                <td class="text-right">{{ number_format($stat->AVG_DRB, 1, ',', '.') }}</td>
-                                <td class="text-right">{{ number_format($stat->AVG_REB, 1, ',', '.') }}</td>
-                                <td class="text-right">{{ number_format($stat->AVG_AST, 1, ',', '.') }}</td>
-                                <td class="text-right">{{ number_format($stat->AVG_STL, 1, ',', '.') }}</td>
-                                <td class="text-right">{{ number_format($stat->AVG_LOS, 1, ',', '.') }}</td>
-                                <td class="text-right">{{ number_format($stat->AVG_BLK, 1, ',', '.') }}</td>
-                                <td class="text-right">{{ number_format($stat->AVG_PF, 1, ',', '.') }}</td>
-                                <td class="text-right">{{ number_format($stat->AVG_ML, 1, ',', '.') }}</td>
-                            </tr>
-                        @endforeach
                     </tbody>
                 </table>
             </div>
