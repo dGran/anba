@@ -1,5 +1,5 @@
 <div class="border-t" style="{{ $player->team ? "background-color: " . $player->team->getDarkenColor(-.2) : '' }}; {{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
-    <div class="max-w-7xl mx-auto | relative">
+    <div class="max-w-7xl mx-auto xl:px-8 | relative">
         <div class="flex flex-col lg:flex-row justify-between">
             <div class="flex items-center justify-center lg:justify-start">
                 <div class="xl:border-l w-20 lg:w-28 my-3 lg:my-0 lg:py-6 text-white | flex flex-col items-center | font-roboto | leading-5 md:leading-7 lg:leading-10" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
