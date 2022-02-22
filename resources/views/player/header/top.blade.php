@@ -1,12 +1,6 @@
 <div class="bg-white dark:bg-gray-750" style="{{ $player->team ? "background-color: rgba(" . $player->team->getRGBColor() . ", 1)" : '' }}">
     <div class="max-w-7xl mx-auto sm:px-3 sm:px-6 lg:px-8 | relative">
-        @if (!$player->retired)
-            <div style="position: absolute; width: 100%; opacity: 0.1; transform: translateY(-20%);">
-                <img src="{{ $player->getTeamImg() }}" style="width: 35%; margin-left: -0%; z-index: 3">
-            </div>
-        @endif
-
-        <div class="flex items-center pt-8 md:pt-16">
+        <div class="brandBG | flex items-center pt-8 md:pt-16">
             <img src="{{ $player->team->getImg() }}" alt="{{ $player->team->medium_name }}"
             class="h-auto | absolute top-0 left-0 ml-6 mt-4" style="width: 11%; z-index: 2;">
             <img src="{{ $player->getImg() }}" alt="{{ $player->name }}" class="ml-6 h-auto" style="z-index: 1; width: 28%">

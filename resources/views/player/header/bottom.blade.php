@@ -32,19 +32,19 @@
                 <div class="border-t lg:border-t-0" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
                     <div class="max-w-7xl mx-auto | relative">
                         <div class="grid grid-cols-2 sm:grid-cols-4">
-                            <div class=" | py-3 | text-white | flex flex-col items-center justify-center | font-roboto" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
+                            <div class=" | p-3 | text-white | flex flex-col items-center justify-center | font-roboto" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
                                 <span class="text-xxs uppercase">posición</span>
                                 <span class="text-sm">{{ $player->getPosition() }}</span>
                             </div>
-                            <div class="sm:border-l | py-3 | text-white | flex flex-col items-center justify-center | font-roboto" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
+                            <div class="sm:border-l | p-3 | text-white | flex flex-col items-center justify-center | font-roboto" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
                                 <span class="text-xxs uppercase">edad</span>
                                 <span class="text-sm">{{ $player->age() }} años</span>
                             </div>
-                            <div class="sm:border-l border-t sm:border-t-0 | py-3 | text-white | flex flex-col items-center justify-center | font-roboto" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
+                            <div class="sm:border-l border-t sm:border-t-0 | p-3 | text-white | flex flex-col items-center justify-center | font-roboto" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
                                 <span class="text-xxs uppercase">altura</span>
                                 <span class="text-sm">{{ $player->height }}</span>
                             </div>
-                            <div class="sm:border-l border-t sm:border-t-0 | py-3 | text-white | flex flex-col items-center justify-center | font-roboto" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
+                            <div class="sm:border-l border-t sm:border-t-0 | p-3 | text-white | flex flex-col items-center justify-center | font-roboto" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
                                 <span class="text-xxs uppercase">peso</span>
                                 <span class="text-sm">{{ $player->weight }} lbs</span>
                             </div>
@@ -55,19 +55,19 @@
                 <div class="border-t" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
                     <div class="max-w-7xl mx-auto | relative">
                         <div class="grid grid-cols-2 sm:grid-cols-4">
-                            <div class=" | py-3 | text-white | flex flex-col items-center justify-center | font-roboto" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
+                            <div class=" | p-3 | text-white | flex flex-col items-center justify-center | font-roboto" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
                                 <span class="text-xxs uppercase">fecha nacimiento</span>
                                 <span class="text-sm">{{ $player->getBirthdate() }}</span>
                             </div>
-                            <div class="sm:border-l | py-3 | text-white | flex flex-col items-center justify-center | font-roboto" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
+                            <div class="sm:border-l | p-3 | text-white | flex flex-col items-center justify-center | font-roboto" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
                                 <span class="text-xxs uppercase">pais</span>
-                                <span class="text-sm">{{ $player->nation_name }}</span>
+                                <p class="text-sm text-center">{{ $player->nation_name }}</p>
                             </div>
-                            <div class="sm:border-l border-t sm:border-t-0 | py-3 | text-white | flex flex-col items-center justify-center | font-roboto" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
+                            <div class="sm:border-l border-t sm:border-t-0 | p-3 | text-white | flex flex-col items-center justify-center | font-roboto" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
                                 <span class="text-xxs uppercase">universidad</span>
-                                <span class="text-sm">{{ $player->college }}</span>
+                                <p class="text-sm text-center">{{ $player->college }}</p>
                             </div>
-                            <div class="sm:border-l border-t sm:border-t-0 | py-3 | text-white | flex flex-col items-center justify-center | font-roboto" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
+                            <div class="sm:border-l border-t sm:border-t-0 | p-3 | text-white | flex flex-col items-center justify-center | font-roboto" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
                                 <span class="text-xxs uppercase">experiencia</span>
                                 <span class="text-sm">{{ $player->getYearsPro() }}</span>
                             </div>

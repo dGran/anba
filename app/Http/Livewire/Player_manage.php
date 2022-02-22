@@ -230,6 +230,177 @@ class Player_manage extends Component
         return $stats;
     }
 
+    public function statsTotals_change_order($statsTotals_order)
+    {
+        if ($statsTotals_order != 'seasons.name' && $statsTotals_order != 'team_name' && $statsTotals_order != 'AGE' && $statsTotals_order != 'PJ' && $statsTotals_order != 'PT' && $statsTotals_order != 'PER_FG' && $statsTotals_order != 'PER_TP' && $statsTotals_order != 'PER_FT') {
+            $statsTotals_order = 'SUM_' . $statsTotals_order;
+        }
+        if ($this->statsTotals_order == $statsTotals_order) {
+            if ($this->statsTotals_order_direction == "asc") {
+                $this->statsTotals_order_direction = "desc";
+            } else {
+                $this->statsTotals_order_direction = "asc";
+            }
+        } else {
+            $this->statsTotals_order = $statsTotals_order;
+            if ($this->statsTotals_order != 'player_name' && $this->statsTotals_order != 'teams.short_name') {
+                $this->statsTotals_order_direction = "desc";
+            } else {
+                $this->statsTotals_order_direction = "asc";
+            }
+        }
+        $this->page = 1;
+    }
+
+    public function getStatsTotals()
+    {
+        $stats = PlayerStat::with('season', 'seasonTeam')
+                ->join('seasons', 'seasons.id', 'players_stats.season_id')
+                ->join('seasons_teams', 'seasons_teams.id', 'players_stats.season_team_id')
+                ->join('teams', 'teams.id', 'seasons_teams.team_id')
+                ->join('matches', 'matches.id', 'players_stats.match_id')
+                ->join('players', 'players.id', 'players_stats.player_id')
+                ->select('players_stats.season_id', 'players_stats.season_team_id', 'teams.short_name as team_name',
+                    \DB::raw("timestampdiff(YEAR, players.birthdate, CONCAT(RIGHT(seasons.name, 4), '/01/01')) AS AGE"),
+                    \DB::raw('SUM(MIN) as SUM_MIN'),
+                    \DB::raw('SUM(PTS) as SUM_PTS'),
+                    \DB::raw('SUM(FGM) as SUM_FGM'),
+                    \DB::raw('SUM(FGA) as SUM_FGA'),
+                    \DB::raw('(SUM(FGM) / SUM(FGA)) * 100 as PER_FG'),
+                    \DB::raw('SUM(TPM) as SUM_TPM'),
+                    \DB::raw('SUM(TPA) as SUM_TPA'),
+                    \DB::raw('(SUM(TPM) / SUM(TPA)) * 100 as PER_TP'),
+                    \DB::raw('SUM(FTM) as SUM_FTM'),
+                    \DB::raw('SUM(FTA) as SUM_FTA'),
+                    \DB::raw('(SUM(FTM) / SUM(FTA)) * 100 as PER_FT'),
+                    \DB::raw('SUM(REB) as SUM_REB'),
+                    \DB::raw('SUM(ORB) as SUM_ORB'),
+                    \DB::raw('SUM(REB) - SUM(ORB)  as SUM_DRB'),
+                    \DB::raw('SUM(AST) as SUM_AST'),
+                    \DB::raw('SUM(STL) as SUM_STL'),
+                    \DB::raw('SUM(BLK) as SUM_BLK'),
+                    \DB::raw('SUM(LOS) as SUM_LOS'),
+                    \DB::raw('SUM(PF) as SUM_PF'),
+                    \DB::raw('SUM(ML) as SUM_ML'),
+                    \DB::raw('COUNT(player_id) as PJ'),
+                    \DB::raw('SUM(headline) as PT'),
+                )
+                ->where('player_id', $this->player->id)
+                ->whereNotNull('players_stats.MIN');
+                if ($this->statsTotals_phase == 'regular') {
+                    $stats = $stats->whereNull('matches.clash_id');
+                } else {
+                    $stats = $stats->whereNotNull('matches.clash_id');
+                }
+                $stats = $stats
+                ->orderBy($this->statsTotals_order, $this->statsTotals_order_direction)
+                ->orderBy('PJ', $this->statsTotals_order_direction)
+                ->orderBy('SUM_MIN', 'desc')
+                ->groupBy('players_stats.season_team_id')
+                ->having('PJ', '>', 1)
+                ->get();
+
+        return $stats;
+    }
+
+    public function getStatsTotals_totals()
+    {
+        $stats = PlayerStat::with('season', 'seasonTeam')
+                ->join('seasons', 'seasons.id', 'players_stats.season_id')
+                ->join('seasons_teams', 'seasons_teams.id', 'players_stats.season_team_id')
+                ->join('teams', 'teams.id', 'seasons_teams.team_id')
+                ->join('matches', 'matches.id', 'players_stats.match_id')
+                ->join('players', 'players.id', 'players_stats.player_id')
+                ->select('players_stats.season_id', 'players_stats.season_team_id',
+                    \DB::raw('SUM(MIN) as SUM_MIN'),
+                    \DB::raw('SUM(PTS) as SUM_PTS'),
+                    \DB::raw('SUM(FGM) as SUM_FGM'),
+                    \DB::raw('SUM(FGA) as SUM_FGA'),
+                    \DB::raw('(SUM(FGM) / SUM(FGA)) * 100 as PER_FG'),
+                    \DB::raw('SUM(TPM) as SUM_TPM'),
+                    \DB::raw('SUM(TPA) as SUM_TPA'),
+                    \DB::raw('(SUM(TPM) / SUM(TPA)) * 100 as PER_TP'),
+                    \DB::raw('SUM(FTM) as SUM_FTM'),
+                    \DB::raw('SUM(FTA) as SUM_FTA'),
+                    \DB::raw('(SUM(FTM) / SUM(FTA)) * 100 as PER_FT'),
+                    \DB::raw('SUM(REB) as SUM_REB'),
+                    \DB::raw('SUM(ORB) as SUM_ORB'),
+                    \DB::raw('SUM(REB) - SUM(ORB)  as SUM_DRB'),
+                    \DB::raw('SUM(AST) as SUM_AST'),
+                    \DB::raw('SUM(STL) as SUM_STL'),
+                    \DB::raw('SUM(BLK) as SUM_BLK'),
+                    \DB::raw('SUM(LOS) as SUM_LOS'),
+                    \DB::raw('SUM(PF) as SUM_PF'),
+                    \DB::raw('SUM(ML) as SUM_ML'),
+                    \DB::raw('COUNT(player_id) as PJ'),
+                    \DB::raw('SUM(headline) as PT'),
+                )
+                ->where('player_id', $this->player->id)
+                ->whereNotNull('players_stats.MIN');
+                if ($this->statsTotals_phase == 'regular') {
+                    $stats = $stats->whereNull('matches.clash_id');
+                } else {
+                    $stats = $stats->whereNotNull('matches.clash_id');
+                }
+                $stats = $stats
+                ->groupBy('player_id')
+                ->having('PJ', '>', 1)
+                ->get();
+
+        return $stats;
+    }
+
+    public function getStatsTotals_team_totals()
+    {
+        $stats = PlayerStat::with('season', 'seasonTeam')
+                ->join('seasons', 'seasons.id', 'players_stats.season_id')
+                ->join('seasons_teams', 'seasons_teams.id', 'players_stats.season_team_id')
+                ->join('teams', 'teams.id', 'seasons_teams.team_id')
+                ->join('matches', 'matches.id', 'players_stats.match_id')
+                ->join('players', 'players.id', 'players_stats.player_id')
+                ->select('players_stats.season_id', 'players_stats.season_team_id', 'teams.short_name as team_name', 'teams.id as team_id',
+                    \DB::raw("AVG(timestampdiff(YEAR, players.birthdate, CONCAT(RIGHT(seasons.name, 4), '/01/01'))) AS AGE"),
+                    \DB::raw('SUM(MIN) as SUM_MIN'),
+                    \DB::raw('SUM(PTS) as SUM_PTS'),
+                    \DB::raw('SUM(FGM) as SUM_FGM'),
+                    \DB::raw('SUM(FGA) as SUM_FGA'),
+                    \DB::raw('(SUM(FGM) / SUM(FGA)) * 100 as PER_FG'),
+                    \DB::raw('SUM(TPM) as SUM_TPM'),
+                    \DB::raw('SUM(TPA) as SUM_TPA'),
+                    \DB::raw('(SUM(TPM) / SUM(TPA)) * 100 as PER_TP'),
+                    \DB::raw('SUM(FTM) as SUM_FTM'),
+                    \DB::raw('SUM(FTA) as SUM_FTA'),
+                    \DB::raw('(SUM(FTM) / SUM(FTA)) * 100 as PER_FT'),
+                    \DB::raw('SUM(REB) as SUM_REB'),
+                    \DB::raw('SUM(ORB) as SUM_ORB'),
+                    \DB::raw('SUM(REB) - SUM(ORB)  as SUM_DRB'),
+                    \DB::raw('SUM(AST) as SUM_AST'),
+                    \DB::raw('SUM(STL) as SUM_STL'),
+                    \DB::raw('SUM(BLK) as SUM_BLK'),
+                    \DB::raw('SUM(LOS) as SUM_LOS'),
+                    \DB::raw('SUM(PF) as SUM_PF'),
+                    \DB::raw('SUM(ML) as SUM_ML'),
+                    \DB::raw('COUNT(player_id) as PJ'),
+                    \DB::raw('SUM(headline) as PT'),
+                )
+                ->where('player_id', $this->player->id)
+                ->whereNotNull('players_stats.MIN');
+                if ($this->statsTotals_phase == 'regular') {
+                    $stats = $stats->whereNull('matches.clash_id');
+                } else {
+                    $stats = $stats->whereNotNull('matches.clash_id');
+                }
+                $stats = $stats
+                ->orderBy($this->statsTotals_order, $this->statsTotals_order_direction)
+                ->orderBy('PJ', $this->statsTotals_order_direction)
+                ->orderBy('SUM_MIN', 'desc')
+                ->groupBy('team_id')
+                ->having('PJ', '>', 1)
+                ->get();
+
+        return $stats;
+    }
+
     public function mount($player)
     {
         $this->player = $player;
@@ -271,6 +442,9 @@ class Player_manage extends Component
             'statsPerGame'                => $this->getStatsPerGame(),
             'statsPerGame_totals'         => $this->getStatsPerGame_totals(),
             'statsPerGame_team_totals'    => $this->getStatsPerGame_team_totals(),
+            'statsTotals'                => $this->getStatsTotals(),
+            'statsTotals_totals'         => $this->getStatsTotals_totals(),
+            'statsTotals_team_totals'    => $this->getStatsTotals_team_totals(),
         ]);
     }
 }
