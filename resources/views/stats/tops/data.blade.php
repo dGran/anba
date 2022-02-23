@@ -27,12 +27,12 @@
 							<p class="flex-none w-4 text-right text-sm">
 								{{ $loop->iteration }}.
 							</p>
-							<p class="flex-none text-base ml-3 hover:text-blue-500 dark:hover:text-blue-300 cursor-pointer">
+							<a href="{{ route('player', $top->player->slug) }}" class="flex-none | text-base | ml-3 | hover:text-blue-500 dark:hover:text-blue-300 | focus:text-blue-500 dark:focus:text-blue-300 | focus:outline-none">
 								{{ $top->player->name }}
-							</p>
-							<p class="flex-none text-xs ml-1.5 text-gray-400 uppercase font-normal pt-0.5">
+							</a>
+							<a href="{{ route('team.home', ['t' => $top->seasonTeam->team->slug]) }}" class="flex-none | text-xs | ml-1.5 | uppercase font-normal pt-0.5 | opacity-50 | hover:opacity-100 focus:opacity-100 | focus:outline-none">
 								{{ $top->seasonTeam->team->short_name }}
-							</p>
+							</a>
 							<p class="flex-grow text-right">
 								{{ number_format($top->AVG_PTS, 1, ',', '.') }}
 							</p>
@@ -62,12 +62,12 @@
 							<p class="flex-none w-4 text-right text-sm">
 								{{ $loop->iteration }}.
 							</p>
-							<p class="flex-none text-base ml-3 hover:text-blue-500 dark:hover:text-blue-300 cursor-pointer">
+							<a href="{{ route('player', $top->player->slug) }}" class="flex-none | text-base | ml-3 | hover:text-blue-500 dark:hover:text-blue-300 | focus:text-blue-500 dark:focus:text-blue-300 | focus:outline-none">
 								{{ $top->player->name }}
-							</p>
-							<p class="flex-none text-xs ml-1.5 text-gray-400 uppercase font-normal pt-0.5">
+							</a>
+							<a href="{{ route('team.home', ['t' => $top->seasonTeam->team->slug]) }}" class="flex-none | text-xs | ml-1.5 | uppercase font-normal pt-0.5 | opacity-50 | hover:opacity-100 focus:opacity-100 | focus:outline-none">
 								{{ $top->seasonTeam->team->short_name }}
-							</p>
+							</a>
 							<p class="flex-grow text-right">
 								{{ number_format($top->AVG_REB, 1, ',', '.') }}
 							</p>
@@ -97,12 +97,12 @@
 							<p class="flex-none w-4 text-right text-sm">
 								{{ $loop->iteration }}.
 							</p>
-							<p class="flex-none text-base ml-3 hover:text-blue-500 dark:hover:text-blue-300 cursor-pointer">
+							<a href="{{ route('player', $top->player->slug) }}" class="flex-none | text-base | ml-3 | hover:text-blue-500 dark:hover:text-blue-300 | focus:text-blue-500 dark:focus:text-blue-300 | focus:outline-none">
 								{{ $top->player->name }}
-							</p>
-							<p class="flex-none text-xs ml-1.5 text-gray-400 uppercase font-normal pt-0.5">
+							</a>
+							<a href="{{ route('team.home', ['t' => $top->seasonTeam->team->slug]) }}" class="flex-none | text-xs | ml-1.5 | uppercase font-normal pt-0.5 | opacity-50 | hover:opacity-100 focus:opacity-100 | focus:outline-none">
 								{{ $top->seasonTeam->team->short_name }}
-							</p>
+							</a>
 							<p class="flex-grow text-right">
 								{{ number_format($top->AVG_AST, 1, ',', '.') }}
 							</p>
@@ -123,12 +123,12 @@
 							<p class="flex-none w-4 text-right text-sm">
 								{{ $loop->iteration }}.
 							</p>
-							<p class="flex-none text-base ml-3 hover:text-blue-500 dark:hover:text-blue-300 cursor-pointer">
+							<a href="{{ route('player', $top->player->slug) }}" class="flex-none | text-base | ml-3 | hover:text-blue-500 dark:hover:text-blue-300 | focus:text-blue-500 dark:focus:text-blue-300 | focus:outline-none">
 								{{ $top->player->name }}
-							</p>
-							<p class="flex-none text-xs ml-1.5 text-gray-400 uppercase font-normal pt-0.5">
+							</a>
+							<a href="{{ route('team.home', ['t' => $top->seasonTeam->team->slug]) }}" class="flex-none | text-xs | ml-1.5 | uppercase font-normal pt-0.5 | opacity-50 | hover:opacity-100 focus:opacity-100 | focus:outline-none">
 								{{ $top->seasonTeam->team->short_name }}
-							</p>
+							</a>
 							<p class="flex-grow text-right">
 								{{ number_format($top->AVG_BLK, 1, ',', '.') }}
 							</p>
@@ -149,12 +149,12 @@
 							<p class="flex-none w-4 text-right text-sm">
 								{{ $loop->iteration }}.
 							</p>
-							<p class="flex-none text-base ml-3 hover:text-blue-500 dark:hover:text-blue-300 cursor-pointer">
+							<a href="{{ route('player', $top->player->slug) }}" class="flex-none | text-base | ml-3 | hover:text-blue-500 dark:hover:text-blue-300 | focus:text-blue-500 dark:focus:text-blue-300 | focus:outline-none">
 								{{ $top->player->name }}
-							</p>
-							<p class="flex-none text-xs ml-1.5 text-gray-400 uppercase font-normal pt-0.5">
+							</a>
+							<a href="{{ route('team.home', ['t' => $top->seasonTeam->team->slug]) }}" class="flex-none | text-xs | ml-1.5 | uppercase font-normal pt-0.5 | opacity-50 | hover:opacity-100 focus:opacity-100 | focus:outline-none">
 								{{ $top->seasonTeam->team->short_name }}
-							</p>
+							</a>
 							<p class="flex-grow text-right">
 								{{ number_format($top->AVG_STL, 1, ',', '.') }}
 							</p>
@@ -175,12 +175,12 @@
 							<p class="flex-none w-4 text-right text-sm">
 								{{ $loop->iteration }}.
 							</p>
-							<p class="flex-none text-base ml-3 hover:text-blue-500 dark:hover:text-blue-300 cursor-pointer">
+							<a href="{{ route('player', $top->player->slug) }}" class="flex-none | text-base | ml-3 | hover:text-blue-500 dark:hover:text-blue-300 | focus:text-blue-500 dark:focus:text-blue-300 | focus:outline-none">
 								{{ $top->player->name }}
-							</p>
-							<p class="flex-none text-xs ml-1.5 text-gray-400 uppercase font-normal pt-0.5">
+							</a>
+							<a href="{{ route('team.home', ['t' => $top->seasonTeam->team->slug]) }}" class="flex-none | text-xs | ml-1.5 | uppercase font-normal pt-0.5 | opacity-50 | hover:opacity-100 focus:opacity-100 | focus:outline-none">
 								{{ $top->seasonTeam->team->short_name }}
-							</p>
+							</a>
 							<p class="flex-grow text-right">
 								{{ number_format($top->AVG_TOTAL, 1, ',', '.') }}
 							</p>
@@ -201,12 +201,12 @@
 							<p class="flex-none w-4 text-right text-sm">
 								{{ $loop->iteration }}.
 							</p>
-							<p class="flex-none text-base ml-3 hover:text-blue-500 dark:hover:text-blue-300 cursor-pointer">
+							<a href="{{ route('player', $top->player->slug) }}" class="flex-none | text-base | ml-3 | hover:text-blue-500 dark:hover:text-blue-300 | focus:text-blue-500 dark:focus:text-blue-300 | focus:outline-none">
 								{{ $top->player->name }}
-							</p>
-							<p class="flex-none text-xs ml-1.5 text-gray-400 uppercase font-normal pt-0.5">
+							</a>
+							<a href="{{ route('team.home', ['t' => $top->seasonTeam->team->slug]) }}" class="flex-none | text-xs | ml-1.5 | uppercase font-normal pt-0.5 | opacity-50 | hover:opacity-100 focus:opacity-100 | focus:outline-none">
 								{{ $top->seasonTeam->team->short_name }}
-							</p>
+							</a>
 							<p class="flex-grow text-right">
 								{{ number_format($top->PER_FG, 1, ',', '.') }}
 							</p>
@@ -227,12 +227,12 @@
 							<p class="flex-none w-4 text-right text-sm">
 								{{ $loop->iteration }}.
 							</p>
-							<p class="flex-none text-base ml-3 hover:text-blue-500 dark:hover:text-blue-300 cursor-pointer">
+							<a href="{{ route('player', $top->player->slug) }}" class="flex-none | text-base | ml-3 | hover:text-blue-500 dark:hover:text-blue-300 | focus:text-blue-500 dark:focus:text-blue-300 | focus:outline-none">
 								{{ $top->player->name }}
-							</p>
-							<p class="flex-none text-xs ml-1.5 text-gray-400 uppercase font-normal pt-0.5">
+							</a>
+							<a href="{{ route('team.home', ['t' => $top->seasonTeam->team->slug]) }}" class="flex-none | text-xs | ml-1.5 | uppercase font-normal pt-0.5 | opacity-50 | hover:opacity-100 focus:opacity-100 | focus:outline-none">
 								{{ $top->seasonTeam->team->short_name }}
-							</p>
+							</a>
 							<p class="flex-grow text-right">
 								{{ number_format($top->PER_TP, 1, ',', '.') }}
 							</p>
@@ -253,12 +253,12 @@
 							<p class="flex-none w-4 text-right text-sm">
 								{{ $loop->iteration }}.
 							</p>
-							<p class="flex-none text-base ml-3 hover:text-blue-500 dark:hover:text-blue-300 cursor-pointer">
+							<a href="{{ route('player', $top->player->slug) }}" class="flex-none | text-base | ml-3 | hover:text-blue-500 dark:hover:text-blue-300 | focus:text-blue-500 dark:focus:text-blue-300 | focus:outline-none">
 								{{ $top->player->name }}
-							</p>
-							<p class="flex-none text-xs ml-1.5 text-gray-400 uppercase font-normal pt-0.5">
+							</a>
+							<a href="{{ route('team.home', ['t' => $top->seasonTeam->team->slug]) }}" class="flex-none | text-xs | ml-1.5 | uppercase font-normal pt-0.5 | opacity-50 | hover:opacity-100 focus:opacity-100 | focus:outline-none">
 								{{ $top->seasonTeam->team->short_name }}
-							</p>
+							</a>
 							<p class="flex-grow text-right">
 								{{ number_format($top->PER_FT, 1, ',', '.') }}
 							</p>

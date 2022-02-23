@@ -4,6 +4,6 @@
         @include('stats.partials.menu')
     </x-slot>
 
-    @livewire('stats.tops')
+    @livewire('stats.teams')
 
 </x-app-layout>

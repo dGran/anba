@@ -34,12 +34,18 @@ Route::get('/partidos/{match:id}', [MatchController::class, 'index'])->name('mat
 Route::get('/clasificaciones', function () {
     return view('standings');
 })->name('standings');
-Route::get('/estadisticas', function () {
-    return view('stats');
-})->name('stats');
-Route::get('/estadisticas/jugadores', function () {
-    return view('stats_players');
-})->name('stats.players');
+
+Route::prefix('estadisticas')->group(function() {
+	Route::get('/', function () {
+	    return view('stats.tops');
+	})->name('stats');
+	Route::get('/jugadores', function () {
+	    return view('stats.players');
+	})->name('stats.players');
+	Route::get('/equipos', function () {
+	    return view('stats.teams');
+	})->name('stats.teams');
+});
 
 Route::prefix('jugadores')->group(function() {
 	Route::get('/', function () {

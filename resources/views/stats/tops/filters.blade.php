@@ -1,13 +1,5 @@
 <div class="my-2">
 
-	{{-- work in progress --}}
-	<figure class="pb-8">
-		<img src="{{ asset('img/in_progress.png') }}" alt="" class="w-64 animate-pulse">
-		<figcaption class="italic text-sm">
-			*Tanto los datos mostrados como las opciones están en desarrollo
-		</figcaption>
-	</figure>
-
 	<div class="filters flex items-center select-none overflow-x-auto">
 		<div class="flex flex-col">
 			<label for="season" class="text-xs uppercase">
