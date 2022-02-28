@@ -8,127 +8,86 @@ use App\Models\PlayerStat;
 
 class Tops extends Component
 {
+    public $current_season;
+
 	public $season;
     public $phase = "regular";
+
+    // queryString
+    protected $queryString = [
+        'season',
+        'phase' => ['except' => "regular"],
+    ];
 
     public function set_phase($phase)
     {
         $this->phase = $phase;
     }
 
-	protected function getTopsPTS()
-	{
-        $stat = PlayerStat::with('player', 'seasonTeam')
-                ->join('matches', 'matches.id', 'players_stats.match_id')
-                ->select('player_id', 'season_team_id',
-                    \DB::raw('AVG(PTS) as AVG_PTS'),
-                    \DB::raw('SUM(PTS) as SUM_PTS'),
-                    \DB::raw('COUNT(player_id) as PJ')
-                );
-        if ($this->phase == "regular") {
-            $stat = $stat->whereNull('matches.clash_id');
-        } else {
-            $stat = $stat->whereNotNull('matches.clash_id');
-        }
-        $stat = $stat->where('players_stats.season_id', $this->season->id)
-            ->orderBy('AVG_PTS', 'desc')
-            ->orderBy('SUM_PTS', 'desc')
-            ->groupBy('player_id', 'season_team_id')
-            ->take(5)->get();
-
-        return $stat;
-	}
-
-	protected function getTopsAST()
-	{
-        $stat = PlayerStat::with('player', 'seasonTeam')
-                ->join('matches', 'matches.id', 'players_stats.match_id')
-                ->select('player_id', 'season_team_id',
-                    \DB::raw('AVG(AST) as AVG_AST'),
-                    \DB::raw('SUM(AST) as SUM_AST'),
-                    \DB::raw('COUNT(player_id) as PJ')
-                );
-        if ($this->phase == "regular") {
-            $stat = $stat->whereNull('matches.clash_id');
-        } else {
-            $stat = $stat->whereNotNull('matches.clash_id');
-        }
-        $stat = $stat->where('players_stats.season_id', $this->season->id)
-            ->orderBy('AVG_AST', 'desc')
-            ->orderBy('SUM_AST', 'desc')
-            ->groupBy('player_id', 'season_team_id')
-            ->take(5)->get();
-
-        return $stat;
-	}
-
-    protected function getTopsREB()
+    public function change_season()
     {
-        $stat = PlayerStat::with('player', 'seasonTeam')
-                ->join('matches', 'matches.id', 'players_stats.match_id')
-                ->select('player_id', 'season_team_id',
-                    \DB::raw('AVG(REB) as AVG_REB'),
-                    \DB::raw('SUM(REB) as SUM_REB'),
-                    \DB::raw('COUNT(player_id) as PJ')
-                );
-        if ($this->phase == "regular") {
-            $stat = $stat->whereNull('matches.clash_id');
-        } else {
-            $stat = $stat->whereNotNull('matches.clash_id');
-        }
-        $stat = $stat->where('players_stats.season_id', $this->season->id)
-            ->orderBy('AVG_REB', 'desc')
-            ->orderBy('SUM_REB', 'desc')
-            ->groupBy('player_id', 'season_team_id')
-            ->take(5)->get();
-
-        return $stat;
+        $season = Season::where('slug', $this->season)->first();
+        $this->current_season = $season;
     }
 
-    protected function getTopsBLK()
+    public function getTopsSimpleStatAVG($stat)
     {
-        $stat = PlayerStat::with('player', 'seasonTeam')
-                ->join('matches', 'matches.id', 'players_stats.match_id')
-                ->select('player_id', 'season_team_id',
-                    \DB::raw('AVG(BLK) as AVG_BLK'),
-                    \DB::raw('SUM(BLK) as SUM_BLK'),
-                    \DB::raw('COUNT(player_id) as PJ')
-                );
-        if ($this->phase == "regular") {
-            $stat = $stat->whereNull('matches.clash_id');
-        } else {
-            $stat = $stat->whereNotNull('matches.clash_id');
-        }
-        $stat = $stat->where('players_stats.season_id', $this->season->id)
-            ->orderBy('AVG_BLK', 'desc')
-            ->orderBy('SUM_BLK', 'desc')
-            ->groupBy('player_id', 'season_team_id')
-            ->take(5)->get();
+        $result = PlayerStat::with('player', 'seasonTeam')
+            ->join('matches', 'matches.id', 'players_stats.match_id')
+            ->join('players', 'players.id', 'players_stats.player_id')
+            ->select('player_id', 'season_team_id',
+                \DB::raw('AVG('.$stat.') as AVG_'.$stat),
+                \DB::raw('SUM('.$stat.') as SUM_'.$stat),
+                \DB::raw('COUNT(player_id) as PJ')
+            )
+            ->where('players_stats.season_id', $this->current_season->id)
+            ->whereNotNull('players_stats.MIN');
 
-        return $stat;
+            if ($this->phase == "regular") {
+                $result = $result->whereNull('matches.clash_id');
+            } else {
+                $result = $result->whereNotNull('matches.clash_id');
+            }
+            $result = $result
+                ->orderBy('AVG_'.$stat, 'desc')
+                ->orderBy('SUM_'.$stat, 'desc');
+            $result = $result
+                ->groupBy('player_id')
+                ->take(5)
+                ->get();
+            //groupBy('player_id', 'season_team_id')
+
+        return $result;
     }
 
-    protected function getTopsSTL()
+    public function getTopsSimpleStatSUM($stat)
     {
-        $stat = PlayerStat::with('player', 'seasonTeam')
-                ->join('matches', 'matches.id', 'players_stats.match_id')
-                ->select('player_id', 'season_team_id',
-                    \DB::raw('AVG(STL) as AVG_STL'),
-                    \DB::raw('SUM(STL) as SUM_STL'),
-                    \DB::raw('COUNT(player_id) as PJ')
-                );
-        if ($this->phase == "regular") {
-            $stat = $stat->whereNull('matches.clash_id');
-        } else {
-            $stat = $stat->whereNotNull('matches.clash_id');
-        }
-        $stat = $stat->where('players_stats.season_id', $this->season->id)
-            ->orderBy('AVG_STL', 'desc')
-            ->orderBy('SUM_STL', 'desc')
-            ->groupBy('player_id', 'season_team_id')
-            ->take(5)->get();
+        $result = PlayerStat::with('player', 'seasonTeam')
+            ->join('matches', 'matches.id', 'players_stats.match_id')
+            ->join('players', 'players.id', 'players_stats.player_id')
+            ->select('player_id', 'season_team_id',
+                \DB::raw('AVG('.$stat.') as AVG_'.$stat),
+                \DB::raw('SUM('.$stat.') as SUM_'.$stat),
+                \DB::raw('COUNT(player_id) as PJ')
+            )
+            ->where('players_stats.season_id', $this->current_season->id)
+            ->whereNotNull('players_stats.MIN');
 
-        return $stat;
+            if ($this->phase == "regular") {
+                $result = $result->whereNull('matches.clash_id');
+            } else {
+                $result = $result->whereNotNull('matches.clash_id');
+            }
+            $result = $result
+                ->orderBy('SUM_'.$stat, 'desc')
+                ->orderBy('AVG_'.$stat, 'desc');
+            $result = $result
+                ->groupBy('player_id')
+                ->take(3)
+                ->get();
+            //groupBy('player_id', 'season_team_id')
+
+        return $result;
     }
 
     protected function getTopsFG()
@@ -146,7 +105,7 @@ class Tops extends Component
         } else {
             $stat = $stat->whereNotNull('matches.clash_id');
         }
-        $stat = $stat->where('players_stats.season_id', $this->season->id);
+        $stat = $stat->where('players_stats.season_id', $this->current_season->id);
         // if ($this->phase == "regular") {
         //     $stat = $stat->where('SUM_FGM', '>', 39);
         // }
@@ -173,7 +132,7 @@ class Tops extends Component
         } else {
             $stat = $stat->whereNotNull('matches.clash_id');
         }
-        $stat = $stat->where('players_stats.season_id', $this->season->id);
+        $stat = $stat->where('players_stats.season_id', $this->current_season->id);
         // if ($this->phase == "regular") {
         //     $stat = $stat->where('SUM_TPM', '>', 39);
         // }
@@ -200,7 +159,7 @@ class Tops extends Component
         } else {
             $stat = $stat->whereNotNull('matches.clash_id');
         }
-        $stat = $stat->where('players_stats.season_id', $this->season->id);
+        $stat = $stat->where('players_stats.season_id', $this->current_season->id);
         // if ($this->phase == "regular") {
         //     $stat = $stat->where('SUM_FTM', '>', 39);
         // }
@@ -223,7 +182,7 @@ class Tops extends Component
                     \DB::raw('AVG(AST) as AVG_AST'),
                     \DB::raw('SUM(PTS + REB + AST) / COUNT(player_id) as AVG_TOTAL')
                 );
-        $stat = $stat->where('players_stats.season_id', $this->season->id);
+        $stat = $stat->where('players_stats.season_id', $this->current_season->id);
         if ($this->phase == "regular") {
             $stat = $stat->whereNull('matches.clash_id');
         } else {
@@ -249,27 +208,36 @@ class Tops extends Component
     public function mount()
 	{
 		if ($season = Season::where('current', 1)->first()) {
-			$this->season = $season;
+			$this->season = $season->slug;
+            $this->current_season = $season;
 		}
 	}
 
     public function render()
     {
+        $seasons = Season::orderBy('name', 'desc')->get();
+
         return view('stats.tops.index', [
-        	'tops_PTS'      => $this->getTopsPTS(),
-        	'tops_AST'      => $this->getTopsAST(),
-        	'tops_REB'      => $this->getTopsREB(),
-        	'tops_BLK'      => $this->getTopsBLK(),
-            'tops_STL'      => $this->getTopsSTL(),
-            'tops_FG'      => $this->getTopsFG(),
-            'tops_TP'      => $this->getTopsTP(),
-            'tops_FT'      => $this->getTopsFT(),
+            'seasons'       => $seasons,
+        	'tops_PTS'      => $this->getTopsSimpleStatAVG('PTS'),
+        	'tops_AST'      => $this->getTopsSimpleStatAVG('AST'),
+        	'tops_REB'      => $this->getTopsSimpleStatAVG('REB'),
+        	'tops_BLK'      => $this->getTopsSimpleStatAVG('BLK'),
+            'tops_STL'      => $this->getTopsSimpleStatAVG('STL'),
+            'tops_FG'       => $this->getTopsFG(),
+            'tops_TP'       => $this->getTopsTP(),
+            'tops_FT'       => $this->getTopsFT(),
+            'tops_SUM_PTS'  => $this->getTopsSimpleStatSUM('PTS'),
+            'tops_SUM_AST'  => $this->getTopsSimpleStatSUM('AST'),
+            'tops_SUM_REB'  => $this->getTopsSimpleStatSUM('REB'),
+            'tops_SUM_BLK'  => $this->getTopsSimpleStatSUM('BLK'),
+            'tops_SUM_STL'  => $this->getTopsSimpleStatSUM('STL'),
             'tops_MVP'      => $this->getTopsMVP('all'),
-            'top_PG'      => $this->getTopsMVP('pg'),
-            'top_SG'      => $this->getTopsMVP('sg'),
-            'top_SF'      => $this->getTopsMVP('sf'),
-            'top_PF'      => $this->getTopsMVP('pf'),
-            'top_C'      => $this->getTopsMVP('c'),
+            'top_PG'        => $this->getTopsMVP('pg'),
+            'top_SG'        => $this->getTopsMVP('sg'),
+            'top_SF'        => $this->getTopsMVP('sf'),
+            'top_PF'        => $this->getTopsMVP('pf'),
+            'top_C'         => $this->getTopsMVP('c'),
         ]);
     }
 }
