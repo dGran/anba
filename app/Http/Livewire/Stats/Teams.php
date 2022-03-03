@@ -6,6 +6,8 @@ use Livewire\Component;
 use Illuminate\Support\Collection;
 use App\Models\Season;
 use App\Models\PlayerStat;
+use App\Models\TeamStat;
+use App\Models\MatchModel;
 use App\Models\Player;
 use App\Models\SeasonTeam;
 use App\Models\SeasonDivision;
@@ -120,17 +122,83 @@ class Teams extends Component
     public function getTeamsStats()
     {
         $teams_stats = Collection::make();
-        $season_teams = SeasonTeam::where('season_id', $this->current_season->id)->get();
+
+        $search = $this->name;
+        $season_teams = SeasonTeam::
+            join('teams', 'teams.id', 'seasons_teams.team_id')
+            ->where('season_id', $this->current_season->id)
+            ->select('seasons_teams.id');
+            if ($search != null) {
+                $season_teams = $season_teams->where(function($q) use ($search) {
+                    $q->where('teams.name', 'LIKE', "%{$search}%")
+                        ->orWhere('teams.medium_name', 'LIKE', "%{$search}%")
+                        ->orWhere('teams.short_name', 'LIKE', "%{$search}%")
+                        ->orWhere('teams.id', 'LIKE', "%{$search}%");
+                });
+            }
+            $season_teams = $season_teams->get();
+
         foreach ($season_teams as $season_team) {
-            $teamStats = PlayerStat::with('player', 'seasonTeam.team', 'match.scores')
-                ->join('matches', 'matches.id', 'players_stats.match_id')
+            $seasonTeamId = $season_team->id;
+
+            // get team_stats data
+            $teamStats = MatchModel::
+                join('teams_stats', 'teams_stats.match_id', 'matches.id')
                 ->join('scores', 'scores.match_id', 'matches.id')
-                ->join('players', 'players.id', 'players_stats.player_id')
-                ->join('seasons_teams', 'seasons_teams.id', 'players_stats.season_team_id')
-                ->join('seasons_divisions', 'seasons_divisions.id', 'seasons_teams.season_division_id')
-                ->join('seasons_conferences', 'seasons_conferences.id', 'seasons_divisions.season_conference_id')
+                ->join('seasons_teams', 'seasons_teams.id', 'teams_stats.season_team_id')
                 ->join('teams', 'teams.id', 'seasons_teams.team_id')
-                ->select('season_team_id', 'players_stats.match_id',
+                ->where('teams_stats.season_team_id', $seasonTeamId)
+                ->where('matches.played', 1)
+                ->where('matches.teamStats_state', 'success')
+                ->where('matches.playerStats_state', 'success')
+                ->select('matches.season_id', 'teams_stats.season_team_id',
+                    \DB::raw('teams.name as team_name'),
+                    \DB::raw('teams.short_name as team_short_name'),
+                    \DB::raw('teams.medium_name as team_medium_name'),
+                    \DB::raw('teams.slug as team_slug'),
+                    \DB::raw('SUM(counterattack) as SUM_counterattack'),
+                    \DB::raw('AVG(counterattack) as AVG_counterattack'),
+                    \DB::raw('SUM(zone) as SUM_zone'),
+                    \DB::raw('AVG(zone) as AVG_zone'),
+                    \DB::raw('SUM(second_oportunity) as SUM_second_oportunity'),
+                    \DB::raw('AVG(second_oportunity) as AVG_second_oportunity'),
+                    \DB::raw('SUM(substitute) as SUM_substitute'),
+                    \DB::raw('AVG(substitute) as AVG_substitute'),
+                    \DB::raw('SUM(advantage) as SUM_advantage'),
+                    \DB::raw('AVG(advantage) as AVG_advantage'),
+                    \DB::raw('SUM(AST) as SUM_AST'),
+                    \DB::raw('AVG(AST) as AVG_AST'),
+                    \DB::raw('SUM(DRB) as SUM_DRB'),
+                    \DB::raw('AVG(DRB) as AVG_DRB'),
+                    \DB::raw('SUM(ORB) as SUM_ORB'),
+                    \DB::raw('AVG(ORB) as AVG_ORB'),
+                    \DB::raw('SUM(DRB) + SUM(ORB) as SUM_REB'),
+                    \DB::raw('AVG(DRB) + AVG(ORB) as AVG_REB'),
+                    \DB::raw('SUM(STL) as SUM_STL'),
+                    \DB::raw('AVG(STL) as AVG_STL'),
+                    \DB::raw('SUM(BLK) as SUM_BLK'),
+                    \DB::raw('AVG(BLK) as AVG_BLK'),
+                    \DB::raw('SUM(LOS) as SUM_LOS'),
+                    \DB::raw('AVG(LOS) as AVG_LOS'),
+                    \DB::raw('SUM(PF) as SUM_PF'),
+                    \DB::raw('AVG(PF) as AVG_PF'),
+                    \DB::raw('COUNT(season_team_id) as PJ'),
+                );
+                if ($this->phase == "regular") {
+                    $teamStats = $teamStats->whereNull('matches.clash_id');
+                } else {
+                    $teamStats = $teamStats->whereNotNull('matches.clash_id');
+                }
+                $teamStats = $teamStats->first();
+
+            // get players_stats data
+            $playersStats = MatchModel::
+                join('players_stats', 'players_stats.match_id', 'matches.id')
+                ->where('players_stats.season_team_id', $seasonTeamId)
+                ->where('matches.played', 1)
+                ->where('matches.teamStats_state', 'success')
+                ->where('matches.playerStats_state', 'success')
+                ->select('matches.season_id', 'players_stats.season_team_id',
                     \DB::raw('SUM(PTS) as SUM_PTS'),
                     \DB::raw('SUM(FGM) as SUM_FGM'),
                     \DB::raw('SUM(FGA) as SUM_FGA'),
@@ -141,138 +209,119 @@ class Teams extends Component
                     \DB::raw('SUM(FTM) as SUM_FTM'),
                     \DB::raw('SUM(FTA) as SUM_FTA'),
                     \DB::raw('(SUM(FTM) / SUM(FTA)) * 100 as PER_FT'),
-                    \DB::raw('SUM(REB) as SUM_REB'),
-                    \DB::raw('SUM(ORB) as SUM_ORB'),
-                    \DB::raw('SUM(REB) - SUM(ORB)  as SUM_DRB'),
-                    \DB::raw('SUM(AST) as SUM_AST'),
-                    \DB::raw('SUM(STL) as SUM_STL'),
-                    \DB::raw('SUM(BLK) as SUM_BLK'),
-                    \DB::raw('SUM(LOS) as SUM_LOS'),
-                    \DB::raw('SUM(PF) as SUM_PF'),
-                    \DB::raw('SUM(ML) as SUM_ML'),
                 );
-
                 if ($this->phase == "regular") {
-                    $teamStats = $teamStats->whereNull('matches.clash_id');
+                    $playersStats = $playersStats->whereNull('matches.clash_id');
                 } else {
-                    $teamStats = $teamStats->whereNotNull('matches.clash_id');
+                    $playersStats = $playersStats->whereNotNull('matches.clash_id');
                 }
+                $playersStats = $playersStats->first();
 
-                if ($this->name != null) {
-                    $teamStats = $teamStats->where('teams.name', 'LIKE', "%$this->name%");
+            // get team matches and results
+            $team_results = MatchModel::
+                join('scores', 'scores.match_id', 'matches.id')
+                ->where('matches.played', 1)
+                ->where('matches.teamStats_state', 'success')
+                ->where('matches.playerStats_state', 'success')
+                ->where(function($q) use ($seasonTeamId) {
+                    $q->where('matches.local_team_id', $seasonTeamId)
+                      ->orWhere('matches.visitor_team_id', $seasonTeamId);
+                })
+                ->select('matches.local_team_id', 'matches.visitor_team_id', 'scores.local_score', 'scores.visitor_score');
+                if ($this->phase == "regular") {
+                    $team_results = $team_results->whereNull('matches.clash_id');
+                } else {
+                    $team_results = $team_results->whereNotNull('matches.clash_id');
                 }
-                $teamStats = $teamStats
-                    ->where('season_team_id', $season_team->id)
-                    ->where('matches.played', 1)
-                    ->where('matches.teamStats_state', 'success')
-                    ->where('matches.playerStats_state', 'success')
-                    // ->having('PJ', '>', $this->filter_PJ)
-                    // ->orderBy($this->order, $this->order_direction)
-                    ->groupBy('players_stats.match_id')
-                    ->get();
+                $team_results = $team_results->get();
 
-                foreach ($teamStats as $ts) {
-                    $team_stats['season_team_id'] = $ts->season_team_id;
-                    $team_stats['team_name'] = $ts->seasonTeam->team->name;
-                    $team_stats['team_medium_name'] = $ts->seasonTeam->team->medium_name;
-                    $team_stats['team_short_name'] = $ts->seasonTeam->team->short_name;
-                    $team_stats['team_slug'] = $ts->seasonTeam->team->slug;
-                    $team_stats['match_id'] = $ts->match->id;
-                    //calculate winner
-                    $local = 0;
-                    $visitor = 0;
-                    foreach ($ts->match->scores as $score) {
-                        $local += $score->local_score;
-                        $visitor += $score->visitor_score;
-                    }
-                    $winner = $local > $visitor ? $ts->match->local_team_id : $ts->match->visitor_team_id ;
-                    if ($winner == $ts->season_team_id) {
-                        $team_stats['result'] = 'W';
+            // fill team_stats collection
+            $team_stats['season_team_id'] = $teamStats->season_team_id;
+            $team_stats['team_name'] = $teamStats->team_name;
+            $team_stats['team_short_name'] = $teamStats->team_short_name;
+            $team_stats['team_medium_name'] = $teamStats->team_medium_name;
+            $team_stats['team_slug'] = $teamStats->team_slug;
+            //calculate results
+            $wins = 0;
+            $losses = 0;
+            $moreLess = 0;
+            foreach ($team_results as $result) {
+                if ($seasonTeamId == $result->local_team_id) {
+                    $moreLess += $result->local_score;
+                    $moreLess -= $result->visitor_score;
+                    if ($result->local_score > $result->visitor_score) {
+                        $wins++;
                     } else {
-                        $team_stats['result'] = 'L';
+                        $losses++;
                     }
-                    $team_stats['PTS'] = $ts->SUM_PTS;
-                    $team_stats['FGM'] = $ts->SUM_FGM;
-                    $team_stats['FGA'] = $ts->SUM_FGA;
-                    $team_stats['PER_FG'] = $ts->PER_FG;
-                    $team_stats['TPM'] = $ts->SUM_TPM;
-                    $team_stats['TPA'] = $ts->SUM_TPA;
-                    $team_stats['PER_TP'] = $ts->PER_TP;
-                    $team_stats['FTM'] = $ts->SUM_FTM;
-                    $team_stats['FTA'] = $ts->SUM_FTA;
-                    $team_stats['PER_FT'] = $ts->PER_FT;
-                    $team_stats['REB'] = $ts->SUM_REB;
-                    $team_stats['ORB'] = $ts->SUM_ORB;
-                    $team_stats['DRB'] = $ts->SUM_DRB;
-                    $team_stats['AST'] = $ts->SUM_AST;
-                    $team_stats['STL'] = $ts->SUM_STL;
-                    $team_stats['BLK'] = $ts->SUM_BLK;
-                    $team_stats['LOS'] = $ts->SUM_LOS;
-                    $team_stats['PF'] = $ts->SUM_PF;
-                    $team_stats['ML'] = $ts->SUM_ML;
-
-                    $teams_stats->push($team_stats);
+                } else {
+                    $moreLess -= $result->local_score;
+                    $moreLess += $result->visitor_score;
+                    if ($result->local_score < $result->visitor_score) {
+                        $wins++;
+                    } else {
+                        $losses++;
+                    }
                 }
-        }
-        $groups = $teams_stats->groupBy('season_team_id');
+            }
+            $team_stats['PJ'] = $teamStats->PJ;
+            $team_stats['W'] = $wins;
+            $team_stats['L'] = $losses;
+            $team_stats['PER_W'] = $wins / $teamStats->PJ;
+            $team_stats['SUM_PTS'] = $playersStats->SUM_PTS;
+            $team_stats['AVG_PTS'] = $playersStats->SUM_PTS / $teamStats->PJ;
+            $team_stats['SUM_FGM'] = $playersStats->SUM_FGM;
+            $team_stats['AVG_FGM'] = $playersStats->SUM_FGM / $teamStats->PJ;
+            $team_stats['SUM_FGA'] = $playersStats->SUM_FGA;
+            $team_stats['AVG_FGA'] = $playersStats->SUM_FGA / $teamStats->PJ;
+            $team_stats['PER_FG'] = $playersStats->PER_FG;
+            $team_stats['SUM_TPM'] = $playersStats->SUM_TPM;
+            $team_stats['AVG_TPM'] = $playersStats->SUM_TPM / $teamStats->PJ;
+            $team_stats['SUM_TPA'] = $playersStats->SUM_TPA;
+            $team_stats['AVG_TPA'] = $playersStats->SUM_TPA / $teamStats->PJ;
+            $team_stats['PER_TP'] = $playersStats->PER_TP;
+            $team_stats['SUM_FTM'] = $playersStats->SUM_FTM;
+            $team_stats['AVG_FTM'] = $playersStats->SUM_FTM / $teamStats->PJ;
+            $team_stats['SUM_FTA'] = $playersStats->SUM_FTA;
+            $team_stats['AVG_FTA'] = $playersStats->SUM_FTA / $teamStats->PJ;
+            $team_stats['PER_FT'] = $playersStats->PER_FT;
+            $team_stats['SUM_REB'] = $teamStats->SUM_REB;
+            $team_stats['AVG_REB'] = $teamStats->AVG_REB;
+            $team_stats['SUM_ORB'] = $teamStats->SUM_ORB;
+            $team_stats['AVG_ORB'] = $teamStats->AVG_ORB;
+            $team_stats['SUM_DRB'] = $teamStats->SUM_DRB;
+            $team_stats['AVG_DRB'] = $teamStats->AVG_DRB;
+            $team_stats['SUM_AST'] = $teamStats->SUM_AST;
+            $team_stats['AVG_AST'] = $teamStats->AVG_AST;
+            $team_stats['SUM_STL'] = $teamStats->SUM_STL;
+            $team_stats['AVG_STL'] = $teamStats->AVG_STL;
+            $team_stats['SUM_BLK'] = $teamStats->SUM_BLK;
+            $team_stats['AVG_BLK'] = $teamStats->AVG_BLK;
+            $team_stats['SUM_LOS'] = $teamStats->SUM_LOS;
+            $team_stats['AVG_LOS'] = $teamStats->AVG_LOS;
+            $team_stats['SUM_PF'] = $teamStats->SUM_PF;
+            $team_stats['AVG_PF'] = $teamStats->AVG_PF;
+            $team_stats['SUM_ML'] = $moreLess;
+            $team_stats['AVG_ML'] = $moreLess / $teamStats->PJ;
+            $team_stats['SUM_counterattack'] = $teamStats->SUM_counterattack;
+            $team_stats['AVG_counterattack'] = $teamStats->AVG_counterattack;
+            $team_stats['SUM_zone'] = $teamStats->SUM_zone;
+            $team_stats['AVG_zone'] = $teamStats->AVG_zone;
+            $team_stats['SUM_second_oportunity'] = $teamStats->SUM_second_oportunity;
+            $team_stats['AVG_second_oportunity'] = $teamStats->AVG_second_oportunity;
+            $team_stats['SUM_substitute'] = $teamStats->SUM_substitute;
+            $team_stats['AVG_substitute'] = $teamStats->AVG_substitute;
+            $team_stats['SUM_advantage'] = $teamStats->SUM_advantage;
+            $team_stats['AVG_advantage'] = $teamStats->AVG_advantage;
 
-        $groupwithcount = $groups->mapWithKeys(function ($group, $key) {
-            return [
-                $key =>
-                    [
-                        'season_team_id' => $key,
-                        'team_name' => $group->first()['team_name'],
-                        'team_medium_name' => $group->first()['team_medium_name'],
-                        'team_short_name' => $group->first()['team_short_name'],
-                        'team_slug' => $group->first()['team_slug'],
-                        'PJ' => $group->COUNT('season_team_id'),
-                        'W' => $group->WHERE('result', 'W')->count(),
-                        'L' => $group->WHERE('result', 'L')->count(),
-                        'PER_W' => $group->WHERE('result', 'W')->count() / $group->COUNT('season_team_id'),
-                        'AVG_PTS' => $group->AVG('PTS'),
-                        'SUM_PTS' => $group->SUM('PTS'),
-                        'AVG_FGM' => $group->AVG('FGM'),
-                        'SUM_FGM' => $group->SUM('FGM'),
-                        'AVG_FGA' => $group->AVG('FGA'),
-                        'SUM_FGA' => $group->SUM('FGA'),
-                        'PER_FG' => $group->AVG('PER_FG'),
-                        'AVG_TPM' => $group->AVG('TPM'),
-                        'SUM_TPM' => $group->SUM('TPM'),
-                        'AVG_TPA' => $group->AVG('TPA'),
-                        'SUM_TPA' => $group->SUM('TPA'),
-                        'PER_TP' => $group->AVG('PER_TP'),
-                        'AVG_FTM' => $group->AVG('FTM'),
-                        'SUM_FTM' => $group->SUM('FTM'),
-                        'AVG_FTA' => $group->AVG('FTA'),
-                        'SUM_FTA' => $group->SUM('FTA'),
-                        'PER_FT' => $group->AVG('PER_FT'),
-                        'AVG_REB' => $group->AVG('REB'),
-                        'SUM_REB' => $group->SUM('REB'),
-                        'AVG_ORB' => $group->AVG('ORB'),
-                        'SUM_ORB' => $group->SUM('ORB'),
-                        'AVG_DRB' => $group->AVG('DRB'),
-                        'SUM_DRB' => $group->SUM('DRB'),
-                        'AVG_AST' => $group->AVG('AST'),
-                        'SUM_AST' => $group->SUM('AST'),
-                        'AVG_STL' => $group->AVG('STL'),
-                        'SUM_STL' => $group->SUM('STL'),
-                        'AVG_BLK' => $group->AVG('BLK'),
-                        'SUM_BLK' => $group->SUM('BLK'),
-                        'AVG_LOS' => $group->AVG('LOS'),
-                        'SUM_LOS' => $group->SUM('LOS'),
-                        'AVG_PF' => $group->AVG('PF'),
-                        'SUM_PF' => $group->SUM('PF'),
-                        'AVG_ML' => $group->AVG('ML'),
-                        'SUM_ML' => $group->SUM('ML'),
-                    ]
-            ];
-        });
+            $teams_stats->push($team_stats);
+        }
 
         $comparer = $this->makeComparer($this->criteria);
-        $sorted = $groupwithcount->sort($comparer);
-        $teams_stats = $sorted->values()->toArray();
+        $sorted = $teams_stats->sort($comparer);
+        $result = $sorted->values()->toArray();
 
-        return $teams_stats;
+        return $result;
     }
 
     public function cancel_season_filter()

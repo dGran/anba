@@ -226,6 +226,56 @@
 						wire:click="setOrder('ML')">
 							+/-
 						</th>
+						<th class="hover:bg-gray-800 hover:text-white dark:hover:bg-gray-650 cursor-pointer
+						{{ $mode == 'per_game' && $order == 'AVG_counterattack' ? 'bg-gray-800 text-white dark:bg-gray-650' : '' }}
+						{{ $mode == 'per_game' && $order == 'AVG_counterattack' && $order_direction == 'desc' ? 'sorted-desc' : '' }}
+						{{ $mode == 'per_game' && $order == 'AVG_counterattack' && $order_direction == 'asc' ? 'sorted-asc' : '' }}
+						{{ $mode == 'totals' && $order == 'SUM_counterattack' ? 'bg-gray-800 text-white dark:bg-gray-650' : '' }}
+						{{ $mode == 'totals' && $order == 'SUM_counterattack' && $order_direction == 'desc' ? 'sorted-desc' : '' }}
+						{{ $mode == 'totals' && $order == 'SUM_counterattack' && $order_direction == 'asc' ? 'sorted-asc' : '' }}"
+						wire:click="setOrder('counterattack')">
+							Contra
+						</th>
+						<th class="hover:bg-gray-800 hover:text-white dark:hover:bg-gray-650 cursor-pointer
+						{{ $mode == 'per_game' && $order == 'AVG_zone' ? 'bg-gray-800 text-white dark:bg-gray-650' : '' }}
+						{{ $mode == 'per_game' && $order == 'AVG_zone' && $order_direction == 'desc' ? 'sorted-desc' : '' }}
+						{{ $mode == 'per_game' && $order == 'AVG_zone' && $order_direction == 'asc' ? 'sorted-asc' : '' }}
+						{{ $mode == 'totals' && $order == 'SUM_zone' ? 'bg-gray-800 text-white dark:bg-gray-650' : '' }}
+						{{ $mode == 'totals' && $order == 'SUM_zone' && $order_direction == 'desc' ? 'sorted-desc' : '' }}
+						{{ $mode == 'totals' && $order == 'SUM_zone' && $order_direction == 'asc' ? 'sorted-asc' : '' }}"
+						wire:click="setOrder('zone')">
+							Zona
+						</th>
+						<th class="hover:bg-gray-800 hover:text-white dark:hover:bg-gray-650 cursor-pointer
+						{{ $mode == 'per_game' && $order == 'AVG_second_oportunity' ? 'bg-gray-800 text-white dark:bg-gray-650' : '' }}
+						{{ $mode == 'per_game' && $order == 'AVG_second_oportunity' && $order_direction == 'desc' ? 'sorted-desc' : '' }}
+						{{ $mode == 'per_game' && $order == 'AVG_second_oportunity' && $order_direction == 'asc' ? 'sorted-asc' : '' }}
+						{{ $mode == 'totals' && $order == 'SUM_second_oportunity' ? 'bg-gray-800 text-white dark:bg-gray-650' : '' }}
+						{{ $mode == 'totals' && $order == 'SUM_second_oportunity' && $order_direction == 'desc' ? 'sorted-desc' : '' }}
+						{{ $mode == 'totals' && $order == 'SUM_second_oportunity' && $order_direction == 'asc' ? 'sorted-asc' : '' }}"
+						wire:click="setOrder('second_oportunity')">
+							Segunda
+						</th>
+						<th class="hover:bg-gray-800 hover:text-white dark:hover:bg-gray-650 cursor-pointer
+						{{ $mode == 'per_game' && $order == 'AVG_substitute' ? 'bg-gray-800 text-white dark:bg-gray-650' : '' }}
+						{{ $mode == 'per_game' && $order == 'AVG_substitute' && $order_direction == 'desc' ? 'sorted-desc' : '' }}
+						{{ $mode == 'per_game' && $order == 'AVG_substitute' && $order_direction == 'asc' ? 'sorted-asc' : '' }}
+						{{ $mode == 'totals' && $order == 'SUM_substitute' ? 'bg-gray-800 text-white dark:bg-gray-650' : '' }}
+						{{ $mode == 'totals' && $order == 'SUM_substitute' && $order_direction == 'desc' ? 'sorted-desc' : '' }}
+						{{ $mode == 'totals' && $order == 'SUM_substitute' && $order_direction == 'asc' ? 'sorted-asc' : '' }}"
+						wire:click="setOrder('substitute')">
+							Banquillo
+						</th>
+						<th class="hover:bg-gray-800 hover:text-white dark:hover:bg-gray-650 cursor-pointer
+						{{ $mode == 'per_game' && $order == 'AVG_advantage' ? 'bg-gray-800 text-white dark:bg-gray-650' : '' }}
+						{{ $mode == 'per_game' && $order == 'AVG_advantage' && $order_direction == 'desc' ? 'sorted-desc' : '' }}
+						{{ $mode == 'per_game' && $order == 'AVG_advantage' && $order_direction == 'asc' ? 'sorted-asc' : '' }}
+						{{ $mode == 'totals' && $order == 'SUM_advantage' ? 'bg-gray-800 text-white dark:bg-gray-650' : '' }}
+						{{ $mode == 'totals' && $order == 'SUM_advantage' && $order_direction == 'desc' ? 'sorted-desc' : '' }}
+						{{ $mode == 'totals' && $order == 'SUM_advantage' && $order_direction == 'asc' ? 'sorted-asc' : '' }}"
+						wire:click="setOrder('advantage')">
+							Ventaja
+						</th>
 					</tr>
 				</thead>
 
@@ -376,6 +426,41 @@
 									{{ number_format($stat['AVG_ML'], 1, ',', '.') }}
 								@else
 									{{ number_format($stat['SUM_ML'], 0, ',', '.') }}
+								@endif
+							</td>
+							<td class="text-right {{ $order == 'AVG_counterattack' || $order == 'SUM_counterattack' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
+								@if ($mode == 'per_game')
+									{{ number_format($stat['AVG_counterattack'], 1, ',', '.') }}
+								@else
+									{{ number_format($stat['SUM_counterattack'], 0, ',', '.') }}
+								@endif
+							</td>
+							<td class="text-right {{ $order == 'AVG_zone' || $order == 'SUM_zone' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
+								@if ($mode == 'per_game')
+									{{ number_format($stat['AVG_zone'], 1, ',', '.') }}
+								@else
+									{{ number_format($stat['SUM_zone'], 0, ',', '.') }}
+								@endif
+							</td>
+							<td class="text-right {{ $order == 'AVG_second_oportunity' || $order == 'SUM_second_oportunity' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
+								@if ($mode == 'per_game')
+									{{ number_format($stat['AVG_second_oportunity'], 1, ',', '.') }}
+								@else
+									{{ number_format($stat['SUM_second_oportunity'], 0, ',', '.') }}
+								@endif
+							</td>
+							<td class="text-right {{ $order == 'AVG_substitute' || $order == 'SUM_substitute' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
+								@if ($mode == 'per_game')
+									{{ number_format($stat['AVG_substitute'], 1, ',', '.') }}
+								@else
+									{{ number_format($stat['SUM_substitute'], 0, ',', '.') }}
+								@endif
+							</td>
+							<td class="text-right {{ $order == 'AVG_advantage' || $order == 'SUM_advantage' ? 'bg-gray-100 dark:bg-gray-650' : '' }}">
+								@if ($mode == 'per_game')
+									{{ number_format($stat['AVG_advantage'], 1, ',', '.') }}
+								@else
+									{{ number_format($stat['SUM_advantage'], 0, ',', '.') }}
 								@endif
 							</td>
 						</tr>
