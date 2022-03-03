@@ -470,7 +470,7 @@
 		</div>
 	@else
 		<div class="bg-white dark:bg-gray-700 overflow-hidden md:shadow-sm md:rounded-md md:mx-0 text-gray-900 dark:text-gray-200 border border-gray-200 dark:border-gray-850">
-			<p class="px-4 py-8 text-xl md:text-3xl text-center">
+			<p class="px-4 py-8 text-base md:text-lg text-center">
 				No hay estadísticas disponibles para los filtros seleccionados.
 			</p>
 		</div>
