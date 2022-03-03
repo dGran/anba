@@ -236,85 +236,88 @@ class Teams extends Component
                 $team_results = $team_results->get();
 
             // fill team_stats collection
-            $team_stats['season_team_id'] = $teamStats->season_team_id;
-            $team_stats['team_name'] = $teamStats->team_name;
-            $team_stats['team_short_name'] = $teamStats->team_short_name;
-            $team_stats['team_medium_name'] = $teamStats->team_medium_name;
-            $team_stats['team_slug'] = $teamStats->team_slug;
-            //calculate results
-            $wins = 0;
-            $losses = 0;
-            $moreLess = 0;
-            foreach ($team_results as $result) {
-                if ($seasonTeamId == $result->local_team_id) {
-                    $moreLess += $result->local_score;
-                    $moreLess -= $result->visitor_score;
-                    if ($result->local_score > $result->visitor_score) {
-                        $wins++;
+            if ($teamStats->PJ) {
+                $team_stats['season_team_id'] = $teamStats->season_team_id;
+                $team_stats['team_name'] = $teamStats->team_name;
+                $team_stats['team_short_name'] = $teamStats->team_short_name;
+                $team_stats['team_medium_name'] = $teamStats->team_medium_name;
+                $team_stats['team_slug'] = $teamStats->team_slug;
+                //calculate results
+                $wins = 0;
+                $losses = 0;
+                $moreLess = 0;
+                foreach ($team_results as $result) {
+                    if ($seasonTeamId == $result->local_team_id) {
+                        $moreLess += $result->local_score;
+                        $moreLess -= $result->visitor_score;
+                        if ($result->local_score > $result->visitor_score) {
+                            $wins++;
+                        } else {
+                            $losses++;
+                        }
                     } else {
-                        $losses++;
-                    }
-                } else {
-                    $moreLess -= $result->local_score;
-                    $moreLess += $result->visitor_score;
-                    if ($result->local_score < $result->visitor_score) {
-                        $wins++;
-                    } else {
-                        $losses++;
+                        $moreLess -= $result->local_score;
+                        $moreLess += $result->visitor_score;
+                        if ($result->local_score < $result->visitor_score) {
+                            $wins++;
+                        } else {
+                            $losses++;
+                        }
                     }
                 }
-            }
-            $team_stats['PJ'] = $teamStats->PJ;
-            $team_stats['W'] = $wins;
-            $team_stats['L'] = $losses;
-            $team_stats['PER_W'] = $teamStats->PJ ? $wins / $teamStats->PJ : 0;
-            $team_stats['SUM_PTS'] = $playersStats->SUM_PTS;
-            $team_stats['AVG_PTS'] = $teamStats->PJ ? $playersStats->SUM_PTS / $teamStats->PJ : 0;
-            $team_stats['SUM_FGM'] = $playersStats->SUM_FGM;
-            $team_stats['AVG_FGM'] = $teamStats->PJ ? $playersStats->SUM_FGM / $teamStats->PJ : 0;
-            $team_stats['SUM_FGA'] = $playersStats->SUM_FGA;
-            $team_stats['AVG_FGA'] = $teamStats->PJ ? $playersStats->SUM_FGA / $teamStats->PJ : 0;
-            $team_stats['PER_FG'] = $playersStats->PER_FG;
-            $team_stats['SUM_TPM'] = $playersStats->SUM_TPM;
-            $team_stats['AVG_TPM'] = $teamStats->PJ ? $playersStats->SUM_TPM / $teamStats->PJ : 0;
-            $team_stats['SUM_TPA'] = $playersStats->SUM_TPA;
-            $team_stats['AVG_TPA'] = $teamStats->PJ ? $playersStats->SUM_TPA / $teamStats->PJ : 0;
-            $team_stats['PER_TP'] = $playersStats->PER_TP;
-            $team_stats['SUM_FTM'] = $playersStats->SUM_FTM;
-            $team_stats['AVG_FTM'] = $teamStats->PJ ? $playersStats->SUM_FTM / $teamStats->PJ : 0;
-            $team_stats['SUM_FTA'] = $playersStats->SUM_FTA;
-            $team_stats['AVG_FTA'] = $teamStats->PJ ? $playersStats->SUM_FTA / $teamStats->PJ : 0;
-            $team_stats['PER_FT'] = $playersStats->PER_FT;
-            $team_stats['SUM_REB'] = $teamStats->SUM_REB;
-            $team_stats['AVG_REB'] = $teamStats->AVG_REB;
-            $team_stats['SUM_ORB'] = $teamStats->SUM_ORB;
-            $team_stats['AVG_ORB'] = $teamStats->AVG_ORB;
-            $team_stats['SUM_DRB'] = $teamStats->SUM_DRB;
-            $team_stats['AVG_DRB'] = $teamStats->AVG_DRB;
-            $team_stats['SUM_AST'] = $teamStats->SUM_AST;
-            $team_stats['AVG_AST'] = $teamStats->AVG_AST;
-            $team_stats['SUM_STL'] = $teamStats->SUM_STL;
-            $team_stats['AVG_STL'] = $teamStats->AVG_STL;
-            $team_stats['SUM_BLK'] = $teamStats->SUM_BLK;
-            $team_stats['AVG_BLK'] = $teamStats->AVG_BLK;
-            $team_stats['SUM_LOS'] = $teamStats->SUM_LOS;
-            $team_stats['AVG_LOS'] = $teamStats->AVG_LOS;
-            $team_stats['SUM_PF'] = $teamStats->SUM_PF;
-            $team_stats['AVG_PF'] = $teamStats->AVG_PF;
-            $team_stats['SUM_ML'] = $moreLess;
-            $team_stats['AVG_ML'] = $teamStats->PJ ? $moreLess / $teamStats->PJ : 0;
-            $team_stats['SUM_counterattack'] = $teamStats->SUM_counterattack;
-            $team_stats['AVG_counterattack'] = $teamStats->AVG_counterattack;
-            $team_stats['SUM_zone'] = $teamStats->SUM_zone;
-            $team_stats['AVG_zone'] = $teamStats->AVG_zone;
-            $team_stats['SUM_second_oportunity'] = $teamStats->SUM_second_oportunity;
-            $team_stats['AVG_second_oportunity'] = $teamStats->AVG_second_oportunity;
-            $team_stats['SUM_substitute'] = $teamStats->SUM_substitute;
-            $team_stats['AVG_substitute'] = $teamStats->AVG_substitute;
-            $team_stats['SUM_advantage'] = $teamStats->SUM_advantage;
-            $team_stats['AVG_advantage'] = $teamStats->AVG_advantage;
+                $team_stats['PJ'] = $teamStats->PJ;
+                $team_stats['W'] = $wins;
+                $team_stats['L'] = $losses;
+                $team_stats['PER_W'] = $teamStats->PJ ? $wins / $teamStats->PJ : 0;
+                $team_stats['SUM_PTS'] = $playersStats->SUM_PTS;
+                $team_stats['AVG_PTS'] = $teamStats->PJ ? $playersStats->SUM_PTS / $teamStats->PJ : 0;
+                $team_stats['SUM_FGM'] = $playersStats->SUM_FGM;
+                $team_stats['AVG_FGM'] = $teamStats->PJ ? $playersStats->SUM_FGM / $teamStats->PJ : 0;
+                $team_stats['SUM_FGA'] = $playersStats->SUM_FGA;
+                $team_stats['AVG_FGA'] = $teamStats->PJ ? $playersStats->SUM_FGA / $teamStats->PJ : 0;
+                $team_stats['PER_FG'] = $playersStats->PER_FG;
+                $team_stats['SUM_TPM'] = $playersStats->SUM_TPM;
+                $team_stats['AVG_TPM'] = $teamStats->PJ ? $playersStats->SUM_TPM / $teamStats->PJ : 0;
+                $team_stats['SUM_TPA'] = $playersStats->SUM_TPA;
+                $team_stats['AVG_TPA'] = $teamStats->PJ ? $playersStats->SUM_TPA / $teamStats->PJ : 0;
+                $team_stats['PER_TP'] = $playersStats->PER_TP;
+                $team_stats['SUM_FTM'] = $playersStats->SUM_FTM;
+                $team_stats['AVG_FTM'] = $teamStats->PJ ? $playersStats->SUM_FTM / $teamStats->PJ : 0;
+                $team_stats['SUM_FTA'] = $playersStats->SUM_FTA;
+                $team_stats['AVG_FTA'] = $teamStats->PJ ? $playersStats->SUM_FTA / $teamStats->PJ : 0;
+                $team_stats['PER_FT'] = $playersStats->PER_FT;
+                $team_stats['SUM_REB'] = $teamStats->SUM_REB;
+                $team_stats['AVG_REB'] = $teamStats->AVG_REB;
+                $team_stats['SUM_ORB'] = $teamStats->SUM_ORB;
+                $team_stats['AVG_ORB'] = $teamStats->AVG_ORB;
+                $team_stats['SUM_DRB'] = $teamStats->SUM_DRB;
+                $team_stats['AVG_DRB'] = $teamStats->AVG_DRB;
+                $team_stats['SUM_AST'] = $teamStats->SUM_AST;
+                $team_stats['AVG_AST'] = $teamStats->AVG_AST;
+                $team_stats['SUM_STL'] = $teamStats->SUM_STL;
+                $team_stats['AVG_STL'] = $teamStats->AVG_STL;
+                $team_stats['SUM_BLK'] = $teamStats->SUM_BLK;
+                $team_stats['AVG_BLK'] = $teamStats->AVG_BLK;
+                $team_stats['SUM_LOS'] = $teamStats->SUM_LOS;
+                $team_stats['AVG_LOS'] = $teamStats->AVG_LOS;
+                $team_stats['SUM_PF'] = $teamStats->SUM_PF;
+                $team_stats['AVG_PF'] = $teamStats->AVG_PF;
+                $team_stats['SUM_ML'] = $moreLess;
+                $team_stats['AVG_ML'] = $teamStats->PJ ? $moreLess / $teamStats->PJ : 0;
+                $team_stats['SUM_counterattack'] = $teamStats->SUM_counterattack;
+                $team_stats['AVG_counterattack'] = $teamStats->AVG_counterattack;
+                $team_stats['SUM_zone'] = $teamStats->SUM_zone;
+                $team_stats['AVG_zone'] = $teamStats->AVG_zone;
+                $team_stats['SUM_second_oportunity'] = $teamStats->SUM_second_oportunity;
+                $team_stats['AVG_second_oportunity'] = $teamStats->AVG_second_oportunity;
+                $team_stats['SUM_substitute'] = $teamStats->SUM_substitute;
+                $team_stats['AVG_substitute'] = $teamStats->AVG_substitute;
+                $team_stats['SUM_advantage'] = $teamStats->SUM_advantage;
+                $team_stats['AVG_advantage'] = $teamStats->AVG_advantage;
 
-            $teams_stats->push($team_stats);
+                $teams_stats->push($team_stats);
+            }
+
         }
 
         $comparer = $this->makeComparer($this->criteria);
