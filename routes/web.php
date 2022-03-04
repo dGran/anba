@@ -6,6 +6,7 @@ use App\Http\Controllers\TeamController;
 use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\MatchController;
 use App\Http\Controllers\ManagerController;
+use App\Http\Controllers\TestController;
 
 use App\Http\Livewire\Admin\Dashboard;
 
@@ -26,6 +27,8 @@ use App\Http\Livewire\Admin\InjuryCrud;
 Route::get('/', function () {
     return view('home');
 })->name('home');
+
+Route::get('/test', [TestController::class, 'index'])->name('test');
 
 Route::get('/partidos', function () {
     return view('matches');
