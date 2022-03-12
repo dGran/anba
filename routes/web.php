@@ -6,6 +6,7 @@ use App\Http\Controllers\TeamController;
 use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\MatchController;
 use App\Http\Controllers\ManagerController;
+use App\Http\Controllers\TestController;
 
 use App\Http\Livewire\Admin\Dashboard;
 
@@ -27,6 +28,8 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
+Route::get('/test', [TestController::class, 'index'])->name('test');
+
 Route::get('/partidos', function () {
     return view('matches');
 })->name('matches');
@@ -34,17 +37,26 @@ Route::get('/partidos/{match:id}', [MatchController::class, 'index'])->name('mat
 Route::get('/clasificaciones', function () {
     return view('standings');
 })->name('standings');
-Route::get('/estadisticas', function () {
-    return view('stats');
-})->name('stats');
-Route::get('/estadisticas/jugadores', function () {
-    return view('stats_players');
-})->name('stats.players');
+
+Route::prefix('estadisticas')->group(function() {
+	Route::get('/', function () {
+	    return view('stats.tops');
+	})->name('stats');
+	Route::get('/jugadores', function () {
+	    return view('stats.players');
+	})->name('stats.players');
+	Route::get('/equipos', function () {
+	    return view('stats.teams');
+	})->name('stats.teams');
+});
 
 Route::prefix('jugadores')->group(function() {
 	Route::get('/', function () {
 	    return view('players');
 	})->name('players');
+	Route::get('/lesionados', function () {
+	    return view('injuries');
+	})->name('players.injuries');
 	Route::get('/{player:slug}', [PlayerController::class, 'index'])->name('player');
 });
 

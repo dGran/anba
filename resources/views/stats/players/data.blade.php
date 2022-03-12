@@ -239,7 +239,7 @@
 						</th>
 					</tr>
 				</thead>
-				<tbody wire:loading.class="opacity-50">
+				<tbody wire:loading.class="opacity-75">
 					@foreach ($players_stats as $key=>$stat)
 						<tr class="group hover:bg-gray-150 dark:hover:bg-gray-700 border-t border-gray-200 dark:border-gray-700">
 							<td class="w-6 text-right" style="min-width: 1.7rem">

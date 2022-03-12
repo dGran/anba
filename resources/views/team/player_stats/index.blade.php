@@ -11,9 +11,7 @@
 	<div class="max-w-7xl mx-auto sm:px-3 sm:px-6 lg:px-8 my-4 md:my-8">
 		@include('team.partials.more_teams')
 		@include('team.player_stats.filters')
-		<div wire:loading.class="opacity-50">
-        	@include('team.player_stats.data')
-        </div>
+    	@include('team.player_stats.data')
 	</div>
 
 	@include('team.partials.player_info_modal')
