@@ -15,7 +15,7 @@
 	    <x-slot name="content">
 			<div class="px-4 py-4">
 
-				<div class="overflow-x-auto">
+				<div class="overflow-x-auto | scrollbar-thin thinest scrollbar-track-transparent scrollbar-thumb-transparent hover:scrollbar-thumb-gray-300 | dark:hover:scrollbar-thumb-gray-500">
 	            	<table class="detail-clash">
 	            		<thead>
 	                		<tr class="border-b dark:border-gray-650">
@@ -94,7 +94,7 @@
 	            	</table>
 				</div>
 
-            	<div class="pt-4 overflow-y-auto h-80 md:h-auto">
+            	<div class="pt-4 overflow-y-auto h-80 md:h-auto | scrollbar-thin thinest scrollbar-track-transparent scrollbar-thumb-transparent hover:scrollbar-thumb-gray-300 | dark:hover:scrollbar-thumb-gray-500">
 	            	@foreach ($currentDetailClash->matches->sortBy('order') as $key => $match)
 	            		@if ($match->played)
 		            		<div class="border-t dark:border-gray-650 py-2 px-2">

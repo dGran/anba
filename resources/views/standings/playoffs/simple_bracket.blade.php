@@ -1,5 +1,5 @@
 <div class="shadow-md rounded-lg mx-3 md:mx-0">
-    <div class="overflow-x-auto bg-white dark:bg-gray-750 rounded-lg">
+    <div class="overflow-x-auto bg-white dark:bg-gray-750 rounded-lg | scrollbar-thin thinest scrollbar-track-transparent scrollbar-thumb-transparent hover:scrollbar-thumb-gray-300 | dark:hover:scrollbar-thumb-gray-500">
         <div class="inline-block p-4">
         <table class="playoffs w-full">
             <tr>

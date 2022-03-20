@@ -2094,6 +2094,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 .scrollbar-thumb-transparent{
   --scrollbar-thumb: transparent !important;
 }
+.scrollbar-track-gray-\35 0{
+  --scrollbar-track: #F9F9F9 !important;
+}
 .scrollbar-thumb-gray-\33 00{
   --scrollbar-thumb: #C8C8C8 !important;
 }
@@ -2839,6 +2842,10 @@ select:-webkit-autofill:focus {
   --scrollbar-thumb: #888888 !important;
 }
 
+.hover\:scrollbar-thumb-gray-600:hover{
+  --scrollbar-thumb: #505050 !important;
+}
+
 .focus\:-translate-x-1:focus{
   --tw-translate-x: -0.25rem;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
@@ -3419,8 +3426,16 @@ select:-webkit-autofill:focus {
   --scrollbar-thumb: #64748b !important;
 }
 
+.dark .dark\:scrollbar-thumb-gray-400{
+  --scrollbar-thumb: #888888 !important;
+}
+
 .dark .dark\:scrollbar-thumb-gray-500{
   --scrollbar-thumb: #707070 !important;
+}
+
+.dark .dark\:scrollbar-thumb-gray-600{
+  --scrollbar-thumb: #505050 !important;
 }
 
 .dark .dark\:scrollbar-thumb-gray-650{
@@ -3523,6 +3538,10 @@ select:-webkit-autofill:focus {
 
 .dark .dark\:hover\:scrollbar-thumb-gray-500:hover{
   --scrollbar-thumb: #707070 !important;
+}
+
+.dark .dark\:hover\:scrollbar-thumb-gray-600:hover{
+  --scrollbar-thumb: #505050 !important;
 }
 
 .dark .dark\:hover\:scrollbar-thumb-gray-700:hover{
