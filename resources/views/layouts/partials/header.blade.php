@@ -30,7 +30,7 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-4 sm:-my-px sm:ml-10 sm:flex">
+                <div class="hidden space-x-4 sm:-my-px sm:ml-3 sm:flex">
                     @foreach ($navLinks as $link)
                         @php
                             $active = Str::startsWith(request()->route()->uri, $link['href']) ? true : false;
@@ -39,28 +39,18 @@
                             {{ __($link['text']) }}
                         </x-nav-link>
                     @endforeach
-{{--                     <a href="http://anba2k.es/phpBB3/index.php" target="_blank" class="uppercase inline-flex items-center px-1 pt-1 text-sm font-medium leading-5 text-gray-300 hover:text-white focus:text-white focus:outline-none transition duration-150 ease-in-out transform hover:translate-y-0.5 hidden lg:inline-flex">
-                        Foro
-                    </a> --}}
                 </div>
+
             </div>
 
             <!-- Settings Dropdown -->
             <div class="flex items-center ml-6">
-{{--                 <button type="button" class="h-8 w-8 text-xl mr-2 focus:outline-none text-gray-300 hover:text-white focus:text-white transition duration-150 ease-in-out" onclick="toggleDarkMode()">
-                    <i class="fas fa-moon"></i>
+                {{-- theme switcher --}}
+                <button id="theme-toggle" type="button" class="uppercase inline-flex items-center px-1 pt-1 mr-3 text-lg font-medium leading-5 text-gray-300 hover:text-white focus:text-white focus:outline-none transition duration-150 ease-in-out">
+                    <i id="theme-toggle-dark-icon" class="hidden fas fa-moon"></i>
+                    <i id="theme-toggle-light-icon" class="hidden fas fa-sun"></i>
                 </button>
-                <script>
-                    const html = document.getElementsByTagName('html')[0];
-
-                    function toggleDarkMode() {
-                        if(html.classList.contains('scheme-dark')) {
-                            html.classList.remove('scheme-dark');
-                        } else {
-                            html.classList.add('scheme-dark');
-                        }
-                    }
-                </script> --}}
+                {{-- theme switcher --}}
                 @auth
                     @if (auth()->user()->readyToPlay())
                         <div class="flex flex-col items-center | text-green-400 | mr-3">
@@ -109,7 +99,7 @@
                         </div>
                     </x-slot>
 
-                    <x-slot name="content">
+                    <x-slot name="content" x-cloak>
                         @auth
                             @hasrole('manager')
                                 <div class="block px-4 py-2 text-xs text-gray-400 dark:text-gray-300">
@@ -236,7 +226,7 @@
         x-transition:enter-end="opacity-100 transform scale-x-100"
         x-transition:leave="transition origin-top-left ease-in duration-150"
         x-transition:leave-start="opacity-100 transform scale-x-100"
-        x-transition:leave-end="opacity-0 transform scale-x-0">
+        x-transition:leave-end="opacity-0 transform scale-x-0" x-cloak>
         <ul class="bg-header-bg-light dark:bg-gray-900 shadow-lg w-full" @click.away="open = false">
             @foreach ($navLinks as $link)
                 @php

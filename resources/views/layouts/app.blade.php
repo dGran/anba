@@ -22,6 +22,7 @@
         <meta name="msapplication-TileColor" content="#da532c">
         <meta name="theme-color" content="#ffffff">
 
+
         <!-- font-awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
         {{-- box-icons --}}
@@ -30,6 +31,8 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
         {{-- Toastr --}}
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA==" crossorigin="anonymous" />
+        {{-- alpinejs --}}
+        <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
@@ -38,7 +41,7 @@
         @livewireStyles
 
         <!-- Scripts -->
-        <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.0/dist/alpine.js" defer></script>
+        {{-- <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.0/dist/alpine.js" defer></script> --}}
         {{-- JQuery --}}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         {{-- Mouse Trap --}}
@@ -47,8 +50,14 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous"></script>
         {{-- Tail Select ???usage??? --}}
         <script src="https://cdn.jsdelivr.net/npm/tail.select@latest/"></script>
+
+        <script src="{{ asset('js/app.js') }}" defer></script>
     </head>
-    <body class="font-sans antialiased bg-gray-100 dark:bg-gray-850">
+    <body class="dark:text-white | font-sans antialiased bg-gray-100 dark:bg-gray-850 |
+    {{-- scrollbar-thin scrollbar-thumb-sb-thumb-color scrollbar-track-sb-track-color hover:scrollbar-thumb-sb-thumb-color-hover | dark:scrollbar-thumb-gray-800 dark:scrollbar-track-gray-750 dark:hover:scrollbar-thumb-gray-700 scrollbar-thumb-rounded-full --}}
+    scrollbar scrollbar-thumb-gray-900 scrollbar-track-gray-100
+
+    ">
         <div class="flex flex-col h-screen justify-between">
             @livewire('top-header')
 
@@ -76,40 +85,6 @@
         @stack('modals')
 
         @livewireScripts
-
-        <script>
-            toastr.options = {
-                "closeButton": true,
-                "debug": false,
-                "newestOnTop": false,
-                "progressBar": true,
-                "positionClass": "toast-top-right",
-                "preventDuplicates": false,
-                "onclick": null,
-                "showDuration": "300",
-                "hideDuration": "300",
-                "timeOut": "3000",
-                "extendedTimeOut": "1000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            }
-            window.livewire.onError(statusCode => {
-                if (statusCode === 419) {
-                    toastr.options = {
-                        "positionClass": "toast-top-center",
-                        "closeButton": false,
-                        "timeOut": "1000",
-                    };
-                    toastr.options.onHidden = function() {
-                        window.location.href=window.location.href;
-                    }
-                    toastr.info('Recargando página por inactividad');
-                    return false;
-                }
-            });
-        </script>
 
         @yield('js')
     </body>

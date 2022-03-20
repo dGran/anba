@@ -2,21 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer utilities {
-	.filter-none {
-		filter: none;
-	}
-	.filter-grayscale {
-		filter: grayscale(100%);
-	}
-	@variants hover, focus, group-hover {
-		.filter-none {
-			filter: none;
-		}
-		.filter-grayscale {
-			filter: grayscale(100%);
-		}
-	}
+// @layer utilities {
+// 	.filter-none {
+// 		filter: none;
+// 	}
+// 	.filter-grayscale {
+// 		filter: grayscale(100%);
+// 	}
+// 	@variants hover, focus, group-hover {
+// 		.filter-none {
+// 			filter: none;
+// 		}
+// 		.filter-grayscale {
+// 			filter: grayscale(100%);
+// 		}
+// 	}
+// }
+
+[x-cloak] {
+    display: none;
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap');

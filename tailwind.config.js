@@ -1,11 +1,7 @@
-const defaultTheme = require('tailwindcss/defaultTheme');
-const plugin = require("tailwindcss/plugin");
-const selectorParser = require("postcss-selector-parser");
-
 module.exports = {
     darkMode: 'class',
 
-    purge: [
+    content: [
         './vendor/laravel/jetstream/**/*.blade.php',
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
@@ -21,11 +17,7 @@ module.exports = {
         },
         extend: {
             fontFamily: {
-                sans: ['Source Sans Pro', ...defaultTheme.fontFamily.sans],
-            },
-            screens: {
-                light: { raw: "(prefers-color-scheme: light)" },
-                dark: { raw: "(prefers-color-scheme: dark)" }
+                sans: ['Source Sans Pro'],
             },
             colors: {
                 gray: {
@@ -60,44 +52,20 @@ module.exports = {
         },
     },
 
+    plugins: [
+        require('tailwind-scrollbar'),
+    ],
+
     variants: {
-        textColor: ['dark', 'responsive', 'hover', 'focus', 'group-hover'],
         backgroundColor: ['dark', 'responsive', 'hover', 'focus', 'group-hover'],
         borderColor: ['dark', 'responsive', 'hover', 'focus', 'group-hover'],
+        display: ['dark'],
         opacity: ['responsive', 'hover', 'focus', 'disabled', 'group-hover'],
         scale: ['group-hover', 'group-focus'],
+        scrollbar: ['dark', 'rounded'],
+        textColor: ['dark', 'responsive', 'hover', 'focus', 'group-hover'],
         extend: {
           backgroundColor: ['even'],
         }
-    },
-
-    plugins: [
-        require('@tailwindcss/ui'),
-        function({ addBase, config }) {
-            addBase({
-                body: {
-                    color: config("theme.colors.black"),
-                    backgroundColor: config("theme.colors.white")
-                },
-                "@screen dark": {
-                    body: {
-                        color: config("theme.colors.white"),
-                        backgroundColor: config("theme.colors.black")
-                    }
-                }
-            });
-        },
-        plugin(function ({ addVariant, prefix }) {
-            addVariant('dark', ({ modifySelectors, separator}) => {
-                modifySelectors(({ selector }) => {
-                    return selectorParser((selectors) => {
-                        selectors.walkClasses((sel) => {
-                            sel.value = `dark${separator}${sel.value}`
-                            sel.parent.insertBefore(sel, selectorParser().astSync(prefix('.scheme-dark ')))
-                        })
-                    }).processSync(selector)
-                })
-            })
-        })
-    ]
-};
+    }
+  }
