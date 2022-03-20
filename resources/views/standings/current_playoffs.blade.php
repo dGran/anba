@@ -2,7 +2,7 @@
 	PlayOffs provisionales
 </p>
 <div class="shadow-md rounded-lg mx-3 md:mx-0">
-	<div class="overflow-x-auto bg-white dark:bg-gray-750 rounded-lg p-4">
+	<div class="overflow-x-auto bg-white dark:bg-gray-750 rounded-lg p-4 | scrollbar-thin thinest scrollbar-track-transparent scrollbar-thumb-transparent hover:scrollbar-thumb-gray-300 | dark:hover:scrollbar-thumb-gray-500">
 		<table class="w-full mb-2">
 			<tr>
 				<td colspan="5">

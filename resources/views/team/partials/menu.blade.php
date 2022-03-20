@@ -1,4 +1,4 @@
-<ul class="px-3 sm:px-0 py-3 flex items-center space-x-4 md:space-x-6 | select-none | text-sm md:text-base font-roboto | overflow-x-auto md:overflow-x-hidden">
+<ul class="px-3 sm:px-0 py-3 flex items-center space-x-4 md:space-x-6 | select-none | text-sm md:text-base font-roboto | overflow-x-auto md:overflow-x-hidden | scrollbar-thin thinest scrollbar-track-transparent scrollbar-thumb-transparent hover:scrollbar-thumb-gray-300 | dark:hover:scrollbar-thumb-gray-500">
     <li class="">
         <a class="truncate focus:outline-none pb-1 border-b-2 transition duration-150 ease-in-out {{ $routeName == 'team.home' ? 'border-blue-500 dark:border-dark-link | pointer-events-none' : 'border-transparent cursor-pointer hover:border-blue-500 dark:hover:border-dark-link focus:border-blue-500 dark:focus:border-dark-link' }}" href="{{ route('team.home', ['t' => $team->slug]) }}">Home</a>
     </li>

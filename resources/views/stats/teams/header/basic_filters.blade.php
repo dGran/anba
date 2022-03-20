@@ -40,8 +40,10 @@
 		<input type="number" id="filter_SUM_MIN" wire:model="filter_SUM_MIN" class="appearance-none rounded text-sm | h-12 md:h-16 pt-5 px-3 | bg-white dark:bg-gray-700 | border border-gray-200 dark:border-gray-850 focus:border-gray-300 hover:border-gray-300 hover:bg-gray-50 focus:bg-gray-50 dark:focus:border-gray-600 dark:hover:border-gray-600 dark:hover:bg-gray-650 dark:focus:bg-gray-650 | focus:outline-none | text-sm text-blue-500 dark:text-dark-link font-bold">
 	</div> --}}
 	<div class="flex-1 w-full flex flex-col relative mt-0.5 md:mt-0 md:ml-0.5">
-		<a class="appearance-none rounded text-base text-right text-blue-500 dark:text-dark-link font-bold | h-12 md:h-16 pt-2.5 md:pt-5 px-3 | bg-white dark:bg-gray-700 | border border-gray-200 dark:border-gray-850 focus:border-gray-300 hover:border-gray-300 hover:bg-gray-50 focus:bg-gray-50 dark:focus:border-gray-600 dark:hover:border-gray-600 dark:hover:bg-gray-650 dark:focus:bg-gray-650 | focus:outline-none | cursor-pointer" wire:click="$toggle('advanced_filters')">
-			Filtros avanzados
+		<a class="appearance-none flex items-center justify-end md:justify-center rounded text-base text-right md:text-center text-blue-500 dark:text-dark-link font-bold | h-12 md:h-16 px-3 | bg-white dark:bg-gray-700 | border border-gray-200 dark:border-gray-850 focus:border-gray-300 hover:border-gray-300 hover:bg-gray-50 focus:bg-gray-50 dark:focus:border-gray-600 dark:hover:border-gray-600 dark:hover:bg-gray-650 dark:focus:bg-gray-650 | focus:outline-none | cursor-pointer" wire:click="$toggle('advanced_filters')">
+			<span>
+				Filtros avanzados
+			</span>
 		</a>
 	</div>
 </div>

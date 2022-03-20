@@ -20,7 +20,7 @@
         </x-slot>
 
         <x-slot name="content">
-            <div class="text-sm overflow-y-auto max-h-96">
+            <div class="text-sm overflow-y-auto max-h-96 | scrollbar-thin thinest scrollbar-track-transparent scrollbar-thumb-transparent hover:scrollbar-thumb-gray-300 | dark:hover:scrollbar-thumb-gray-500">
                 @if ($fieldTeamInfoMatches->count() == 0)
                     <div class="px-4 py-8 text-center">
                         No existen partidos...

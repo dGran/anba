@@ -3,7 +3,7 @@
 </div>
 
 @if ($players->count() > 0)
-    <div class="border-t border-b sm:border border-gray-200 dark:border-gray-700 sm:rounded bg-white dark:bg-gray-750 | overflow-x-auto">
+    <div class="border-t border-b sm:border border-gray-200 dark:border-gray-700 sm:rounded bg-white dark:bg-gray-750 | overflow-x-auto | scrollbar-thin thinest scrollbar-track-transparent scrollbar-thumb-transparent hover:scrollbar-thumb-gray-300 | dark:hover:scrollbar-thumb-gray-500">
         <table class="w-full">
             <thead class="font-semibold tracking-wider uppercase text-sm select-none | bg-gray-200 dark:bg-gray-650">
                 <tr>

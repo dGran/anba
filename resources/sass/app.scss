@@ -20,7 +20,7 @@
 // }
 
 [x-cloak] {
-    display: none;
+    display: none !important;
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap');
@@ -36,3 +36,21 @@
 @import "styles/alert.scss";
 @import "styles/playoffs.scss";
 @import "styles/stats.scss";
+
+
+.scrollbar-thin::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+.scrollbar-thin .thiner::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+.scrollbar-thin .thinest::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+}

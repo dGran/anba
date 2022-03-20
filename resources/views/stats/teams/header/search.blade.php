@@ -1,6 +1,6 @@
 <div class="{{ $advanced_filters ?: 'pt-4' }}">
 	<h4 class="text-xs uppercase font-bold text-gray-500 dark:text-gray-300 select-none pb-0.5 pl-1">
-		Buscar jugador
+		Buscar equipo
 	</h4>
 	<div class="flex flex-col md:flex-row items-center select-none">
 		<div class="flex-1 w-full flex flex-col relative mt-0.5 md:mt-0 md:ml-0.5">

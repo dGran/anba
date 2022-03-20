@@ -1,4 +1,4 @@
-<div class="px-3 sm:px-0 flex flex-col md:flex-row space-x-0 md:space-x-0.5 space-y-1 md:space-y-0 items-center select-none | mb-2 | overflow-x-auto">
+<div class="px-3 sm:px-0 flex flex-col md:flex-row space-x-0 md:space-x-0.5 space-y-1 md:space-y-0 items-center select-none | mb-2 | overflow-x-auto | scrollbar-thin thinest scrollbar-track-transparent scrollbar-thumb-transparent hover:scrollbar-thumb-gray-300 | dark:hover:scrollbar-thumb-gray-500">
     <div class="flex-1 w-full flex flex-col relative">
         <label for="fteam" class="text-xs uppercase absolute top-1.5 md:top-3 left-3 text-gray-500 dark:text-gray-300">
             Equipo

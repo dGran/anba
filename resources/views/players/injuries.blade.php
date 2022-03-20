@@ -19,7 +19,7 @@
 		</div>
 
 		@if ($view == "table")
-			<div class="overflow-x-auto md:overflow-hidden">
+			<div class="overflow-x-auto md:overflow-hidden | scrollbar-thin thinest scrollbar-track-transparent scrollbar-thumb-transparent hover:scrollbar-thumb-gray-300 | dark:hover:scrollbar-thumb-gray-500">
 			<table class="w-full">
 				<thead class="bg-gray-150 dark:bg-gray-700">
 					<tr>

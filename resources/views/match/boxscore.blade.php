@@ -17,7 +17,7 @@
 	            </div>
 	        </div>
 	        @if ($match->hasLocalPlayerStats())
-		        <div class="overflow-x-auto text-sm md:text-base">
+		        <div class="overflow-x-auto text-sm md:text-base | scrollbar-thin thinest scrollbar-track-transparent scrollbar-thumb-transparent hover:scrollbar-thumb-gray-300 | dark:hover:scrollbar-thumb-gray-500">
 		            @if ($match->localTeam->team->players->count()>0)
 		                <table>
 		                    <thead>
@@ -343,7 +343,7 @@
 	            </div>
 	        </div>
 	        @if ($match->hasvisitorPlayerStats())
-		        <div class="overflow-x-auto text-sm md:text-base">
+		        <div class="overflow-x-auto text-sm md:text-base | scrollbar-thin thinest scrollbar-track-transparent scrollbar-thumb-transparent hover:scrollbar-thumb-gray-300 | dark:hover:scrollbar-thumb-gray-500">
 		            @if ($match->visitorTeam->team->players->count()>0)
 		                <table>
 		                    <thead>

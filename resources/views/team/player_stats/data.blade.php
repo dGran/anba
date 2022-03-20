@@ -1,6 +1,6 @@
 @if ($season)
     @if ($players_stats->count() > 0)
-        <div class="bg-white dark:bg-gray-750 overflow-x-auto md:shadow-sm md:rounded-md md:mx-0 text-gray-900 dark:text-gray-200 border border-gray-200 dark:border-gray-850">
+        <div class="bg-white dark:bg-gray-750 overflow-x-auto md:shadow-sm md:rounded-md md:mx-0 text-gray-900 dark:text-gray-200 border border-gray-200 dark:border-gray-850 | scrollbar-thin thinest scrollbar-track-transparent scrollbar-thumb-transparent hover:scrollbar-thumb-gray-300 | dark:hover:scrollbar-thumb-gray-500">
             <table class="team-players-stats font-roboto">
                 <thead>
                     <tr class="text-gray-600 bg-gray-200 dark:bg-gray-700 dark:text-gray-100 select-none">

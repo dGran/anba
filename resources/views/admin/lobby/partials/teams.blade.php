@@ -18,7 +18,7 @@
         <div class="bg-white dark:bg-gray-750 | border border-gray-200 dark:border-gray-700 | p-4 | text-center | text-sm">No hay managers conectados...</div>
     @endif
 
-    <div class="flex items-center space-x-2 | pt-4 | overflow-x-auto">
+    <div class="flex items-center space-x-2 | pt-3 pb-1.5 | overflow-x-auto | scrollbar-thin thinest scrollbar-track-transparent scrollbar-thumb-transparent hover:scrollbar-thumb-gray-300 | dark:hover:scrollbar-thumb-gray-500">
         @foreach ($currentSeason->teams as $seasonTeam)
             <div class="flex flex-col text-xs text-center | select-none">
                 <img src="{{ $seasonTeam->team->getImg() }}" alt="" class="w-8 h-8 object-cover" style="{{ !$seasonTeam->team->user->readyToPlay() ? 'opacity: .30;' : 'opacity: 1' }} min-width: 2rem;">

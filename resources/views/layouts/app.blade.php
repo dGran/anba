@@ -53,11 +53,7 @@
 
         <script src="{{ asset('js/app.js') }}" defer></script>
     </head>
-    <body class="dark:text-white | font-sans antialiased bg-gray-100 dark:bg-gray-850 |
-    {{-- scrollbar-thin scrollbar-thumb-sb-thumb-color scrollbar-track-sb-track-color hover:scrollbar-thumb-sb-thumb-color-hover | dark:scrollbar-thumb-gray-800 dark:scrollbar-track-gray-750 dark:hover:scrollbar-thumb-gray-700 scrollbar-thumb-rounded-full --}}
-    scrollbar scrollbar-thumb-gray-900 scrollbar-track-gray-100
-
-    ">
+    <body class="dark:text-white | font-sans antialiased bg-gray-100 dark:bg-gray-850 | scrollbar-thin thinest scrollbar-track-transparent scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-300 | dark:scrollbar-thumb-gray-500">
         <div class="flex flex-col h-screen justify-between">
             @livewire('top-header')
 
