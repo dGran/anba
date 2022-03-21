@@ -4,8 +4,8 @@
 		<img src="{{ $position['team']->team->getImg() }}" alt="{{ $position['team']->team->short_name }}" class="mr-2 w-8 h-8">
 		<p class="truncate">
 			<a href="{{ route('team.home', ['t' => $position['team']->team->slug]) }}" class="hover:underline focus:underline focus:outline-none">
-				<span class="hidden md:block">{{ $position['team']->team->name }}</span>
-				<span class="md:hidden">{{ $position['team']->team->medium_name }}</span>
+				<span class="hidden lg:block">{{ $position['team']->team->name }}</span>
+				<span class="lg:hidden">{{ $position['team']->team->medium_name }}</span>
 			</a>
 			<span class="block text-xs leading-4 truncate {{ $position['team']->team->user ? 'text-gray-500 dark:text-gray-300 dark:group-hover:text-gray-700' : 'text-gray-300 dark:text-gray-500 uppercase text-xs dark:group-hover:text-gray-600' }}">
 				{{ $position['team']->team->user ? $position['team']->team->user->name : 'Sin manager' }}
@@ -89,7 +89,7 @@
 		<span>-</span>
 	@endif
 </td>
-<td style="min-width: 70px; width: 80px" class="text-center tracking-tight uppercase pr-3">
+<td style="min-width: 70px; width: 80px" class="text-center tracking-tight uppercase pr-3 font-semibold {{ $position['streak'] > 0 ? 'text-emerald-500 dark:text-emerald-400' : 'text-rose-500 dark:text-rose-400' }}">
 	@if ($position['w'] > 0 || $position['l'] > 0)
 		{{ $position['streak'] > 0 ? 'W' : 'L' }} {{ abs($position['streak']) }}
 	@else

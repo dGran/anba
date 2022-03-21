@@ -53,7 +53,7 @@
 	@apply w-full;
 	thead {
 		th {
-			@apply uppercase tracking-widest font-semibold px-2 py-2 text-right;
+			@apply uppercase tracking-widest font-semibold px-2 py-3 text-right;
 			font-size: 0.75rem;
 			line-height: 1rem;
 			min-width: 2.4rem;
@@ -67,7 +67,7 @@
 	}
 	tbody {
 		td {
-			@apply px-2;
+			@apply px-2 py-2.5;
 			font-size: 0.8rem;
 			line-height: 1.2rem;
 		}

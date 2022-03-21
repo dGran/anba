@@ -3,7 +3,7 @@
         Explora más jugadores de los {{ $player->team->medium_name }}
     </h4>
 
-    <div class="pt-3 | flex items-center space-x-4 | overflow-x-auto">
+    <div class="pt-3 | flex items-center space-x-4 | overflow-x-auto | scrollbar-thin thinest scrollbar-track-transparent scrollbar-thumb-transparent hover:scrollbar-thumb-gray-300 | dark:hover:scrollbar-thumb-gray-500">
         @foreach ($moreTeamPlayers as $mtPlayer)
             <a href="{{ route('player', $mtPlayer->slug) }}" class="bg-white dark:bg-gray-750 | rounded-t-md border border-b border-gray-200 dark:border-gray-700 | hover:border-gray-400 dark:hover:border-gray-500 | focus:border-gray-400 dark:focus:border-gray-500 focus:outline-none | ounded-t-md | mb-1.5">
                 <div class="border-b-4 | flex items-center | relative" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">

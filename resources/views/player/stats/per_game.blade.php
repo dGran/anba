@@ -16,20 +16,20 @@
 
     <div class="pt-3">
         @if ($statsPerGame->count() > 0)
-            <div class="bg-white dark:bg-gray-750 overflow-x-auto md:shadow-sm md:rounded-md md:mx-0 text-gray-900 dark:text-gray-200 border border-gray-200 dark:border-gray-850">
+            <div class="bg-white dark:bg-gray-750 overflow-x-auto md:shadow-sm md:rounded-md md:mx-0 text-gray-900 dark:text-gray-200 border border-gray-200 dark:border-gray-850 | scrollbar-thin thinest scrollbar-track-transparent scrollbar-thumb-transparent hover:scrollbar-thumb-gray-300 | dark:hover:scrollbar-thumb-gray-500">
                 <table class="summary-player-stats font-roboto">
                     <thead>
                         <tr class="text-gray-600 bg-gray-200 dark:bg-gray-700 dark:text-gray-100 select-none">
-                            <th class="bg-gray-200 dark:bg-gray-700 hover:bg-gray-800 hover:text-white dark:hover:bg-gray-650 cursor-pointer
-                            {{ $statsPerGame_order == 'seasons.name' ? 'bg-gray-800 text-white dark:bg-gray-650' : '' }}
+                            <th class="cursor-pointer
+                            {{ $statsPerGame_order == 'seasons.name' ? 'bg-gray-800 text-white dark:bg-gray-650' : 'bg-gray-200 dark:bg-gray-700 hover:bg-gray-800 hover:text-white dark:hover:bg-gray-650 ' }}
                             {{ $statsPerGame_order == 'seasons.name' && $statsPerGame_order_direction == 'desc' ? 'sorted-desc' : '' }}
                             {{ $statsPerGame_order == 'seasons.name' && $statsPerGame_order_direction == 'asc' ? 'sorted-asc' : '' }}"
                             wire:click="statsPerGame_change_order('seasons.name')"
                             style="width: 6.25rem; min-width: 6.25rem; max-width: 6.25rem; left: 0px; position: sticky; position: -webkit-sticky; text-align: left;">
                                 Temporada
                             </th>
-                            <th class="bg-gray-200 dark:bg-gray-700 hover:bg-gray-800 hover:text-white dark:hover:bg-gray-650 cursor-pointer
-                            {{ $statsPerGame_order == 'team_name' ? 'bg-gray-800 text-white dark:bg-gray-650' : '' }}
+                            <th class="cursor-pointer
+                            {{ $statsPerGame_order == 'team_name' ? 'bg-gray-800 text-white dark:bg-gray-650' : 'bg-gray-200 dark:bg-gray-700 hover:bg-gray-800 hover:text-white dark:hover:bg-gray-650 ' }}
                             {{ $statsPerGame_order == 'team_name' && $statsPerGame_order_direction == 'desc' ? 'sorted-desc' : '' }}
                             {{ $statsPerGame_order == 'team_name' && $statsPerGame_order_direction == 'asc' ? 'sorted-asc' : '' }}"
                             wire:click="statsPerGame_change_order('team_name')"
@@ -207,7 +207,7 @@
                                     style="width: 6.25rem; min-width: 6.25rem; max-width: 6.25rem; left: 0px; position: sticky; position: -webkit-sticky; text-align: left;">
                                     {{ $stat->season->name }}
                                 </td>
-                                <td class="py-1.5 {{ $statsPerGame_order == 'team_name' ? 'bg-gray-150 dark:bg-gray-650' : 'bg-white dark:bg-gray-750 group-hover:bg-gray-100 dark:group-hover:bg-gray-700' }}"
+                                <td class="{{ $statsPerGame_order == 'team_name' ? 'bg-gray-150 dark:bg-gray-650' : 'bg-white dark:bg-gray-750 group-hover:bg-gray-100 dark:group-hover:bg-gray-700' }}"
                                     style="left: 6.25rem; position: sticky; position: -webkit-sticky; text-align: left;">
                                         {{ $stat->seasonTeam->team->short_name }}
                                 </td>
@@ -288,7 +288,7 @@
                             <tr class="border-t border-gray-300 dark:border-gray-650 | bg-gray-200 dark:bg-gray-700 | font-bold">
                                 <td class="bg-gray-200 dark:bg-gray-700"
                                     style="width: 6.25rem; min-width: 6.25rem; max-width: 6.25rem; left: 0px; position: sticky; position: -webkit-sticky; text-align: left;">
-                                    <div class="border-r border-gray-200 dark:border-gray-700 py-1.5 -mr-2">
+                                    <div class="border-r border-gray-200 dark:border-gray-700 -mr-2">
                                         Carrera
                                     </div>
                                 </td>
@@ -325,7 +325,7 @@
                             <tr class="border-t border-gray-300 dark:border-gray-650 | bg-gray-200 dark:bg-gray-700 | font-bold">
                                 <td class="bg-gray-200 dark:bg-gray-700" style="width: 6.25rem; min-width: 6.25rem; max-width: 6.25rem; left: 0px; position: sticky; position: -webkit-sticky; text-align: left;">
                                 </td>
-                                <td class="py-1.5 | bg-gray-200 dark:bg-gray-700" style="left: 6.25rem; position: sticky; position: -webkit-sticky; text-align: left;">
+                                <td class="bg-gray-200 dark:bg-gray-700" style="left: 6.25rem; position: sticky; position: -webkit-sticky; text-align: left;">
                                     {{ $stat->team_name }}
                                 </td>
                                 <td class="text-right"></td>

@@ -2,27 +2,27 @@
     <div class="max-w-7xl mx-auto xl:px-8 | relative">
         <div class="flex flex-col lg:flex-row justify-between">
             <div class="flex items-center justify-center lg:justify-start">
-                <div class="xl:border-l w-20 lg:w-28 my-3 lg:my-0 lg:py-6 text-white | flex flex-col items-center | font-roboto | leading-5 md:leading-7 lg:leading-10" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
+                <div class="xl:border-l w-20 lg:w-28 my-3 lg:my-0 lg:py-8 text-white | flex flex-col items-center | font-roboto | leading-5 md:leading-7 lg:leading-10" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
                     <span class="text-xs md:text-sm lg:text-base">PJ</span>
-                    <span class="text-xl md:text-2xl lg:text-3xl font-bold | md:-mt-1 lg:-mt-2.5">
+                    <span class="text-xl md:text-2xl lg:text-3xl font-bold">
                         {{ number_format($playerInfoStats[0]['PJ'], 0, ',', '.') }}
                     </span>
                 </div>
-                <div class="border-l w-20 lg:w-28 my-3 lg:my-0 lg:py-6 text-white | flex flex-col items-center | font-roboto | leading-5 md:leading-7 lg:leading-10" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
+                <div class="border-l w-20 lg:w-28 my-3 lg:my-0 lg:py-8 text-white | flex flex-col items-center | font-roboto | leading-5 md:leading-7 lg:leading-10" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
                     <span class="text-xs md:text-sm lg:text-base">PPG</span>
-                    <span class="text-xl md:text-2xl lg:text-3xl font-bold | md:-mt-1 lg:-mt-2.5">
+                    <span class="text-xl md:text-2xl lg:text-3xl font-bold">
                         {{ number_format($playerInfoStats[0]['AVG_PTS'], 1, ',', '.') }}
                     </span>
                 </div>
-                <div class="border-l w-20 lg:w-28 my-3 lg:my-0 lg:py-6 text-white | flex flex-col items-center | font-roboto | leading-5 md:leading-7 lg:leading-10" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
+                <div class="border-l w-20 lg:w-28 my-3 lg:my-0 lg:py-8 text-white | flex flex-col items-center | font-roboto | leading-5 md:leading-7 lg:leading-10" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
                     <span class="text-xs md:text-sm lg:text-base">RPG</span>
-                    <span class="text-xl md:text-2xl lg:text-3xl font-bold | md:-mt-1 lg:-mt-2.5">
+                    <span class="text-xl md:text-2xl lg:text-3xl font-bold">
                         {{ number_format($playerInfoStats[0]['AVG_REB'], 1, ',', '.') }}
                     </span>
                 </div>
-                <div class="border-l w-20 lg:w-28 my-3 lg:my-0 lg:py-6 text-white | flex flex-col items-center | font-roboto | leading-5 md:leading-7 lg:leading-10" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
+                <div class="border-l w-20 lg:w-28 my-3 lg:my-0 lg:py-8 text-white | flex flex-col items-center | font-roboto | leading-5 md:leading-7 lg:leading-10" style="{{ $player->team ? "border-color: " . $player->team->getDarkenColor(.1) : '' }}">
                     <span class="text-xs md:text-sm lg:text-base">APG</span>
-                    <span class="text-xl md:text-2xl lg:text-3xl font-bold | md:-mt-1 lg:-mt-2.5">
+                    <span class="text-xl md:text-2xl lg:text-3xl font-bold">
                         {{ number_format($playerInfoStats[0]['AVG_AST'], 1, ',', '.') }}
                     </span>
                 </div>
