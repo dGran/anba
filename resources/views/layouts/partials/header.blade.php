@@ -46,9 +46,8 @@
             <!-- Settings Dropdown -->
             <div class="flex items-center ml-6">
                 {{-- theme switcher --}}
-                <button id="theme-toggle" type="button" class="uppercase inline-flex items-center px-1 pt-1 mr-3 text-lg font-medium leading-5 text-gray-300 hover:text-white focus:text-white focus:outline-none transition duration-150 ease-in-out">
-                    <i id="theme-toggle-dark-icon" class="hidden fas fa-moon"></i>
-                    <i id="theme-toggle-light-icon" class="hidden fas fa-sun"></i>
+                <button id="theme-toggle" type="button" class="uppercase inline-flex items-center px-1 pt-1 mr-3 text-xl leading-5 text-gray-300 hover:text-white focus:text-white focus:outline-none transition duration-150 ease-in-out">
+                    <i id="theme-toggle-icon" class="fa-solid"></i>
                 </button>
                 {{-- theme switcher --}}
                 @auth

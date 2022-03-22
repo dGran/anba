@@ -5,7 +5,7 @@
 
     <ul class="flex flex-col space-y-2 mx-3 sm:mx-0">
         @foreach ($results as $result)
-            <li class="relative h-20 rounded-md border border-gray-200 dark:border-transparent flex justify-end {{ $result->localTeam->id == $season_team->id ? 'bg-white dark:bg-gray-700' : 'bg-gray-150 dark:bg-gray-750' }}">
+            <li class="relative h-20 rounded-md border border-gray-200 dark:border-transparent hover:border-blue-500 dark:hover:border-dark-link focus:border-blue-500 dark:focus:border-dark-link | flex justify-end {{ $result->localTeam->id == $season_team->id ? 'bg-white dark:bg-gray-700' : 'bg-gray-150 dark:bg-gray-750' }}">
                 <div class="flex-inital rounded-l-md w-8 text-white {{ $result->localTeam->id == $season_team->id ? 'bg-blue-500' : 'bg-gray-500' }}">
                     <p class="my-7 origin-left-top transform -rotate-90 uppercase">{{ $result->localTeam->id == $season_team->id ? 'Home' : 'Away' }}</p>
                 </div>
