@@ -41,6 +41,57 @@
 
         @livewireStyles
 
+        <script>
+// theme selector
+getTheme();
+
+function getTheme() {
+    if ('color-theme' in localStorage) {
+        switch (localStorage.getItem('color-theme')) {
+            case 'dark':
+                setTheme('dark');
+                break;
+            case 'light':
+                setTheme('light');
+                break;
+            case 'device':
+                setTheme('device');
+                break;
+        }
+    } else {
+        localStorage.setItem('color-theme', 'device');
+        setTheme('device');
+    }
+}
+
+function setTheme(mode) {
+    switch (mode) {
+        case 'dark':
+            if (!document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.add('dark');
+            }
+            break;
+        case 'light':
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+            }
+            break;
+        case 'device':
+            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                if (!document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.add('dark');
+                }
+            } else {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                }
+            }
+            break;
+    }
+}
+// END: theme selector
+        </script>
+
         <!-- Scripts -->
         {{-- <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.0/dist/alpine.js" defer></script> --}}
         {{-- JQuery --}}
