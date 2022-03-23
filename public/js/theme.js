@@ -2,6 +2,8 @@
 var themeToggleIcon = document.getElementById('theme-toggle-icon');
 var themeToggleBtn = document.getElementById('theme-toggle');
 
+getTheme();
+
 themeToggleBtn.addEventListener('click', function() {
     if (localStorage.getItem('color-theme') === 'light') {
         setTheme('dark');
