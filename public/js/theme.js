@@ -1,23 +1,6 @@
 // theme selector
 var themeToggleIcon = document.getElementById('theme-toggle-icon');
 var themeToggleBtn = document.getElementById('theme-toggle');
-const darkMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-
-try {
-    // Chrome & Firefox
-    darkMediaQuery.addEventListener('change', (e) => {
-        getTheme();
-    });
-} catch (e1) {
-    try {
-        // Safari
-        darkMediaQuery.addListener((e) => {
-            getTheme();
-        });
-    } catch (e2) {
-        console.error(e2);
-    }
-}
 
 themeToggleBtn.addEventListener('click', function() {
     if (localStorage.getItem('color-theme') === 'light') {
