@@ -59,22 +59,22 @@ function getTheme() {
 function setTheme(mode) {
     switch (mode) {
         case 'dark':
-            themeToggleIcon.classList = 'fa-solid';
-            themeToggleIcon.classList.add('fa-moon');
+            // themeToggleIcon.classList = 'fa-solid';
+            // themeToggleIcon.classList.add('fa-moon');
             if (!document.documentElement.classList.contains('dark')) {
                 document.documentElement.classList.add('dark');
             }
             break;
         case 'light':
-            themeToggleIcon.classList = 'fa-solid';
-            themeToggleIcon.classList.add('fa-sun');
+            // themeToggleIcon.classList = 'fa-solid';
+            // themeToggleIcon.classList.add('fa-sun');
             if (document.documentElement.classList.contains('dark')) {
                 document.documentElement.classList.remove('dark');
             }
             break;
         case 'device':
-            themeToggleIcon.classList = 'fa-solid';
-            themeToggleIcon.classList.add('fa-circle-half-stroke');
+            // themeToggleIcon.classList = 'fa-solid';
+            // themeToggleIcon.classList.add('fa-circle-half-stroke');
             if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
                 if (!document.documentElement.classList.contains('dark')) {
                     document.documentElement.classList.add('dark');
