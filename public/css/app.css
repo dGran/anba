@@ -3980,9 +3980,6 @@ select:-webkit-autofill:focus {
   .md\:mt-32{
     margin-top: 8rem;
   }
-  .md\:-mt-1{
-    margin-top: -0.25rem;
-  }
   .md\:mb-4{
     margin-bottom: 1rem;
   }
@@ -4000,9 +3997,6 @@ select:-webkit-autofill:focus {
   }
   .md\:mt-6{
     margin-top: 1.5rem;
-  }
-  .md\:mt-1{
-    margin-top: 0.25rem;
   }
   .md\:block{
     display: block;
@@ -4042,9 +4036,6 @@ select:-webkit-autofill:focus {
   }
   .md\:h-auto{
     height: auto;
-  }
-  .md\:h-32{
-    height: 8rem;
   }
   .md\:h-14{
     height: 3.5rem;
@@ -4102,9 +4093,6 @@ select:-webkit-autofill:focus {
   }
   .md\:w-28{
     width: 7rem;
-  }
-  .md\:w-32{
-    width: 8rem;
   }
   .md\:grid-cols-3{
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -4368,12 +4356,6 @@ select:-webkit-autofill:focus {
   .lg\:mb-2{
     margin-bottom: 0.5rem;
   }
-  .lg\:-mt-2\.5{
-    margin-top: -0.625rem;
-  }
-  .lg\:-mt-2{
-    margin-top: -0.5rem;
-  }
   .lg\:mt-0{
     margin-top: 0px;
   }
@@ -4385,18 +4367,6 @@ select:-webkit-autofill:focus {
   }
   .lg\:mt-16{
     margin-top: 4rem;
-  }
-  .lg\:-mt-3\.5{
-    margin-top: -0.875rem;
-  }
-  .lg\:-mt-3{
-    margin-top: -0.75rem;
-  }
-  .lg\:-mt-4{
-    margin-top: -1rem;
-  }
-  .lg\:-mt-5{
-    margin-top: -1.25rem;
   }
   .lg\:block{
     display: block;
@@ -4430,12 +4400,6 @@ select:-webkit-autofill:focus {
   }
   .lg\:h-96{
     height: 24rem;
-  }
-  .lg\:h-32{
-    height: 8rem;
-  }
-  .lg\:h-40{
-    height: 10rem;
   }
   .lg\:w-48{
     width: 12rem;
@@ -4528,10 +4492,6 @@ select:-webkit-autofill:focus {
   .lg\:py-8{
     padding-top: 2rem;
     padding-bottom: 2rem;
-  }
-  .lg\:py-6{
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
   }
   .lg\:pb-4{
     padding-bottom: 1rem;
