@@ -33,7 +33,7 @@
 		@endif
 
 		{{-- temporal --}}
-{{--         @hasanyrole('super-admin|admin')
+        @hasanyrole('super-admin|admin')
 			<div class="py-3">
 				<h4 class="pt-1.5 uppercase text-sm tracking-wide font-bold pb-1.5">
 					Opciones de Admin
@@ -57,7 +57,7 @@
 				@endif
 
 			</div>
-        @endhasanyrole --}}
+        @endhasanyrole
 	</div>
 
 	@include('standings.team_info_modal')
