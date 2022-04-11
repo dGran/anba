@@ -97,6 +97,7 @@ class Season extends Model
                     "wavg" => "desc",
                     "w" => "desc",
                     "l" => "asc",
+                    "conf_percent" => "desc",
                     "team_name" => "asc"
                 ];
                 break;
