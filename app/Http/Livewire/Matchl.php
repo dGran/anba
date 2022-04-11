@@ -288,7 +288,8 @@ class Matchl extends Component
 		$local_record = $season->get_table_data_team_record($clash->local_team_id)['w'];
 		$visitor_record = $season->get_table_data_team_record($clash->visitor_team_id)['w'];
 
-		if ($clash->result()['local_result'] == $matches_to_win || $clash->result()['visitor_result'] == $matches_to_win) {
+		if ($matches_to_win ==1 || $clash->result()['local_result'] == $matches_to_win || $clash->result()['visitor_result'] == $matches_to_win)
+		{
 			// clash finished
 			$nextClash = $clash->nextClash();
 			if ($nextClash) {
@@ -374,6 +375,7 @@ class Matchl extends Component
 					// code...
 					break;
 			}
+
 			$match = \App\Models\MatchModel::create([
 				'season_id' 		 => $clash->round->playoff->season_id,
 				'clash_id' 			 => $clash->id,
