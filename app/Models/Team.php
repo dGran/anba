@@ -203,10 +203,11 @@ class Team extends Model
         $team_id = $this->id;
 
         $counter = 0;
-        $playoffs = Playoff::whereNull('playin_place')->get();
-        foreach ($playoffs as $playoff) {
-            if ($playoff->winner()->team->id == $team_id) {
-                $counter++;
+        if ($playoffs = Playoff::whereNull('playin_place')->get()) {
+            foreach ($playoffs as $playoff) {
+                if ($playoff->winner() && $playoff->winner()->team->id == $team_id) {
+                    $counter++;
+                }
             }
         }
 
