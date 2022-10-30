@@ -16,6 +16,8 @@ class Season extends Model
         'direct_playoffs_end',
         'play_in_start',
         'play_in_end',
+        'home_banner',
+        'game_logo',
         'current',
         'slug'
     ];
@@ -679,5 +681,23 @@ class Season extends Model
             return true;
         }
         return false;
+    }
+
+    public function getHomeBanner(): string
+    {
+        if ($this->home_banner) {
+            return asset('img/seasons/banner/'.$this->home_banner);
+        }
+
+        return asset('img/seasons/banner/default.jpg');
+    }
+
+    public function getGameLogo(): string
+    {
+        if ($this->game_logo) {
+            return asset('img/seasons/game/'.$this->game_logo);
+        }
+
+        return asset('img/seasons/game/default.png');
     }
 }
