@@ -418,7 +418,7 @@ class Season extends Model
                     }
                 }
 
-                if ($streak_sign) {
+                if (isset($streak_sign) && $streak_sign) {
                     if ($win) {
                         if (!$streak_stop) {
                             $data['streak'] += 1;
