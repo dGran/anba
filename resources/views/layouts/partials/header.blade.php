@@ -40,7 +40,6 @@
                         </x-nav-link>
                     @endforeach
                 </div>
-
             </div>
 
             <!-- Settings Dropdown -->
@@ -49,14 +48,16 @@
                 <button id="theme-toggle" type="button" class="uppercase inline-flex items-center px-1 pt-1 mr-3 text-xl leading-5 text-gray-300 hover:text-white focus:text-white focus:outline-none transition duration-150 ease-in-out">
                     <i id="theme-toggle-icon" class="fa-solid"></i>
                 </button>
-                {{-- theme switcher --}}
+
                 @auth
-                    @if (auth()->user()->readyToPlay())
-                        <div class="flex flex-col items-center | text-green-400 | mr-3">
+                    <div class="flex flex-col items-center justify-end | {{ auth()->user()->checkLobby() ? 'text-green-400' : 'text-gray-300' }} | mr-3 | leading-3">
+                        @if (auth()->user()->readyToPlay())
                             <i class="fas fa-gamepad text-xl"></i>
-                            <span class="text-xxs uppercase">lobby</span>
-                        </div>
-                    @endauth
+                        @else
+                            <i class="fas fa-basketball text-xl"></i>
+                        @endauth
+                        <span class="text-xxs uppercase">lobby</span>
+                    </div>
                 @endauth
 
                 <x-dropdown align="right" width="48">

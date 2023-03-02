@@ -65,6 +65,14 @@
 			    </div>
 	    	</div>
 
+            <div class="pt-3 px-3 @error('name') error @enderror">
+                <label class="text-sm text-uppercase tracking-wide">partidos minimos jugados</label>
+                <input type="number" class="form-control text-sm" placeholder="Número de partidos mínimos jugados" wire:model="min_played_matches">
+                @error('name')
+                <p class="text-xs pt-1 m-0">{{ $message }}</p>
+                @enderror
+            </div>
+
 		    <div class="p-3 mt-3 border-top">
 		        <button type="submit" class="btn btn-primary text-xs text-uppercase tracking-widest">
 		            Guardar

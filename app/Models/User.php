@@ -146,12 +146,14 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $currentSeason = Season::where('current', 1)->first();
         $user_id = $this->id;
+
         $matches = MatchModel::where('season_id', $currentSeason->id)
             ->where(function($q) use ($user_id) {
                 $q->where('matches.local_manager_id', $user_id)
                     ->orWhere('matches.visitor_manager_id', $user_id);
                 })
             ->get();
+
         return $matches;
     }
 
@@ -201,6 +203,17 @@ class User extends Authenticatable implements MustVerifyEmail
         if (TeamStat::where('updated_user_id', $this->id)->count() > 0) { return false; }
         if (PlayerStat::where('updated_user_id', $this->id)->count() > 0) { return false; }
         if (AdminLog::where('user_id', $this->id)->count() > 0) { return false; }
+
+        return true;
+    }
+
+    public function checkLobby()
+    {
+        $usersInLobby = User::where('ready_to_play', 1)->count();
+
+        if (!$usersInLobby) {
+            return false;
+        }
 
         return true;
     }

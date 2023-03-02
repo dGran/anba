@@ -19,5 +19,6 @@ class Config extends Model
         'active_notifications',
         'notifications_test_mode',
         'home_banner',
+        'min_played_matches',
     ];
 }

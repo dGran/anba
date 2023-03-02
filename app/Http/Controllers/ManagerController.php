@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Config;
 use Illuminate\Http\Request;
 use Auth;
 use App\Models\Season;
@@ -88,12 +89,28 @@ class ManagerController extends Controller
 	public function readyToPlaySwitcher($user_id)
 	{
 		$user = User::findOrFail($user_id);
+
 		if ($user->readyToPlay()) {
 			$user->ready_to_play = null;
 			$user->save();
 			$message_type = 'info';
 			$message = 'Has abandonado el lobby';
 		} else {
+
+            $config = Config::first();
+            $min_played_matches = $config->min_played_matches;
+
+            if ($user->currentSeasonMatches() < $min_played_matches) {
+                $this->notifyUserInLobbyWithLessPlayedMatchesThanMin();
+            }
+
+            $config = Config::first();
+            $min_played_matches = $config->min_played_matches;
+
+            if ($user->currentSeasonMatches() < $min_played_matches) {
+                $this->notifyUserInLobbyWithLessPlayedMatchesThanMin($user);
+            }
+
 			if (!$user->pendingMatchesReports()) {
 				$user->ready_to_play = Carbon::now()->addHour();
 				$user->save();
@@ -178,5 +195,10 @@ class ManagerController extends Controller
 	    ]);
 	}
 
+    public function notifyUserInLobbyWithLessPlayedMatchesThanMin()
+    {
+        $webhook = config('discord.webhook_general');
 
+        return Http::post($webhook, ['content' => 'Hay un mánager por debajo de plazo en el lobby <@&486604867293544458>']);
+    }
 }
