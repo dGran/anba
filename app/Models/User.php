@@ -157,6 +157,21 @@ class User extends Authenticatable implements MustVerifyEmail
         return $matches;
     }
 
+    public function countCurrentSeasonMatches(): int
+    {
+        $currentSeason = Season::where('current', 1)->first();
+        $user_id = $this->id;
+
+        $matches = MatchModel::where('season_id', $currentSeason->id)
+            ->where(function($q) use ($user_id) {
+                $q->where('matches.local_manager_id', $user_id)
+                    ->orWhere('matches.visitor_manager_id', $user_id);
+            })
+            ->count();
+
+        return $matches;
+    }
+
     public function pendingMatchesReports()
     {
         $user_id = $this->id;

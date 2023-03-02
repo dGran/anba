@@ -96,19 +96,11 @@ class ManagerController extends Controller
 			$message_type = 'info';
 			$message = 'Has abandonado el lobby';
 		} else {
-
             $config = Config::first();
             $min_played_matches = $config->min_played_matches;
 
-            if ($user->currentSeasonMatches() < $min_played_matches) {
+            if ($user->countCurrentSeasonMatches() < $min_played_matches) {
                 $this->notifyUserInLobbyWithLessPlayedMatchesThanMin();
-            }
-
-            $config = Config::first();
-            $min_played_matches = $config->min_played_matches;
-
-            if ($user->currentSeasonMatches() < $min_played_matches) {
-                $this->notifyUserInLobbyWithLessPlayedMatchesThanMin($user);
             }
 
 			if (!$user->pendingMatchesReports()) {
