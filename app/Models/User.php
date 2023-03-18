@@ -224,7 +224,8 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function checkLobby()
     {
-        $usersInLobby = User::where('ready_to_play', 1)->count();
+        $dateMin = new \DateTime('-1 hour');
+        $usersInLobby = User::where('ready_to_play', '!=', null)->where('ready_to_play', '>', $dateMin)->count();
 
         if (!$usersInLobby) {
             return false;
