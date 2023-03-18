@@ -167,6 +167,7 @@ class User extends Authenticatable implements MustVerifyEmail
                 $q->where('matches.local_manager_id', $user_id)
                     ->orWhere('matches.visitor_manager_id', $user_id);
             })
+            ->where('matches.played', 1)
             ->count();
 
         return $matches;
