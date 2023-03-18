@@ -75,7 +75,7 @@
 									<div class="flex flex-col leading-4 ml-2">
 										<span class="text-sm">{{ $currentSeason->top_player($match->localTeam->id) ? $currentSeason->top_player($match->localTeam->id)->player->name : '-' }}</span>
 										<div class="text-xs uppercase">
-											<span>{{ $currentSeason->top_player($match->localTeam->id) ? $currentSeason->top_player($match->localTeam->id)->player->team->short_name : '' }}</span>
+											<span>{{ $currentSeason->top_player($match->localTeam->id) ? ($currentSeason->top_player($match->localTeam->id)->player->team ? $currentSeason->top_player($match->localTeam->id)->player->team->short_name : 'N/D') : '' }}</span>
 											<span class="mx-1">{{ $currentSeason->top_player($match->localTeam->id) ? '|' : '' }}</span>
 											<span>{{ $currentSeason->top_player($match->localTeam->id) ? $currentSeason->top_player($match->localTeam->id)->player->position : '' }}</span>
 										</div>
@@ -102,7 +102,7 @@
 									<div class="flex flex-col leading-4 ml-2">
 										<span class="text-sm">{{ $currentSeason->top_player($match->visitorTeam->id) ? $currentSeason->top_player($match->visitorTeam->id)->player->name : '-' }}</span>
 										<div class="text-xs uppercase">
-											<span>{{ $currentSeason->top_player($match->visitorTeam->id) ? $currentSeason->top_player($match->visitorTeam->id)->player->team->short_name : '' }}</span>
+											<span>{{ $currentSeason->top_player($match->visitorTeam->id) ? ($currentSeason->top_player($match->visitorTeam->id)->player->team ? $currentSeason->top_player($match->visitorTeam->id)->player->team->short_name : 'N/D') : '' }}</span>
 											<span class="mx-1">{{ $currentSeason->top_player($match->visitorTeam->id) ? '|' : '' }}</span>
 											<span>{{ $currentSeason->top_player($match->visitorTeam->id) ? $currentSeason->top_player($match->visitorTeam->id)->player->position : '' }}</span>
 										</div>
