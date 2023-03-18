@@ -296,11 +296,11 @@ class Matchl extends Component
 				if ($clash->destiny_clash_local) {
 					$nextClash->local_team_id = $clash->winner()->id;
 					$nextClash->local_manager_id = $clash->winner()->team->user->id;
-					$nextClash->regular_position_local = $clash->winner()->id == $clash->local_team_id ? $local_record : $visitor_record;
+					$nextClash->regular_position_local = $clash->winner() && $clash->winner()->id == $clash->local_team_id ? $local_record : $visitor_record;
 				} else {
 					$nextClash->visitor_team_id = $clash->winner()->id;
 					$nextClash->visitor_manager_id = $clash->winner()->team->user->id;
-					$nextClash->regular_position_visitor = $clash->winner()->id == $clash->local_team_id ? $local_record : $visitor_record;
+					$nextClash->regular_position_visitor = $clash->winner() && $clash->winner()->id == $clash->local_team_id ? $local_record : $visitor_record;
 				}
 				$nextClash->save();
 
@@ -426,7 +426,7 @@ class Matchl extends Component
 				}
 	        }
 		} else {
-			if ($match->winner()->id == $clash->local_team_id) {
+			if ($match->winner() && $match->winner()->id == $clash->local_team_id) {
 				if ($clash->result()['local_result'] > $clash->result()['visitor_result']) {
 					if ($clash->result()['local_result'] > $clash->result()['visitor_result'] + 1) {
 						$description = "Los " . $match->winner()->team->medium_name . " amplían su ventaja en la serie contra los " . $match->loser()->team->medium_name . ", " . $clash->localTeam->team->short_name . ' ' . $clash->result()['local_result'] . ' - ' . $clash->result()['visitor_result'] . ' ' . $clash->visitorTeam->team->short_name;
@@ -481,7 +481,7 @@ class Matchl extends Component
 	        if ($next_round) {
 	        	$title = $clash->winner()->team->medium_name . ' (' . $clash->winner()->team->user->name . ') ' . ' clasificados para ' . $next_round->name;
 	        	$nextClash = $clash->nextClash();
-	        	if ($nextClash->local_team_id == $clash->winner()->id) {
+	        	if ($clash->winner() && $clash->winner()->id === $nextClash->local_team_id) {
 	        		$rival = $nextClash->visitorTeam;
 	        	} else {
 	        		$rival = $nextClash->localTeam;

@@ -24,7 +24,7 @@
 										<span class="hidden sm:block">{{ $lastMatch->localTeam->team->medium_name }}</span>
 										@if ($lastMatch->localTeam->id == $match->localTeam->id)
 											<div class="w-6 ml-2">
-												@if ($lastMatch->winner()->id == $match->localTeam->id)
+												@if ($lastMatch->winner() && $lastMatch->winner()->id == $match->localTeam->id)
 													<span class="bg-green-500 rounded-full w-6 h-6 text-xs text-white uppercase flex items-center justify-center mx-auto">V</span>
 												@else
 													<span class="bg-red-500 rounded-full w-6 h-6 text-xs text-white uppercase flex items-center justify-center mx-auto">D</span>
@@ -40,7 +40,7 @@
 									<div class="flex-1 truncate flex items-center justify-start">
 										@if ($lastMatch->visitorTeam->id == $match->localTeam->id)
 											<div class="w-6 mr-2">
-												@if ($lastMatch->winner()->id == $match->localTeam->id)
+												@if ($lastMatch->winner() && $lastMatch->winner()->id == $match->localTeam->id)
 													<span class="bg-green-500 rounded-full w-6 h-6 text-xs text-white uppercase flex items-center justify-center mx-auto">V</span>
 												@else
 													<span class="bg-red-500 rounded-full w-6 h-6 text-xs text-white uppercase flex items-center justify-center mx-auto">D</span>
@@ -82,7 +82,7 @@
 										<span class="hidden sm:block">{{ $lastMatch->localTeam->team->medium_name }}</span>
 										@if ($lastMatch->localTeam->id == $match->visitorTeam->id)
 											<div class="w-6 ml-2">
-												@if ($lastMatch->winner()->id == $match->visitorTeam->id)
+												@if ($lastMatch->winner() && $lastMatch->winner()->id == $match->visitorTeam->id)
 													<span class="bg-green-500 rounded-full w-6 h-6 text-xs text-white uppercase flex items-center justify-center mx-auto">V</span>
 												@else
 													<span class="bg-red-500 rounded-full w-6 h-6 text-xs text-white uppercase flex items-center justify-center mx-auto">D</span>
@@ -98,7 +98,7 @@
 									<div class="flex-1 truncate flex items-center justify-start">
 										@if ($lastMatch->visitorTeam->id == $match->visitorTeam->id)
 											<div class="w-6 mr-2">
-												@if ($lastMatch->winner()->id == $match->visitorTeam->id)
+												@if ($lastMatch->winner() && $lastMatch->winner()->id == $match->visitorTeam->id)
 													<span class="bg-green-500 rounded-full w-6 h-6 text-xs text-white uppercase flex items-center justify-center mx-auto">V</span>
 												@else
 													<span class="bg-red-500 rounded-full w-6 h-6 text-xs text-white uppercase flex items-center justify-center mx-auto">D</span>
