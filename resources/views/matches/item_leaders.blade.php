@@ -93,7 +93,7 @@
 							<div class="flex flex-col leading-3 ml-2">
 								<span class="text-sm">{{ $season_top_local_player ? $season_top_local_player->player->name : '-' }}</span>
 								<div class="text-xs uppercase leading-5">
-									<span>{{ $season_top_local_player ? $season_top_local_player->player->team->short_name : '' }}</span>
+									<span>{{ $season_top_local_player && $season_top_local_player->player->team ? $season_top_local_player->player->team->short_name : '' }}</span>
 									<span class="mx-1">{{ $season_top_local_player ? '|' : '' }}</span>
 									<span>{{ $season_top_local_player ? $season_top_local_player->player->position : '' }}</span>
 								</div>
@@ -123,7 +123,7 @@
 							<div class="flex flex-col leading-3 ml-2">
 								<span class="text-sm">{{ $season_top_visitor_player ? $season_top_visitor_player->player->name : '-' }}</span>
 								<div class="text-xs uppercase leading-5">
-									<span>{{ $season_top_visitor_player ? $season_top_visitor_player->player->team->short_name : '' }}</span>
+									<span>{{ $season_top_visitor_player && $season_top_visitor_player->player->team ? $season_top_visitor_player->player->team->short_name : '' }}</span>
 									<span class="mx-1">{{ $season_top_visitor_player ? '|' : '' }}</span>
 									<span>{{ $season_top_visitor_player ? $season_top_visitor_player->player->position : '' }}</span>
 								</div>
