@@ -3,11 +3,11 @@
     <div class="max-w-7xl mx-auto md:px-6 lg:px-8 md:my-8">
         <div class="relative bg-none bg-cover bg-no-repeat bg-top h-60 sm:h-72 md:h-80 lg:h-96 xl:h-96 text-white py-12 px-6 object-fill md:rounded-lg"
              style="background-image: url({{ $currentSeason->getHomeBanner() }})">
-            <img src="{{ $currentSeason->getGameLogo() }}" alt="" class="w-32 md:w-40 lg:w-48">
-            <div class="flex items-center mt-3">
-                <i class="icon-xbox text-xl md:text-2xl lg:text-3xl"></i>
-                <span class="ml-2 text-xl md:text-2xl lg:text-3xl">XBOX</span>
-            </div>
+{{--            <img src="{{ $currentSeason->getGameLogo() }}" alt="" class="w-32 md:w-40 lg:w-48">--}}
+{{--            <div class="flex items-center mt-3">--}}
+{{--                <i class="icon-xbox text-xl md:text-2xl lg:text-3xl"></i>--}}
+{{--                <span class="ml-2 text-xl md:text-2xl lg:text-3xl">XBOX</span>--}}
+{{--            </div>--}}
         </div>
     </div>
 
