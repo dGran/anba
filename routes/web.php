@@ -48,6 +48,9 @@ Route::prefix('estadisticas')->group(function() {
 	Route::get('/equipos', function () {
 	    return view('stats.teams');
 	})->name('stats.teams');
+	Route::get('/records', function () {
+	    return view('stats.records');
+	})->name('stats.records');
 });
 
 Route::prefix('jugadores')->group(function() {
@@ -58,6 +61,7 @@ Route::prefix('jugadores')->group(function() {
 	    return view('injuries');
 	})->name('players.injuries');
 	Route::get('/{player:slug}', [PlayerController::class, 'index'])->name('player');
+	Route::get('/{player:slug}/game_log', [PlayerController::class, 'gameLog'])->name('playerGameLog');
 });
 
 Route::prefix('equipos')->group(function() {

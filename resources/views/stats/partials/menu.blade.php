@@ -19,5 +19,10 @@
                 Equipos
             </a>
         </li>
+        <li>
+            <a href="{{ route('stats.records') }}" class="focus:outline-none border-b-2 transition duration-150 ease-in-out {{ request()->route()->getName() == 'stats.teams' ? 'border-blue-500 dark:border-dark-link | pointer-events-none' : 'text-gray-500 dark:text-gray-400 border-transparent cursor-pointer hover:border-blue-500 dark:hover:border-dark-link focus:border-blue-500 dark:focus:border-dark-link' }}">
+                Records
+            </a>
+        </li>
     </ul>
 </div>

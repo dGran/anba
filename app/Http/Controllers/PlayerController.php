@@ -13,4 +13,10 @@ class PlayerController extends Controller
 
         return view('player', ['player' => $player]);
     }
+
+    public function gameLog($slug) {
+        $player = Player::where('slug', $slug)->first();
+
+        return view('player_gamelog', ['player' => $player]);
+    }
 }
