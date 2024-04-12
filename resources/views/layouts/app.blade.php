@@ -41,7 +41,7 @@
 
         <!-- Scripts -->
         {{-- alpinejs --}}
-        <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.13.8/cdn.js" integrity="sha512-hN6ogT3v4Qd7huxKH/Pg0ZomVLJ1cxvjeZyLfuuq8CgYs+VwrFsbyTE9gHKQEw7gQQNeAZCGumF2XHPdx7BL7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         {{-- JQuery --}}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         {{-- Mouse Trap --}}
