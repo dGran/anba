@@ -32,32 +32,31 @@
 			@include('standings.playoffs')
 		@endif
 
-		 temporal
-        @hasanyrole('super-admin|admin')
-			<div class="py-3">
-				<h4 class="pt-1.5 uppercase text-sm tracking-wide font-bold pb-1.5">
-					Opciones de Admin
-				</h4>
-				@if ($phase == "regular")
-					<x-buttons.primary class="uppercase text-xs px-2.5 py-0.5 tracking-wide leading-6 mr-3" wire:click="generatePlayoff">
-					    generar playoff
-					</x-buttons.primary>
-				@else
-					<x-buttons.primary class="uppercase text-xs px-2.5 py-0.5 tracking-wide leading-6 mr-3" wire:click="generateRounds">
-					    generar rondas
-					</x-buttons.primary>
+{{--        @hasanyrole('super-admin|admin')--}}
+{{--			<div class="py-3">--}}
+{{--				<h4 class="pt-1.5 uppercase text-sm tracking-wide font-bold pb-1.5">--}}
+{{--					Opciones de Admin--}}
+{{--				</h4>--}}
+{{--				@if ($phase == "regular")--}}
+{{--					<x-buttons.primary class="uppercase text-xs px-2.5 py-0.5 tracking-wide leading-6 mr-3" wire:click="generatePlayoff">--}}
+{{--					    generar playoff--}}
+{{--					</x-buttons.primary>--}}
+{{--				@else--}}
+{{--					<x-buttons.primary class="uppercase text-xs px-2.5 py-0.5 tracking-wide leading-6 mr-3" wire:click="generateRounds">--}}
+{{--					    generar rondas--}}
+{{--					</x-buttons.primary>--}}
 
-					<x-buttons.primary class="uppercase text-xs px-2.5 py-0.5 tracking-wide leading-6 mr-3" wire:click="generateFirstMatches">
-					    generar primeros partidos
-					</x-buttons.primary>
+{{--					<x-buttons.primary class="uppercase text-xs px-2.5 py-0.5 tracking-wide leading-6 mr-3" wire:click="generateFirstMatches">--}}
+{{--					    generar primeros partidos--}}
+{{--					</x-buttons.primary>--}}
 
-					<x-buttons.danger class="uppercase text-xs px-2.5 py-0.5 tracking-wide leading-6 mr-3" wire:click="destroyPlayoff">
-					    eliminar playoff
-					</x-buttons.danger>
-				@endif
+{{--					<x-buttons.danger class="uppercase text-xs px-2.5 py-0.5 tracking-wide leading-6 mr-3" wire:click="destroyPlayoff">--}}
+{{--					    eliminar playoff--}}
+{{--					</x-buttons.danger>--}}
+{{--				@endif--}}
 
-			</div>
-        @endhasanyrole
+{{--			</div>--}}
+{{--        @endhasanyrole--}}
 	</div>
 
 	@include('standings.team_info_modal')
