@@ -9,8 +9,6 @@ use App\Models\User;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\Importable;
-
-use Illuminate\Support\Facades\Hash;
 use App\Events\TableWasUpdated;
 
 class MatchesScoresImport implements ToModel, WithHeadingRow
@@ -21,6 +19,7 @@ class MatchesScoresImport implements ToModel, WithHeadingRow
     {
         $match = MatchModel::find($row['match_id']);
         $score_header = SeasonScoreHeader::find($row['seasons_scores_headers_id']);
+
         if ($match && $score_header) {
             $regs = Score::where('match_id', $match->id)->get();
             foreach ($regs as $reg) {
@@ -38,6 +37,7 @@ class MatchesScoresImport implements ToModel, WithHeadingRow
                 'updated_at'                => $row['updated_at'] ?: now(),
             ]);
             event(new TableWasUpdated($reg, 'insert', $reg->toJson(JSON_PRETTY_PRINT), 'Registro importado'));
+
             if ($row['local_score'] > 0 && $row['visitor_score'] > 0) {
                 $match = MatchModel::find($row['match_id']);
                 $before = $match->toJson(JSON_PRETTY_PRINT);
@@ -45,6 +45,7 @@ class MatchesScoresImport implements ToModel, WithHeadingRow
                 $match->save();
                 event(new TableWasUpdated($match, 'update', $match->toJson(JSON_PRETTY_PRINT), $before));
             }
+
             return $reg;
         }
     }

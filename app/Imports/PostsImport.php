@@ -10,8 +10,6 @@ use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\Importable;
-
-use Illuminate\Support\Facades\Hash;
 use App\Events\TableWasUpdated;
 
 class PostsImport implements ToModel, WithHeadingRow
@@ -33,6 +31,7 @@ class PostsImport implements ToModel, WithHeadingRow
                 'slug'           => Str::slug($row['title'], '-')
             ]);
             event(new TableWasUpdated($reg, 'insert', $reg->toJson(JSON_PRETTY_PRINT), 'Registro importado'));
+
             return $reg;
         }
     }

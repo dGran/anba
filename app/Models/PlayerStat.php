@@ -9,6 +9,8 @@ class PlayerStat extends Model
 {
     use HasFactory;
 
+    public const STATE_ERROR = 'error';
+
     protected $table = "players_stats";
 
     protected $fillable = [

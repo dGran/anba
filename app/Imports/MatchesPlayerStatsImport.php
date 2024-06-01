@@ -10,8 +10,6 @@ use App\Models\Player;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\Importable;
-
-use Illuminate\Support\Facades\Hash;
 use App\Events\TableWasUpdated;
 
 class MatchesPlayerStatsImport implements ToModel, WithHeadingRow

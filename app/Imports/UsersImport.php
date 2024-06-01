@@ -6,7 +6,6 @@ use App\Models\User;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\Importable;
-
 use Illuminate\Support\Facades\Hash;
 
 class UsersImport implements ToModel, WithHeadingRow
@@ -24,6 +23,7 @@ class UsersImport implements ToModel, WithHeadingRow
                'updated_at'         => $row['updated_at'],
                'password'           => Hash::make('secret'),
             ]);
+
             return $user;
         }
     }

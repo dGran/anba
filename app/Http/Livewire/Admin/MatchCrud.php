@@ -12,6 +12,7 @@ use App\Models\Season;
 use App\Models\SeasonTeam;
 use App\Models\User;
 
+use App\Service\PostService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -1826,17 +1827,13 @@ class MatchCrud extends Component
 		$match = MatchModel::find($match_id);
 
     	$post = $this->storePost(
-			'general',
-			$match->id,
-			null,
-			null,
-			null,
-			null,
+			PostService::POST_TYPE_GENERAL,
 			$match->localTeam->team->short_name . ' | ' . $match->visitorTeam->team->short_name,
-			$match->localTeam->team->medium_name . '  ' . $match->score() . '  ' . $match->visitorTeam->team->medium_name,
-			'La administración ha reseteado el resultado y estadísticas del partido.',
-			null,
-    	);
+            $match->localTeam->team->medium_name . '  ' . $match->score() . '  ' . $match->visitorTeam->team->medium_name,
+            'La administración ha reseteado el resultado y estadísticas del partido.',
+            null,
+            $match->id
+        );
     	event(new PostStored($post));
 	}
 
@@ -1845,17 +1842,13 @@ class MatchCrud extends Component
 		$match = MatchModel::find($match_id);
 
     	$post = $this->storePost(
-			'general',
-			$match->id,
-			null,
-			null,
-			null,
-			null,
+            PostService::POST_TYPE_GENERAL,
 			$match->localTeam->team->short_name . ' | ' . $match->visitorTeam->team->short_name,
-			$match->localTeam->team->medium_name . '  ' . $match->score() . '  ' . $match->visitorTeam->team->medium_name,
-			'La administración ha reseteado el resultado.',
-			null,
-    	);
+            $match->localTeam->team->medium_name . '  ' . $match->score() . '  ' . $match->visitorTeam->team->medium_name,
+            'La administración ha reseteado el resultado.',
+            null,
+            $match->id
+        );
     	event(new PostStored($post));
 	}
 
@@ -1872,17 +1865,13 @@ class MatchCrud extends Component
 		$description .= '.';
 
     	$post = $this->storePost(
-			'resultados',
-			$match->id,
-			null,
-			null,
-			null,
-			null,
+            PostService::POST_TYPE_RESULTS,
 			$match->localTeam->team->short_name . ' | ' . $match->visitorTeam->team->short_name,
-			$match->localTeam->team->medium_name . '  ' . $match->score() . '  ' . $match->visitorTeam->team->medium_name,
-			$description,
-			null,
-    	);
+            $match->localTeam->team->medium_name . '  ' . $match->score() . '  ' . $match->visitorTeam->team->medium_name,
+            $description,
+            null,
+            $match->id
+        );
     	event(new PostStored($post));
 	}
 
@@ -1904,17 +1893,17 @@ class MatchCrud extends Component
 				$description .= '.';
 
 		    	$post = $this->storePost(
-					'destacados',
-					$match->id,
-					null,
-					null,
-					null,
-					$match->winner()->team->id,
+                    PostService::POST_TYPE_FEATURED,
 					'pronósticos' . ' | ' . $match->winner()->team->short_name,
-					'Los ' . $match->winner()->team->medium_name . ' contra todo pronóstico',
-					$description,
-					$match->winner()->team->getImg(),
-		    	);
+                    'Los ' . $match->winner()->team->medium_name . ' contra todo pronóstico',
+                    $description,
+                    $match->winner()->team->getImg(),
+                    $match->id,
+                    null,
+                    null,
+                    null,
+                    $match->winner()->team->id
+                );
 		    	event(new PostStored($post));
 			}
 		}

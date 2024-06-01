@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Admin;
 use App\Models\Player;
 use App\Models\Team;
 use App\Models\Injury;
+use App\Service\PostService;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -781,17 +782,17 @@ class PlayerCrud extends Component
 			    		}
 
 				    	$post = $this->storePost(
-							'lesiones',
-							null,
-							null,
-							null,
-							$reg->id,
-							$reg->team ? $reg->team->id : null,
+                            PostService::POST_TYPE_INJURIES,
 							$cat_name,
-							$title,
-							$description,
-							$reg->getImg(),
-				    	);
+                            $title,
+                            $description,
+                            $reg->getImg(),
+                            null,
+                            null,
+                            null,
+                            $reg->id,
+                            $reg->team ? $reg->team->id : null
+                        );
 				    	event(new PostStored($post));
 						event(new TableWasUpdated($post, 'insert', $post->toJson(JSON_PRETTY_PRINT)));
 			    	}

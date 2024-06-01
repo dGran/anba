@@ -9,8 +9,6 @@ use App\Models\SeasonTeam;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\Importable;
-
-use Illuminate\Support\Facades\Hash;
 use App\Events\TableWasUpdated;
 
 class MatchesTeamStatsImport implements ToModel, WithHeadingRow
@@ -22,12 +20,15 @@ class MatchesTeamStatsImport implements ToModel, WithHeadingRow
         $match = MatchModel::find($row['match_id']);
         $before = $match->toJson(JSON_PRETTY_PRINT);
         $season_team = SeasonTeam::find($row['season_team_id']);
+
         if ($match && $season_team && ($season_team->id == $match->local_team_id || $season_team->id == $match->visitor_team_id)) {
             $regs = TeamStat::where('match_id', $match->id)->where('season_team_id', $season_team->id)->get();
+
             foreach ($regs as $reg) {
                 event(new TableWasUpdated($reg, 'delete'));
                 $reg->delete();
             }
+
             $reg = TeamStat::create([
                 'match_id'          => $row['match_id'],
                 'season_id'         => $match->season_id,

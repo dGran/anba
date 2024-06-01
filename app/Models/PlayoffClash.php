@@ -22,7 +22,11 @@ class PlayoffClash extends Model
         'regular_position_visitor',
         'order',
         'destiny_clash',
-        'destiny_clash_local'
+        'destiny_clash_local',
+        'destiny_playoff_id',
+        'loser_destiny_clash',
+        'loser_destiny_clash_local',
+        'loser_destiny_playoff_id',
     ];
 
     public function round()
@@ -55,31 +59,51 @@ class PlayoffClash extends Model
         return $this->hasMany('App\Models\MatchModel', 'clash_id', 'id');
     }
 
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getLocalSeasonTeamId(): int
+    {
+        return $this->local_team_id;
+    }
+
+    public function getVisitorSeasonTeamId(): int
+    {
+        return $this->visitor_team_id;
+    }
+
+    /**
+     * @deprecated
+     */
     public function result()
     {
         $local_result = "-";
         $visitor_result = "-";
+
         if ($this->matches->count() > 0) {
             $local_result = 0;
             $visitor_result = 0;
+
             foreach ($this->matches as $match) {
                 if ($match->winner()) {
                     if ($this->round->matches_to_win > 1) {
-                        if ($this->local_team_id == $match->local_team_id) {
-                            if ($match->winner()->id == $this->local_team_id) {
+                        if ($this->local_team_id === $match->local_team_id) {
+                            if ($match->winner()->id === $this->local_team_id) {
                                 $local_result++;
                             } else {
                                 $visitor_result++;
                             }
                         } else {
-                            if ($match->winner()->id == $this->visitor_team_id) {
+                            if ($match->winner()->id === $this->visitor_team_id) {
                                 $visitor_result++;
                             } else {
                                 $local_result++;
                             }
                         }
                     } else {
-                        return $result = [
+                        return [
                             'local_result' => $match->localScore(),
                             'visitor_result' => $match->visitorScore()
                         ];
@@ -87,19 +111,21 @@ class PlayoffClash extends Model
                 }
             }
         }
+
         if ($local_result == 0 && $visitor_result == 0) {
             $local_result = "-";
             $visitor_result = "-";
         }
 
-        $result = [
+        return [
             'local_result' => $local_result,
             'visitor_result' => $visitor_result
         ];
-
-        return $result;
     }
 
+    /**
+     * @deprecated
+     */
     public function winner()
     {
         $local_result = $this->result()['local_result'];
@@ -124,6 +150,9 @@ class PlayoffClash extends Model
         }
     }
 
+    /**
+     * @deprecated
+     */
     public function loser()
     {
         $local_result = $this->result()['local_result'];
@@ -148,16 +177,6 @@ class PlayoffClash extends Model
         } else {
             return false;
         }
-    }
-
-    public function nextClash()
-    {
-        $next_round = PlayoffRound::where('playoff_id', $this->round->playoff->id)->where('order', '>', $this->round->order)->orderBy('order', 'asc')->first();
-        if ($next_round) {
-            return $clash = PlayoffClash::where('round_id', $next_round->id)->where('order', $this->destiny_clash)->first();
-        }
-
-        return false;
     }
 
     public function bracketPosition()

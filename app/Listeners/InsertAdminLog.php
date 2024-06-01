@@ -3,19 +3,12 @@
 namespace App\Listeners;
 
 use App\Events\TableWasUpdated;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 use App\Models\AdminLog;
 
 class InsertAdminLog
 {
-    public function __construct()
-    {
-        //
-    }
-
-    public function handle(TableWasUpdated $event)
+    public function handle(TableWasUpdated $event): void
     {
         AdminLog::create([
             'user_id' => auth()->id(),

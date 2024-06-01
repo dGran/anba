@@ -9,7 +9,6 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\Importable;
 
-use Illuminate\Support\Facades\Hash;
 use App\Events\TableWasUpdated;
 
 class DivisionsImport implements ToModel, WithHeadingRow
@@ -26,6 +25,7 @@ class DivisionsImport implements ToModel, WithHeadingRow
                 'slug'          => Str::slug($row['name'], '-')
             ]);
             event(new TableWasUpdated($reg, 'insert', $reg->toJson(JSON_PRETTY_PRINT), 'Registro importado'));
+
             return $reg;
         }
     }

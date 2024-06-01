@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -10,6 +9,14 @@ use Illuminate\Support\Facades\Storage;
 class Conference extends Model
 {
     use HasFactory;
+
+    public const TYPE_WESTERN = 1;
+
+    public const TYPE_EASTERN = 2;
+
+    public const NAME_WESTERN = 'Western';
+
+    public const NAME_EASTERN = 'Eastern';
 
     protected $fillable = [
         'name',

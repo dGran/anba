@@ -9,8 +9,21 @@ class PlayoffRound extends Model
 {
     use HasFactory;
 
-    protected $table = "playoffs_rounds";
+    public const NAME_FINAL = 'Final';
+
+    public const NAME_SEMIFINAL = 'Semifinal';
+
+    public const NAME_PRIMERA_RONDA = 'Primera ronda';
+
+    public const NAME_SEMIFINAL_CONF = 'Semifinal Conf.';
+
+    public const FINAL_CONF = 'Final Conf.';
+
+    public const FINAL_ANBA = 'Final Anba';
+
     public $timestamps = false;
+
+    protected $table = "playoffs_rounds";
 
     protected $fillable = [
         'playoff_id',
@@ -28,6 +41,16 @@ class PlayoffRound extends Model
     public function clashes()
     {
         return $this->hasMany('App\Models\PlayoffClash', 'round_id', 'id');
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
     }
 
     public function previousRound()

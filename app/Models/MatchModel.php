@@ -196,6 +196,16 @@ class MatchModel extends Model
         }
     }
 
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getClash(): ?PlayoffClash
+    {
+        return $this->clash;
+    }
+
     public function getName()
     {
         return $this->localTeam->team->medium_name . ' vs ' . $this->visitorTeam->team->medium_name;
@@ -211,6 +221,9 @@ class MatchModel extends Model
         return $this->localTeam->team->short_name . ' vs ' . $this->visitorTeam->team->short_name;
     }
 
+    /**
+     * @deprecated
+     */
     public function score()
     {
         if ($this->played()) {
@@ -226,6 +239,9 @@ class MatchModel extends Model
         }
     }
 
+    /**
+     * @deprecated
+     */
     public function localScore()
     {
         if ($this->played()) {
@@ -239,6 +255,9 @@ class MatchModel extends Model
         }
     }
 
+    /**
+     * @deprecated
+     */
     public function visitorScore()
     {
         if ($this->played()) {
@@ -252,6 +271,9 @@ class MatchModel extends Model
         }
     }
 
+    /**
+     * @deprecated
+     */
     public function winner()
     {
         if ($this->played()) {
@@ -290,6 +312,9 @@ class MatchModel extends Model
         }
     }
 
+    /**
+     * @deprecated
+     */
     public function played()
     {
         $scores = $this->scores->count() > 0 ? TRUE : FALSE;
@@ -468,6 +493,9 @@ class MatchModel extends Model
             ->first();
     }
 
+    /**
+     * @deprecated
+     */
     public function votes()
     {
         $pollVotes = MatchPoll::where('match_id', $this->id)->get();

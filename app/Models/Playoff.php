@@ -37,6 +37,11 @@ class Playoff extends Model
         return $this->belongsTo('App\Models\SeasonConference', 'season_conference_id', 'id');
     }
 
+    public function getId()
+    {
+        return $this->id;
+    }
+
     public function getRound($order)
     {
         return PlayoffRound::where('playoff_id', $this->id)->where('order', $order)->first();

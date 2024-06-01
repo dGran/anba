@@ -9,8 +9,6 @@ use App\Models\SeasonTeam;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\Importable;
-
-use Illuminate\Support\Facades\Hash;
 use App\Events\TableWasUpdated;
 
 class MatchesImport implements ToModel, WithHeadingRow
@@ -41,6 +39,7 @@ class MatchesImport implements ToModel, WithHeadingRow
                         'playerStats_state'  => 'error',
                     ]);
                     event(new TableWasUpdated($reg, 'insert', $reg->toJson(JSON_PRETTY_PRINT), 'Registro importado'));
+
                     return $reg;
                 }
             }
@@ -62,6 +61,7 @@ class MatchesImport implements ToModel, WithHeadingRow
                     ]);
 
                     event(new TableWasUpdated($reg, 'update', $reg->toJson(JSON_PRETTY_PRINT), $before));
+
                     return $reg;
                 }
             }

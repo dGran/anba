@@ -10,6 +10,10 @@ class Season extends Model
 {
     use HasFactory;
 
+    public const TABLE_TYPE_GENERAL = 'general';
+    public const TABLE_TYPE_CONFERENCE = 'conference';
+    public const TABLE_TYPE_DIVISION = 'division';
+
     protected $fillable = [
         'name',
         'direct_playoffs_start',
@@ -52,9 +56,24 @@ class Season extends Model
         }
     }
 
+    public function getId()
+    {
+        return $this->id;
+    }
+
     public function getName()
     {
         return $this->name;
+    }
+
+    public function getPlayInStart()
+    {
+        return $this->play_in_start;
+    }
+
+    public function getPlayInEnd()
+    {
+        return $this->play_in_end;
     }
 
     public function canDestroy()
@@ -496,14 +515,14 @@ class Season extends Model
         return $data;
     }
 
-    public function generateTable($type, $order, $conference_id, $division_id)
+    public function generateTable($type, $order, $conference_id, $division_id): array
     {
-        $table_teams = collect();
         switch ($type) {
-            case 'general':
+            case self::TABLE_TYPE_GENERAL:
                 $teams = $this->teams;
+
                 break;
-            case 'conference':
+            case self::TABLE_TYPE_CONFERENCE:
                 $teams = SeasonTeam::
                     join('seasons_divisions', 'seasons_divisions.id', 'seasons_teams.season_division_id')
                     ->join('seasons_conferences', 'seasons_conferences.id', 'seasons_divisions.season_conference_id')
@@ -512,8 +531,9 @@ class Season extends Model
                     ->select('seasons_teams.*')
                     ->where('seasons_divisions.season_conference_id', $conference_id)
                     ->get();
+
                 break;
-            case 'division':
+            case self::TABLE_TYPE_DIVISION:
                 $teams = SeasonTeam::
                     join('seasons_divisions', 'seasons_divisions.id', 'seasons_teams.season_division_id')
                    ->with('team')
@@ -521,8 +541,14 @@ class Season extends Model
                     ->select('seasons_teams.*')
                     ->where('seasons_teams.season_division_id', $division_id)
                     ->get();
+
                 break;
+            default:
+                return [];
         }
+
+        $table_teams = collect();
+
         foreach ($teams as $key => $team) {
             $data = $this->get_table_data_team($team->id);
             $table_teams->push([

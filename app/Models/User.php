@@ -95,6 +95,11 @@ class User extends Authenticatable implements MustVerifyEmail
         }
     }
 
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
     public function getImg()
     {
         $broken = asset('img/broken.png');
