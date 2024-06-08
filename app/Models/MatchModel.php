@@ -26,6 +26,8 @@ class MatchModel extends Model
         'order'
     ];
 
+    public const DEFAULT_LAST_MATCHES_LIMIT = 5;
+
     public function localTeam()
     {
         return $this->belongsTo('App\Models\SeasonTeam', 'local_team_id', 'id');

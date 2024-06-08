@@ -92,4 +92,12 @@ class MatchManager
     {
         MatchModel::destroy($ids);
     }
+
+    /**
+     * @return MatchModel[]
+     */
+    public function getLastMatchesBySeasonTeamId(int $seasonTeamId, ?int $limit = MatchModel::DEFAULT_LAST_MATCHES_LIMIT): array
+    {
+        return $this->repository->getLastMatchesBySeasonTeamId($seasonTeamId, $limit);
+    }
 }

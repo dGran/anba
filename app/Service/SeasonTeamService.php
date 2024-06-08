@@ -35,6 +35,11 @@ class SeasonTeamService
         $this->matchManager = $matchManager;
     }
 
+    public function getName(SeasonTeam $seasonTeam): string
+    {
+        return $seasonTeam->getSeason()->getName().' - '.$seasonTeam->getTeam()->getName();
+    }
+
     public function isCanDestroy(SeasonTeam $seasonTeam): bool
     {
         $seasonTeamId = $seasonTeam->getId();

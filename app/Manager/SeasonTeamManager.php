@@ -16,6 +16,22 @@ class SeasonTeamManager
         $this->repository = $repository;
     }
 
+    public function create(): SeasonTeam
+    {
+        return new SeasonTeam();
+    }
+
+    public function save(SeasonTeam $seasonTeam): void
+    {
+        $seasonTeam->save();
+    }
+
+    public function update(SeasonTeam $seasonTeam): void
+    {
+        $seasonTeam->setUpdatedAt(new \DateTime());
+        $seasonTeam->save();
+    }
+
     public function findOneById(int $seasonId): ?SeasonTeam
     {
         return $this->repository->findOneById($seasonId);

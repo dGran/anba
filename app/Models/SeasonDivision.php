@@ -35,6 +35,11 @@ class SeasonDivision extends Model
         return $this->hasMany('App\Models\SeasonTeam', 'season_division_id', 'id');
     }
 
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
     public function getName()
     {
         return $this->season->name . ' - ' . $this->division->name;

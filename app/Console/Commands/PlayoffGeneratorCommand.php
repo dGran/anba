@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Manager\SeasonManager;
@@ -14,6 +16,7 @@ class PlayoffGeneratorCommand extends Command
     protected $description = 'Command description';
 
     private PlayOffService $playOffService;
+
     private SeasonManager $seasonManager;
 
     public function __construct(PlayOffService $playOffService, SeasonManager $seasonManager)
