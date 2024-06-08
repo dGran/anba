@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property Season $season
  * @property SeasonDivision $seasonDivision
  * @property string $created_at
- * @property string $updated_at
+ * @property ?string $updated_at
  */
 class SeasonTeam extends Model
 {
@@ -86,9 +86,12 @@ class SeasonTeam extends Model
         return $this;
     }
 
-    public function getCreatedAt(): Carbon
+    /**
+     * @throws \Exception
+     */
+    public function getCreatedAt(): \DateTime
     {
-        return Carbon::parse($this->attributes['created_at']);
+        return new \DateTime($this->attributes['created_at']);
     }
 
     public function setCreatedAt($value): SeasonTeam
@@ -98,9 +101,16 @@ class SeasonTeam extends Model
         return $this;
     }
 
-    public function getUpdatedAt(): Carbon
+    /**
+     * @throws \Exception
+     */
+    public function getUpdatedAt(): ?\DateTime
     {
-        return Carbon::parse($this->attributes['updated_at']);
+        if (empty($this->attributes['updated_at'])) {
+            return null;
+        }
+
+        return new \DateTime($this->attributes['updated_at']);
     }
 
     public function setUpdatedAt($value): SeasonTeam

@@ -764,7 +764,6 @@ class Matchl extends Component
         $this->postService = $postService;
     }
 
-
     public function mount(MatchModel $match, MatchService $matchService)
 	{
         $this->matchService = $matchService;

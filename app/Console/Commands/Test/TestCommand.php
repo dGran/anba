@@ -43,14 +43,11 @@ class TestCommand extends Command
         $this->matchManager = $matchManager;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function handle(): int
     {
-        /** @var MatchModel[] $lastMatches */
-        $lastMatches = $this->matchManager->getLastMatchesBySeasonTeamId(270);
-        dump($lastMatches);die;
-
-        dump($result);die;
-
         $season = $this->seasonManager->findOneById(3);
         $team = $this->teamManager->findOneById(1);
         $seasonDivision = $this->seasonDivisionManager->findOneById(13);
@@ -60,7 +57,7 @@ class TestCommand extends Command
         $seasonTeam->setTeam($team);
         $seasonTeam->setSeasonDivision($seasonDivision);
 
-        dump($seasonTeam->getSeason()->getName());die;
+        dump($seasonTeam->getUpdatedAt());die;
 
         return SymfonyCommand::SUCCESS;
     }

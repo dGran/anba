@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Admin;
 use App\Models\Team;
 use App\Models\Division;
 use App\Models\User;
+use App\Service\AdminLogService;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -65,6 +66,8 @@ class TeamCrud extends Component
 	public $filenameExportTable = '';
 	public $filenameExportSelected = '';
 
+    private AdminLogService $adminLogService;
+
 	// queryString
 	protected $queryString = [
 		'search' => ['except' => ''],
@@ -73,6 +76,11 @@ class TeamCrud extends Component
 		'perPage' => ['except' => '25'],
 		'order' => ['except' => 'id_desc'],
 	];
+
+    public function boot(AdminLogService $adminLogService)
+    {
+        $this->adminLogService = $adminLogService;
+    }
 
 	// Session Preferences
 	public function setSessionPreferences()
@@ -453,13 +461,18 @@ class TeamCrud extends Component
     	$this->editMode = true;
     }
 
+    /**
+     * @throws \JsonException
+     * @throws \Throwable
+     */
     public function update()
     {
     	$reg = Team::find($this->reg_id);
     	if ($reg->user) {
     		$old_user = $reg->user;
     	}
-    	$before = $reg->toJson(JSON_PRETTY_PRINT);
+//    	$before = $reg->toJson(JSON_PRETTY_PRINT);
+    	$regBeforeUpdate = $reg->getAttributes();
 
         if ($this->img) {
 	        $validatedData = $this->validate([
@@ -522,7 +535,9 @@ class TeamCrud extends Component
 		    		$user = User::find($this->manager_id);
         			$user->assignRole('manager');
 		    	}
-            	event(new TableWasUpdated($reg, 'update', $reg->toJson(JSON_PRETTY_PRINT), $before));
+
+                $this->adminLogService->register($reg, AdminLogService::TYPE_UPDATE, $regBeforeUpdate, $reg->getAttributes());
+
             	session()->flash('success', 'Registro actualizado correctamente.');
             } else {
             	session()->flash('error', 'Se ha producido un error y no se han podido actualizar los datos.');

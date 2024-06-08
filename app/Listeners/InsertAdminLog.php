@@ -10,14 +10,16 @@ class InsertAdminLog
 {
     public function handle(TableWasUpdated $event): void
     {
+        //TODO: inyectar el manger y hacer el create
+
         AdminLog::create([
             'user_id' => auth()->id(),
-            'type' => strtoupper($event->type),
+            'type' => \strtoupper($event->type),
             'table' => $event->table->getTable(),
             'reg_id' => $event->table->id,
             'reg_name' => $event->table->getName(),
             'detail' => $event->detail,
-            'detail_before' => $event->detail_before
+            'detail_before' => $event->detailBefore
         ]);
     }
 }
