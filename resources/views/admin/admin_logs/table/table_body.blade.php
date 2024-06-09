@@ -54,7 +54,7 @@
 			<td class="truncate {{ $colUser ?: 'd-none' }}" style="width: 200px; min-width: 200px; max-width: 200px">
 				<div class="d-flex align-items-center">
 					@if ($showTableImages)
-						<img class="image rounded-circle non-selectable" src="{{ $reg->getUserImg() }}" alt="{{ $reg->user ? $reg->user->name : 'Usuario' }}" style="width: 40px;">
+						<img class="image rounded-circle non-selectable" src="{{ $reg->user->profile_photo_url }}" alt="{{ $reg->user ? $reg->user->name : 'Usuario' }}" style="width: 40px;">
 					@endif
 					<span class="truncate {{ !$showTableImages ?: 'pl-2' }} {{ !$reg->user ? 'text-muted' : '' }}">
 						{{ $reg->user ? $reg->user->name : '' }}

@@ -2,34 +2,29 @@
 
 namespace App\Http\Livewire\Admin;
 
-use App\Models\MatchModel;
-use App\Models\MatchPoll;
-use App\Models\Score;
-use App\Models\Player;
-use App\Models\PlayerStat;
-use App\Models\TeamStat;
-use App\Models\Season;
-use App\Models\SeasonTeam;
-use App\Models\User;
-
-use App\Service\PostService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
-use Livewire\Component;
-use Livewire\WithPagination;
-use Livewire\WithFileUploads;
+use App\Events\PostStored;
+use App\Events\TableWasUpdated;
 use App\Exports\MatchesExport;
 use App\Imports\MatchesImport;
+use App\Imports\MatchesPlayerStatsImport;
 use App\Imports\MatchesScoresImport;
 use App\Imports\MatchesTeamStatsImport;
-use App\Imports\MatchesPlayerStatsImport;
+use App\Models\MatchModel;
+use App\Models\MatchPoll;
+use App\Models\Player;
+use App\Models\PlayerStat;
+use App\Models\Score;
+use App\Models\Season;
+use App\Models\SeasonTeam;
+use App\Models\TeamStat;
+use App\Models\User;
+use App\Services\PostService;
+use App\Traits\PostTrait;
+use Illuminate\Support\Collection;
+use Livewire\Component;
+use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
-
-use App\Http\Traits\PostTrait;
-
-use App\Events\TableWasUpdated;
-use App\Events\PostStored;
 
 class MatchCrud extends Component
 {

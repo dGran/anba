@@ -2,11 +2,11 @@
 
 namespace App\Http\Livewire\Admin;
 
-use Livewire\Component;
-use Livewire\WithPagination;
-use Livewire\WithFileUploads;
 use App\Models\Season;
-use App\Http\Traits\PostTrait;
+use App\Traits\PostTrait;
+use Livewire\Component;
+use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 
 class PlayoffCrud extends Component
 {

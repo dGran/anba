@@ -2,23 +2,21 @@
 
 namespace App\Http\Livewire\Admin;
 
-use App\Models\Player;
-use App\Models\Team;
-use App\Models\Injury;
-use App\Service\PostService;
-use Illuminate\Support\Str;
-use Livewire\Component;
-use Livewire\WithPagination;
-use Livewire\WithFileUploads;
+use App\Events\PostStored;
+use App\Events\TableWasUpdated;
 use App\Exports\PlayersExport;
 use App\Imports\PlayersImport;
-use Maatwebsite\Excel\Facades\Excel;
+use App\Models\Injury;
+use App\Models\Player;
+use App\Models\Team;
+use App\Services\PostService;
+use App\Traits\PostTrait;
 use Illuminate\Support\Facades\Storage;
-
-use App\Http\Traits\PostTrait;
-
-use App\Events\TableWasUpdated;
-use App\Events\PostStored;
+use Illuminate\Support\Str;
+use Livewire\Component;
+use Livewire\WithFileUploads;
+use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PlayerCrud extends Component
 {

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Manager\SeasonManager;
-use App\Service\PlayOffService;
+use App\Managers\SeasonManager;
+use App\Services\PlayOffService;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 

@@ -48,7 +48,7 @@ class Records extends Component
     {
         $seasonFilter = "";
         $seasonFilterID = $this->current_season ? $this->current_season->id : 0;
-        
+
         // Conditionally add the season_id filter
         if ($seasonFilterID > 0) {
             $seasonFilter = "WHERE ps.season_id = $seasonFilterID";
@@ -77,7 +77,7 @@ class Records extends Component
                 GROUP BY ps.player_id
                 ORDER BY records DESC
                 LIMIT 5");
-           
+
         return $result;
     }
 
@@ -87,7 +87,7 @@ class Records extends Component
             join('matches', 'matches.id', 'teams_stats.match_id')
             ->join('seasons_teams', 'seasons_teams.id', 'teams_stats.season_team_id')
             ->select('teams_stats.'.$stat, 'season_team_id');
-        
+
         // Conditionally add the season_id filter
         if ($this->current_season) {
             $result = $result->where('teams_stats.season_id', $this->current_season->id);

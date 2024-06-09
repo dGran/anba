@@ -3,17 +3,15 @@
 namespace App\Http\Livewire;
 
 use App\Events\PostStored;
-use App\Http\Traits\PostTrait;
-use App\Manager\MatchManager;
+use App\Managers\MatchManager;
 use App\Models\MatchModel;
 use App\Models\MatchPoll;
 use App\Models\Player;
 use App\Models\PlayerStat;
-use App\Models\PlayoffClash;
-use App\Models\Score;
 use App\Models\TeamStat;
-use App\Service\MatchService;
-use App\Service\PostService;
+use App\Services\MatchService;
+use App\Services\PostService;
+use App\Traits\PostTrait;
 use Illuminate\Support\Collection;
 use Livewire\Component;
 

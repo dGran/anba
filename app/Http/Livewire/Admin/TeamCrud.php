@@ -5,7 +5,7 @@ namespace App\Http\Livewire\Admin;
 use App\Models\Team;
 use App\Models\Division;
 use App\Models\User;
-use App\Service\AdminLogService;
+use App\Services\AdminLogService;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -468,10 +468,11 @@ class TeamCrud extends Component
     public function update()
     {
     	$reg = Team::find($this->reg_id);
-    	if ($reg->user) {
+
+        if ($reg->user) {
     		$old_user = $reg->user;
     	}
-//    	$before = $reg->toJson(JSON_PRETTY_PRINT);
+
     	$regBeforeUpdate = $reg->getAttributes();
 
         if ($this->img) {
@@ -531,13 +532,14 @@ class TeamCrud extends Component
 		    	if (isset($old_user)) {
 					$old_user->removeRole('manager');
 		    	}
+
 		    	if ($this->manager_id) {
 		    		$user = User::find($this->manager_id);
         			$user->assignRole('manager');
 		    	}
 
-                $this->adminLogService->register($reg, AdminLogService::TYPE_UPDATE, $regBeforeUpdate, $reg->getAttributes());
-
+                $regAfterUpdate = $reg->getAttributes();
+                $this->adminLogService->register($reg, AdminLogService::TYPE_UPDATE, $regAfterUpdate, $regBeforeUpdate);
             	session()->flash('success', 'Registro actualizado correctamente.');
             } else {
             	session()->flash('error', 'Se ha producido un error y no se han podido actualizar los datos.');
@@ -548,7 +550,6 @@ class TeamCrud extends Component
 
         $this->emit('closeEditModal');
         $this->closeAnyModal();
-
         $this->cancelSelection();
 		$this->resetFields();
     }

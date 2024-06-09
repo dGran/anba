@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire\Admin;
 
+use App\Managers\AdminLogManager;
+use App\Managers\UserManager;
 use App\Models\AdminLog;
 use App\Models\User;
 use Livewire\Component;
@@ -49,21 +51,68 @@ class AdminLogCrud extends Component
 	//import & export
 	public $formatExport = '';
 	public $filenameExportTable = '';
-	public $filenameExportSelected = '';
+    public $filenameExportSelected = '';
 
-	// queryString
-	protected $queryString = [
-		'search' => ['except' => ''],
-		'filterType' => ['except' => "all"],
-		'filterUser' => ['except' => "all"],
-		'filterTable' => ['except' => "all"],
-		'perPage' => ['except' => '25'],
-		'order' => ['except' => 'id_desc'],
-	];
+    protected $queryString = [
+        'search' => ['except' => ''],
+        'filterType' => ['except' => "all"],
+        'filterUser' => ['except' => "all"],
+        'filterTable' => ['except' => "all"],
+        'perPage' => ['except' => '25'],
+        'order' => ['except' => 'id_desc'],
+    ];
+
+    private AdminLogManager $adminLogManager;
+
+    private UserManager $userManager;
+
+    private array $adminLogUserNames = [];
+
+    private array $adminLogTables = [];
+
+    public function boot(AdminLogManager $adminLogManager, UserManager $userManager): void
+    {
+        $this->adminLogManager = $adminLogManager;
+        $this->userManager = $userManager;
+
+        $distinctUserIds = $this->adminLogManager->getDistinctUserIds();
+        $this->adminLogUserNames = $this->userManager->findNamesByIdsIndexedById($distinctUserIds, 'name');
+        $this->adminLogTables = $this->adminLogManager->getDistinctTables();
+    }
+
+    public function mount()
+    {
+    }
+
+    public function render()
+    {
+        $this->getSessionPreferences();
+
+        // Load Session Filters
+        if ($this->firstRender) {
+            $this->getSessionState();
+            $firstRenderSaved = true;
+            $this->firstRender = false;
+        } else {
+            $firstRenderSaved = false;
+        }
+        $this->setSessionState();
+
+        return view('admin.admin_logs', [
+            'regs' => $this->getData(),
+            'regsSelected' => $this->getDataSelected(),
+            'users' => $this->adminLogUserNames,
+            'types' => AdminLog::TYPE_LIST,
+            'tables' => $this->adminLogTables,
+            'filterUserName' => $this->filterUserName(),
+            'firstRenderSaved' => $firstRenderSaved,
+            'currentModal' => $this->currentModal,
+        ])->layout('adminlte::page');
+    }
 
 	// Session Preferences
-	public function setSessionPreferences()
-	{
+	public function setSessionPreferences(): void
+    {
 		session([
 			'admin_logs.fixedFirstColumn' => $this->fixedFirstColumn ? 'on' : 'off',
 			'admin_logs.showTableImages' => $this->showTableImages ? 'on' : 'off',
@@ -86,31 +135,37 @@ class AdminLogCrud extends Component
 		} else {
 			$this->showTableImages = true;
 		}
+
 		if (session()->get('admin_logs.fixedFirstColumn')) {
 			$this->fixedFirstColumn = session()->get('admin_logs.fixedFirstColumn') == 'on' ? true : false;
 		} else {
 			$this->fixedFirstColumn = true;
 		}
+
 		if (session()->get('admin_logs.striped')) {
 			$this->striped = session()->get('admin_logs.striped') == 'on' ? true : false;
 		} else {
 			$this->striped = true;
 		}
+
 		if (session()->get('admin_logs.colType')) {
 			$this->colType = session()->get('admin_logs.colType') == 'on' ? true : false;
 		} else {
 			$this->colType = true;
 		}
+
 		if (session()->get('admin_logs.colTable')) {
 			$this->colTable = session()->get('admin_logs.colTable') == 'on' ? true : false;
 		} else {
 			$this->colTable = true;
 		}
+
 		if (session()->get('admin_logs.colUser')) {
 			$this->colUser = session()->get('admin_logs.colUser') == 'on' ? true : false;
 		} else {
 			$this->colUser = true;
 		}
+
 		if (session()->get('admin_logs.colDate')) {
 			$this->colDate = session()->get('admin_logs.colDate') == 'on' ? true : false;
 		} else {
@@ -383,39 +438,6 @@ class AdminLogCrud extends Component
 		$this->page--;
     }
 
-
-    // Render
-    public function render()
-    {
-    	// Load Session Preferences
-    	$this->getSessionPreferences();
-
-    	// Load Session Filters
-    	if ($this->firstRender) {
-    		$this->getSessionState();
-    		$firstRenderSaved = true;
-    		$this->firstRender = false;
-    	} else {
-    		$firstRenderSaved = false;
-    	}
-    	$this->setSessionState();
-
-    	$users = User::orderBy('name', 'asc')->get();
-    	$types = AdminLog::select('type')->distinct()->whereNotNull('type')->orderBy('type', 'asc')->get();
-    	$tables = AdminLog::select('table')->distinct()->whereNotNull('table')->orderBy('table', 'asc')->get();
-
-        return view('admin.admin_logs', [
-        			'regs' => $this->getData(),
-        			'regsSelected' => $this->getDataSelected(),
-        			'users' => $users,
-        			'types' => $types,
-        			'tables' => $tables,
-        			'filterUserName' => $this->filterUserName(),
-        			'firstRenderSaved' => $firstRenderSaved,
-        			'currentModal' => $this->currentModal,
-        		])->layout('adminlte::page');
-    }
-
     // Helpers
 	protected function getData()
 	{
@@ -433,6 +455,7 @@ class AdminLogCrud extends Component
 	    if (($regs->total() > 0 && $regs->count() == 0)) {
 			$this->page = 1;
 		}
+
 		if ($this->page == 0) {
 			$this->page = $regs->lastPage();
 		}
@@ -449,6 +472,7 @@ class AdminLogCrud extends Component
 			->paginate($this->perPage)->onEachSide(2);
 
         $this->setCheckAllSelector();
+
 		return $regs;
 	}
 

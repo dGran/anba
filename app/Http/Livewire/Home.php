@@ -2,15 +2,12 @@
 
 namespace App\Http\Livewire;
 
-use Livewire\Component;
-use Livewire\WithPagination;
+use App\Models\Post;
 use App\Models\Season;
 use App\Models\SeasonConference;
-use App\Models\Post;
-
-use App\Http\Traits\PostTrait;
-
-use App\Events\PostStored;
+use App\Traits\PostTrait;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 class Home extends Component
 {

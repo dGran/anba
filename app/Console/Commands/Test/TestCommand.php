@@ -2,11 +2,11 @@
 
 namespace App\Console\Commands\Test;
 
-use App\Manager\MatchManager;
-use App\Manager\SeasonDivisionManager;
-use App\Manager\SeasonManager;
-use App\Manager\SeasonTeamManager;
-use App\Manager\TeamManager;
+use App\Managers\MatchManager;
+use App\Managers\SeasonDivisionManager;
+use App\Managers\SeasonManager;
+use App\Managers\SeasonTeamManager;
+use App\Managers\TeamManager;
 use App\Models\MatchModel;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
@@ -57,7 +57,7 @@ class TestCommand extends Command
         $seasonTeam->setTeam($team);
         $seasonTeam->setSeasonDivision($seasonDivision);
 
-        dump($seasonTeam->getUpdatedAt());die;
+        dump($seasonTeam->getSeason());die;
 
         return SymfonyCommand::SUCCESS;
     }

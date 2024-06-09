@@ -3,15 +3,12 @@
 namespace App\Listeners;
 
 use App\Events\TableWasUpdated;
-
 use App\Models\AdminLog;
 
 class InsertAdminLog
 {
     public function handle(TableWasUpdated $event): void
     {
-        //TODO: inyectar el manger y hacer el create
-
         AdminLog::create([
             'user_id' => auth()->id(),
             'type' => \strtoupper($event->type),

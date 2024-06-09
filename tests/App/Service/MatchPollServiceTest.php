@@ -2,9 +2,9 @@
 
 namespace Tests\App\Service;
 
-use App\Manager\MatchPollManager;
+use App\Managers\MatchPollManager;
 use App\Models\MatchPoll;
-use App\Service\MatchPollService;
+use App\Services\MatchPollService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\MockObject\MockObject;
