@@ -186,6 +186,7 @@ class AdminLog extends Model
 
     //TODO: Remove code below
 
+    //TODO: estos dates van en un ViewModel o en el mismo Livewire
     public function getCreatedAtDate(): string
     {
         return Carbon::parse($this->created_at)->locale(app()->getLocale())->isoFormat("D MMMM YYYY");
@@ -196,6 +197,7 @@ class AdminLog extends Model
         return Carbon::parse($this->created_at)->locale(app()->getLocale())->isoFormat("kk[:]mm");
     }
 
+    //TODO: los scopes los vamos a sustituir por queries en su repository
     public function scopeName($query, $value)
     {
         if (trim($value) !== "") {
