@@ -25,15 +25,6 @@ class AdminLogCrud extends Component
 {
 	use WithPagination;
 
-    private const QUERY_STRINGS = [
-        LivewireQueryString::NAME_SEARCH => ['except' => ''],
-        LivewireQueryString::NAME_FILTER_TYPE => ['except' => "all"],
-        LivewireQueryString::NAME_FILTER_USER => ['except' => "all"],
-        LivewireQueryString::NAME_FILTER_TABLE => ['except' => "all"],
-        LivewireQueryString::NAME_PER_PAGE => ['except' => '25'],
-        LivewireQueryString::NAME_ORDER => ['except' => 'id_desc'],
-    ];
-
 	// general vars
 	public $regView;
 
@@ -51,7 +42,14 @@ class AdminLogCrud extends Component
 
     public TableOptionsDTO $tableOptionsDTO;
 
-    protected $queryString = self::QUERY_STRINGS;
+    protected $queryString = [
+        LivewireQueryString::NAME_SEARCH => ['except' => ''],
+        LivewireQueryString::NAME_FILTER_TYPE => ['except' => LivewireQueryString::VALUE_ALL],
+        LivewireQueryString::NAME_FILTER_USER => ['except' => LivewireQueryString::VALUE_ALL],
+        LivewireQueryString::NAME_FILTER_TABLE => ['except' => LivewireQueryString::VALUE_ALL],
+        LivewireQueryString::NAME_PER_PAGE => ['except' => '25'],
+        LivewireQueryString::NAME_ORDER => ['except' => 'id_desc'],
+    ];
 
     private AdminLogManager $adminLogManager;
 

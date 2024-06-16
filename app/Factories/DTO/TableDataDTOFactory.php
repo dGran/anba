@@ -7,6 +7,8 @@ namespace App\Factories\DTO;
 use App\DTO\OrderDetailDTO;
 use App\DTO\OrderDTO;
 use App\DTO\TableDataDTO;
+use App\Enum\Criteria;
+use App\Enum\OrderNames;
 use App\Enum\TableData;
 use App\Enum\TableNames;
 
@@ -19,53 +21,53 @@ class TableDataDTOFactory
             TableData::GENDER => 'male',
             TableData::HAS_IMAGE => false,
             TableData::ORDERS => [
-                'id' => [
+                OrderNames::ID => [
                     'fieldName' => 'id',
-                    'direction' => 'asc'
+                    'direction' => Criteria::ASC
                 ],
-                'id_desc' => [
+                OrderNames::ID_DESC => [
                     'fieldName' => 'id',
-                    'direction' => 'desc'
+                    'direction' => Criteria::DESC,
                 ],
-                'name' => [
+                OrderNames::NAME => [
                     'fieldName' => 'admin_logs.reg_name',
-                    'direction' => 'asc'
+                    'direction' => Criteria::ASC
                 ],
-                'name_desc' => [
+                OrderNames::NAME_DESC => [
                     'fieldName' => 'admin_logs.reg_name',
-                    'direction' => 'desc'
+                    'direction' => Criteria::DESC,
                 ],
-                'type' => [
+                OrderNames::TYPE => [
                     'fieldName' => 'admin_logs.type',
-                    'direction' => 'asc'
+                    'direction' => Criteria::ASC
                 ],
-                'type_desc' => [
+                OrderNames::TYPE_DESC => [
                     'fieldName' => 'admin_logs.type',
-                    'direction' => 'desc'
+                    'direction' => Criteria::DESC,
                 ],
-                'table' => [
+                OrderNames::TABLE => [
                     'fieldName' => 'admin_logs.table',
-                    'direction' => 'asc'
+                    'direction' => Criteria::ASC
                 ],
-                'table_desc' => [
+                OrderNames::TABLE_DESC => [
                     'fieldName' => 'admin_logs.table',
-                    'direction' => 'desc'
+                    'direction' => Criteria::DESC,
                 ],
-                'user' => [
+                OrderNames::USER => [
                     'fieldName' => 'users.name',
-                    'direction' => 'asc'
+                    'direction' => Criteria::ASC
                 ],
-                'user_desc' => [
+                OrderNames::USER_DESC => [
                     'fieldName' => 'users.name',
-                    'direction' => 'desc'
+                    'direction' => Criteria::DESC,
                 ],
-                'date' => [
+                OrderNames::DATE => [
                     'fieldName' => 'admin_logs.created_at',
-                    'direction' => 'asc'
+                    'direction' => Criteria::ASC
                 ],
-                'date_desc' => [
+                OrderNames::DATE_DESC => [
                     'fieldName' => 'admin_logs.created_at',
-                    'direction' => 'desc'
+                    'direction' => Criteria::DESC,
                 ],
             ],
         ],
