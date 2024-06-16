@@ -1,0 +1,120 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\DTO;
+
+class TableFiltersDTO
+{
+    private ?string $search = null;
+
+    private ?string $perPage = null;
+
+    private ?string $type = null;
+
+    private ?string $user = null;
+
+    private ?string $userName = null;
+
+    private ?string $table = null;
+
+    private ?string $order = null;
+
+    private ?int $page = null;
+
+    public function getSearch(): string
+    {
+        return $this->search;
+    }
+
+    public function setSearch(string $search): TableFiltersDTO
+    {
+        $this->search = $search;
+
+        return $this;
+    }
+
+    public function getPerPage(): string
+    {
+        return $this->perPage;
+    }
+
+    public function setPerPage(string $perPage): TableFiltersDTO
+    {
+        $this->perPage = $perPage;
+
+        return $this;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): TableFiltersDTO
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getUser(): string
+    {
+        return $this->user;
+    }
+
+    public function setUser(string $user): TableFiltersDTO
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getUserName(): ?string
+    {
+        return $this->userName;
+    }
+
+    public function setUserName(?string $userName): TableFiltersDTO
+    {
+        $this->userName = $userName;
+
+        return $this;
+    }
+
+    public function getTable(): string
+    {
+        return $this->table;
+    }
+
+    public function setTable(string $table): TableFiltersDTO
+    {
+        $this->table = $table;
+
+        return $this;
+    }
+
+    public function getOrder(): string
+    {
+        return $this->order;
+    }
+
+    public function setOrder(string $order): TableFiltersDTO
+    {
+        $this->order = $order;
+
+        return $this;
+    }
+
+    public function getPage(): ?int
+    {
+        return $this->page;
+    }
+
+    public function setPage(?int $page): TableFiltersDTO
+    {
+        $this->page = $page;
+
+        return $this;
+    }
+}

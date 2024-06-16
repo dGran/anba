@@ -2,220 +2,228 @@
 
 namespace App\Http\Livewire\Admin;
 
+use App\DTO\OrderDTO;
+use App\DTO\TableDataDTO;
+use App\DTO\TableFiltersDTO;
+use App\DTO\TableOptionsDTO;
+use App\Enum\LivewireQueryString;
+use App\Factories\ViewModels\AdminLogCrudFactory;
 use App\Managers\AdminLogManager;
 use App\Managers\UserManager;
 use App\Models\AdminLog;
-use App\Models\User;
+use App\Services\SessionService;
+use App\Services\TableFiltersService;
+use App\ViewModels\AdminLogCrudViewModel;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Exports\AdminLogsExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class AdminLogCrud extends Component
 {
 	use WithPagination;
 
-	public $firstRender = true;
-
-	//model info
-	public $modelSingular = "log";
-	public $modelPlural = "logs";
-	public $modelGender = "male";
-	public $modelHasImg = false;
-
-	//filters
-	public $search = "";
-	public $perPage = '25';
-	public $filterType = "all";
-	public $filterUser = "all";
-	public $filterTable = "all";
-	public $order = 'id_desc';
-
-	// preferences vars
-	public $showTableImages;
-	public $striped;
-	public $fixedFirstColumn;
-	public $colType;
-	public $colTable;
-	public $colUser;
-	public $colDate;
+    private const QUERY_STRINGS = [
+        LivewireQueryString::NAME_SEARCH => ['except' => ''],
+        LivewireQueryString::NAME_FILTER_TYPE => ['except' => "all"],
+        LivewireQueryString::NAME_FILTER_USER => ['except' => "all"],
+        LivewireQueryString::NAME_FILTER_TABLE => ['except' => "all"],
+        LivewireQueryString::NAME_PER_PAGE => ['except' => '25'],
+        LivewireQueryString::NAME_ORDER => ['except' => 'id_desc'],
+    ];
 
 	// general vars
-	public $currentModal;
 	public $regView;
 
-	//selected regs
-	public $regsSelectedArray = [];
-	public $checkAllSelector = 0;
-
 	//import & export
-	public $formatExport = '';
-	public $filenameExportTable = '';
-    public $filenameExportSelected = '';
+    // TODO: sustituir por export/import .csv (Box Spout¿? algo nativo de PHP¿? algo nativo de Laravel¿?)
+	public string $formatExport = '';
+	public string $filenameExportTable = '';
+    public string $filenameExportSelected = '';
 
-    protected $queryString = [
-        'search' => ['except' => ''],
-        'filterType' => ['except' => "all"],
-        'filterUser' => ['except' => "all"],
-        'filterTable' => ['except' => "all"],
-        'perPage' => ['except' => '25'],
-        'order' => ['except' => 'id_desc'],
-    ];
+    public AdminLogCrudViewModel $viewModel;
+
+    public TableDataDTO $tableData;
+
+    public TableFiltersDTO $tableFiltersDTO;
+
+    public TableOptionsDTO $tableOptionsDTO;
+
+    protected $queryString = self::QUERY_STRINGS;
 
     private AdminLogManager $adminLogManager;
 
     private UserManager $userManager;
 
-    private array $adminLogUserNames = [];
+    private SessionService $sessionService;
 
-    private array $adminLogTables = [];
+    private TableFiltersService $tableFiltersService;
 
-    public function boot(AdminLogManager $adminLogManager, UserManager $userManager): void
-    {
+    private AdminLogCrudFactory $adminLogCrudFactory;
+
+    private string $tableName = 'admin_logs';
+
+    /**
+     * @throws \JsonException
+     */
+    public function boot(
+        AdminLogManager $adminLogManager,
+        UserManager $userManager,
+        SessionService $sessionService,
+        TableFiltersService $tableFiltersService,
+        AdminLogCrudFactory $adminLogCrudFactory
+    ): void {
         $this->adminLogManager = $adminLogManager;
         $this->userManager = $userManager;
+        $this->sessionService = $sessionService;
+        $this->tableFiltersService = $tableFiltersService;
+        $this->adminLogCrudFactory = $adminLogCrudFactory;
 
-        $distinctUserIds = $this->adminLogManager->getDistinctUserIds();
-        $this->adminLogUserNames = $this->userManager->findNamesByIdsIndexedById($distinctUserIds, 'name');
-        $this->adminLogTables = $this->adminLogManager->getDistinctTables();
+
+//        $this->initializeFromSession();
     }
 
-    public function mount()
+    public function mount(): void
     {
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws \JsonException
+     */
     public function render()
     {
-        $this->getSessionPreferences();
+        $this->viewModel = $this->adminLogCrudFactory->create($this->tableName);
 
-        // Load Session Filters
-        if ($this->firstRender) {
-            $this->getSessionState();
-            $firstRenderSaved = true;
-            $this->firstRender = false;
-        } else {
-            $firstRenderSaved = false;
-        }
-        $this->setSessionState();
+        $this->tableOptionsDTO = $this->sessionService->getTableOptionsByTableName($this->tableName);
+        $this->sessionService->setOptionValues($this->tableName, $this->tableOptionsDTO);
+        $this->sessionService->setFilterValues($this->tableName, $this->tableFiltersDTO);
 
         return view('admin.admin_logs', [
             'regs' => $this->getData(),
             'regsSelected' => $this->getDataSelected(),
-            'users' => $this->adminLogUserNames,
-            'types' => AdminLog::TYPE_LIST,
-            'tables' => $this->adminLogTables,
-            'filterUserName' => $this->filterUserName(),
-            'firstRenderSaved' => $firstRenderSaved,
-            'currentModal' => $this->currentModal,
+            'users' => $this->viewModel->getUsers(),
+            'types' => $this->viewModel->getTypes(),
+            'tables' => $this->viewModel->getTables(),
+            'filterUserName' => $this->getFilterUserName(),
+            'currentModal' => $this->tableOptionsDTO->getCurrentModal(),
         ])->layout('adminlte::page');
     }
 
-	// Session Preferences
 	public function setSessionPreferences(): void
     {
-		session([
-			'admin_logs.fixedFirstColumn' => $this->fixedFirstColumn ? 'on' : 'off',
-			'admin_logs.showTableImages' => $this->showTableImages ? 'on' : 'off',
-			'admin_logs.striped' => $this->striped ? 'on' : 'off',
-			'admin_logs.colType' => $this->colType ? 'on' : 'off',
-			'admin_logs.colTable' => $this->colTable ? 'on' : 'off',
-			'admin_logs.colUser' => $this->colUser ? 'on' : 'off',
-			'admin_logs.colDate' => $this->colDate ? 'on' : 'off',
-		]);
-
-		if (!$this->colType && !$this->colTable && !$this->colUser && !$this->colDate) {
-			session(['admin_logs.fixedFirstColumn' => 'off']);
-		}
+        $this->sessionService->setOptionValues($this->tableName, $this->tableOptionsDTO);
 	}
 
-	protected function getSessionPreferences()
-	{
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function handleSessionPreferences(): void
+    {
+        // TODO: mover a un servicio
 		if (session()->get('admin_logs.showTableImages')) {
-			$this->showTableImages = session()->get('admin_logs.showTableImages') == 'on' ? true : false;
+			$this->showTableImages = session()->get('admin_logs.showTableImages') === 'on';
 		} else {
 			$this->showTableImages = true;
 		}
 
 		if (session()->get('admin_logs.fixedFirstColumn')) {
-			$this->fixedFirstColumn = session()->get('admin_logs.fixedFirstColumn') == 'on' ? true : false;
+			$this->fixedFirstColumn = session()->get('admin_logs.fixedFirstColumn') === 'on';
 		} else {
 			$this->fixedFirstColumn = true;
 		}
 
 		if (session()->get('admin_logs.striped')) {
-			$this->striped = session()->get('admin_logs.striped') == 'on' ? true : false;
+			$this->striped = session()->get('admin_logs.striped') === 'on';
 		} else {
 			$this->striped = true;
 		}
 
 		if (session()->get('admin_logs.colType')) {
-			$this->colType = session()->get('admin_logs.colType') == 'on' ? true : false;
+			$this->colType = session()->get('admin_logs.colType') === 'on';
 		} else {
 			$this->colType = true;
 		}
 
 		if (session()->get('admin_logs.colTable')) {
-			$this->colTable = session()->get('admin_logs.colTable') == 'on' ? true : false;
+			$this->colTable = session()->get('admin_logs.colTable') === 'on';
 		} else {
 			$this->colTable = true;
 		}
 
 		if (session()->get('admin_logs.colUser')) {
-			$this->colUser = session()->get('admin_logs.colUser') == 'on' ? true : false;
+			$this->colUser = session()->get('admin_logs.colUser') === 'on';
 		} else {
 			$this->colUser = true;
 		}
 
 		if (session()->get('admin_logs.colDate')) {
-			$this->colDate = session()->get('admin_logs.colDate') == 'on' ? true : false;
+			$this->colDate = session()->get('admin_logs.colDate') === 'on';
 		} else {
 			$this->colDate = true;
 		}
 	}
 
-	// Session State
-	protected function setSessionState()
-	{
-		session([
-			//filters
-			'admin_logs.search' => $this->search,
-			'admin_logs.perPage' => $this->perPage,
-			'admin_logs.filterType' => $this->filterType,
-			'admin_logs.filterUser' => $this->filterUser,
-			'admin_logs.filterTable' => $this->filterTable,
-			'admin_logs.order' => $this->order,
-			'admin_logs.page' => $this->page,
-			'admin_logs.regsSelectedArray' => $this->regsSelectedArray,
-			// general vars
-			'admin_logs.currentModal' => $this->currentModal,
-			//selected regs
-			'admin_logs.regsSelectedArray' => $this->regsSelectedArray,
-			'admin_logs.checkAllSelector' => $this->checkAllSelector,
-		]);
-	}
-
-	protected function getSessionState()
-	{
+    // TODO: mover a un servicio
+	protected function initializeFromSession(): void
+    {
 		//filters
-		if (session()->get('admin_logs.search')) { $this->search = session()->get('admin_logs.search'); }
-		if (session()->get('admin_logs.perPage')) { $this->perPage = session()->get('admin_logs.perPage'); }
-		if (session()->get('admin_logs.filterType')) { $this->filterType = session()->get('admin_logs.filterType'); }
-		if (session()->get('admin_logs.filterUser')) { $this->filterUser = session()->get('admin_logs.filterUser'); }
-		if (session()->get('admin_logs.filterTable')) { $this->filterTable = session()->get('admin_logs.filterTable'); }
-		if (session()->get('admin_logs.order')) { $this->order = session()->get('admin_logs.order'); }
-		if (session()->get('admin_logs.page')) { $this->page = session()->get('admin_logs.page'); }
-		if (session()->get('admin_logs.regsSelectedArray')) { $this->regsSelectedArray = session()->get('admin_logs.regsSelectedArray'); }
+        if (session()->get('admin_logs.search')) {
+            $this->search = session()->get('admin_logs.search');
+        }
+
+        if (session()->get('admin_logs.perPage')) {
+            $this->perPage = session()->get('admin_logs.perPage');
+        }
+
+        if (session()->get('admin_logs.filterType')) {
+            $this->filterType = session()->get('admin_logs.filterType');
+        }
+
+        if (session()->get('admin_logs.filterUser')) {
+            $this->filterUser = session()->get('admin_logs.filterUser');
+        }
+
+        if (session()->get('admin_logs.filterTable')) {
+            $this->filterTable = session()->get('admin_logs.filterTable');
+        }
+
+        if (session()->get('admin_logs.order')) {
+            $this->order = session()->get('admin_logs.order');
+        }
+
+        if (session()->get('admin_logs.page')) {
+            $this->page = session()->get('admin_logs.page');
+        }
+
+        if (session()->get('admin_logs.regsSelectedArray')) {
+            $this->regsSelectedArray = session()->get('admin_logs.regsSelectedArray');
+        }
+
 		// general vars
-		if (session()->get('admin_logs.currentModal')) { $this->currentModal = session()->get('admin_logs.currentModal'); }
+        if (session()->get('admin_logs.currentModal')) {
+            $this->currentModal = session()->get('admin_logs.currentModal');
+        }
+
 		//selected regs
-		if (session()->get('admin_logs.regsSelectedArray')) { $this->regsSelectedArray = session()->get('admin_logs.regsSelectedArray'); }
-		if (session()->get('admin_logs.checkAllSelector')) { $this->checkAllSelector = session()->get('admin_logs.checkAllSelector'); }
+        if (session()->get('admin_logs.regsSelectedArray')) {
+            $this->regsSelectedArray = session()->get('admin_logs.regsSelectedArray');
+        }
+
+        if (session()->get('admin_logs.checkAllSelector')) {
+            $this->isCheckAllSelector = session()->get('admin_logs.checkAllSelector');
+        }
 	}
 
 	// Selected
 	public function checkSelected($id)
 	{
 		$array_id = array_search($id, $this->regsSelectedArray);
+
 		if (!$array_id) {
 			$this->regsSelectedArray[$id] = $id;
 		} else {
@@ -228,27 +236,33 @@ class AdminLogCrud extends Component
     	$regs = AdminLog::
     		leftJoin('users', 'users.id', 'admin_logs.user_id')
     		->select('admin_logs.*', 'users.name as user_name')
-    		->name($this->search)
-    		->type($this->filterType)
-    		->user($this->filterUser)
-    		->table($this->filterTable)
-			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
+    		->name($this->tableFiltersDTO->getSearch())
+    		->type($this->tableFiltersDTO->getType())
+    		->user($this->tableFiltersDTO->getUser())
+    		->table($this->tableFiltersDTO->getTable())
+			->orderBy($this->getOrder()->getDetail()->getFieldName(), $this->getOrder()->getDetail()->getDirection())
 			->orderBy('admin_logs.id', 'desc')
-			->paginate($this->perPage)->onEachSide(2);
+			->paginate($this->tableFiltersDTO->getPerPage())->onEachSide(2);
+
+        $selectedIds = [];
+
 		foreach ($regs as $reg) {
-			if ($this->checkAllSelector == 1) {
-				$this->regsSelectedArray[$reg->id] = $reg->id;
+			if ($this->tableOptionsDTO->isCheckAllSelector()) {
+                $selectedIds[$reg->id] = $reg->id;
 			} else {
-				$array_id = array_search($reg->id, $this->regsSelectedArray);
-				unset($this->regsSelectedArray[$array_id]);
+				$array_id = \array_search($reg->id, $this->regsSelectedArray);
+				unset($this->tableOptionsDTO->getSelectedIds()[$array_id]);
 			}
 		}
+
+        $this->tableOptionsDTO->setSelectedIds($selectedIds);
 	}
 
 	public function deselect($id)
 	{
 		$array_id = array_search($id, $this->regsSelectedArray);
 		unset($this->regsSelectedArray[$array_id]);
+
 		if (empty($this->regsSelectedArray)) {
 			$this->emit('closeSelectedModal');
 		}
@@ -342,6 +356,7 @@ class AdminLogCrud extends Component
     {
     	$regs_to_delete = count($this->regsSelectedArray);
 		$regs_deleted = 0;
+
 		foreach ($this->regsSelectedArray as $reg) {
 			if ($reg = AdminLog::find($reg)) {
 				if ($reg->canDestroy()) {
@@ -351,6 +366,7 @@ class AdminLogCrud extends Component
 				}
 			}
 		}
+
 		if ($regs_deleted > 0) {
 			session()->flash('success', $regs_to_delete == 1 ? 'Registro eliminado correctamente!.' : 'Registros eliminados correctamente!.');
 		} else {
@@ -360,6 +376,7 @@ class AdminLogCrud extends Component
 				session()->flash('error', 'No se ha eliminado ningún registro, no pueden ser eliminados o ya no existen.');
 			}
 		}
+
 		$this->emit('closeDestroyModal');
 
 		$this->regsSelectedArray = [];
@@ -392,7 +409,7 @@ class AdminLogCrud extends Component
     		->type($this->filterType)
     		->user($this->filterUser)
     		->table($this->filterTable)
-			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
+			->orderBy($this->getOrder($this->tableFiltersDTO->getOrder())['field'], $this->getOrder($this->tableFiltersDTO->getOrder())['direction'])
 			->orderBy('admin_logs.id', 'desc')
     		->get();
 
@@ -418,7 +435,7 @@ class AdminLogCrud extends Component
     		leftJoin('users', 'users.id', 'admin_logs.user_id')
     		->select('admin_logs.*', 'users.name as user_name')
     		->whereIn('admin_logs.id', $this->regsSelectedArray)
-			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
+			->orderBy($this->getOrder($this->tableFiltersDTO->getOrder())['field'], $this->getOrder($this->tableFiltersDTO->getOrder())['direction'])
 			->orderBy('admin_logs.id', 'desc')
         	->get();
         $regs->makeHidden(['user_name', 'updated_at']);
@@ -427,16 +444,7 @@ class AdminLogCrud extends Component
 		return Excel::download(new AdminLogsExport($regs), $filename . '.' . $this->formatExport);
     }
 
-    // Pagination
-    public function setNextPage()
-    {
-    	$this->page++;
-    }
 
-    public function setPreviousPage()
-    {
-		$this->page--;
-    }
 
     // Helpers
 	protected function getData()
@@ -444,13 +452,13 @@ class AdminLogCrud extends Component
     	$regs = AdminLog::
     		leftJoin('users', 'users.id', 'admin_logs.user_id')
     		->select('admin_logs.*', 'users.name as user_name')
-    		->name($this->search)
-    		->type($this->filterType)
-    		->user($this->filterUser)
-    		->table($this->filterTable)
-			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
+    		->name($this->tableFiltersDTO->getSearch())
+    		->type($this->tableFiltersDTO->getType())
+    		->user($this->tableFiltersDTO->getUser())
+    		->table($this->tableFiltersDTO->getTable())
+			->orderBy($this->getOrder($this->tableFiltersDTO->getOrder())['field'], $this->getOrder($this->tableFiltersDTO->getOrder())['direction'])
 			->orderBy('admin_logs.id', 'desc')
-			->paginate($this->perPage)->onEachSide(2);
+			->paginate($this->tableFiltersDTO->getPerPage())->onEachSide(2);
 
 	    if (($regs->total() > 0 && $regs->count() == 0)) {
 			$this->page = 1;
@@ -463,13 +471,13 @@ class AdminLogCrud extends Component
     	$regs = AdminLog::
     		leftJoin('users', 'users.id', 'admin_logs.user_id')
     		->select('admin_logs.*', 'users.name as user_name')
-    		->name($this->search)
-    		->type($this->filterType)
-    		->user($this->filterUser)
-    		->table($this->filterTable)
-			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
+            ->name($this->tableFiltersDTO->getSearch())
+            ->type($this->tableFiltersDTO->getType())
+            ->user($this->tableFiltersDTO->getUser())
+            ->table($this->tableFiltersDTO->getTable())
+			->orderBy($this->getOrder($this->tableFiltersDTO->getOrder())['field'], $this->getOrder($this->tableFiltersDTO->getOrder())['direction'])
 			->orderBy('admin_logs.id', 'desc')
-			->paginate($this->perPage)->onEachSide(2);
+			->paginate($this->tableFiltersDTO->getPerPage())->onEachSide(2);
 
         $this->setCheckAllSelector();
 
@@ -485,15 +493,16 @@ class AdminLogCrud extends Component
     		->type($this->filterType)
     		->user($this->filterUser)
     		->table($this->filterTable)
-			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
+			->orderBy($this->getOrder($this->tableFiltersDTO->getOrder())['field'], $this->getOrder($this->tableFiltersDTO->getOrder())['direction'])
 			->orderBy('admin_logs.id', 'desc')
 			->paginate($this->perPage, ['*'], 'page', $this->page);
 
-		$this->checkAllSelector = 1;
+		$this->isCheckAllSelector = true;
+
 		foreach ($regs as $Conference) {
 			$array_id = array_search($Conference->id, $this->regsSelectedArray);
 			if (!$array_id) {
-				$this->checkAllSelector = 0;
+				$this->isCheckAllSelector = false;
 			}
 		}
 	}
@@ -503,87 +512,55 @@ class AdminLogCrud extends Component
 		return AdminLog::
     		leftJoin('users', 'users.id', 'admin_logs.user_id')
     		->select('admin_logs.*', 'users.name as user_name')
-			->whereIn('admin_logs.id', $this->regsSelectedArray)
-			->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
+			->whereIn('admin_logs.id', $this->tableOptionsDTO->getSelectedIds())
+			->orderBy($this->getOrder($this->tableFiltersDTO->getOrder())['field'], $this->getOrder($this->tableFiltersDTO->getOrder())['direction'])
 			->orderBy('admin_logs.id', 'desc')
 			->get();
 	}
 
-	protected function filterUserName()
+	protected function getFilterUserName(): string
 	{
-		if ($this->filterUser != "all") {
-			if ($var = User::find($this->filterUser)) {
-				return $var->name;
-			} else {
-				$this->filterUser = "all";
-			}
-		}
+        if ($this->tableFiltersDTO->getUser() !== 'all') {
+            return '';
+        }
+
+        $userId = $this->tableFiltersDTO->getUser();
+        $user = $this->userManager->findOneById($userId);
+
+        if ($user === null) {
+            $this->tableFiltersDTO->setUser('all');
+
+            return '';
+        }
+
+        return $user->getName();
 	}
 
-    protected function getOrder($order) {
-        $order_ext = [
-            'id' => [
-                'field'     => 'id',
-                'direction' => 'asc'
-            ],
-            'id_desc' => [
-                'field'     => 'id',
-                'direction' => 'desc'
-            ],
-            'name' => [
-                'field'     => 'admin_logs.reg_name',
-                'direction' => 'asc'
-            ],
-            'name_desc' => [
-                'field'     => 'admin_logs.reg_name',
-                'direction' => 'desc'
-            ],
-            'type' => [
-                'field'     => 'admin_logs.type',
-                'direction' => 'asc'
-            ],
-            'type_desc' => [
-                'field'     => 'admin_logs.type',
-                'direction' => 'desc'
-            ],
-            'table' => [
-                'field'     => 'admin_logs.table',
-                'direction' => 'asc'
-            ],
-            'table_desc' => [
-                'field'     => 'admin_logs.table',
-                'direction' => 'desc'
-            ],
-            'user' => [
-                'field'     => 'users.name',
-                'direction' => 'asc'
-            ],
-            'user_desc' => [
-                'field'     => 'users.name',
-                'direction' => 'desc'
-            ],
-            'date' => [
-                'field'     => 'admin_logs.created_at',
-                'direction' => 'asc'
-            ],
-            'date_desc' => [
-                'field'     => 'admin_logs.created_at',
-                'direction' => 'desc'
-            ],
-        ];
-        return $order_ext[$order];
+    public function getOrder(): OrderDTO
+    {
+        $orderName = $this->viewModel->getTableFiltersDTO()->getOrder();
+
+        return $this->viewModel->getTableData()->getOrders()[$orderName];
     }
 
-	public function setCurrentModal($modal)
-	{
-		$this->currentModal = $modal;
-		session([
-			'admin_logs.currentModal' => $this->currentModal,
-		]);
+	public function setCurrentModal($modal): void
+    {
+        $this->tableOptionsDTO->setCurrentModal($modal);
+        $this->sessionService->setOptionValues($this->tableName, $this->tableOptionsDTO);
 	}
 
-	public function closeAnyModal()
-	{
-		$this->currentModal = '';
+	public function closeAnyModal(): void
+    {
+        $this->tableOptionsDTO->setCurrentModal(null);
 	}
+
+    public function setNextPage(): void
+    {
+        $this->page++;
+    }
+
+    public function setPreviousPage(): void
+    {
+        $this->page--;
+    }
 }

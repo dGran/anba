@@ -201,7 +201,8 @@
     $('.modal').on('shown.bs.modal', function() {
         $(this).find('[autofocus]').focus();
     });
-    if ("{{ $firstRenderSaved }}" && "{{ $currentModal }}") {
+
+    if ("{{ $currentModal }}") {
         $('#{{ $currentModal }}').modal('show');
     }
 

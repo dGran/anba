@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Managers;
 
+use App\Enum\Criteria;
 use App\Models\AdminLog;
 use App\Repositories\AdminLogRepository;
 
@@ -77,5 +78,57 @@ class AdminLogManager
             ->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
             ->orderBy('admin_logs.id', 'desc')
             ->paginate($this->perPage)->onEachSide(2);
+    }
+
+    /**
+     * @return AdminLog[]
+     */
+    public function commandFilter(
+        ?string $search = null,
+        ?string $type = null,
+        ?int $userId = null,
+        ?string $table = null,
+        ?int $perPage = null,
+        ?string $orderBy = null,
+        ?string $orderDirection = Criteria::ASC,
+        ?int $offset = null,
+        ?int $limit = null
+    ): array {
+        // TODO: para sustituir los scopes por este filtro completo de la tabla
+        // adaptar a cada tabla con todos los campos que usen scope
+        // si tienen perPage una respuesta sino otra
+        // probar con AdminLog y si es buena solucion adaptar el resto de tablas
+
+        $criteria = [];
+
+        if ($search !== null) {
+            $criteria['search'] = $search;
+        }
+
+        if ($type !== null) {
+            $criteria['type'] = $type;
+        }
+
+        if ($userId !== null) {
+            $criteria['userId'] = $userId;
+        }
+
+        if ($table !== null) {
+            $criteria['table'] = $table;
+        }
+
+        if ($perPage !== null) {
+            $criteria['perPage'] = $perPage;
+        }
+
+        if ($orderBy !== null) {
+            $criteria['orderBy'] = $orderBy;
+        }
+
+        if ($orderDirection !== null) {
+            $criteria['orderDirection'] = $orderDirection;
+        }
+
+        return $this->repository->findBy($criteria, $orderBy, $orderDirection, $offset, $limit);
     }
 }

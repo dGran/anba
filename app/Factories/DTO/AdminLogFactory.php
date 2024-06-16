@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Factories;
+namespace App\Factories\DTO;
 
 use App\DTO\AdminLogDTO;
 
-class AdminLogDTOFactory
+class AdminLogFactory
 {
     /**
      * @param array $data {model: Model, type: string, reg_data: array, reg_data_before: array}

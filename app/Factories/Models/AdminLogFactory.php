@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Factories;
+namespace App\Factories\Models;
 
 use App\DTO\AdminLogDTO;
 use App\Models\AdminLog;

@@ -18,7 +18,7 @@
     {{-- Bootstrap Datepicker --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" />
 
-    <!-- Styles -->
+    {{-- Styles --}}
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
 @stop
 
@@ -29,26 +29,20 @@
     @include('admin.partials.js')
 @stop
 
-<div class="py-2"> {{-- slot --}}
+<div class="py-2">
+{{--    @include('admin.partials.session_messages')--}}
+{{--    @include('admin.admin_logs.filters')--}}
+{{--    @include('admin.admin_logs.table')--}}
+{{--    @include('admin.admin_logs.modals.filters')--}}
+{{--    @include('admin.admin_logs.modals.view')--}}
+{{--    @include('admin.partials.modals.destroy')--}}
+{{--    @include('admin.partials.modals.export_table')--}}
+{{--    @include('admin.partials.modals.export_selected')--}}
+{{--    @include('admin.partials.modals.selected')--}}
 
-    @include('admin.partials.session_messages')
-    @include('admin.admin_logs.filters')
-    @include('admin.admin_logs.table')
-
-    {{-- modals --}}
-    @include('admin.admin_logs.modals.filters')
-    @include('admin.admin_logs.modals.view')
-
-    @include('admin.partials.modals.destroy')
-    @include('admin.partials.modals.export_table')
-    @include('admin.partials.modals.export_selected')
-    @include('admin.partials.modals.selected')
-
-    {{-- right-sidebar --}}
     @if (config('adminlte.right_sidebar'))
         <aside class="control-sidebar control-sidebar-{{ config('adminlte.right_sidebar_theme') }} shadow overflow-auto">
-            @include('admin.admin_logs.right-sidebar')
+{{--            @include('admin.admin_logs.right-sidebar')--}}
         </aside>
     @endif
-
-</div> {{-- end-slot --}}
+</div>
