@@ -5,20 +5,29 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\DTO\TableFiltersDTO;
+use App\Enum\OrderNames;
 use App\Enum\TableFilters;
 use App\Enum\TableNames;
 use App\Helpers\Serializer;
+use App\Managers\UserManager;
 
 class TableFiltersService
 {
+    private UserManager $userManager;
+
+    public function __construct(UserManager $userManager)
+    {
+        $this->userManager = $userManager;
+    }
+
     public const FILTERS_INDEXED_BY_TABLE_NAME = [
         TableNames::TABLE_ADMIN_LOG => [
-            TableFilters::NAME_SEARCH => '',
-            TableFilters::NAME_TYPE => '25',
-            TableFilters::NAME_USER => 'all',
-            TableFilters::NAME_TABLE => 'all',
-            TableFilters::NAME_PER_PAGE => 'all',
-            TableFilters::NAME_ORDER => 'id_desc',
+            TableFilters::NAME_SEARCH => TableFilters::VALUE_NULL,
+            TableFilters::NAME_TYPE => TableFilters::VALUE_ALL,
+            TableFilters::NAME_USER => TableFilters::VALUE_ALL,
+            TableFilters::NAME_TABLE => TableFilters::VALUE_ALL,
+            TableFilters::NAME_ORDER => OrderNames::ID_DESC,
+            TableFilters::NAME_PER_PAGE => TableFilters::VALUE_PER_PAGE_DEFAULT,
         ],
     ];
 
@@ -32,7 +41,7 @@ class TableFiltersService
         return Serializer::deserialize($tableFilters, TableFiltersDTO::class);
     }
 
-    public function setByFilterName(string $filterName, string $value, TableFiltersDTO $tableFiltersDTO): TableFiltersDTO
+    public function setByFilterName(string $filterName, TableFiltersDTO $tableFiltersDTO, ?string $value = null): TableFiltersDTO
     {
         switch ($filterName) {
             case TableFilters::NAME_SEARCH:
@@ -44,6 +53,19 @@ class TableFiltersService
 
                 break;
             case TableFilters::NAME_USER:
+                if ($value !== null) {
+                    $user = $this->userManager->findOneById((int)$tableFiltersDTO->getUser());
+
+                    if ($user === null) {
+                        $tableFiltersDTO->setUser(TableFilters::VALUE_NULL);
+                        $tableFiltersDTO->setUserName(TableFilters::VALUE_NULL);
+
+                        break;
+                    }
+
+                    $tableFiltersDTO->setUserName($user->getName());
+                }
+
                 $tableFiltersDTO->setUser($value);
 
                 break;

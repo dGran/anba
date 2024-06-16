@@ -7,6 +7,8 @@ use App\DTO\TableDataDTO;
 use App\DTO\TableFiltersDTO;
 use App\DTO\TableOptionsDTO;
 use App\Enum\LivewireQueryString;
+use App\Enum\OrderNames;
+use App\Enum\TableFilters;
 use App\Factories\ViewModels\AdminLogCrudFactory;
 use App\Managers\AdminLogManager;
 use App\Managers\UserManager;
@@ -43,12 +45,12 @@ class AdminLogCrud extends Component
     public TableOptionsDTO $tableOptionsDTO;
 
     protected $queryString = [
-        LivewireQueryString::NAME_SEARCH => ['except' => ''],
-        LivewireQueryString::NAME_FILTER_TYPE => ['except' => LivewireQueryString::VALUE_ALL],
-        LivewireQueryString::NAME_FILTER_USER => ['except' => LivewireQueryString::VALUE_ALL],
-        LivewireQueryString::NAME_FILTER_TABLE => ['except' => LivewireQueryString::VALUE_ALL],
-        LivewireQueryString::NAME_PER_PAGE => ['except' => '25'],
-        LivewireQueryString::NAME_ORDER => ['except' => 'id_desc'],
+        LivewireQueryString::NAME_SEARCH => ['except' => TableFilters::VALUE_NULL],
+        LivewireQueryString::NAME_FILTER_TYPE => ['except' => TableFilters::VALUE_ALL],
+        LivewireQueryString::NAME_FILTER_USER => ['except' => TableFilters::VALUE_ALL],
+        LivewireQueryString::NAME_FILTER_TABLE => ['except' => TableFilters::VALUE_ALL],
+        LivewireQueryString::NAME_PER_PAGE => ['except' => TableFilters::VALUE_PER_PAGE_DEFAULT],
+        LivewireQueryString::NAME_ORDER => ['except' => OrderNames::ID_DESC],
     ];
 
     private AdminLogManager $adminLogManager;
@@ -79,6 +81,8 @@ class AdminLogCrud extends Component
         $this->tableFiltersService = $tableFiltersService;
         $this->adminLogCrudFactory = $adminLogCrudFactory;
 
+        $this->viewModel = $this->adminLogCrudFactory->create($this->tableName);
+
 
 //        $this->initializeFromSession();
     }
@@ -94,20 +98,19 @@ class AdminLogCrud extends Component
      */
     public function render()
     {
-        $this->viewModel = $this->adminLogCrudFactory->create($this->tableName);
-
         $this->tableOptionsDTO = $this->sessionService->getTableOptionsByTableName($this->tableName);
         $this->sessionService->setOptionValues($this->tableName, $this->tableOptionsDTO);
         $this->sessionService->setFilterValues($this->tableName, $this->tableFiltersDTO);
 
         return view('admin.admin_logs', [
-            'regs' => $this->getData(),
-            'regsSelected' => $this->getDataSelected(),
+            'table_data' => $this->viewModel->getTableData(),
+            'filters' => $this->viewModel->getTableFiltersDTO(),
+            'options' => $this->viewModel->getTableOptionsDTO(),
+            'data' => $this->getData(),
+            'selectedData' => $this->getSelectedData(),
             'users' => $this->viewModel->getUsers(),
             'types' => $this->viewModel->getTypes(),
             'tables' => $this->viewModel->getTables(),
-            'filterUserName' => $this->getFilterUserName(),
-            'currentModal' => $this->tableOptionsDTO->getCurrentModal(),
         ])->layout('adminlte::page');
     }
 
@@ -329,15 +332,13 @@ class AdminLogCrud extends Component
     	$this->perPage = '25';
     }
 
-    public function clearAllFilters()
+    /**
+     * @throws \JsonException
+     */
+    public function resetFilters()
     {
-    	$this->search = '';
-    	$this->page = 1;
-    	$this->perPage = '25';
-		$this->order = 'id_desc';
-		$this->filterType = "all";
-		$this->filterUser = "all";
-		$this->filterTable = "all";
+        $initTableFiltersDTO = $this->tableFiltersService->initialize($this->tableName);
+        $this->viewModel->setTableFiltersDTO($initTableFiltersDTO);
 
 		$this->emit('resetFiltersMode');
     }
@@ -345,7 +346,7 @@ class AdminLogCrud extends Component
     // Destroy
     public function confirmDestroy()
     {
-		if (count($this->regsSelectedArray) > 0) {
+		if (\count($this->regsSelectedArray) > 0) {
 			$this->emit('openDestroyModal');
 		}
     }
@@ -505,7 +506,7 @@ class AdminLogCrud extends Component
 		}
 	}
 
-	protected function getDataSelected()
+	protected function getSelectedData()
 	{
 		return AdminLog::
     		leftJoin('users', 'users.id', 'admin_logs.user_id')
@@ -543,7 +544,7 @@ class AdminLogCrud extends Component
 
 	public function setCurrentModal($modal): void
     {
-        $this->tableOptionsDTO->setCurrentModal($modal);
+        $this->viewModel->getTableOptionsDTO()->setCurrentModal($modal);
         $this->sessionService->setOptionValues($this->tableName, $this->tableOptionsDTO);
 	}
 
