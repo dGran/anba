@@ -25,6 +25,7 @@ class TableDataDTO
     public function setSingular(string $singular): TableDataDTO
     {
         $this->singular = $singular;
+
         return $this;
     }
 
@@ -36,6 +37,7 @@ class TableDataDTO
     public function setPlural(string $plural): TableDataDTO
     {
         $this->plural = $plural;
+
         return $this;
     }
 
@@ -47,6 +49,7 @@ class TableDataDTO
     public function setGender(string $gender): TableDataDTO
     {
         $this->gender = $gender;
+
         return $this;
     }
 
@@ -58,6 +61,7 @@ class TableDataDTO
     public function setHasImage(bool $hasImage): TableDataDTO
     {
         $this->hasImage = $hasImage;
+
         return $this;
     }
 
@@ -75,6 +79,7 @@ class TableDataDTO
     public function setOrders(array $orders): TableDataDTO
     {
         $this->orders = $orders;
+
         return $this;
     }
 }

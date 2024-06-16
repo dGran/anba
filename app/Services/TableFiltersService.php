@@ -74,6 +74,10 @@ class TableFiltersService
 
                 break;
             case TableFilters::NAME_PER_PAGE:
+                if ($value !== null) {
+
+                }
+
                 $tableFiltersDTO->setPerPage($value);
 
                 break;

@@ -82,21 +82,7 @@ class TableDataDTOFactory
         $tableDataDTO->setPlural($tableData[TableData::PLURAL]);
         $tableDataDTO->setGender($tableData[TableData::GENDER]);
         $tableDataDTO->setHasImage($tableData[TableData::HAS_IMAGE]);
-
-        $orders = [];
-
-        foreach ($tableData[TableData::ORDERS] as $orderName => $orderDetails) {
-            $order = new OrderDTO();
-            $order->setName($orderName);
-
-            $orderDetail = new OrderDetailDTO();
-            $orderDetail->setFieldName($orderDetails['fieldName']);
-            $orderDetail->setDirection($orderDetails['direction']);
-
-            $order->setDetail($orderDetail);
-            $orders[$orderName] = $order;
-        }
-
+        $orders = OrderDTOFactory::create($tableData[TableData::ORDERS]);
         $tableDataDTO->setOrders($orders);
 
         return $tableDataDTO;

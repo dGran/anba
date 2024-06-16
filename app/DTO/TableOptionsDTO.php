@@ -25,7 +25,7 @@ class TableOptionsDTO
     private ?string $currentModal = null;
 
     /** @var int[] */
-    private ?array $selectedIds = null;
+    private array $selectedIds = [];
 
     private ?bool $checkAllSelector = null;
 
@@ -137,12 +137,12 @@ class TableOptionsDTO
         return $this;
     }
 
-    public function getSelectedIds(): ?array
+    public function getSelectedIds(): array
     {
         return $this->selectedIds;
     }
 
-    public function setSelectedIds(?array $selectedIds): TableOptionsDTO
+    public function setSelectedIds(array $selectedIds = []): TableOptionsDTO
     {
         $this->selectedIds = $selectedIds;
 

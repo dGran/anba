@@ -18,6 +18,7 @@ class OrderDTO
     public function setName(string $name): OrderDTO
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -29,6 +30,7 @@ class OrderDTO
     public function setDetail(OrderDetailDTO $detail): OrderDTO
     {
         $this->detail = $detail;
+
         return $this;
     }
 }

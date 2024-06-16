@@ -20,6 +20,10 @@ class TableFiltersDTO
 
     private ?string $order = null;
 
+    private ?string $orderField = null;
+
+    private ?string $orderDirection = null;
+
     private ?int $page = null;
 
     public function getSearch(): string
@@ -102,6 +106,30 @@ class TableFiltersDTO
     public function setOrder(string $order): TableFiltersDTO
     {
         $this->order = $order;
+
+        return $this;
+    }
+
+    public function getOrderField(): ?string
+    {
+        return $this->orderField;
+    }
+
+    public function setOrderField(?string $orderField): TableFiltersDTO
+    {
+        $this->orderField = $orderField;
+
+        return $this;
+    }
+
+    public function getOrderDirection(): ?string
+    {
+        return $this->orderDirection;
+    }
+
+    public function setOrderDirection(?string $orderDirection): TableFiltersDTO
+    {
+        $this->orderDirection = $orderDirection;
 
         return $this;
     }

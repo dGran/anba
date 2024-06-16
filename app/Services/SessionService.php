@@ -10,6 +10,8 @@ use App\Enum\TableFilters;
 use App\Enum\TableNames;
 use App\Enum\TableOptions;
 use App\Helpers\Serializer;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class SessionService
 {
@@ -67,7 +69,19 @@ class SessionService
         $tableOptions['tableName'] = $tableName;
 
         foreach ($tableOptionSessionNames as $optionName => $tableOptionSessionName) {
-            $tableOptions[$optionName] = session()->get($tableOptionSessionName);
+            try {
+                $sessionValue = session()->get($tableOptionSessionName);
+            } catch (\Throwable $exception) {
+                continue;
+            }
+
+            if ($optionName === TableOptions::NAME_SELECTED_IDS && $sessionValue === null) {
+                $tableOptions[$optionName] = [];
+
+                continue;
+            }
+
+            $tableOptions[$optionName] = $sessionValue;
         }
 
         return Serializer::deserialize(\json_encode($tableOptions, JSON_THROW_ON_ERROR), TableOptionsDTO::class);
