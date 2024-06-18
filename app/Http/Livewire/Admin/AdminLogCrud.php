@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Livewire\Admin;
 
-use App\DTO\TableDataDTO;
 use App\Enum\LivewireQueryString;
 use App\Enum\OrderByCriteria;
 use App\Enum\TableFilters;
@@ -40,6 +41,8 @@ class AdminLogCrud extends Component
     public array $tableFilters;
 
     public array $tableOptions;
+
+    //TODO: me temo que los query string debo tener que usarlos como filtos para que funcione
 
     public ?string $search = null;
 
@@ -129,15 +132,8 @@ class AdminLogCrud extends Component
         $this->sessionService->setFilterValues($this->tableName, $this->viewModel->getTableFilters());
 
         return view('admin.admin_logs', [
-//            'tableData' => $this->tableData,
-//            'filters' => $this->tableFilters,
-//            'options' => $this->tableOptions,
             'data' => $this->getData(),
             'selectedData' => $this->getSelectedData(),
-            'users' => $this->tableFilters['relatedUserIds'],
-            'types' => $this->tableFilters['relatedTypes'],
-            'tables' => $this->tableFilters['relatedTables'],
-            'currentModal' => $this->tableOptions['currentModal'],
         ])->layout('adminlte::page');
     }
 
