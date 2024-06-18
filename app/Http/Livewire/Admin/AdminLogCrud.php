@@ -117,11 +117,13 @@ class AdminLogCrud extends Component
     public function render()
     {
         //table data se inicializa y no se tiene que editar
-        $this->tableData = $this->tableDataService->toArray($this->viewModel->getTableData());;
+        $this->tableData = $this->tableDataService->toArray($this->viewModel->getTableData());
 
         //tableFilters y tableOptions se inicializan y sí se van actualizando según la acción del usuario
         $this->tableFilters = $this->tableFiltersService->toArray($this->viewModel->getTableFilters());
         $this->tableOptions = $this->tableOptionsService->toArray($this->viewModel->getTableOptions());
+
+        //TODO: todas las acciones las vamos a realizar sobre el viewModel y en el render vamos a pasar a la vista el modelo en array separado por variables
 
         $this->sessionService->setOptionValues($this->tableName, $this->viewModel->getTableOptions());
         $this->sessionService->setFilterValues($this->tableName, $this->viewModel->getTableFilters());
