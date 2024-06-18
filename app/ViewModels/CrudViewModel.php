@@ -28,24 +28,24 @@ class CrudViewModel
         return $this;
     }
 
-    public function getTableFiltersDTO(): TableFiltersDTO
+    public function getTableFilters(): TableFiltersDTO
     {
         return $this->tableFiltersDTO;
     }
 
-    public function setTableFiltersDTO(TableFiltersDTO $tableFiltersDTO): CrudViewModel
+    public function setTableFilters(TableFiltersDTO $tableFiltersDTO): CrudViewModel
     {
         $this->tableFiltersDTO = $tableFiltersDTO;
 
         return $this;
     }
 
-    public function getTableOptionsDTO(): TableOptionsDTO
+    public function getTableOptions(): TableOptionsDTO
     {
         return $this->tableOptionsDTO;
     }
 
-    public function setTableOptionsDTO(TableOptionsDTO $tableOptionsDTO): CrudViewModel
+    public function setTableOptions(TableOptionsDTO $tableOptionsDTO): CrudViewModel
     {
         $this->tableOptionsDTO = $tableOptionsDTO;
 

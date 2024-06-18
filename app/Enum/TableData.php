@@ -14,5 +14,5 @@ class TableData
 
     public const HAS_IMAGE = "has_image";
 
-    public const ORDERS = 'orders';
+    public const ORDER_BY_CRITERIA_INDEXED_BY_NAME = 'order_by_criteria';
 }

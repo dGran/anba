@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use App\Enum\Criteria;
+use App\Enum\OrderByCriteria;
 use App\Models\AdminLog;
 use Illuminate\Support\Facades\Cache;
 
@@ -16,21 +16,46 @@ class AdminLogRepository
     }
 
     /**
-     * @return int[]
+     * @return string[]
      */
     public function getDistinctUserIds(): array
     {
         return Cache::remember(__METHOD__, now()->addHours(24), static function () {
-            return AdminLog::distinct()->pluck('user_id')->toArray();
+            return AdminLog::distinct()
+                ->join('users', 'admin_logs.user_id', '=', 'users.id')
+                ->whereNotNull('admin_logs.user_id')
+                ->orderBy('users.name', OrderByCriteria::ORDER_ASC)
+                ->pluck('admin_logs.user_id')
+                ->toArray();
         });
     }
 
     /**
-     * @return int[]
+     * @return string[]
      */
     public function getDistinctTables(): array
     {
-        return AdminLog::distinct()->whereNotNull('table')->orderBy('table', Criteria::ASC)->pluck('table')->toArray();
+        return Cache::remember(__METHOD__, now()->addHours(24), static function () {
+            return AdminLog::distinct()
+                ->whereNotNull('table')
+                ->orderBy('table', OrderByCriteria::ORDER_ASC)
+                ->pluck('table')
+                ->toArray();
+        });
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getDistinctTypes(): array
+    {
+        return Cache::remember(__METHOD__, now()->addHours(24), static function () {
+            return AdminLog::distinct()
+                ->whereNotNull('type')
+                ->orderBy('type', OrderByCriteria::ORDER_ASC)
+                ->pluck('type')
+                ->toArray();
+        });
     }
 
     public function findBy(

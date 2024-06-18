@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Managers;
 
-use App\Enum\Criteria;
+use App\Enum\OrderByCriteria;
 use App\Models\AdminLog;
 use App\Repositories\AdminLogRepository;
 
@@ -47,11 +47,19 @@ class AdminLogManager
     }
 
     /**
-     * @return int[]
+     * @return string[]
      */
     public function getDistinctTables(): array
     {
         return $this->repository->getDistinctTables();
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getDistinctTypes(): array
+    {
+        return $this->repository->getDistinctTypes();
     }
 
     public function findByUserIdAndTypeAndTable()
@@ -90,7 +98,7 @@ class AdminLogManager
         ?string $table = null,
         ?int $perPage = null,
         ?string $orderBy = null,
-        ?string $orderDirection = Criteria::ASC,
+        ?string $orderDirection = OrderByCriteria::ORDER_ASC,
         ?int $offset = null,
         ?int $limit = null
     ): array {

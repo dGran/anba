@@ -3,14 +3,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title text-base text-uppercase font-medium tracking-wide">
-                    <span>Exportar tabla {{ $modelPlural }}</span>
+                    <span>Exportar tabla {{ $tableData['plural'] }}</span>
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="closeAnyModal">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body text-center">
-                <p>Se van a exportar todos los registros de la tabla de {{ $modelPlural }} en formato <strong>".{{ $formatExport }}"</strong></p>
+                <p>Se van a exportar todos los registros de la tabla de {{ $tableData['plural'] }} en formato <strong>".{{ $formatExport }}"</strong></p>
                 <p class="font-weight-bold m-0 mb-1">Se aplicarán los filtros y el orden actual</p>
 
                 <p class="mt-4 pt-4" style="text-align: left">

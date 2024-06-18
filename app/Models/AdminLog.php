@@ -26,19 +26,13 @@ class AdminLog extends Model
 {
     use HasFactory;
 
-    public const TYPE_LIST = [
-        self::TYPE_INSERT,
-        self::TYPE_UPDATE,
-        self::TYPE_DELETE,
-    ];
+    public const TYPE_INSERT = 'INSERT';
+
+    public const TYPE_UPDATE = 'UPDATE';
+
+    public const TYPE_DELETE = 'DELETE';
 
     protected $table = 'admin_logs';
-
-    private const TYPE_INSERT = 'INSERT';
-
-    private const TYPE_UPDATE = 'UPDATE';
-
-    private const TYPE_DELETE = 'DELETE';
 
     public function __construct(array $attributes = [])
     {

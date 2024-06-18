@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Managers;
 
-use App\Enum\Criteria;
 use App\Models\User;
 use App\Repositories\UserRepository;
 
@@ -36,15 +35,5 @@ class UserManager
     public function findOneById(int $seasonId): ?User
     {
         return $this->repository->findOneById($seasonId);
-    }
-
-    /**
-     * @param int[] $ids
-     *
-     * @return User[]
-     */
-    public function findNamesByIdsIndexedById(array $ids, ?string $orderByField = null, string $orderDirection = Criteria::ASC): array
-    {
-        return $this->repository->findNamesByIdsIndexedById($ids);
     }
 }

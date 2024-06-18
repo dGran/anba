@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace App\Factories\DTO;
 
-use App\DTO\OrderDetailDTO;
-use App\DTO\OrderDTO;
 use App\DTO\TableDataDTO;
-use App\Enum\Criteria;
-use App\Enum\OrderNames;
+use App\Enum\OrderByCriteria;
 use App\Enum\TableData;
 use App\Enum\TableNames;
 
@@ -20,54 +17,54 @@ class TableDataDTOFactory
             TableData::PLURAL => 'logs',
             TableData::GENDER => 'male',
             TableData::HAS_IMAGE => false,
-            TableData::ORDERS => [
-                OrderNames::ID => [
-                    'fieldName' => 'id',
-                    'direction' => Criteria::ASC
+            TableData::ORDER_BY_CRITERIA_INDEXED_BY_NAME => [
+                OrderByCriteria::ORDER_BY_ID => [
+                    'column' => 'id',
+                    'order' => OrderByCriteria::ORDER_ASC
                 ],
-                OrderNames::ID_DESC => [
-                    'fieldName' => 'id',
-                    'direction' => Criteria::DESC,
+                OrderByCriteria::ORDER_BY_ID_DESC => [
+                    'column' => 'id',
+                    'order' => OrderByCriteria::ORDER_DESC,
                 ],
-                OrderNames::NAME => [
-                    'fieldName' => 'admin_logs.reg_name',
-                    'direction' => Criteria::ASC
+                OrderByCriteria::ORDER_BY_NAME => [
+                    'column' => 'admin_logs.reg_name',
+                    'order' => OrderByCriteria::ORDER_ASC
                 ],
-                OrderNames::NAME_DESC => [
-                    'fieldName' => 'admin_logs.reg_name',
-                    'direction' => Criteria::DESC,
+                OrderByCriteria::ORDER_BY_NAME_DESC => [
+                    'column' => 'admin_logs.reg_name',
+                    'order' => OrderByCriteria::ORDER_DESC,
                 ],
-                OrderNames::TYPE => [
-                    'fieldName' => 'admin_logs.type',
-                    'direction' => Criteria::ASC
+                OrderByCriteria::ORDER_BY_TYPE => [
+                    'column' => 'admin_logs.type',
+                    'order' => OrderByCriteria::ORDER_ASC
                 ],
-                OrderNames::TYPE_DESC => [
-                    'fieldName' => 'admin_logs.type',
-                    'direction' => Criteria::DESC,
+                OrderByCriteria::ORDER_BY_TYPE_DESC => [
+                    'column' => 'admin_logs.type',
+                    'order' => OrderByCriteria::ORDER_DESC,
                 ],
-                OrderNames::TABLE => [
-                    'fieldName' => 'admin_logs.table',
-                    'direction' => Criteria::ASC
+                OrderByCriteria::ORDER_BY_TABLE => [
+                    'column' => 'admin_logs.table',
+                    'order' => OrderByCriteria::ORDER_ASC
                 ],
-                OrderNames::TABLE_DESC => [
-                    'fieldName' => 'admin_logs.table',
-                    'direction' => Criteria::DESC,
+                OrderByCriteria::ORDER_BY_TABLE_DESC => [
+                    'column' => 'admin_logs.table',
+                    'order' => OrderByCriteria::ORDER_DESC,
                 ],
-                OrderNames::USER => [
-                    'fieldName' => 'users.name',
-                    'direction' => Criteria::ASC
+                OrderByCriteria::ORDER_BY_USER => [
+                    'column' => 'users.name',
+                    'order' => OrderByCriteria::ORDER_ASC
                 ],
-                OrderNames::USER_DESC => [
-                    'fieldName' => 'users.name',
-                    'direction' => Criteria::DESC,
+                OrderByCriteria::ORDER_BY_USER_DESC => [
+                    'column' => 'users.name',
+                    'order' => OrderByCriteria::ORDER_DESC,
                 ],
-                OrderNames::DATE => [
-                    'fieldName' => 'admin_logs.created_at',
-                    'direction' => Criteria::ASC
+                OrderByCriteria::ORDER_BY_DATE => [
+                    'column' => 'admin_logs.created_at',
+                    'order' => OrderByCriteria::ORDER_ASC
                 ],
-                OrderNames::DATE_DESC => [
-                    'fieldName' => 'admin_logs.created_at',
-                    'direction' => Criteria::DESC,
+                OrderByCriteria::ORDER_BY_DATE_DESC => [
+                    'column' => 'admin_logs.created_at',
+                    'order' => OrderByCriteria::ORDER_DESC,
                 ],
             ],
         ],
@@ -82,8 +79,7 @@ class TableDataDTOFactory
         $tableDataDTO->setPlural($tableData[TableData::PLURAL]);
         $tableDataDTO->setGender($tableData[TableData::GENDER]);
         $tableDataDTO->setHasImage($tableData[TableData::HAS_IMAGE]);
-        $orders = OrderDTOFactory::create($tableData[TableData::ORDERS]);
-        $tableDataDTO->setOrders($orders);
+        $tableDataDTO->setOrderByCriteriaIndexedByName($tableData[TableData::ORDER_BY_CRITERIA_INDEXED_BY_NAME]);
 
         return $tableDataDTO;
     }

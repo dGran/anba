@@ -26,6 +26,12 @@ class TableFiltersDTO
 
     private ?int $page = null;
 
+    private array $relatedUserIds = [];
+
+    private array $relatedTypes = [];
+
+    private array $relatedTables = [];
+
     public function getSearch(): string
     {
         return $this->search;
@@ -142,6 +148,42 @@ class TableFiltersDTO
     public function setPage(?int $page): TableFiltersDTO
     {
         $this->page = $page;
+
+        return $this;
+    }
+
+    public function getRelatedUserIds(): array
+    {
+        return $this->relatedUserIds;
+    }
+
+    public function setRelatedUserIds(array $relatedUserIds): TableFiltersDTO
+    {
+        $this->relatedUserIds = $relatedUserIds;
+
+        return $this;
+    }
+
+    public function getRelatedTypes(): array
+    {
+        return $this->relatedTypes;
+    }
+
+    public function setRelatedTypes(array $relatedTypes): TableFiltersDTO
+    {
+        $this->relatedTypes = $relatedTypes;
+
+        return $this;
+    }
+
+    public function getRelatedTables(): array
+    {
+        return $this->relatedTables;
+    }
+
+    public function setRelatedTables(array $relatedTables): TableFiltersDTO
+    {
+        $this->relatedTables = $relatedTables;
 
         return $this;
     }

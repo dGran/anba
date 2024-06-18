@@ -14,8 +14,8 @@ class TableDataDTO
 
     private bool $hasImage = false;
 
-    /** @var OrderDTO[] */
-    private array $orders = [];
+    /** @var array<string, array{column: string, order: string}> */
+    private array $orderByCriteriaIndexedByName = [];
 
     public function getSingular(): string
     {
@@ -66,19 +66,19 @@ class TableDataDTO
     }
 
     /**
-     * @return OrderDTO[]
+     * @return array<string, array{column: string, order: string}>
      */
-    public function getOrders(): array
+    public function getOrderByCriteriaIndexedByName(): array
     {
-        return $this->orders;
+        return $this->orderByCriteriaIndexedByName;
     }
 
     /**
-     * @param OrderDTO[] $orders
+     * @param array<string, array{column: string, order: string}> $orderByCriteriaIndexedByName
      */
-    public function setOrders(array $orders): TableDataDTO
+    public function setOrderByCriteriaIndexedByName(array $orderByCriteriaIndexedByName): TableDataDTO
     {
-        $this->orders = $orders;
+        $this->orderByCriteriaIndexedByName = $orderByCriteriaIndexedByName;
 
         return $this;
     }

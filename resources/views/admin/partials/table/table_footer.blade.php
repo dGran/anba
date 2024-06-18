@@ -1,5 +1,5 @@
-@if ($regs->total() > $perPage)
+@if ($data->total() > $filters['perPage'])
 	<div class="pagination-wrapper">
-		{{ $regs->links('vendor.pagination.custom') }}
+		{{ $data->links('vendor.pagination.custom') }}
 	</div>
 @endif
