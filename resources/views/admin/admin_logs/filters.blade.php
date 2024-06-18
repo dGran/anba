@@ -53,7 +53,7 @@
 			<i class="fas fa-filter"></i>
 		</button>
 
-		<button type="button" class="btn btn-white {{ $filters['order'] !== "id_desc" || $filters['search'] || $filters['type'] !== "all" || $filters['user'] !== "all" || $filters['table'] !== "all" || $filters['perPage'] !== "25" ?: 'disabled' }}" wire:click="clearAllFilters">
+		<button type="button" class="btn btn-white {{ $tableFilters['order'] !== "id_desc" || $tableFilters['search'] || $tableFilters['type'] !== "all" || $tableFilters['user'] !== "all" || $tableFilters['table'] !== "all" || $tableFilters['perPage'] !== "25" ?: 'disabled' }}" wire:click="clearAllFilters">
 			<i class="fas fa-eraser"></i>
 		</button>
 	</div>
@@ -61,40 +61,40 @@
 </div> {{-- filters --}}
 
 
-@if ($filters['search'] || $filters['type'] !== "all" || $filters['user'] !== "all" || $filters['table'] !== "all" || $filters['perPage'] !== "25")
+@if ($tableFilters['search'] || $tableFilters['type'] !== "all" || $tableFilters['user'] !== "all" || $tableFilters['table'] !== "all" || $tableFilters['perPage'] !== "25")
 	<ul class="list-inline my-2">
-		@if ($filters['search'])
+		@if ($tableFilters['search'])
 			<li class="list-inline-item mr-1">
 				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterSearch">
-					{{ $filters['search'] }}<i class="fas fa-times ml-2"></i>
+					{{ $tableFilters['search'] }}<i class="fas fa-times ml-2"></i>
 				<a>
 			</li>
 		@endif
-		@if ($filters['type'] !== "all")
+		@if ($tableFilters['type'] !== "all")
 			<li class="list-inline-item mr-1">
 				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterType">
-					{{ $filters['type'] }}<i class="fas fa-times ml-2"></i>
+					{{ $tableFilters['type'] }}<i class="fas fa-times ml-2"></i>
 				<a>
 			</li>
 		@endif
-		@if ($filters['table'] !== "all")
+		@if ($tableFilters['table'] !== "all")
 			<li class="list-inline-item mr-1">
 				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterTable">
-					{{ $filters['table'] }}<i class="fas fa-times ml-2"></i>
+					{{ $tableFilters['table'] }}<i class="fas fa-times ml-2"></i>
 				<a>
 			</li>
 		@endif
-		@if ($filters['user'] !== "all")
+		@if ($tableFilters['user'] !== "all")
 			<li class="list-inline-item mr-1">
 				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterUser">
-					{{ $filters['userName'] }}<i class="fas fa-times ml-2"></i>
+					{{ $tableFilters['userName'] }}<i class="fas fa-times ml-2"></i>
 				<a>
 			</li>
 		@endif
-		@if ($filters['perPage'] !== "25")
+		@if ($tableFilters['perPage'] !== "25")
 			<li class="list-inline-item">
 				<a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilterPerPage">
-					{{ $filters['perPage'] }} / página<i class="fas fa-times ml-2"></i>
+					{{ $tableFilters['perPage'] }} / página<i class="fas fa-times ml-2"></i>
 				<a>
 			</li>
 		@endif

@@ -129,9 +129,9 @@ class AdminLogCrud extends Component
         $this->sessionService->setFilterValues($this->tableName, $this->viewModel->getTableFilters());
 
         return view('admin.admin_logs', [
-            'tableData' => $this->tableData,
-            'filters' => $this->tableFilters,
-            'options' => $this->tableOptions,
+//            'tableData' => $this->tableData,
+//            'filters' => $this->tableFilters,
+//            'options' => $this->tableOptions,
             'data' => $this->getData(),
             'selectedData' => $this->getSelectedData(),
             'users' => $this->tableFilters['relatedUserIds'],
@@ -538,12 +538,13 @@ class AdminLogCrud extends Component
             ->orderBy('admin_logs.id', 'desc')
 			->paginate($this->viewModel->getTableFilters()->getPerPage(), ['*'], 'page', $this->page);
 
-		$this->isCheckAllSelector = true;
+        $this->viewModel->getTableOptions()->setCheckAllSelector(true);
 
 		foreach ($regs as $Conference) {
-			$array_id = array_search($Conference->id, $this->regsSelectedArray);
+			$array_id = \array_search($Conference->id, $this->viewModel->getTableOptions()->getSelectedIds());
+
 			if (!$array_id) {
-				$this->isCheckAllSelector = false;
+                $this->viewModel->getTableOptions()->setCheckAllSelector(false);
 			}
 		}
 	}
