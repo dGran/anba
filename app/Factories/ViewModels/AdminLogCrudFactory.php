@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace App\Factories\ViewModels;
 
 use App\Factories\DTO\TableDataDTOFactory;
-use App\Managers\AdminLogManager;
 use App\Services\SessionService;
 use App\Services\TableFiltersService;
-use App\ViewModels\AdminLogCrudViewModel;
 use App\ViewModels\CrudViewModel;
 
 class AdminLogCrudFactory
@@ -17,16 +15,12 @@ class AdminLogCrudFactory
 
     private SessionService $sessionService;
 
-    private AdminLogManager $adminLogManager;
-
     public function __construct(
         TableFiltersService $tableFiltersService,
-        SessionService $sessionService,
-        AdminLogManager $adminLogManager
+        SessionService $sessionService
     ) {
         $this->tableFiltersService = $tableFiltersService;
         $this->sessionService = $sessionService;
-        $this->adminLogManager = $adminLogManager;
     }
 
     /**

@@ -6,23 +6,23 @@ namespace App\DTO;
 
 class TableFiltersDTO
 {
-    private ?string $search = null;
+    private ?string $search = '';
 
-    private ?string $perPage = null;
+    private ?string $perPage = '';
 
-    private ?string $type = null;
+    private ?string $type = '';
 
-    private ?string $user = null;
+    private ?string $user = '';
 
-    private ?string $userName = null;
+    private ?string $userName = '';
 
-    private ?string $table = null;
+    private ?string $table = '';
 
-    private ?string $order = null;
+    private ?string $order = '';
 
-    private ?string $orderField = null;
+    private ?string $orderField = '';
 
-    private ?string $orderDirection = null;
+    private ?string $orderDirection = '';
 
     private ?int $page = null;
 
@@ -32,48 +32,48 @@ class TableFiltersDTO
 
     private array $relatedTables = [];
 
-    public function getSearch(): string
+    public function getSearch(): ?string
     {
         return $this->search;
     }
 
-    public function setSearch(string $search): TableFiltersDTO
+    public function setSearch(?string $search): TableFiltersDTO
     {
         $this->search = $search;
 
         return $this;
     }
 
-    public function getPerPage(): string
+    public function getPerPage(): ?string
     {
         return $this->perPage;
     }
 
-    public function setPerPage(string $perPage): TableFiltersDTO
+    public function setPerPage(?string $perPage): TableFiltersDTO
     {
         $this->perPage = $perPage;
 
         return $this;
     }
 
-    public function getType(): string
+    public function getType(): ?string
     {
         return $this->type;
     }
 
-    public function setType(string $type): TableFiltersDTO
+    public function setType(?string $type): TableFiltersDTO
     {
         $this->type = $type;
 
         return $this;
     }
 
-    public function getUser(): string
+    public function getUser(): ?string
     {
         return $this->user;
     }
 
-    public function setUser(string $user): TableFiltersDTO
+    public function setUser(?string $user): TableFiltersDTO
     {
         $this->user = $user;
 
@@ -92,24 +92,24 @@ class TableFiltersDTO
         return $this;
     }
 
-    public function getTable(): string
+    public function getTable(): ?string
     {
         return $this->table;
     }
 
-    public function setTable(string $table): TableFiltersDTO
+    public function setTable(?string $table): TableFiltersDTO
     {
         $this->table = $table;
 
         return $this;
     }
 
-    public function getOrder(): string
+    public function getOrder(): ?string
     {
         return $this->order;
     }
 
-    public function setOrder(string $order): TableFiltersDTO
+    public function setOrder(?string $order): TableFiltersDTO
     {
         $this->order = $order;
 

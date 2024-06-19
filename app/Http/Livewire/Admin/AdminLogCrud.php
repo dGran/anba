@@ -44,17 +44,17 @@ class AdminLogCrud extends Component
 
     //TODO: me temo que los query string debo tener que usarlos como filtos para que funcione
 
-    public ?string $search = null;
+    public ?string $search = '';
 
-    public ?string $type = null;
+    public ?string $type = '';
 
-    public ?string $user = null;
+    public ?string $user = '';
 
-    public ?string $table = null;
+    public ?string $table = '';
 
-    public ?string $perPage = null;
+    public ?string $perPage = '25';
 
-    public ?string $order = null;
+    public ?string $order = 'id_desc';
 
     protected $queryString = [
         LivewireQueryString::NAME_SEARCH => ['except' => TableFilters::VALUE_NULL],
@@ -104,6 +104,7 @@ class AdminLogCrud extends Component
         $this->adminLogCrudFactory = $adminLogCrudFactory;
 
         $this->viewModel = $this->adminLogCrudFactory->create($this->tableName);
+        $this->tableData = $this->tableDataService->toArray($this->viewModel->getTableData());
 
 //        $this->initializeFromSession();
     }
@@ -119,8 +120,13 @@ class AdminLogCrud extends Component
      */
     public function render()
     {
-        //table data se inicializa y no se tiene que editar
-        $this->tableData = $this->tableDataService->toArray($this->viewModel->getTableData());
+        //applyFilters test -> crear método
+        //todos las propiedades publicas que se vayan a modificar en la vista
+        $this->viewModel->getTableFilters()->setSearch($this->search);
+
+        //TODO
+        // setear en session todas las opciones desde viewModel en un método del SessionService::setFromCrudViewModel
+
 
         //tableFilters y tableOptions se inicializan y sí se van actualizando según la acción del usuario
         $this->tableFilters = $this->tableFiltersService->toArray($this->viewModel->getTableFilters());
@@ -244,15 +250,18 @@ class AdminLogCrud extends Component
 	}
 
 	// Selected
-	public function checkSelected($id)
-	{
-		$array_id = array_search($id, $this->regsSelectedArray);
+	public function checkSelected($id): void
+    {
+        $selectedIds = $this->viewModel->getTableOptions()->getSelectedIds();
+		$id = \array_search($id, $selectedIds, true);
 
-		if (!$array_id) {
-			$this->regsSelectedArray[$id] = $id;
+		if (!$id) {
+            $selectedIds[$id] = $id;
 		} else {
-			unset($this->regsSelectedArray[$array_id]);
+			unset($selectedIds[$id]);
 		}
+
+        $this->viewModel->getTableOptions()->setSelectedIds($selectedIds);
 	}
 
 	public function checkAll()
@@ -264,7 +273,7 @@ class AdminLogCrud extends Component
     		->type($this->tableFiltersDTO->getType())
     		->user($this->tableFiltersDTO->getUser())
     		->table($this->tableFiltersDTO->getTable())
-			->orderBy($this->getOrder()->getDetail()->getFieldName(), $this->getOrder()->getDetail()->getDirection())
+            ->orderBy($this->getOrderByColumn(), $this->getOrderByOrder())
 			->orderBy('admin_logs.id', 'desc')
 			->paginate($this->tableFiltersDTO->getPerPage())->onEachSide(2);
 
@@ -316,8 +325,8 @@ class AdminLogCrud extends Component
     	$this->page = 1;
     }
 
-	public function viewFilters($view)
-	{
+	public function viewFilters($view): void
+    {
 		if ($view) {
 			$this->emit('openFiltersModal');
 		} else {
@@ -325,27 +334,27 @@ class AdminLogCrud extends Component
 		}
 	}
 
-    public function cancelFilterSearch()
+    public function cancelFilterSearch(): void
     {
     	$this->search = '';
     }
 
     public function cancelFilterType()
     {
-		$this->filterType = "all";
+		$this->type = "all";
     }
 
     public function cancelFilterUser()
     {
-		$this->filterUser = "all";
+		$this->user = "all";
     }
 
     public function cancelFilterTable()
     {
-		$this->filterTable = "all";
+		$this->table = "all";
     }
 
-    public function setFilterPerPage($number)
+    public function setFilterPerPage($number): void
     {
     	$this->perPage = $number;
     }
@@ -431,7 +440,7 @@ class AdminLogCrud extends Component
     		->type($this->filterType)
     		->user($this->filterUser)
     		->table($this->filterTable)
-			->orderBy($this->getOrder($this->tableFiltersDTO->getOrder())['field'], $this->getOrder($this->tableFiltersDTO->getOrder())['direction'])
+            ->orderBy($this->getOrderByColumn(), $this->getOrderByOrder())
 			->orderBy('admin_logs.id', 'desc')
     		->get();
 
@@ -457,7 +466,7 @@ class AdminLogCrud extends Component
     		leftJoin('users', 'users.id', 'admin_logs.user_id')
     		->select('admin_logs.*', 'users.name as user_name')
     		->whereIn('admin_logs.id', $this->regsSelectedArray)
-			->orderBy($this->getOrder($this->tableFiltersDTO->getOrder())['field'], $this->getOrder($this->tableFiltersDTO->getOrder())['direction'])
+			->orderBy($this->getOrderByColumn(), $this->getOrderByOrder())
 			->orderBy('admin_logs.id', 'desc')
         	->get();
         $regs->makeHidden(['user_name', 'updated_at']);
@@ -574,13 +583,6 @@ class AdminLogCrud extends Component
         return $user->getName();
 	}
 
-    public function getOrder(): OrderDTO
-    {
-        $orderName = $this->viewModel->getTableFilters()->getOrder();
-
-        return $this->viewModel->getTableData()->getOrders()[$orderName];
-    }
-
 	public function setCurrentModal($modal): void
     {
         $this->viewModel->getTableOptions()->setCurrentModal($modal);
@@ -589,7 +591,7 @@ class AdminLogCrud extends Component
 
 	public function closeAnyModal(): void
     {
-        $this->tableOptionsDTO->setCurrentModal(null);
+        $this->viewModel->getTableOptions()->setCurrentModal(null);
 	}
 
     public function setNextPage(): void
