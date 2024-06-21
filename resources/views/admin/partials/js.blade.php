@@ -202,8 +202,8 @@
         $(this).find('[autofocus]').focus();
     });
 
-    if ("{{ $tableOptions['currentModal'] }}") {
-        $('#{{ $tableOptions['currentModal'] }}').modal('show');
+    if ("{{ $currentModal }}") {
+        $('#{{ $currentModal }}').modal('show');
     }
 
     // fix padding-right on open modal

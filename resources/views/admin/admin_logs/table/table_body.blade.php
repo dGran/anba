@@ -2,7 +2,7 @@
 	@foreach ($data as $datum)
 		<tr class="{{ $selectedData->find($datum->id) ? 'selected' : '' }}" wire:click.stop="checkSelected({{ $datum->id }})">
 			<td clas="check" style="min-width: 200px; padding: 0">
-				<div class="d-flex align-items-center" style="height: inherit; padding: .5em 1em; {{ $tableOptions['fixedFirstColumn'] ? 'border-right: 1px solid #e2e8f0;' : 'border-right: 1px solid transparent;' }}">
+				<div class="d-flex align-items-center" style="height: inherit; padding: .5em 1em; {{ $isFixedFirstColumn ? 'border-right: 1px solid #e2e8f0;' : 'border-right: 1px solid transparent;' }}">
 				    <div class="pretty p-svg p-curve p-jelly p-has-focus mr-2 non-selectable">
 				        <input type="checkbox" id="check{{ $datum->id }}" class="mousetrap"
 						wire:model="regsSelectedArray.{{ $datum->id }}" value="{{ $datum->id }}"
@@ -38,7 +38,7 @@
 					</div>
 				</div>
 			</td>
-			<td class="{{ $tableOptions['showTypeColumn'] ?: 'd-none' }}" style="width: 90px; min-width: 90px; max-width: 90px">
+			<td class="{{ $isShowTypeColumn ?: 'd-none' }}" style="width: 90px; min-width: 90px; max-width: 90px">
 				<span class="text-uppercase text-xs rounded px-2 py-1"
 					style="{{ $datum->type == 'INSERT' ? 'border: 1px solid rgba(167, 243, 208, 1); background-color: rgba(236, 253, 245, 1); color: rgba(52, 211, 153, 1)' : '' }}
 					{{ $datum->type == 'UPDATE' ? 'border: 1px solid rgba(229, 231, 235, 1); background-color: rgba(249, 250, 251, 1); color: rgba(156, 163, 175, 1)' : '' }}
@@ -46,22 +46,22 @@
 					{{ $datum->type }}
 				</span>
 			</td>
-			<td class="truncate {{ $tableOptions['showTableColumn'] ?: 'd-none' }}" style="width: 200px; min-width: 200px; max-width: 200px">
+			<td class="truncate {{ $isShowTableColumn ?: 'd-none' }}" style="width: 200px; min-width: 200px; max-width: 200px">
 				<span>
 					{{ $datum->table }}
 				</span>
 			</td>
-			<td class="truncate {{ $tableOptions['showUserColumn'] ?: 'd-none' }}" style="width: 200px; min-width: 200px; max-width: 200px">
+			<td class="truncate {{ $isShowUserColumn ?: 'd-none' }}" style="width: 200px; min-width: 200px; max-width: 200px">
 				<div class="d-flex align-items-center">
-					@if ($tableOptions['showTableImages'])
+					@if ($isShowTableImages)
 						<img class="image rounded-circle non-selectable" src="{{ $datum->user->profile_photo_url }}" alt="{{ $datum->user ? $datum->user->name : 'Usuario' }}" style="width: 40px;">
 					@endif
-					<span class="truncate {{ !$tableOptions['showTableImages'] ?: 'pl-2' }} {{ !$datum->user ? 'text-muted' : '' }}">
+					<span class="truncate {{ !$isShowTableImages ?: 'pl-2' }} {{ !$datum->user ? 'text-muted' : '' }}">
 						{{ $datum->user ? $datum->user->name : '' }}
 					</span>
 				</div>
 			</td>
-			<td class="{{ $tableOptions['showDateColumn'] ?: 'd-none' }}" style="width: 200px; min-width: 200px; max-width: 200px">
+			<td class="{{ $isShowDateColumn ?: 'd-none' }}" style="width: 200px; min-width: 200px; max-width: 200px">
 				<span>
 					{{ $datum->getCreatedAtDate() }} - {{ $datum->getCreatedAtTime() }}
 				</span>

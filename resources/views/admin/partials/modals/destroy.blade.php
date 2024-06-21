@@ -4,9 +4,9 @@
             <div class="modal-header">
                 <h5 class="modal-title text-base text-uppercase font-medium tracking-wide">
                     @if (count($selectedData) === 1)
-                        <span>Eliminar {{ $tableData['singular'] }} seleccionado</span>
+                        <span>Eliminar {{ $tableInfo['singular'] }} seleccionado</span>
                     @else
-                        <span>Eliminar {{ $tableData['plural'] }} seleccionados</span>
+                        <span>Eliminar {{ $tableInfo['plural'] }} seleccionados</span>
                     @endif
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="closeAnyModal">
@@ -15,17 +15,17 @@
             </div>
             <div class="modal-body text-center">
                 @if (count($selectedData) === 1)
-                    <p>¿Estás seguro que deseas eliminar {{ $tableData['gender'] === 'male' ? 'el' : 'la' }} {{ $tableData['singular'] }} <strong>{{ $selectedData->first()->getName() }}</strong>?</p>
+                    <p>¿Estás seguro que deseas eliminar {{ $tableInfo['gender'] === 'male' ? 'el' : 'la' }} {{ $tableInfo['singular'] }} <strong>{{ $selectedData->first()->getName() }}</strong>?</p>
                 @else
-                    <p>¿Estás seguro que deseas eliminar {{ $tableData['gender'] === 'male' ? 'los' : 'las' }} {{ count($selectedData) }} {{ $tableData['plural'] }} seleccionados?</p>
+                    <p>¿Estás seguro que deseas eliminar {{ $tableInfo['gender'] === 'male' ? 'los' : 'las' }} {{ count($selectedData) }} {{ $tableInfo['plural'] }} seleccionados?</p>
                 @endif
                 <p class="font-weight-bold text-danger m-0 mb-1">Esta acción será irreversible</p>
 
                 <div class="text-left">
                     @if (count($selectedData) === 1)
-                        <p class="m-0 mt-4 mb-1 text-sm font-italic border-top pt-3 text-muted">*Si {{ $tableData['gender'] === 'male' ? 'el' : 'la' }} {{ $tableData['singular'] }} tiene registrada cualquier actividad relevante para el funcionamiento general no será {{ $tableData['gender'] === 'male' ? 'eliminado' : 'eliminada' }}</p>
+                        <p class="m-0 mt-4 mb-1 text-sm font-italic border-top pt-3 text-muted">*Si {{ $tableInfo['gender'] === 'male' ? 'el' : 'la' }} {{ $tableInfo['singular'] }} tiene registrada cualquier actividad relevante para el funcionamiento general no será {{ $tableInfo['gender'] === 'male' ? 'eliminado' : 'eliminada' }}</p>
                     @else
-                        <p class="m-0 mt-4 mb-1 text-sm font-italic border-top pt-3 text-muted">*{{ $tableData['gender'] === 'male' ? 'Los' : 'Las' }} {{ $tableData['plural'] }} con actividad registrada relevante para el funcionamiento general no serán {{ $tableData['gender'] === 'male' ? 'eliminados' : 'eliminadas' }}</p>
+                        <p class="m-0 mt-4 mb-1 text-sm font-italic border-top pt-3 text-muted">*{{ $tableInfo['gender'] === 'male' ? 'Los' : 'Las' }} {{ $tableInfo['plural'] }} con actividad registrada relevante para el funcionamiento general no serán {{ $tableInfo['gender'] === 'male' ? 'eliminados' : 'eliminadas' }}</p>
                     @endif
                 </div>
             </div>

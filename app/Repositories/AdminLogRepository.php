@@ -18,14 +18,14 @@ class AdminLogRepository
     /**
      * @return string[]
      */
-    public function getDistinctUserIds(): array
+    public function getDistinctUsers(): array
     {
         return Cache::remember(__METHOD__, now()->addHours(24), static function () {
             return AdminLog::distinct()
                 ->join('users', 'admin_logs.user_id', '=', 'users.id')
                 ->whereNotNull('admin_logs.user_id')
                 ->orderBy('users.name', OrderByCriteria::ORDER_ASC)
-                ->pluck('admin_logs.user_id')
+                ->pluck('admin_logs.user_id', 'users.name')
                 ->toArray();
         });
     }

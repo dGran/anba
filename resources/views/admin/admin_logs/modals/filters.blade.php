@@ -16,7 +16,7 @@
                         <label class="text-sm text-uppercase tracking-wide">Tipo</label>
                         <select class="form-control custom-select text-sm" wire:model="filterType">
                             <option value="all">Todos los tipos</option>
-                            @foreach ($tableFilters['relatedTypes'] as $type)
+                            @foreach ($relatedTypes as $type)
                                 <option value="{{ $type }}">{{ $type }}</option>
                             @endforeach
                         </select>
@@ -26,7 +26,7 @@
                         <label class="text-sm text-uppercase tracking-wide">Tabla</label>
                         <select class="form-control custom-select text-sm" wire:model="filterTable">
                             <option value="all">Todas las tablas</option>
-                            @foreach ($tableFilters['relatedTables'] as $table)
+                            @foreach ($relatedTables as $table)
                                 <option value="{{ $table }}">{{ $table }}</option>
                             @endforeach
                         </select>
@@ -38,7 +38,7 @@
                         <label class="text-sm text-uppercase tracking-wide">Usuario</label>
                         <select class="form-control custom-select text-sm" wire:model="filterUser">
                             <option value="all">Todos los usuarios</option>
-                            @foreach ($tableFilters['relatedUserIds'] as $userId => $userName)
+                            @foreach ($relatedUsers as $userId => $userName)
                                 <option value="{{ $userId }}">{{ $userName }}</option>
                             @endforeach
                         </select>

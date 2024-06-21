@@ -41,9 +41,9 @@ class AdminLogManager
     /**
      * @return int[]
      */
-    public function getDistinctUserIds(): array
+    public function getDistinctUsers(): array
     {
-        return $this->repository->getDistinctUserIds();
+        return $this->repository->getDistinctUsers();
     }
 
     /**

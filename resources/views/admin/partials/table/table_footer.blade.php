@@ -1,4 +1,4 @@
-@if ($data->total() > $tableFilters['perPage'])
+@if ($data->total() > $perPage)
 	<div class="pagination-wrapper">
 		{{ $data->links('vendor.pagination.custom') }}
 	</div>

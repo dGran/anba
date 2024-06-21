@@ -4,9 +4,9 @@
             <div class="modal-header">
                 <h5 class="modal-title text-base text-uppercase font-medium tracking-wide">
                     @if (count($selectedData) === 1)
-                        <span>Exportar {{ $tableData['singular'] }} seleccionado</span>
+                        <span>Exportar {{ $tableInfo['singular'] }} seleccionado</span>
                     @else
-                        <span>Exportar {{ $tableData['plural'] }} seleccionados</span>
+                        <span>Exportar {{ $tableInfo['plural'] }} seleccionados</span>
                     @endif
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="closeAnyModal">
@@ -15,9 +15,9 @@
             </div>
             <div class="modal-body text-center">
                 @if (count($selectedData) === 1)
-                    <p>Se va a exportar {{ $modelGender = 'male' ? 'el' : 'la' }} {{ $tableData['singular'] }} <strong>{{ $selectedData->first()->getName() }}</strong> en formato <strong>".{{ $formatExport }}"</strong></p>
+                    <p>Se va a exportar {{ $modelGender = 'male' ? 'el' : 'la' }} {{ $tableInfo['singular'] }} <strong>{{ $selectedData->first()->getName() }}</strong> en formato <strong>".{{ $formatExport }}"</strong></p>
                 @else
-                    <p>Se van a exportar {{ $modelGender = 'male' ? 'los' : 'las' }} {{ count($selectedData) }} {{ $tableData['plural'] }} seleccionados en formato <strong>".{{ $formatExport }}"</strong></p>
+                    <p>Se van a exportar {{ $modelGender = 'male' ? 'los' : 'las' }} {{ count($selectedData) }} {{ $tableInfo['plural'] }} seleccionados en formato <strong>".{{ $formatExport }}"</strong></p>
                     <p class="font-weight-bold m-0 mb-1">Se aplicarán los filtros y el orden actual</p>
                 @endif
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Enum;
 
-class TableData
+class TableInfo
 {
     public const SINGULAR = 'singular';
 

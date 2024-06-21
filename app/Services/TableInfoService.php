@@ -2,22 +2,21 @@
 
 declare(strict_types=1);
 
-namespace App\Factories\DTO;
+namespace App\Services;
 
-use App\DTO\TableDataDTO;
 use App\Enum\OrderByCriteria;
-use App\Enum\TableData;
+use App\Enum\TableInfo;
 use App\Enum\TableNames;
 
-class TableDataDTOFactory
+class TableInfoService
 {
-    public const TABLE_DATA_INDEXED_BY_TABLE_NAME = [
+    private const TABLE_INFO_INDEXED_BY_TABLE_NAME = [
         TableNames::TABLE_ADMIN_LOG => [
-            TableData::SINGULAR => 'log',
-            TableData::PLURAL => 'logs',
-            TableData::GENDER => 'male',
-            TableData::HAS_IMAGE => false,
-            TableData::ORDER_BY_CRITERIA_INDEXED_BY_NAME => [
+            TableInfo::SINGULAR => 'log',
+            TableInfo::PLURAL => 'logs',
+            TableInfo::GENDER => 'male',
+            TableInfo::HAS_IMAGE => false,
+            TableInfo::ORDER_BY_CRITERIA_INDEXED_BY_NAME => [
                 OrderByCriteria::ORDER_BY_ID => [
                     'column' => 'id',
                     'order' => OrderByCriteria::ORDER_ASC
@@ -70,17 +69,8 @@ class TableDataDTOFactory
         ],
     ];
 
-    public static function create(string $tableName): TableDataDTO
+    public function getTableInfoByTableName(string $tableName): array
     {
-        $tableData = self::TABLE_DATA_INDEXED_BY_TABLE_NAME[$tableName];
-
-        $tableDataDTO = new TableDataDTO();
-        $tableDataDTO->setSingular($tableData[TableData::SINGULAR]);
-        $tableDataDTO->setPlural($tableData[TableData::PLURAL]);
-        $tableDataDTO->setGender($tableData[TableData::GENDER]);
-        $tableDataDTO->setHasImage($tableData[TableData::HAS_IMAGE]);
-        $tableDataDTO->setOrderByCriteriaIndexedByName($tableData[TableData::ORDER_BY_CRITERIA_INDEXED_BY_NAME]);
-
-        return $tableDataDTO;
+        return self::TABLE_INFO_INDEXED_BY_TABLE_NAME[$tableName];
     }
 }

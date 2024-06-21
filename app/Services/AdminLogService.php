@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Factories\DTO\AdminLogFactory;
+use App\Factories\DTO\AdminLogFactory as AdminLogDTOFactory;
 use App\Factories\Models\AdminLogFactory;
 use App\Managers\AdminLogManager;
 use Illuminate\Database\Eloquent\Model;
@@ -27,7 +27,7 @@ class AdminLogService
     public function register(Model $model, string $type, array $regData, array $regDataBefore): void
     {
         try {
-            $adminLogDTO = AdminLogFactory::create([
+            $adminLogDTO = AdminLogDTOFactory::create([
                 'model' => $model,
                 'type' => \strtoupper($type),
                 'reg_data' => $regData,

@@ -32,7 +32,7 @@ class TableFiltersService
             TableFilters::NAME_TYPE => TableFilters::VALUE_ALL,
             TableFilters::NAME_USER => TableFilters::VALUE_ALL,
             TableFilters::NAME_TABLE => TableFilters::VALUE_ALL,
-            TableFilters::NAME_ORDER => OrderByCriteria::ORDER_BY_ID_DESC,
+            TableFilters::NAME_ORDER_BY => OrderByCriteria::ORDER_BY_ID_DESC,
             TableFilters::NAME_PER_PAGE => TableFilters::VALUE_PER_PAGE_DEFAULT,
         ],
     ];
@@ -47,7 +47,7 @@ class TableFiltersService
 
         switch ($tableName) {
             case TableNames::TABLE_ADMIN_LOG:
-                $userIds = $this->adminLogManager->getDistinctUserIds();
+                $userIds = $this->adminLogManager->getDistinctUsers();
                 $tableFiltersDTO->setRelatedUserIds($userIds);
 
                 $tables = $this->adminLogManager->getDistinctTables();

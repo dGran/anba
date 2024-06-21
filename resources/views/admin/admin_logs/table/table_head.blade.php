@@ -11,46 +11,46 @@
 		        </div>
 		    </div>
 		    <div class="pl-3 d-inline-block">
-				@if ($tableFilters['order'] === 'name')
+				@if ($order === 'name')
 					<span class="d-inline-block cursor-pointer" wire:click="order('name_desc')">Nombre<i class="fas fa-sort-alpha-up pl-1"></i></span>
-				@elseif ($tableFilters['order'] === 'name_desc')
+				@elseif ($order === 'name_desc')
 					<span class="d-inline-block cursor-pointer" wire:click="order('name')">Nombre<i class="fas fa-sort-alpha-down pl-1"></i></span>
 				@else
 					<span class="d-inline-block cursor-pointer" wire:click="order('name')">Nombre</span>
 				@endif
 		    </div>
 		</th>
-		<th class="{{ $tableOptions['showTypeColumn'] ?: 'd-none' }}">
-			@if ($tableFilters['order'] === 'type')
+		<th class="{{ $isShowTypeColumn ?: 'd-none' }}">
+			@if ($order === 'type')
 				<span class="d-inline-block cursor-pointer" wire:click="order('type_desc')">Tipo<i class="fas fa-sort-alpha-up pl-1"></i></span>
-			@elseif ($tableFilters['order'] === 'type_desc')
+			@elseif ($order === 'type_desc')
 				<span class="d-inline-block cursor-pointer" wire:click="order('type')">Tipo<i class="fas fa-sort-alpha-down pl-1"></i></span>
 			@else
 				<span class="d-inline-block cursor-pointer" wire:click="order('type')">Tipo</span>
 			@endif
 		</th>
-		<th class="{{ $tableOptions['showTableColumn'] ?: 'd-none' }}">
-			@if ($tableFilters['order'] === 'table')
+		<th class="{{ $isShowTableColumn ?: 'd-none' }}">
+			@if ($order === 'table')
 				<span class="d-inline-block cursor-pointer" wire:click="order('table_desc')">Tabla<i class="fas fa-sort-alpha-up pl-1"></i></span>
-			@elseif ($tableFilters['order'] === 'table_desc')
+			@elseif ($order === 'table_desc')
 				<span class="d-inline-block cursor-pointer" wire:click="order('table')">Tabla<i class="fas fa-sort-alpha-down pl-1"></i></span>
 			@else
 				<span class="d-inline-block cursor-pointer" wire:click="order('table')">Tabla</span>
 			@endif
 		</th>
-		<th class="{{ $tableOptions['showUserColumn'] ?: 'd-none' }}">
-			@if ($tableFilters['order'] === 'user')
+		<th class="{{ $isShowUserColumn ?: 'd-none' }}">
+			@if ($order === 'user')
 				<span class="d-inline-block cursor-pointer" wire:click="order('user_desc')">Usuario<i class="fas fa-sort-alpha-up pl-1"></i></span>
-			@elseif ($tableFilters['order'] === 'user_desc')
+			@elseif ($order === 'user_desc')
 				<span class="d-inline-block cursor-pointer" wire:click="order('user')">Usuario<i class="fas fa-sort-alpha-down pl-1"></i></span>
 			@else
 				<span class="d-inline-block cursor-pointer" wire:click="order('user')">Usuario</span>
 			@endif
 		</th>
-		<th class="{{ $tableOptions['showDateColumn'] ?: 'd-none' }}">
-			@if ($tableFilters['order'] === 'date')
+		<th class="{{ $isShowDateColumn ?: 'd-none' }}">
+			@if ($order === 'date')
 				<span class="d-inline-block cursor-pointer" wire:click="order('date_desc')">Fecha<i class="fas fa-sort-alpha-up pl-1"></i></span>
-			@elseif ($tableFilters['order'] === 'date_desc')
+			@elseif ($order === 'date_desc')
 				<span class="d-inline-block cursor-pointer" wire:click="order('date')">Fecha<i class="fas fa-sort-alpha-down pl-1"></i></span>
 			@else
 				<span class="d-inline-block cursor-pointer" wire:click="order('date')">Fecha</span>

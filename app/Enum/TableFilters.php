@@ -20,11 +20,15 @@ class TableFilters
 
     public const NAME_PER_PAGE = 'perPage';
 
-    public const NAME_ORDER = 'order';
+    public const NAME_ORDER_BY = 'orderBy';
+
+    public const NAME_ORDER_BY_COLUMN = 'orderByColumn';
+
+    public const NAME_ORDER_BY_ORDER = 'orderByOrder';
 
     public const VALUE_NULL = '';
 
     public const VALUE_ALL = 'all';
 
-    public const VALUE_PER_PAGE_DEFAULT = 25;
+    public const VALUE_PER_PAGE_DEFAULT = '25';
 }
