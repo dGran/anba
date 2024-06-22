@@ -7,7 +7,6 @@ namespace App\Http\Livewire\Admin;
 use App\Enum\LivewireQueryString;
 use App\Enum\OrderByCriteria;
 use App\Enum\TableFilters;
-use App\Enum\TableOptions;
 use App\Http\Livewire\Base\BaseComponent;
 use App\Managers\AdminLogManager;
 use App\Managers\UserManager;
@@ -265,16 +264,6 @@ class AdminLogCrud extends BaseComponent
     	$this->perPage = '25';
     }
 
-    /**
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function resetFilters(): void
-    {
-        $this->initializeFilters();
-		$this->emit('resetFiltersMode');
-    }
-
     // Destroy
     public function confirmDestroy()
     {
@@ -465,12 +454,6 @@ class AdminLogCrud extends BaseComponent
         return $user->getName();
 	}
 
-    public function setCurrentModal($modal): void
-    {
-        $currentModal = $modal;
-        $this->sessionService->set($this->tableName, TableOptions::NAME_CURRENT_MODAL, $modal);
-    }
-
     /**
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -487,5 +470,10 @@ class AdminLogCrud extends BaseComponent
 
         $types = $this->adminLogManager->getDistinctTypes();
         $this->relatedTypes = $types;
+    }
+
+    public function resetFilters(): void
+    {
+        $this->resetCommonFilters($this->tableName, $this->tableInfo);
     }
 }

@@ -7,6 +7,7 @@ namespace App\Http\Livewire\Base;
 use App\Enum\OrderByCriteria;
 use App\Enum\TableFilters;
 use App\Enum\TableInfo;
+use App\Enum\TableNames;
 use App\Enum\TableOptions;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -130,6 +131,35 @@ class BaseComponent extends Component
         $this->selectedIds = session()->get($tableName.'.'.TableOptions::NAME_SELECTED_IDS) ?? self::PROPERTY_INITIAL_VALUES[TableOptions::NAME_SELECTED_IDS];
         $this->currentModal = session()->get($tableName.'.'.TableOptions::NAME_CURRENT_MODAL) ?? self::PROPERTY_INITIAL_VALUES[TableOptions::NAME_CURRENT_MODAL];
         $this->isCheckAllSelector = session()->get($tableName.'.'.TableOptions::NAME_IS_CHECK_ALL_SELECTOR) ?? self::PROPERTY_INITIAL_VALUES[TableOptions::NAME_IS_CHECK_ALL_SELECTOR];
+    }
+
+    public function cancelFilter(string $property): void
+    {
+        if (!\array_key_exists($property, self::PROPERTY_INITIAL_VALUES)) {
+            return;
+        }
+
+        $this->{$property} = self::PROPERTY_INITIAL_VALUES[$property];
+    }
+
+    public function resetCommonFilters(string $tableName, array $tableInfo): void
+    {
+        $this->search = self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_SEARCH];
+        $this->type = self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_TYPE];
+        $this->user = self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_USER];
+        $this->userName = self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_USER_NAME];
+        $this->table = self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_TABLE];
+        $this->page = self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_PAGE];
+        $this->perPage = self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_PER_PAGE];
+        $this->orderBy = self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_ORDER_BY];
+        $this->orderByColumn = $tableInfo[TableInfo::ORDER_BY_CRITERIA_INDEXED_BY_NAME][$this->orderBy]['column'];
+        $this->orderByOrder = $tableInfo[TableInfo::ORDER_BY_CRITERIA_INDEXED_BY_NAME][$this->orderBy]['order'];
+
+        $this->setPropertiesInSession($this->filterProperties, $tableName);
+
+        if ($tableName === TableNames::TABLE_PLAYERS) {
+            $this->emit('resetFiltersMode');
+        }
     }
 
     /**

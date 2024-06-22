@@ -90,7 +90,7 @@
             </div>
 
             <div class="modal-footer" style="background: #F9FAFB">
-                <button type="button" class="btn btn-danger ml-2 text-xs text-uppercase tracking-widest" wire:click="clearAllFilters" wire:loading.attr="disabled">
+                <button type="button" class="btn btn-danger ml-2 text-xs text-uppercase tracking-widest" wire:click="resetFilters" wire:loading.attr="disabled">
                     Reset
                 </button>
                 <button type="button" class="btn btn-borderless ml-2 text-xs text-uppercase tracking-widest" data-dismiss="modal" wire:loading.attr="disabled" wire:click="closeAnyModal">

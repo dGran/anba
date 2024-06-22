@@ -7,4 +7,6 @@ namespace App\Enum;
 class TableNames
 {
     public const TABLE_ADMIN_LOG = 'admin_logs';
+
+    public const TABLE_PLAYERS = 'players';
 }

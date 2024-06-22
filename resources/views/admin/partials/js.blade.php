@@ -161,7 +161,7 @@
             @this.cancelSelection();
         });
         Mousetrap.bind('c f', function() {
-            @this.clearAllFilters();
+            @this.resetFilters();
         });
         Mousetrap.bind('p 1', function() {
             @this.setFilterPerPage("5");
