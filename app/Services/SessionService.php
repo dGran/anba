@@ -28,18 +28,28 @@ class SessionService
 
     private const OPTION_SESSION_NAMES_INDEXED_BY_OPTION_NAME_GROUPED_BY_TABLE_NAME = [
         TableNames::TABLE_ADMIN_LOG => [
-            TableOptions::NAME_SHOW_TABLE_IMAGES => TableNames::TABLE_ADMIN_LOG.'.'.TableOptions::NAME_SHOW_TABLE_IMAGES,
-            TableOptions::NAME_SHOW_STRIPED => TableNames::TABLE_ADMIN_LOG.'.'.TableOptions::NAME_SHOW_STRIPED,
-            TableOptions::NAME_FIXED_FIRST_COLUMN => TableNames::TABLE_ADMIN_LOG.'.'.TableOptions::NAME_FIXED_FIRST_COLUMN,
-            TableOptions::NAME_SHOW_TYPE_COLUMN => TableNames::TABLE_ADMIN_LOG.'.'.TableOptions::NAME_SHOW_TYPE_COLUMN,
-            TableOptions::NAME_SHOW_TABLE_COLUMN => TableNames::TABLE_ADMIN_LOG.'.'.TableOptions::NAME_SHOW_TABLE_COLUMN,
-            TableOptions::NAME_SHOW_USER_COLUMN => TableNames::TABLE_ADMIN_LOG.'.'.TableOptions::NAME_SHOW_USER_COLUMN,
-            TableOptions::NAME_SHOW_DATE_COLUMN => TableNames::TABLE_ADMIN_LOG.'.'.TableOptions::NAME_SHOW_DATE_COLUMN,
+            TableOptions::NAME_IS_SHOW_TABLE_IMAGES => TableNames::TABLE_ADMIN_LOG.'.'.TableOptions::NAME_IS_SHOW_TABLE_IMAGES,
+            TableOptions::NAME_IS_SHOW_STRIPED => TableNames::TABLE_ADMIN_LOG.'.'.TableOptions::NAME_IS_SHOW_STRIPED,
+            TableOptions::NAME_IS_FIXED_FIRST_COLUMN => TableNames::TABLE_ADMIN_LOG.'.'.TableOptions::NAME_IS_FIXED_FIRST_COLUMN,
+            TableOptions::NAME_IS_SHOW_TYPE_COLUMN => TableNames::TABLE_ADMIN_LOG.'.'.TableOptions::NAME_IS_SHOW_TYPE_COLUMN,
+            TableOptions::NAME_IS_SHOW_TABLE_COLUMN => TableNames::TABLE_ADMIN_LOG.'.'.TableOptions::NAME_IS_SHOW_TABLE_COLUMN,
+            TableOptions::NAME_IS_SHOW_USER_COLUMN => TableNames::TABLE_ADMIN_LOG.'.'.TableOptions::NAME_IS_SHOW_USER_COLUMN,
+            TableOptions::NAME_IS_SHOW_DATE_COLUMN => TableNames::TABLE_ADMIN_LOG.'.'.TableOptions::NAME_IS_SHOW_DATE_COLUMN,
             TableOptions::NAME_CURRENT_MODAL => TableNames::TABLE_ADMIN_LOG.'.'.TableOptions::NAME_CURRENT_MODAL,
             TableOptions::NAME_SELECTED_IDS => TableNames::TABLE_ADMIN_LOG.'.'.TableOptions::NAME_SELECTED_IDS,
-            TableOptions::NAME_CHECK_ALL_SELECTOR => TableNames::TABLE_ADMIN_LOG.'.'.TableOptions::NAME_CHECK_ALL_SELECTOR,
+            TableOptions::NAME_IS_CHECK_ALL_SELECTOR => TableNames::TABLE_ADMIN_LOG.'.'.TableOptions::NAME_IS_CHECK_ALL_SELECTOR,
         ]
     ];
+
+    public function getOptionPropertiesByTableName(string $tableName): array
+    {
+        return \array_keys(self::OPTION_SESSION_NAMES_INDEXED_BY_OPTION_NAME_GROUPED_BY_TABLE_NAME[$tableName]);
+    }
+
+    public function getFilterPropertiesByTableName(string $tableName): array
+    {
+        return \array_keys(self::FILTER_SESSION_NAMES_INDEXED_BY_FILTER_NAME_GROUPED_BY_TABLE_NAME[$tableName]);
+    }
 
     public function set(string $tableName, string $name, string $value): void
     {
@@ -56,7 +66,7 @@ class SessionService
         }
 
         if ($allColumnOptionsDisabled) {
-            session([$tableName.'.'.TableOptions::NAME_FIXED_FIRST_COLUMN => 'off']);
+            session([$tableName.'.'.TableOptions::NAME_IS_FIXED_FIRST_COLUMN => 'off']);
         }
     }
 }

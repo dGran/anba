@@ -67,6 +67,12 @@ class BaseComponent extends Component
 
     public ?bool $isCheckAllSelector = null;
 
+    /** @var array<int, string> */
+    protected array $optionProperties = [];
+
+    /** @var array<int, string> */
+    protected array $filterProperties = [];
+
     /**
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -91,9 +97,33 @@ class BaseComponent extends Component
      */
     public function initializeOptions(string $tableName): void
     {
-        $this->selectedIds = session()->get($tableName.TableOptions::NAME_SELECTED_IDS) ?? [];
-        $this->currentModal = session()->get($tableName.TableOptions::NAME_CURRENT_MODAL) ?? '';
-        $this->isCheckAllSelector = session()->get($tableName.TableOptions::NAME_CHECK_ALL_SELECTOR) ?? false;
+        $this->isShowTableImages = session()->get($tableName.'.'.TableOptions::NAME_IS_SHOW_TABLE_IMAGES) ?? true;
+        $this->isShowStriped = session()->get($tableName.'.'.TableOptions::NAME_IS_SHOW_STRIPED) ?? true;
+        $this->isFixedFirstColumn = session()->get($tableName.'.'.TableOptions::NAME_IS_FIXED_FIRST_COLUMN) ?? false;
+        $this->isShowTypeColumn = session()->get($tableName.'.'.TableOptions::NAME_IS_SHOW_TYPE_COLUMN) ?? true;
+        $this->isShowTableColumn = session()->get($tableName.'.'.TableOptions::NAME_IS_SHOW_TABLE_COLUMN) ?? true;
+        $this->isShowUserColumn = session()->get($tableName.'.'.TableOptions::NAME_IS_SHOW_USER_COLUMN) ?? true;
+        $this->isShowDateColumn = session()->get($tableName.'.'.TableOptions::NAME_IS_SHOW_DATE_COLUMN) ?? true;
+        $this->selectedIds = session()->get($tableName.'.'.TableOptions::NAME_SELECTED_IDS) ?? [];
+        $this->currentModal = session()->get($tableName.'.'.TableOptions::NAME_CURRENT_MODAL) ?? '';
+        $this->isCheckAllSelector = session()->get($tableName.'.'.TableOptions::NAME_IS_CHECK_ALL_SELECTOR) ?? false;
+    }
+
+    /**
+     * @param array<int, string> $properties
+     */
+    public function setPropertiesInSession(array $properties, string $tableName): void
+    {
+        foreach ($properties as $property) {
+            if (!\property_exists($this, $property)) {
+                continue;
+            }
+
+            $value = $this->{$property};
+            $sessionKey = $tableName.'.'.$property;
+
+            session()->put($sessionKey, $value);
+        }
     }
 
     public function setNextPage(): void

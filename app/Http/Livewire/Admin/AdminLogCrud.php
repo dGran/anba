@@ -74,8 +74,10 @@ class AdminLogCrud extends BaseComponent
         $this->sessionService = $sessionService;
 
         $this->tableInfo = $this->tableInfoService->getTableInfoByTableName($this->tableName);
-        $this->initializeFilters();
+        $this->optionProperties = $this->sessionService->getOptionPropertiesByTableName($this->tableName);
+        $this->filterProperties = $this->sessionService->getFilterPropertiesByTableName($this->tableName);
         $this->initializeOptions($this->tableName);
+        $this->initializeFilters();
     }
 
     /**
@@ -85,6 +87,9 @@ class AdminLogCrud extends BaseComponent
      */
     public function render()
     {
+        $this->setPropertiesInSession($this->optionProperties, $this->tableName);
+        $this->setPropertiesInSession($this->filterProperties, $this->tableName);
+
         return view('admin.admin_logs', [
             'data' => $this->getData(),
             'selectedData' => $this->getSelectedData(),
@@ -110,10 +115,10 @@ class AdminLogCrud extends BaseComponent
 			$this->fixedFirstColumn = true;
 		}
 
-		if (session()->get('admin_logs.striped')) {
-			$this->striped = session()->get('admin_logs.striped') === 'on';
+		if (session()->get('admin_logs.isShowStriped')) {
+			$this->isShowStriped = session()->get('admin_logs.isShowStriped') === 'on';
 		} else {
-			$this->striped = true;
+			$this->isShowStriped = true;
 		}
 
 		if (session()->get('admin_logs.colType')) {

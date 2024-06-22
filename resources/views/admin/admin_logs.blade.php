@@ -42,7 +42,7 @@
 
     @if (config('adminlte.right_sidebar'))
         <aside class="control-sidebar control-sidebar-{{ config('adminlte.right_sidebar_theme') }} shadow overflow-auto">
-{{--            @include('admin.admin_logs.right-sidebar')--}}
+            @include('admin.admin_logs.right-sidebar')
         </aside>
     @endif
 </div>
