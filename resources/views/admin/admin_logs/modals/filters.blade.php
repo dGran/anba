@@ -36,7 +36,7 @@
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label class="text-sm text-uppercase tracking-wide">Usuario</label>
-                        <select class="form-control custom-select text-sm" wire:model="filterUser">
+                        <select class="form-control custom-select text-sm" wire:model="user">
                             <option value="all">Todos los usuarios</option>
                             @foreach ($relatedUsers as $userId => $userName)
                                 <option value="{{ $userId }}">{{ $userName }}</option>

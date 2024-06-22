@@ -28,12 +28,12 @@ class TableFiltersService
 
     public const FILTERS_INDEXED_BY_TABLE_NAME = [
         TableNames::TABLE_ADMIN_LOG => [
-            TableFilters::NAME_SEARCH => TableFilters::VALUE_NULL,
+            TableFilters::NAME_SEARCH => TableFilters::VALUE_NULL_STRING,
             TableFilters::NAME_TYPE => TableFilters::VALUE_ALL,
             TableFilters::NAME_USER => TableFilters::VALUE_ALL,
             TableFilters::NAME_TABLE => TableFilters::VALUE_ALL,
             TableFilters::NAME_ORDER_BY => OrderByCriteria::ORDER_BY_ID_DESC,
-            TableFilters::NAME_PER_PAGE => TableFilters::VALUE_PER_PAGE_DEFAULT,
+            TableFilters::NAME_PER_PAGE => TableFilters::PER_PAGE_DEFAULT_VALUE,
         ],
     ];
 
@@ -80,8 +80,8 @@ class TableFiltersService
                     $user = $this->userManager->findOneById((int)$tableFiltersDTO->getUser());
 
                     if ($user === null) {
-                        $tableFiltersDTO->setUser(TableFilters::VALUE_NULL);
-                        $tableFiltersDTO->setUserName(TableFilters::VALUE_NULL);
+                        $tableFiltersDTO->setUser(TableFilters::VALUE_NULL_STRING);
+                        $tableFiltersDTO->setUserName(TableFilters::VALUE_NULL_STRING);
 
                         break;
                     }

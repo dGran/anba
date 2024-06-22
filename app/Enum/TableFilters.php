@@ -26,9 +26,13 @@ class TableFilters
 
     public const NAME_ORDER_BY_ORDER = 'orderByOrder';
 
-    public const VALUE_NULL = '';
+    public const VALUE_NULL_STRING = '';
 
     public const VALUE_ALL = 'all';
 
-    public const VALUE_PER_PAGE_DEFAULT = '25';
+    public const VALUE_EMPTY_ARRAY = [];
+
+    public const PER_PAGE_DEFAULT_VALUE = '25';
+
+    public const PAGE_DEFAULT_VALUE = '1';
 }

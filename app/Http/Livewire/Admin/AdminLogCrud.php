@@ -7,7 +7,6 @@ namespace App\Http\Livewire\Admin;
 use App\Enum\LivewireQueryString;
 use App\Enum\OrderByCriteria;
 use App\Enum\TableFilters;
-use App\Enum\TableNames;
 use App\Enum\TableOptions;
 use App\Http\Livewire\Base\BaseComponent;
 use App\Managers\AdminLogManager;
@@ -36,11 +35,11 @@ class AdminLogCrud extends BaseComponent
     public ?string $order = 'id_desc';
 
     protected $queryString = [
-        LivewireQueryString::NAME_SEARCH => ['except' => TableFilters::VALUE_NULL],
+        LivewireQueryString::NAME_SEARCH => ['except' => TableFilters::VALUE_NULL_STRING],
         LivewireQueryString::NAME_FILTER_TYPE => ['except' => TableFilters::VALUE_ALL],
         LivewireQueryString::NAME_FILTER_USER => ['except' => TableFilters::VALUE_ALL],
         LivewireQueryString::NAME_FILTER_TABLE => ['except' => TableFilters::VALUE_ALL],
-        LivewireQueryString::NAME_PER_PAGE => ['except' => TableFilters::VALUE_PER_PAGE_DEFAULT],
+        LivewireQueryString::NAME_PER_PAGE => ['except' => TableFilters::PER_PAGE_DEFAULT_VALUE],
         LivewireQueryString::NAME_ORDER => ['except' => OrderByCriteria::ORDER_BY_ID_DESC],
     ];
 
@@ -244,6 +243,11 @@ class AdminLogCrud extends BaseComponent
     public function cancelFilterUser()
     {
 		$this->user = "all";
+    }
+
+    public function clearFilter(string $property): void
+    {
+//        $this->{$property} =
     }
 
     public function cancelFilterTable()

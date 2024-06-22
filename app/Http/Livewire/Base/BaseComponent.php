@@ -17,6 +17,29 @@ class BaseComponent extends Component
 {
     use WithPagination;
 
+    public const PROPERTY_INITIAL_VALUES = [
+        TableFilters::NAME_SEARCH => TableFilters::VALUE_NULL_STRING,
+        TableFilters::NAME_TYPE => TableFilters::VALUE_ALL,
+        TableFilters::NAME_USER => TableFilters::VALUE_ALL,
+        TableFilters::NAME_USER_NAME => TableFilters::VALUE_NULL_STRING,
+        TableFilters::NAME_TABLE => TableFilters::VALUE_ALL,
+        TableFilters::NAME_PAGE => TableFilters::PAGE_DEFAULT_VALUE,
+        TableFilters::NAME_PER_PAGE => TableFilters::PER_PAGE_DEFAULT_VALUE,
+        TableFilters::NAME_ORDER_BY => OrderByCriteria::ORDER_BY_ID_DESC,
+        TableFilters::NAME_ORDER_BY_COLUMN => null,
+        TableFilters::NAME_ORDER_BY_ORDER => null,
+        TableOptions::NAME_IS_SHOW_TABLE_IMAGES => true,
+        TableOptions::NAME_IS_SHOW_STRIPED => true,
+        TableOptions::NAME_IS_FIXED_FIRST_COLUMN => false,
+        TableOptions::NAME_IS_SHOW_TYPE_COLUMN => true,
+        TableOptions::NAME_IS_SHOW_TABLE_COLUMN => true,
+        TableOptions::NAME_IS_SHOW_USER_COLUMN => true,
+        TableOptions::NAME_IS_SHOW_DATE_COLUMN => true,
+        TableOptions::NAME_CURRENT_MODAL => TableFilters::VALUE_NULL_STRING,
+        TableOptions::NAME_SELECTED_IDS => TableFilters::VALUE_EMPTY_ARRAY,
+        TableOptions::NAME_IS_CHECK_ALL_SELECTOR => false,
+    ];
+
     public array $tableInfo;
 
     //filters
@@ -79,14 +102,14 @@ class BaseComponent extends Component
      */
     public function initializeCommonFilters(string $tableName, array $tableInfo): void
     {
-        $this->search = session()->get($tableName.TableFilters::NAME_SEARCH) ?? '';
-        $this->type = session()->get($tableName.TableFilters::NAME_TYPE) ?? '';
-        $this->user = session()->get($tableName.TableFilters::NAME_USER) ?? '';
-        $this->userName = session()->get($tableName.TableFilters::NAME_USER_NAME) ?? '';
-        $this->table = session()->get($tableName.TableFilters::NAME_TABLE) ?? '';
-        $this->page = session()->get($tableName.TableFilters::NAME_PAGE) ?? '';
-        $this->perPage = session()->get($tableName.TableFilters::NAME_PER_PAGE) ?? TableFilters::VALUE_PER_PAGE_DEFAULT;
-        $this->orderBy = session()->get($tableName.TableFilters::NAME_ORDER_BY) ?? OrderByCriteria::ORDER_BY_ID_DESC;
+        $this->search = session()->get($tableName.TableFilters::NAME_SEARCH) ?? self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_SEARCH];
+        $this->type = session()->get($tableName.TableFilters::NAME_TYPE) ?? self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_TYPE];
+        $this->user = session()->get($tableName.TableFilters::NAME_USER) ?? self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_USER];
+        $this->userName = session()->get($tableName.TableFilters::NAME_USER_NAME) ?? self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_USER_NAME];
+        $this->table = session()->get($tableName.TableFilters::NAME_TABLE) ?? self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_TABLE];
+        $this->page = session()->get($tableName.TableFilters::NAME_PAGE) ?? self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_PAGE];
+        $this->perPage = session()->get($tableName.TableFilters::NAME_PER_PAGE) ?? self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_PER_PAGE];
+        $this->orderBy = session()->get($tableName.TableFilters::NAME_ORDER_BY) ?? self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_ORDER_BY];
         $this->orderByColumn = session()->get($tableName.TableFilters::NAME_ORDER_BY_COLUMN) ?? $tableInfo[TableInfo::ORDER_BY_CRITERIA_INDEXED_BY_NAME][$this->orderBy]['column'];
         $this->orderByOrder = session()->get($tableName.TableFilters::NAME_ORDER_BY_ORDER) ?? $tableInfo[TableInfo::ORDER_BY_CRITERIA_INDEXED_BY_NAME][$this->orderBy]['order'];
     }
@@ -97,16 +120,16 @@ class BaseComponent extends Component
      */
     public function initializeOptions(string $tableName): void
     {
-        $this->isShowTableImages = session()->get($tableName.'.'.TableOptions::NAME_IS_SHOW_TABLE_IMAGES) ?? true;
-        $this->isShowStriped = session()->get($tableName.'.'.TableOptions::NAME_IS_SHOW_STRIPED) ?? true;
-        $this->isFixedFirstColumn = session()->get($tableName.'.'.TableOptions::NAME_IS_FIXED_FIRST_COLUMN) ?? false;
-        $this->isShowTypeColumn = session()->get($tableName.'.'.TableOptions::NAME_IS_SHOW_TYPE_COLUMN) ?? true;
-        $this->isShowTableColumn = session()->get($tableName.'.'.TableOptions::NAME_IS_SHOW_TABLE_COLUMN) ?? true;
-        $this->isShowUserColumn = session()->get($tableName.'.'.TableOptions::NAME_IS_SHOW_USER_COLUMN) ?? true;
-        $this->isShowDateColumn = session()->get($tableName.'.'.TableOptions::NAME_IS_SHOW_DATE_COLUMN) ?? true;
-        $this->selectedIds = session()->get($tableName.'.'.TableOptions::NAME_SELECTED_IDS) ?? [];
-        $this->currentModal = session()->get($tableName.'.'.TableOptions::NAME_CURRENT_MODAL) ?? '';
-        $this->isCheckAllSelector = session()->get($tableName.'.'.TableOptions::NAME_IS_CHECK_ALL_SELECTOR) ?? false;
+        $this->isShowTableImages = session()->get($tableName.'.'.TableOptions::NAME_IS_SHOW_TABLE_IMAGES) ?? self::PROPERTY_INITIAL_VALUES[TableOptions::NAME_IS_SHOW_TABLE_IMAGES];
+        $this->isShowStriped = session()->get($tableName.'.'.TableOptions::NAME_IS_SHOW_STRIPED) ?? self::PROPERTY_INITIAL_VALUES[TableOptions::NAME_IS_SHOW_STRIPED];
+        $this->isFixedFirstColumn = session()->get($tableName.'.'.TableOptions::NAME_IS_FIXED_FIRST_COLUMN) ?? self::PROPERTY_INITIAL_VALUES[TableOptions::NAME_IS_FIXED_FIRST_COLUMN];
+        $this->isShowTypeColumn = session()->get($tableName.'.'.TableOptions::NAME_IS_SHOW_TYPE_COLUMN) ?? self::PROPERTY_INITIAL_VALUES[TableOptions::NAME_IS_SHOW_TYPE_COLUMN];
+        $this->isShowTableColumn = session()->get($tableName.'.'.TableOptions::NAME_IS_SHOW_TABLE_COLUMN) ?? self::PROPERTY_INITIAL_VALUES[TableOptions::NAME_IS_SHOW_TABLE_COLUMN];
+        $this->isShowUserColumn = session()->get($tableName.'.'.TableOptions::NAME_IS_SHOW_USER_COLUMN) ?? self::PROPERTY_INITIAL_VALUES[TableOptions::NAME_IS_SHOW_USER_COLUMN];
+        $this->isShowDateColumn = session()->get($tableName.'.'.TableOptions::NAME_IS_SHOW_DATE_COLUMN) ?? self::PROPERTY_INITIAL_VALUES[TableOptions::NAME_IS_SHOW_DATE_COLUMN];
+        $this->selectedIds = session()->get($tableName.'.'.TableOptions::NAME_SELECTED_IDS) ?? self::PROPERTY_INITIAL_VALUES[TableOptions::NAME_SELECTED_IDS];
+        $this->currentModal = session()->get($tableName.'.'.TableOptions::NAME_CURRENT_MODAL) ?? self::PROPERTY_INITIAL_VALUES[TableOptions::NAME_CURRENT_MODAL];
+        $this->isCheckAllSelector = session()->get($tableName.'.'.TableOptions::NAME_IS_CHECK_ALL_SELECTOR) ?? self::PROPERTY_INITIAL_VALUES[TableOptions::NAME_IS_CHECK_ALL_SELECTOR];
     }
 
     /**
