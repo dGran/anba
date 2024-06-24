@@ -118,6 +118,6 @@ class AdminLogManager
         $criteria['orderBy'] = $orderBy;
         $criteria['orderDirection'] = $orderDirection;
 
-        return $this->repository->findBy($criteria, $orderBy, $orderDirection, $offset, $limit);
+        return $this->repository->findBy($criteria, $orderBy, $orderDirection, $perPage, $offset, $limit);
     }
 }

@@ -1,5 +1,4 @@
 <div class="filters d-flex align-items-center non-selectable">
-
     <input type="search" class="search-input form-control mr-2" placeholder='Buscar...' wire:model="search" autofocus>
 
     <div class="btn-group" role="group">
@@ -35,18 +34,17 @@
 
                 <div class="dropdown-divider"></div>
 
-                <a class="dropdown-item d-flex align-items-center" wire:click="viewSelected(true)"><i
-                        class='bx bx-list-check mr-2'></i>Ver selección ({{ $selectedData->count() }})</a>
-                <a class="dropdown-item d-flex align-items-center" wire:click="cancelSelection"><i
-                        class="fas fa-ban mr-2"></i>Cancelar selección</a>
+                <a class="dropdown-item d-flex align-items-center" wire:click="viewSelected(true)">
+                    <i class='bx bx-list-check mr-2'></i>Ver selección ({{ $selectedData->count() }})
+                </a>
+                <a class="dropdown-item d-flex align-items-center" wire:click="cancelSelection">
+                    <i class="fas fa-ban mr-2"></i>Cancelar selección
+                </a>
             </div>
         </div>
 
         <div class="btn-group" role="group">
-            <button type="button" class="btn btn-white" data-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false">
-                <i class="fas fa-table"></i>
-            </button>
+            <button type="button" class="btn btn-white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-table"></i></button>
             <div class="dropdown">
                 <div class="dropdown-menu dropdown-menu-right">
                     <h6 class="dropdown-header">Opciones de tabla</h6>
@@ -62,52 +60,44 @@
             </div>
         </div>
 
-        <button type="button" class="btn btn-white" wire:click="viewFilters(true)">
-            <i class="fas fa-filter"></i>
-        </button>
-
-        <button type="button"
-                class="btn btn-white {{ $orderBy !== "id_desc" || $search || $type !== "all" || $user !== "all" || $table !== "all" || $perPage !== "25" ?: 'disabled' }}"
-                wire:click="resetFilters">
-            <i class="fas fa-eraser"></i>
-        </button>
+        <button type="button" class="btn btn-white" wire:click="viewFilters(true)"><i class="fas fa-filter"></i></button>
+        <button type="button" class="btn btn-white {{ $this->filtersApplied ? '' : 'disabled' }}"  wire:click="resetFilters"><i class="fas fa-eraser"></i></button>
     </div>
-
-</div> {{-- filters --}}
+</div>
 
 @php use App\Enum\TableFilters; @endphp
 
-@if ($search || $type !== "all" || $user !== "all" || $table !== "all" || $perPage !== "25")
+@if ($this->filtersApplied)
     <ul class="list-inline my-2">
-        @if ($search)
+        @if ($search !== TableFilters::VALUE_NULL_STRING)
             <li class="list-inline-item mr-1">
                 <a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilter('{{ TableFilters::NAME_SEARCH }}')">
                     {{ $search }}<i class="fas fa-times ml-2"></i>
                     <a>
             </li>
         @endif
-        @if ($type !== "all")
+        @if ($type !== TableFilters::VALUE_ALL)
             <li class="list-inline-item mr-1">
                 <a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilter('{{ TableFilters::NAME_TYPE }}')">
                     {{ $type }}<i class="fas fa-times ml-2"></i>
                     <a>
             </li>
         @endif
-        @if ($table !== "all")
+        @if ($table !== TableFilters::VALUE_ALL)
             <li class="list-inline-item mr-1">
                 <a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilter('{{ TableFilters::NAME_TABLE }}')">
                     {{ $table }}<i class="fas fa-times ml-2"></i>
                     <a>
             </li>
         @endif
-        @if ($user !== "all")
+        @if ($user !== TableFilters::VALUE_ALL)
             <li class="list-inline-item mr-1">
                 <a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilter('{{ TableFilters::NAME_USER }}')">
                     {{ $userName }}<i class="fas fa-times ml-2"></i>
                     <a>
             </li>
         @endif
-        @if ($perPage !== "25")
+        @if ($perPage !== TableFilters::PER_PAGE_DEFAULT_VALUE)
             <li class="list-inline-item">
                 <a class="btn btn-white text-xxs text-uppercase"
                    wire:click="cancelFilter('{{ TableFilters::NAME_PER_PAGE }}')">

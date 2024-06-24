@@ -34,7 +34,7 @@ class TableFilters
 
     public const VALUE_EMPTY_ARRAY = [];
 
-    public const PER_PAGE_DEFAULT_VALUE = '25';
+    public const PER_PAGE_DEFAULT_VALUE = 5;
 
-    public const PAGE_DEFAULT_VALUE = '1';
+    public const PAGE_DEFAULT_VALUE = 1;
 }

@@ -86,12 +86,11 @@ class AdminLogCrud extends BaseComponent
      */
     public function render()
     {
-        $this->setPropertiesInSession($this->optionProperties, $this->tableName);
         $this->setPropertiesInSession($this->filterProperties, $this->tableName);
+        $this->setPropertiesInSession($this->optionProperties, $this->tableName);
 
         $this->getData();
         $this->setCheckAllSelector();
-
 
         return view('admin.admin_logs', [
             'data' => $this->data,
@@ -242,33 +241,40 @@ class AdminLogCrud extends BaseComponent
 		}
     }
 
-    public function destroy()
+    public function destroy(): void
     {
-    	$regs_to_delete = count($this->selectedIds);
-		$regs_deleted = 0;
+        if (empty($this->selectedIds)) {
+            return;
+        }
 
-		foreach ($this->selectedIds as $reg) {
-			if ($reg = AdminLog::find($reg)) {
-				if ($reg->canDestroy()) {
-					if ($reg->delete()) {
-						$regs_deleted++;
-					}
-				}
-			}
+        $regsToDelete = \count($this->selectedIds);
+        $regsDeleted = 0;
+
+        foreach ($this->selectedIds as $id) {
+            $reg = $this->adminLogManager->findOneById($id);
+
+            if ($reg === null) {
+                continue;
+            }
+
+            if ($reg->canDestroy()) {
+                try {
+                    $reg->delete();
+                    $regsDeleted++;
+                } catch (\Throwable $exception) {
+                }
+            }
 		}
 
-		if ($regs_deleted > 0) {
-			session()->flash('success', $regs_to_delete == 1 ? 'Registro eliminado correctamente!.' : 'Registros eliminados correctamente!.');
-		} else {
-			if ($regs_to_delete == 1) {
-				session()->flash('error', 'El registro no puede ser eliminado o ya no existe.');
-			} elseif ($regs_to_delete > 1) {
-				session()->flash('error', 'No se ha eliminado ningún registro, no pueden ser eliminados o ya no existen.');
-			}
-		}
+		if ($regsDeleted > 0) {
+			session()->flash('success', $regsToDelete === 1 ? 'Registro eliminado correctamente!.' : 'Registros eliminados correctamente!.');
+		} elseif ($regsToDelete === 1) {
+            session()->flash('error', 'El registro no puede ser eliminado o ya no existe.');
+        } elseif ($regsToDelete > 1) {
+            session()->flash('error', 'No se ha eliminado ningún registro, no pueden ser eliminados o ya no existen.');
+        }
 
 		$this->emit('closeDestroyModal');
-
 		$this->selectedIds = [];
     }
 
@@ -336,37 +342,33 @@ class AdminLogCrud extends BaseComponent
 
 	private function getData(): void
     {
-        $data = $this->adminLogManager->commandFilter(
+        $this->data = $this->adminLogManager->commandFilter(
             $this->search,
             $this->type,
             $this->userName,
             $this->table,
-            (int)$this->perPage,
+            $this->perPage,
             $this->orderByColumn,
             $this->orderByOrder
         );
 
-	    if ($data->total() > 0 && $data->count() === 0) {
-			$this->page = 1;
-		}
-
-		if ($this->page === 0) {
-			$this->page = $data->lastPage();
-		}
-
-//    	$regs = AdminLog::
-//    		leftJoin('users', 'users.id', 'admin_logs.user_id')
-//    		->select('admin_logs.*', 'users.name as user_name')
-//            ->name($this->search)
-//            ->type($this->type)
-//            ->user($this->user)
-//            ->table($this->table)
-//            ->orderBy($this->orderByColumn, $this->orderByOrder)
-//			->orderBy('admin_logs.id', 'desc')
-//            ->paginate($this->perPage)->onEachSide(2);
-
-		$this->data = $data;
+        $this->checkPage();
 	}
+
+    private function checkPage(): void
+    {
+        if ($this->data->total() > 0 && $this->data->isEmpty()) {
+            $this->page = 1;
+//            $this->gotoPage(1);
+
+            return;
+        }
+
+        if ($this->page === 0 || $this->page > $this->data->lastPage()) {
+            $this->page = $this->data->lastPage();
+//            $this->gotoPage($this->data->lastPage());
+        }
+    }
 
 	protected function setCheckAllSelector(): void
     {
@@ -423,5 +425,20 @@ class AdminLogCrud extends BaseComponent
     public function resetFilters(): void
     {
         $this->resetCommonFilters($this->tableName, $this->tableInfo);
+    }
+
+    /**
+     * Computed Property
+     */
+    public function getFiltersAppliedProperty(): bool
+    {
+        return !(
+            $this->orderBy === BaseComponent::PROPERTY_INITIAL_VALUES[TableFilters::NAME_ORDER_BY]
+            && $this->search === BaseComponent::PROPERTY_INITIAL_VALUES[TableFilters::NAME_SEARCH]
+            && $this->type === BaseComponent::PROPERTY_INITIAL_VALUES[TableFilters::NAME_TYPE]
+            && $this->table === BaseComponent::PROPERTY_INITIAL_VALUES[TableFilters::NAME_TABLE]
+            && $this->user === BaseComponent::PROPERTY_INITIAL_VALUES[TableFilters::NAME_USER]
+            && $this->perPage === BaseComponent::PROPERTY_INITIAL_VALUES[TableFilters::NAME_PER_PAGE]
+        );
     }
 }

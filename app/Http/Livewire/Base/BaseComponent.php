@@ -55,7 +55,7 @@ class BaseComponent extends Component
 
     public ?string $table = null;
 
-    public ?string $perPage = null;
+    public ?int $perPage = null;
 
     public ?string $orderBy = null;
 
@@ -109,7 +109,7 @@ class BaseComponent extends Component
         $this->userName = session()->get($tableName.'.'.TableFilters::NAME_USER_NAME) ?? self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_USER_NAME];
         $this->table = session()->get($tableName.'.'.TableFilters::NAME_TABLE) ?? self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_TABLE];
         $this->page = session()->get($tableName.'.'.TableFilters::NAME_PAGE) ?? self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_PAGE];
-        $this->perPage = session()->get($tableName.'.'.TableFilters::NAME_PER_PAGE) ?? self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_PER_PAGE];
+        $this->perPage = (int)(session()->get($tableName.'.'.TableFilters::NAME_PER_PAGE) ?? self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_PER_PAGE]);
         $this->orderBy = session()->get($tableName.'.'.TableFilters::NAME_ORDER_BY) ?? self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_ORDER_BY];
         $this->orderByColumn = session()->get($tableName.'.'.TableFilters::NAME_ORDER_BY_COLUMN) ?? $tableInfo[TableInfo::ORDER_BY_CRITERIA_INDEXED_BY_NAME][$this->orderBy]['column'];
         $this->orderByOrder = session()->get($tableName.'.'.TableFilters::NAME_ORDER_BY_ORDER) ?? $tableInfo[TableInfo::ORDER_BY_CRITERIA_INDEXED_BY_NAME][$this->orderBy]['order'];
@@ -159,7 +159,7 @@ class BaseComponent extends Component
         $this->orderByColumn = self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_ORDER_BY_COLUMN];
         $this->orderByOrder = self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_ORDER_BY_ORDER];
 
-        $this->setPropertiesInSession($this->filterProperties, $tableName);
+        $this->clearSessionVariables($tableName);
 
         if ($tableName === TableNames::TABLE_PLAYERS) {
             $this->emit('resetFiltersMode');
@@ -213,5 +213,21 @@ class BaseComponent extends Component
     public function closeAnyModal(): void
     {
         $this->currentModal = null;
+    }
+
+    private function clearSessionVariables(string $tableName): void
+    {
+        session()->forget([
+            $tableName.'.'.TableFilters::NAME_SEARCH,
+            $tableName.'.'.TableFilters::NAME_TYPE,
+            $tableName.'.'.TableFilters::NAME_USER,
+            $tableName.'.'.TableFilters::NAME_USER_NAME,
+            $tableName.'.'.TableFilters::NAME_TABLE,
+            $tableName.'.'.TableFilters::NAME_PAGE,
+            $tableName.'.'.TableFilters::NAME_PER_PAGE,
+            $tableName.'.'.TableFilters::NAME_ORDER_BY,
+            $tableName.'.'.TableFilters::NAME_ORDER_BY_COLUMN,
+            $tableName.'.'.TableFilters::NAME_ORDER_BY_ORDER,
+        ]);
     }
 }
