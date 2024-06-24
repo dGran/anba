@@ -15,6 +15,7 @@ use App\Services\SessionService;
 use App\Services\TableInfoService;
 use App\Services\TableFiltersService;
 use App\Exports\AdminLogsExport;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Maatwebsite\Excel\Facades\Excel;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -30,9 +31,6 @@ class AdminLogCrud extends BaseComponent
 	public string $formatExport = '';
 	public string $filenameExportTable = '';
     public string $filenameExportSelected = '';
-
-
-
 
     protected $queryString = [
         LivewireQueryString::NAME_SEARCH => ['except' => TableFilters::VALUE_NULL_STRING],
@@ -54,6 +52,8 @@ class AdminLogCrud extends BaseComponent
     private SessionService $sessionService;
 
     private string $tableName = 'admin_logs';
+
+    private LengthAwarePaginator $data;
 
     /**
      * @throws ContainerExceptionInterface
@@ -89,11 +89,12 @@ class AdminLogCrud extends BaseComponent
         $this->setPropertiesInSession($this->optionProperties, $this->tableName);
         $this->setPropertiesInSession($this->filterProperties, $this->tableName);
 
-        $data = $this->getData();
+        $this->getData();
+        $this->setCheckAllSelector();
+
 
         return view('admin.admin_logs', [
-//            'data' => $this->getData(),
-            'data' => $data,
+            'data' => $this->data,
             'selectedData' => $this->getSelectedData(),
         ])->layout('adminlte::page');
     }
@@ -333,56 +334,44 @@ class AdminLogCrud extends BaseComponent
 		return Excel::download(new AdminLogsExport($regs), $filename . '.' . $this->formatExport);
     }
 
-	protected function getData()
-	{
-        $regs = $this->adminLogManager->commandFilter($this->search, $this->type, $this->userName, $this->table, (int)$this->perPage, $this->orderByColumn, $this->orderByOrder);
+	private function getData(): void
+    {
+        $data = $this->adminLogManager->commandFilter(
+            $this->search,
+            $this->type,
+            $this->userName,
+            $this->table,
+            (int)$this->perPage,
+            $this->orderByColumn,
+            $this->orderByOrder
+        );
 
-	    if (($regs->total() > 0 && $regs->count() === 0)) {
+	    if ($data->total() > 0 && $data->count() === 0) {
 			$this->page = 1;
 		}
 
 		if ($this->page === 0) {
-			$this->page = $regs->lastPage();
+			$this->page = $data->lastPage();
 		}
 
-    	$regs = AdminLog::
-    		leftJoin('users', 'users.id', 'admin_logs.user_id')
-    		->select('admin_logs.*', 'users.name as user_name')
-            ->name($this->search)
-            ->type($this->type)
-            ->user($this->user)
-            ->table($this->table)
-            ->orderBy($this->orderByColumn, $this->orderByOrder)
-			->orderBy('admin_logs.id', 'desc')
-            ->paginate($this->perPage)->onEachSide(2);
+//    	$regs = AdminLog::
+//    		leftJoin('users', 'users.id', 'admin_logs.user_id')
+//    		->select('admin_logs.*', 'users.name as user_name')
+//            ->name($this->search)
+//            ->type($this->type)
+//            ->user($this->user)
+//            ->table($this->table)
+//            ->orderBy($this->orderByColumn, $this->orderByOrder)
+//			->orderBy('admin_logs.id', 'desc')
+//            ->paginate($this->perPage)->onEachSide(2);
 
-        $this->setCheckAllSelector();
-
-		return $regs;
+		$this->data = $data;
 	}
 
 	protected function setCheckAllSelector(): void
     {
-    	$regs = AdminLog::
-    		leftJoin('users', 'users.id', 'admin_logs.user_id')
-    		->select('admin_logs.id')
-            ->name($this->search)
-            ->type($this->type)
-            ->user($this->user)
-            ->table($this->table)
-            ->orderBy($this->orderByColumn, $this->orderByOrder)
-            ->orderBy('admin_logs.id', 'desc')
-			->paginate($this->perPage, ['*'], 'page', $this->page)
-            ->pluck('id')->toArray();
-
-
-        if (empty(\array_diff($regs, $this->selectedIds))) {
-            $this->isCheckAllSelector = true;
-
-            return;
-        }
-
-        $this->isCheckAllSelector = false;
+        $ids = $this->data->getCollection()->pluck('id')->toArray();
+        $this->isCheckAllSelector = !\array_diff($ids, $this->selectedIds);
 	}
 
 	protected function getSelectedData()
