@@ -27,8 +27,8 @@ class BaseComponent extends Component
         TableFilters::NAME_PAGE => TableFilters::PAGE_DEFAULT_VALUE,
         TableFilters::NAME_PER_PAGE => TableFilters::PER_PAGE_DEFAULT_VALUE,
         TableFilters::NAME_ORDER_BY => OrderByCriteria::ORDER_BY_ID_DESC,
-        TableFilters::NAME_ORDER_BY_COLUMN => null,
-        TableFilters::NAME_ORDER_BY_ORDER => null,
+        TableFilters::NAME_ORDER_BY_COLUMN => 'id',
+        TableFilters::NAME_ORDER_BY_ORDER => OrderByCriteria::ORDER_DESC,
         TableOptions::NAME_IS_SHOW_TABLE_IMAGES => true,
         TableOptions::NAME_IS_SHOW_STRIPED => true,
         TableOptions::NAME_IS_FIXED_FIRST_COLUMN => false,
@@ -103,16 +103,16 @@ class BaseComponent extends Component
      */
     public function initializeCommonFilters(string $tableName, array $tableInfo): void
     {
-        $this->search = session()->get($tableName.TableFilters::NAME_SEARCH) ?? self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_SEARCH];
-        $this->type = session()->get($tableName.TableFilters::NAME_TYPE) ?? self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_TYPE];
-        $this->user = session()->get($tableName.TableFilters::NAME_USER) ?? self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_USER];
-        $this->userName = session()->get($tableName.TableFilters::NAME_USER_NAME) ?? self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_USER_NAME];
-        $this->table = session()->get($tableName.TableFilters::NAME_TABLE) ?? self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_TABLE];
-        $this->page = session()->get($tableName.TableFilters::NAME_PAGE) ?? self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_PAGE];
-        $this->perPage = session()->get($tableName.TableFilters::NAME_PER_PAGE) ?? self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_PER_PAGE];
-        $this->orderBy = session()->get($tableName.TableFilters::NAME_ORDER_BY) ?? self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_ORDER_BY];
-        $this->orderByColumn = session()->get($tableName.TableFilters::NAME_ORDER_BY_COLUMN) ?? $tableInfo[TableInfo::ORDER_BY_CRITERIA_INDEXED_BY_NAME][$this->orderBy]['column'];
-        $this->orderByOrder = session()->get($tableName.TableFilters::NAME_ORDER_BY_ORDER) ?? $tableInfo[TableInfo::ORDER_BY_CRITERIA_INDEXED_BY_NAME][$this->orderBy]['order'];
+        $this->search = session()->get($tableName.'.'.TableFilters::NAME_SEARCH) ?? self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_SEARCH];
+        $this->type = session()->get($tableName.'.'.TableFilters::NAME_TYPE) ?? self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_TYPE];
+        $this->user = session()->get($tableName.'.'.TableFilters::NAME_USER) ?? self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_USER];
+        $this->userName = session()->get($tableName.'.'.TableFilters::NAME_USER_NAME) ?? self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_USER_NAME];
+        $this->table = session()->get($tableName.'.'.TableFilters::NAME_TABLE) ?? self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_TABLE];
+        $this->page = session()->get($tableName.'.'.TableFilters::NAME_PAGE) ?? self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_PAGE];
+        $this->perPage = session()->get($tableName.'.'.TableFilters::NAME_PER_PAGE) ?? self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_PER_PAGE];
+        $this->orderBy = session()->get($tableName.'.'.TableFilters::NAME_ORDER_BY) ?? self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_ORDER_BY];
+        $this->orderByColumn = session()->get($tableName.'.'.TableFilters::NAME_ORDER_BY_COLUMN) ?? $tableInfo[TableInfo::ORDER_BY_CRITERIA_INDEXED_BY_NAME][$this->orderBy]['column'];
+        $this->orderByOrder = session()->get($tableName.'.'.TableFilters::NAME_ORDER_BY_ORDER) ?? $tableInfo[TableInfo::ORDER_BY_CRITERIA_INDEXED_BY_NAME][$this->orderBy]['order'];
     }
 
     /**
@@ -139,6 +139,10 @@ class BaseComponent extends Component
             return;
         }
 
+        if ($property === TableFilters::NAME_USER) {
+            $this->userName = self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_USER_NAME];
+        }
+
         $this->{$property} = self::PROPERTY_INITIAL_VALUES[$property];
     }
 
@@ -152,8 +156,8 @@ class BaseComponent extends Component
         $this->page = self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_PAGE];
         $this->perPage = self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_PER_PAGE];
         $this->orderBy = self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_ORDER_BY];
-        $this->orderByColumn = $tableInfo[TableInfo::ORDER_BY_CRITERIA_INDEXED_BY_NAME][$this->orderBy]['column'];
-        $this->orderByOrder = $tableInfo[TableInfo::ORDER_BY_CRITERIA_INDEXED_BY_NAME][$this->orderBy]['order'];
+        $this->orderByColumn = self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_ORDER_BY_COLUMN];
+        $this->orderByOrder = self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_ORDER_BY_ORDER];
 
         $this->setPropertiesInSession($this->filterProperties, $tableName);
 
@@ -176,7 +180,24 @@ class BaseComponent extends Component
             $sessionKey = $tableName.'.'.$property;
 
             session()->put($sessionKey, $value);
+
+            if ($property === TableFilters::NAME_USER) {
+                $sessionKey = $tableName.'.'.TableFilters::NAME_USER_NAME;
+
+                session()->put($sessionKey, $this->userName);
+            }
         }
+    }
+
+    public function setOrderBy($name): void
+    {
+        $orderCriteria = $this->tableInfo[TableInfo::ORDER_BY_CRITERIA_INDEXED_BY_NAME][$name];
+
+        $this->orderBy = $name;
+        $this->orderByColumn = $orderCriteria[OrderByCriteria::CRITERIA_COLUMN];
+        $this->orderByOrder = $orderCriteria[OrderByCriteria::CRITERIA_ORDER];
+
+        $this->page = 1;
     }
 
     public function setNextPage(): void

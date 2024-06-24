@@ -67,7 +67,7 @@
         </button>
 
         <button type="button"
-                class="btn btn-white {{ $order !== "id_desc" || $search || $type !== "all" || $user !== "all" || $table !== "all" || $perPage !== "25" ?: 'disabled' }}"
+                class="btn btn-white {{ $orderBy !== "id_desc" || $search || $type !== "all" || $user !== "all" || $table !== "all" || $perPage !== "25" ?: 'disabled' }}"
                 wire:click="resetFilters">
             <i class="fas fa-eraser"></i>
         </button>
@@ -102,7 +102,7 @@
         @endif
         @if ($user !== "all")
             <li class="list-inline-item mr-1">
-                <a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilter('{{ TableFilters::NAME_USER_NAME }}')">
+                <a class="btn btn-white text-xxs text-uppercase" wire:click="cancelFilter('{{ TableFilters::NAME_USER }}')">
                     {{ $userName }}<i class="fas fa-times ml-2"></i>
                     <a>
             </li>

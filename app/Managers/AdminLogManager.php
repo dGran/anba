@@ -7,6 +7,7 @@ namespace App\Managers;
 use App\Enum\OrderByCriteria;
 use App\Models\AdminLog;
 use App\Repositories\AdminLogRepository;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class AdminLogManager
 {
@@ -94,14 +95,14 @@ class AdminLogManager
     public function commandFilter(
         ?string $search = null,
         ?string $type = null,
-        ?int $userId = null,
+        ?string $userName = null,
         ?string $table = null,
         ?int $perPage = null,
         ?string $orderBy = null,
         ?string $orderDirection = OrderByCriteria::ORDER_ASC,
         ?int $offset = null,
         ?int $limit = null
-    ): array {
+    ): LengthAwarePaginator {
         // TODO: para sustituir los scopes por este filtro completo de la tabla
         // adaptar a cada tabla con todos los campos que usen scope
         // si tienen perPage una respuesta sino otra
@@ -109,33 +110,13 @@ class AdminLogManager
 
         $criteria = [];
 
-        if ($search !== null) {
-            $criteria['search'] = $search;
-        }
-
-        if ($type !== null) {
-            $criteria['type'] = $type;
-        }
-
-        if ($userId !== null) {
-            $criteria['userId'] = $userId;
-        }
-
-        if ($table !== null) {
-            $criteria['table'] = $table;
-        }
-
-        if ($perPage !== null) {
-            $criteria['perPage'] = $perPage;
-        }
-
-        if ($orderBy !== null) {
-            $criteria['orderBy'] = $orderBy;
-        }
-
-        if ($orderDirection !== null) {
-            $criteria['orderDirection'] = $orderDirection;
-        }
+        $criteria['search'] = $search;
+        $criteria['type'] = $type;
+        $criteria['userName'] = $userName;
+        $criteria['table'] = $table;
+        $criteria['perPage'] = $perPage;
+        $criteria['orderBy'] = $orderBy;
+        $criteria['orderDirection'] = $orderDirection;
 
         return $this->repository->findBy($criteria, $orderBy, $orderDirection, $offset, $limit);
     }

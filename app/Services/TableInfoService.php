@@ -18,52 +18,64 @@ class TableInfoService
             TableInfo::HAS_IMAGE => false,
             TableInfo::ORDER_BY_CRITERIA_INDEXED_BY_NAME => [
                 OrderByCriteria::ORDER_BY_ID => [
-                    'column' => 'id',
-                    'order' => OrderByCriteria::ORDER_ASC
+                    OrderByCriteria::CRITERIA_COLUMN => 'id',
+                    OrderByCriteria::CRITERIA_ORDER => OrderByCriteria::ORDER_ASC,
+                    OrderByCriteria::CRITERIA_CAPTION => 'ID',
                 ],
                 OrderByCriteria::ORDER_BY_ID_DESC => [
-                    'column' => 'id',
-                    'order' => OrderByCriteria::ORDER_DESC,
+                    OrderByCriteria::CRITERIA_COLUMN => 'id',
+                    OrderByCriteria::CRITERIA_ORDER => OrderByCriteria::ORDER_DESC,
+                    OrderByCriteria::CRITERIA_CAPTION => 'ID (desc)',
                 ],
                 OrderByCriteria::ORDER_BY_NAME => [
-                    'column' => 'admin_logs.reg_name',
-                    'order' => OrderByCriteria::ORDER_ASC
+                    OrderByCriteria::CRITERIA_COLUMN => 'admin_logs.reg_name',
+                    OrderByCriteria::CRITERIA_ORDER => OrderByCriteria::ORDER_ASC,
+                    OrderByCriteria::CRITERIA_CAPTION => 'Nombre',
                 ],
                 OrderByCriteria::ORDER_BY_NAME_DESC => [
-                    'column' => 'admin_logs.reg_name',
-                    'order' => OrderByCriteria::ORDER_DESC,
+                    OrderByCriteria::CRITERIA_COLUMN => 'admin_logs.reg_name',
+                    OrderByCriteria::CRITERIA_ORDER => OrderByCriteria::ORDER_DESC,
+                    OrderByCriteria::CRITERIA_CAPTION => 'Nombre (desc)',
                 ],
                 OrderByCriteria::ORDER_BY_TYPE => [
-                    'column' => 'admin_logs.type',
-                    'order' => OrderByCriteria::ORDER_ASC
+                    OrderByCriteria::CRITERIA_COLUMN => 'admin_logs.type',
+                    OrderByCriteria::CRITERIA_ORDER => OrderByCriteria::ORDER_ASC,
+                    OrderByCriteria::CRITERIA_CAPTION => 'Tipo',
                 ],
                 OrderByCriteria::ORDER_BY_TYPE_DESC => [
-                    'column' => 'admin_logs.type',
-                    'order' => OrderByCriteria::ORDER_DESC,
+                    OrderByCriteria::CRITERIA_COLUMN => 'admin_logs.type',
+                    OrderByCriteria::CRITERIA_ORDER => OrderByCriteria::ORDER_DESC,
+                    OrderByCriteria::CRITERIA_CAPTION => 'Tipo (desc)',
                 ],
                 OrderByCriteria::ORDER_BY_TABLE => [
-                    'column' => 'admin_logs.table',
-                    'order' => OrderByCriteria::ORDER_ASC
+                    OrderByCriteria::CRITERIA_COLUMN => 'admin_logs.table',
+                    OrderByCriteria::CRITERIA_ORDER => OrderByCriteria::ORDER_ASC,
+                    OrderByCriteria::CRITERIA_CAPTION => 'Tabla',
                 ],
                 OrderByCriteria::ORDER_BY_TABLE_DESC => [
-                    'column' => 'admin_logs.table',
-                    'order' => OrderByCriteria::ORDER_DESC,
+                    OrderByCriteria::CRITERIA_COLUMN => 'admin_logs.table',
+                    OrderByCriteria::CRITERIA_ORDER => OrderByCriteria::ORDER_DESC,
+                    OrderByCriteria::CRITERIA_CAPTION => 'Tabla (desc)',
                 ],
                 OrderByCriteria::ORDER_BY_USER => [
-                    'column' => 'users.name',
-                    'order' => OrderByCriteria::ORDER_ASC
+                    OrderByCriteria::CRITERIA_COLUMN => 'users.name',
+                    OrderByCriteria::CRITERIA_ORDER => OrderByCriteria::ORDER_ASC,
+                    OrderByCriteria::CRITERIA_CAPTION => 'Usuario',
                 ],
                 OrderByCriteria::ORDER_BY_USER_DESC => [
-                    'column' => 'users.name',
-                    'order' => OrderByCriteria::ORDER_DESC,
+                    OrderByCriteria::CRITERIA_COLUMN => 'users.name',
+                    OrderByCriteria::CRITERIA_ORDER => OrderByCriteria::ORDER_DESC,
+                    OrderByCriteria::CRITERIA_CAPTION => 'Usuario (desc)',
                 ],
                 OrderByCriteria::ORDER_BY_DATE => [
-                    'column' => 'admin_logs.created_at',
-                    'order' => OrderByCriteria::ORDER_ASC
+                    OrderByCriteria::CRITERIA_COLUMN => 'admin_logs.created_at',
+                    OrderByCriteria::CRITERIA_ORDER => OrderByCriteria::ORDER_ASC,
+                    OrderByCriteria::CRITERIA_CAPTION => 'Fecha',
                 ],
                 OrderByCriteria::ORDER_BY_DATE_DESC => [
-                    'column' => 'admin_logs.created_at',
-                    'order' => OrderByCriteria::ORDER_DESC,
+                    OrderByCriteria::CRITERIA_COLUMN => 'admin_logs.created_at',
+                    OrderByCriteria::CRITERIA_ORDER => OrderByCriteria::ORDER_DESC,
+                    OrderByCriteria::CRITERIA_CAPTION => 'Fecha (desc)',
                 ],
             ],
         ],

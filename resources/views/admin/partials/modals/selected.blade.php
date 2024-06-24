@@ -14,12 +14,12 @@
                 <ul>
                     @foreach ($selectedData as $reg)
                         <li>
-                            @if ($modelHasImg)
+                            @if ($tableInfo['has_image'])
                                 <figure>
                                     <img src="{{ $reg->getImg() }}" alt="{{ $reg->getName() }}">
                                 </figure>
                             @endif
-                            <div class="{{ $tableInfo['hasImg'] ?: 'pl-1' }}">
+                            <div class="{{ $tableInfo['has_image'] ?: 'pl-1' }}">
                                 <span class="text-sm">
                                     {{ $reg->getName() }}
                                 </span>

@@ -21,8 +21,9 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class AdminLogCrud extends BaseComponent
 {
-	// general vars
-	public $regView;
+	public AdminLog $regView;
+
+    public ?string $order = 'id_desc';
 
 	//import & export
     // TODO: sustituir por export/import .csv (Box Spout¿? algo nativo de PHP¿? algo nativo de Laravel¿?)
@@ -31,7 +32,7 @@ class AdminLogCrud extends BaseComponent
     public string $filenameExportSelected = '';
 
 
-    public ?string $order = 'id_desc';
+
 
     protected $queryString = [
         LivewireQueryString::NAME_SEARCH => ['except' => TableFilters::VALUE_NULL_STRING],
@@ -88,8 +89,11 @@ class AdminLogCrud extends BaseComponent
         $this->setPropertiesInSession($this->optionProperties, $this->tableName);
         $this->setPropertiesInSession($this->filterProperties, $this->tableName);
 
+        $data = $this->getData();
+
         return view('admin.admin_logs', [
-            'data' => $this->getData(),
+//            'data' => $this->getData(),
+            'data' => $data,
             'selectedData' => $this->getSelectedData(),
         ])->layout('adminlte::page');
     }
@@ -144,23 +148,23 @@ class AdminLogCrud extends BaseComponent
 		}
 	}
 
-	// Selected
-	public function checkSelected($id): void
+	public function checkSelected(int $id): void
     {
-        $selectedIds = $this->viewModel->getTableOptions()->getSelectedIds();
-		$id = \array_search($id, $selectedIds, true);
+        if (\array_key_exists($id, $this->selectedIds)) {
+            unset($this->selectedIds[$id]);
 
-		if (!$id) {
-            $selectedIds[$id] = $id;
-		} else {
-			unset($selectedIds[$id]);
-		}
+            if ($this->isCheckAllSelector) {
+                $this->isCheckAllSelector = false;
+            }
 
-        $this->viewModel->getTableOptions()->setSelectedIds($selectedIds);
+            return;
+        }
+
+        $this->selectedIds[$id] = $id;
 	}
 
-	public function checkAll()
-	{
+	public function checkAll(): void
+    {
     	$regs = AdminLog::
     		leftJoin('users', 'users.id', 'admin_logs.user_id')
     		->select('admin_logs.*', 'users.name as user_name')
@@ -170,55 +174,50 @@ class AdminLogCrud extends BaseComponent
             ->table($this->table)
             ->orderBy($this->orderByColumn, $this->orderByOrder)
 			->orderBy('admin_logs.id', 'desc')
-			->paginate($this->tableFiltersDTO->getPerPage())->onEachSide(2);
-
-        $selectedIds = [];
+            ->paginate($this->perPage)->onEachSide(2);
 
 		foreach ($regs as $reg) {
-			if ($this->tableOptionsDTO->isCheckAllSelector()) {
-                $selectedIds[$reg->id] = $reg->id;
-			} else {
-				$array_id = \array_search($reg->id, $this->regsSelectedArray);
-				unset($this->tableOptionsDTO->getSelectedIds()[$array_id]);
-			}
-		}
+            if (!$this->isCheckAllSelector) {
+                $array_id = \array_search($reg->id, $this->selectedIds, true);
+                unset($this->selectedIds[$array_id]);
 
-        $this->tableOptionsDTO->setSelectedIds($selectedIds);
+                continue;
+            }
+
+            $this->selectedIds[$reg->id] = $reg->id;
+		}
 	}
 
-	public function deselect($id)
+	public function deselect($id): void
 	{
-		$array_id = array_search($id, $this->regsSelectedArray);
-		unset($this->regsSelectedArray[$array_id]);
+		unset($this->selectedIds[$id]);
 
-		if (empty($this->regsSelectedArray)) {
+		if (empty($this->selectedIds)) {
 			$this->emit('closeSelectedModal');
 		}
 	}
 
 	public function cancelSelection()
 	{
-		$this->regsSelectedArray = [];
+		$this->selectedIds = [];
 		$this->emit('closeSelectedModal');
 	}
 
-	public function viewSelected($view)
-	{
-		if (count($this->regsSelectedArray) > 0) {
-			if ($view) {
-				$this->emit('openSelectedModal');
-			} else {
-				$this->emit('closeSelectedModal');
-			}
-		}
+	public function viewSelected($view): void
+    {
+        if (\count($this->selectedIds) === 0) {
+            return;
+        }
+
+        if ($view === null) {
+            $this->emit('closeSelectedModal');
+        }
+
+        $this->emit('openSelectedModal');
 	}
 
 	// Filters
-    public function order($name)
-    {
-    	$this->order = $name;
-    	$this->page = 1;
-    }
+
 
 	public function viewFilters($view): void
     {
@@ -229,55 +228,25 @@ class AdminLogCrud extends BaseComponent
 		}
 	}
 
-    public function cancelFilterSearch(): void
-    {
-    	$this->search = '';
-    }
-
-    public function cancelFilterType()
-    {
-		$this->type = "all";
-    }
-
-    public function cancelFilterUser()
-    {
-		$this->user = "all";
-    }
-
-    public function clearFilter(string $property): void
-    {
-//        $this->{$property} =
-    }
-
-    public function cancelFilterTable()
-    {
-		$this->table = "all";
-    }
-
     public function setFilterPerPage($number): void
     {
     	$this->perPage = $number;
     }
 
-    public function cancelFilterPerPage()
-    {
-    	$this->perPage = '25';
-    }
-
     // Destroy
     public function confirmDestroy()
     {
-		if (\count($this->regsSelectedArray) > 0) {
+		if (\count($this->selectedIds) > 0) {
 			$this->emit('openDestroyModal');
 		}
     }
 
     public function destroy()
     {
-    	$regs_to_delete = count($this->regsSelectedArray);
+    	$regs_to_delete = count($this->selectedIds);
 		$regs_deleted = 0;
 
-		foreach ($this->regsSelectedArray as $reg) {
+		foreach ($this->selectedIds as $reg) {
 			if ($reg = AdminLog::find($reg)) {
 				if ($reg->canDestroy()) {
 					if ($reg->delete()) {
@@ -299,13 +268,13 @@ class AdminLogCrud extends BaseComponent
 
 		$this->emit('closeDestroyModal');
 
-		$this->regsSelectedArray = [];
+		$this->selectedIds = [];
     }
 
     // View
-    public function view($id)
+    public function view($id): void
     {
-    	$this->regView = AdminLog::find($id);
+        $this->regView = $this->adminLogManager->findOneById($id);
     	$this->emit('openViewModal');
     }
 
@@ -354,7 +323,7 @@ class AdminLogCrud extends BaseComponent
     	$regs = AdminLog::
     		leftJoin('users', 'users.id', 'admin_logs.user_id')
     		->select('admin_logs.*', 'users.name as user_name')
-    		->whereIn('admin_logs.id', $this->regsSelectedArray)
+    		->whereIn('admin_logs.id', $this->selectedIds)
 			->orderBy($this->orderByColumn, $this->orderByOrder)
 			->orderBy('admin_logs.id', 'desc')
         	->get();
@@ -366,32 +335,23 @@ class AdminLogCrud extends BaseComponent
 
 	protected function getData()
 	{
-    	$regs = AdminLog::
-    		leftJoin('users', 'users.id', 'admin_logs.user_id')
-    		->select('admin_logs.*', 'users.name as user_name')
-    		->name($this->search)
-    		->type($this->type)
-    		->user($this->user)
-    		->table($this->table)
-            ->orderBy($this->orderByColumn, $this->orderByOrder)
-			->orderBy('admin_logs.id', 'desc')
-			->paginate($this->perPage)->onEachSide(2);
+        $regs = $this->adminLogManager->commandFilter($this->search, $this->type, $this->userName, $this->table, (int)$this->perPage, $this->orderByColumn, $this->orderByOrder);
 
-	    if (($regs->total() > 0 && $regs->count() == 0)) {
+	    if (($regs->total() > 0 && $regs->count() === 0)) {
 			$this->page = 1;
 		}
 
-		if ($this->page == 0) {
+		if ($this->page === 0) {
 			$this->page = $regs->lastPage();
 		}
 
     	$regs = AdminLog::
     		leftJoin('users', 'users.id', 'admin_logs.user_id')
     		->select('admin_logs.*', 'users.name as user_name')
-//            ->name($this->search)
-//            ->type($this->type)
-//            ->user($this->user)
-//            ->table($this->table)
+            ->name($this->search)
+            ->type($this->type)
+            ->user($this->user)
+            ->table($this->table)
             ->orderBy($this->orderByColumn, $this->orderByOrder)
 			->orderBy('admin_logs.id', 'desc')
             ->paginate($this->perPage)->onEachSide(2);
@@ -401,28 +361,28 @@ class AdminLogCrud extends BaseComponent
 		return $regs;
 	}
 
-	protected function setCheckAllSelector()
-	{
+	protected function setCheckAllSelector(): void
+    {
     	$regs = AdminLog::
     		leftJoin('users', 'users.id', 'admin_logs.user_id')
-    		->select('admin_logs.*', 'users.name as user_name')
+    		->select('admin_logs.id')
             ->name($this->search)
             ->type($this->type)
             ->user($this->user)
             ->table($this->table)
             ->orderBy($this->orderByColumn, $this->orderByOrder)
             ->orderBy('admin_logs.id', 'desc')
-			->paginate($this->perPage, ['*'], 'page', $this->page);
+			->paginate($this->perPage, ['*'], 'page', $this->page)
+            ->pluck('id')->toArray();
 
-        $this->isCheckAllSelector = true;
 
-		foreach ($regs as $conference) {
-			$array_id = \array_search($conference->id, $this->selectedIds, true);
+        if (empty(\array_diff($regs, $this->selectedIds))) {
+            $this->isCheckAllSelector = true;
 
-			if (!$array_id) {
-                $this->isCheckAllSelector = false;
-            }
-		}
+            return;
+        }
+
+        $this->isCheckAllSelector = false;
 	}
 
 	protected function getSelectedData()
@@ -436,22 +396,21 @@ class AdminLogCrud extends BaseComponent
 			->get();
 	}
 
-	protected function getFilterUserName(): string
+	public function getUserNameByUser(): void
 	{
-        if ($this->tableFiltersDTO->getUser() !== 'all') {
-            return '';
+        if ($this->user === 'all') {
+            return;
         }
 
-        $userId = $this->tableFiltersDTO->getUser();
-        $user = $this->userManager->findOneById($userId);
+        $user = $this->userManager->findOneById((int)$this->user);
 
         if ($user === null) {
-            $this->tableFiltersDTO->setUser('all');
+            $this->user = 'all';
 
-            return '';
+            return;
         }
 
-        return $user->getName();
+        $this->userName = $user->getName();
 	}
 
     /**
@@ -462,8 +421,8 @@ class AdminLogCrud extends BaseComponent
     {
         $this->initializeCommonFilters($this->tableName, $this->tableInfo);
 
-        $userIds = $this->adminLogManager->getDistinctUsers();
-        $this->relatedUsers = $userIds;
+        $userNamesIndexedById = $this->adminLogManager->getDistinctUsers();
+        $this->relatedUsers = $userNamesIndexedById;
 
         $tables = $this->adminLogManager->getDistinctTables();
         $this->relatedTables = $tables;

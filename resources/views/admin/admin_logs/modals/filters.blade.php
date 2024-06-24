@@ -14,7 +14,7 @@
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label class="text-sm text-uppercase tracking-wide">Tipo</label>
-                        <select class="form-control custom-select text-sm" wire:model="filterType">
+                        <select class="form-control custom-select text-sm" wire:model="type">
                             <option value="all">Todos los tipos</option>
                             @foreach ($relatedTypes as $type)
                                 <option value="{{ $type }}">{{ $type }}</option>
@@ -24,7 +24,7 @@
 
                     <div class="form-group col-md-6">
                         <label class="text-sm text-uppercase tracking-wide">Tabla</label>
-                        <select class="form-control custom-select text-sm" wire:model="filterTable">
+                        <select class="form-control custom-select text-sm" wire:model="table">
                             <option value="all">Todas las tablas</option>
                             @foreach ($relatedTables as $table)
                                 <option value="{{ $table }}">{{ $table }}</option>
@@ -36,7 +36,7 @@
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label class="text-sm text-uppercase tracking-wide">Usuario</label>
-                        <select class="form-control custom-select text-sm" wire:model="user">
+                        <select class="form-control custom-select text-sm" wire:model="user" wire:change="getUserNameByUser">
                             <option value="all">Todos los usuarios</option>
                             @foreach ($relatedUsers as $userId => $userName)
                                 <option value="{{ $userId }}">{{ $userName }}</option>
@@ -49,22 +49,11 @@
             		<div class="col-md-6">
             			<div class="form-group">
             				<label class="text-sm text-uppercase tracking-wide">Orden</label>
-							{{-- <div wire:ignore> --}}
-								<select class="form-control custom-select text-sm" wire:model="order">
-									<option value="id">ID</option>
-                                    <option value="id_desc">ID (desc)</option>
-									<option value="name">Nombre</option>
-                                    <option value="name_desc">Nombre (desc)</option>
-                                    <option value="type">Tipo</option>
-                                    <option value="type_desc">Tipo (desc)</option>
-                                    <option value="table">Tabla</option>
-                                    <option value="table_desc">Tabla (desc)</option>
-                                    <option value="user">Usuario</option>
-                                    <option value="user_desc">Usuario (desc)</option>
-                                    <option value="date">Fecha</option>
-                                    <option value="date_desc">Fecha (desc)</option>
-								</select>
-							{{-- </div> --}}
+                            <select class="form-control custom-select text-sm" wire:model="orderBy">
+                            @foreach($tableInfo[\App\Enum\TableInfo::ORDER_BY_CRITERIA_INDEXED_BY_NAME] as $orderBy => $orderByCriteria)
+                                <option value="{{ $orderBy }}">{{ $orderByCriteria[\App\Enum\OrderByCriteria::CRITERIA_CAPTION] }}</option>
+                            @endforeach
+                            </select>
             			</div>
             			<!-- /.form-group -->
             		</div>

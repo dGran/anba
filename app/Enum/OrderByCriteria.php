@@ -33,4 +33,10 @@ class OrderByCriteria
     public const ORDER_ASC = 'asc';
 
     public const ORDER_DESC = 'desc';
+
+    public const CRITERIA_COLUMN = 'column';
+
+    public const CRITERIA_ORDER = 'order';
+
+    public const CRITERIA_CAPTION = 'caption';
 }

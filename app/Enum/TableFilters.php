@@ -12,7 +12,7 @@ class TableFilters
 
     public const NAME_USER = 'user';
 
-    public const NAME_USER_NAME = 'user_name';
+    public const NAME_USER_NAME = 'userName';
 
     public const NAME_TABLE = 'table';
 
@@ -25,6 +25,8 @@ class TableFilters
     public const NAME_ORDER_BY_COLUMN = 'orderByColumn';
 
     public const NAME_ORDER_BY_ORDER = 'orderByOrder';
+
+    public const VALUE_NULL = null;
 
     public const VALUE_NULL_STRING = '';
 
