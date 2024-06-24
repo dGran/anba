@@ -359,14 +359,14 @@ class AdminLogCrud extends BaseComponent
     {
         if ($this->data->total() > 0 && $this->data->isEmpty()) {
             $this->page = 1;
-//            $this->gotoPage(1);
-
-            return;
         }
 
         if ($this->page === 0 || $this->page > $this->data->lastPage()) {
             $this->page = $this->data->lastPage();
-//            $this->gotoPage($this->data->lastPage());
+        }
+
+        if ($this->paginators['page'] !== $this->page) {
+            $this->gotoPage($this->page);
         }
     }
 
