@@ -7,10 +7,17 @@ namespace App\Services;
 use App\Enum\TableFilters;
 use App\Enum\TableNames;
 use App\Enum\TableOptions;
-use App\Helpers\Serializer;
 
 class SessionService
 {
+    public const FLASH_TYPE_SUCCESS = 'success';
+
+    public const FLASH_TYPE_ERROR = 'error';
+
+    public const FLASH_TYPE_WARNING = 'warning';
+
+    public const FLASH_TYPE_INFO = 'info';
+
     private const FILTER_SESSION_NAMES_INDEXED_BY_FILTER_NAME_GROUPED_BY_TABLE_NAME = [
         TableNames::TABLE_ADMIN_LOG => [
             TableFilters::NAME_SEARCH => TableNames::TABLE_ADMIN_LOG.'.'.TableFilters::NAME_SEARCH,
@@ -68,5 +75,22 @@ class SessionService
         if ($allColumnOptionsDisabled) {
             session([$tableName.'.'.TableOptions::NAME_IS_FIXED_FIRST_COLUMN => 'off']);
         }
+    }
+
+    public function flashDestroyFromSelectedIds(int $countDeleted, int $countToDelete): void
+    {
+        if ($countDeleted > 0) {
+            session()->flash(self::FLASH_TYPE_SUCCESS, $countToDelete === 1 ? 'Registro eliminado correctamente!.' : 'Registros eliminados correctamente!.');
+
+            return;
+        }
+
+        if ($countToDelete > 1) {
+            session()->flash(self::FLASH_TYPE_ERROR, 'No se ha eliminado ningún registro, no pueden ser eliminados o ya no existen.');
+
+            return;
+        }
+
+        session()->flash(self::FLASH_TYPE_ERROR, 'El registro no puede ser eliminado o ya no existe.');
     }
 }

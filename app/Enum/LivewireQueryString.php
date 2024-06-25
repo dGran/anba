@@ -17,5 +17,5 @@ class LivewireQueryString
 
     public const NAME_PER_PAGE = 'perPage';
 
-    public const NAME_ORDER = 'order';
+    public const NAME_ORDER_BY = 'orderBy';
 }

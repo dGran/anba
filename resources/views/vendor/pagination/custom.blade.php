@@ -4,20 +4,13 @@
             {{-- Previous Page Link --}}
             @if ($paginator->onFirstPage())
                 <li class="page-item disabled" aria-disabled="true" aria-label="@lang('pagination.previous')">
-                    <a class="page-link" aria-hidden="true">
+                    <span class="page-link" aria-hidden="true">
                         <i class='bx bx-chevron-left text-lg'></i>
-                    </a>
+                    </span>
                 </li>
             @else
-                {{-- fix for previuos --}}
-                <li class="page-item d-none">
-                    <a class="page-link" rel="prev" aria-label="@lang('pagination.previous')" tabindex="0" wire:click="setPreviousPage">
-                        <i class='bx bx-chevron-left text-lg'></i>
-                    </a>
-                </li>
-                {{-- end-fix --}}
                 <li class="page-item">
-                    <a class="page-link" rel="prev" aria-label="@lang('pagination.previous')" tabindex="0" wire:click="setPreviousPage">
+                    <a class="page-link" rel="prev" aria-label="@lang('pagination.previous')" tabindex="0" wire:click="previousPage">
                         <i class='bx bx-chevron-left text-lg'></i>
                     </a>
                 </li>
@@ -42,25 +35,17 @@
                 @endif
             @endforeach
 
-            {{-- Next Page Link --}}
             @if ($paginator->hasMorePages())
-                {{-- fix for next --}}
-                <li class="page-item d-none">
-                    <a class="page-link" rel="next" aria-label="@lang('pagination.next')" tabindex="0" wire:click="setNextPage">
-                        <i class='bx bx-chevron-right text-lg'></i>
-                    </a>
-                </li>
-                {{-- end-fix --}}
                 <li class="page-item">
-                    <a class="page-link" rel="next" aria-label="@lang('pagination.next')" tabindex="0" wire:click="setNextPage">
+                    <a class="page-link" rel="next" aria-label="@lang('pagination.next')" tabindex="0" wire:click="nextPage">
                         <i class='bx bx-chevron-right text-lg'></i>
                     </a>
                 </li>
             @else
                 <li class="page-item disabled" aria-disabled="true" aria-label="@lang('pagination.next')">
-                    <a class="page-link" aria-hidden="true">
+                    <span class="page-link" aria-hidden="true">
                         <i class='bx bx-chevron-right text-lg'></i>
-                    </a>
+                    </span>
                 </li>
             @endif
         </ul>

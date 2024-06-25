@@ -89,9 +89,6 @@ class AdminLogManager
             ->paginate($this->perPage)->onEachSide(2);
     }
 
-    /**
-     * @return AdminLog[]
-     */
     public function commandFilter(
         ?string $search = null,
         ?string $type = null,
@@ -103,13 +100,7 @@ class AdminLogManager
         ?int $offset = null,
         ?int $limit = null
     ): LengthAwarePaginator {
-        // TODO: para sustituir los scopes por este filtro completo de la tabla
-        // adaptar a cada tabla con todos los campos que usen scope
-        // si tienen perPage una respuesta sino otra
-        // probar con AdminLog y si es buena solucion adaptar el resto de tablas
-
         $criteria = [];
-
         $criteria['search'] = $search;
         $criteria['type'] = $type;
         $criteria['userName'] = $userName;

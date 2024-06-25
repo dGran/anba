@@ -7,7 +7,6 @@ namespace App\Repositories;
 use App\Enum\OrderByCriteria;
 use App\Models\AdminLog;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Cache;
 
 class AdminLogRepository
 {
@@ -21,14 +20,12 @@ class AdminLogRepository
      */
     public function getDistinctUsers(): array
     {
-//        return Cache::remember(__METHOD__, now()->addHours(24), static function () {
-            return AdminLog::distinct()
-                ->join('users', 'admin_logs.user_id', '=', 'users.id')
-                ->whereNotNull('admin_logs.user_id')
-                ->orderBy('users.name', OrderByCriteria::ORDER_ASC)
-                ->pluck('users.name as name', 'admin_logs.user_id as id')
-                ->toArray();
-//        });
+        return AdminLog::distinct()
+            ->join('users', 'admin_logs.user_id', '=', 'users.id')
+            ->whereNotNull('admin_logs.user_id')
+            ->orderBy('users.name', OrderByCriteria::ORDER_ASC)
+            ->pluck('users.name as name', 'admin_logs.user_id as id')
+            ->toArray();
     }
 
     /**
@@ -36,13 +33,11 @@ class AdminLogRepository
      */
     public function getDistinctTables(): array
     {
-//        return Cache::remember(__METHOD__, now()->addHours(24), static function () {
-            return AdminLog::distinct()
-                ->whereNotNull('table')
-                ->orderBy('table', OrderByCriteria::ORDER_ASC)
-                ->pluck('table')
-                ->toArray();
-//        });
+        return AdminLog::distinct()
+            ->whereNotNull('table')
+            ->orderBy('table', OrderByCriteria::ORDER_ASC)
+            ->pluck('table')
+            ->toArray();
     }
 
     /**
@@ -50,13 +45,11 @@ class AdminLogRepository
      */
     public function getDistinctTypes(): array
     {
-//        return Cache::remember(__METHOD__, now()->addHours(24), static function () {
-            return AdminLog::distinct()
-                ->whereNotNull('type')
-                ->orderBy('type', OrderByCriteria::ORDER_ASC)
-                ->pluck('type')
-                ->toArray();
-//        });
+        return AdminLog::distinct()
+            ->whereNotNull('type')
+            ->orderBy('type', OrderByCriteria::ORDER_ASC)
+            ->pluck('type')
+            ->toArray();
     }
 
     public function findBy(
@@ -67,7 +60,6 @@ class AdminLogRepository
         ?int $limit = null,
         ?int $offset = null
     ): LengthAwarePaginator {
-        //TODO
         $search = $criteria['search'] ?? null;
         $type = $criteria['type'] ?? null;
         $userName = $criteria['userName'] ?? null;

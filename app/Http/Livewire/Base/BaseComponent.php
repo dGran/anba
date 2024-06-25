@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Base;
 
+use App\Enum\EventNames;
 use App\Enum\OrderByCriteria;
 use App\Enum\TableFilters;
 use App\Enum\TableInfo;
@@ -162,7 +163,7 @@ class BaseComponent extends Component
         $this->clearSessionVariables($tableName);
 
         if ($tableName === TableNames::TABLE_PLAYERS) {
-            $this->emit('resetFiltersMode');
+            $this->dispatchEvent('resetFiltersMode');
         }
     }
 
@@ -200,19 +201,38 @@ class BaseComponent extends Component
         $this->page = 1;
     }
 
-    public function setNextPage(): void
+    public function confirmDestroy(): void
     {
-        $this->page++;
+        if (empty($this->selectedIds)) {
+            return;
+        }
+
+        $this->dispatchEvent(EventNames::NAME_OPEN_DESTROY_MODAL);
     }
 
-    public function setPreviousPage(): void
+
+
+
+
+
+
+    public function deselect($id): void
     {
-        $this->page--;
+        unset($this->selectedIds[$id]);
+
+        if (empty($this->selectedIds)) {
+            $this->dispatchEvent(EventNames::NAME_CLOSE_SELECTED_MODAL);
+        }
     }
 
     public function closeAnyModal(): void
     {
         $this->currentModal = null;
+    }
+
+    public function dispatchEvent(string $eventName): void
+    {
+        $this->emit($eventName);
     }
 
     private function clearSessionVariables(string $tableName): void

@@ -227,6 +227,7 @@ class AdminLog extends Model
 
     public function canDestroy(): bool
     {
+        //TODO
         return True;
     }
 }
