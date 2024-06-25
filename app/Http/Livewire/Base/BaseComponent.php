@@ -10,6 +10,7 @@ use App\Enum\TableFilters;
 use App\Enum\TableInfo;
 use App\Enum\TableNames;
 use App\Enum\TableOptions;
+use App\Models\AdminLog;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Psr\Container\ContainerExceptionInterface;
@@ -112,6 +113,8 @@ class BaseComponent extends Component
             ],
         ],
     ];
+
+    public AdminLog $regView;
 
     public array $tableInfo;
 

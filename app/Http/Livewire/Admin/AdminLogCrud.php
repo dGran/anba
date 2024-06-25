@@ -22,12 +22,6 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class AdminLogCrud extends BaseComponent
 {
-	public AdminLog $regView;
-
-	//import & export
-    // TODO: sustituir por export/import .csv (Box Spout¿? algo nativo de PHP¿? algo nativo de Laravel¿?) -> pasar al BASE!!!!!!
-
-
     protected $queryString = [
         LivewireQueryString::NAME_SEARCH => ['except' => TableFilters::VALUE_NULL_STRING],
         LivewireQueryString::NAME_FILTER_TYPE => ['except' => TableFilters::VALUE_ALL],
