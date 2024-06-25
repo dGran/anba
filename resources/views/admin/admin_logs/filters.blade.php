@@ -34,7 +34,7 @@
 
                 <div class="dropdown-divider"></div>
 
-                <a class="dropdown-item d-flex align-items-center" wire:click="viewSelected(true)">
+                <a class="dropdown-item d-flex align-items-center" wire:click="viewSelected">
                     <i class='bx bx-list-check mr-2'></i>Ver selección ({{ $selectedData->count() }})
                 </a>
                 <a class="dropdown-item d-flex align-items-center" wire:click="cancelSelection">
@@ -60,7 +60,7 @@
             </div>
         </div>
 
-        <button type="button" class="btn btn-white" wire:click="viewFilters(true)"><i class="fas fa-filter"></i></button>
+        <button type="button" class="btn btn-white" wire:click="viewFilters"><i class="fas fa-filter"></i></button>
         <button type="button" class="btn btn-white {{ $this->filtersApplied ? '' : 'disabled' }}"  wire:click="resetFilters"><i class="fas fa-eraser"></i></button>
     </div>
 </div>

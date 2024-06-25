@@ -19,7 +19,7 @@ class BaseComponent extends Component
 {
     use WithPagination;
 
-    public const PROPERTY_INITIAL_VALUES = [
+    private const PROPERTY_INITIAL_VALUES = [
         TableFilters::NAME_SEARCH => TableFilters::VALUE_NULL_STRING,
         TableFilters::NAME_TYPE => TableFilters::VALUE_ALL,
         TableFilters::NAME_USER => TableFilters::VALUE_ALL,
@@ -40,6 +40,77 @@ class BaseComponent extends Component
         TableOptions::NAME_CURRENT_MODAL => TableFilters::VALUE_NULL_STRING,
         TableOptions::NAME_SELECTED_IDS => TableFilters::VALUE_EMPTY_ARRAY,
         TableOptions::NAME_IS_CHECK_ALL_SELECTOR => false,
+    ];
+
+    private const TABLE_INFO_INDEXED_BY_TABLE_NAME = [
+        TableNames::TABLE_ADMIN_LOG => [
+            TableInfo::SINGULAR => 'log',
+            TableInfo::PLURAL => 'logs',
+            TableInfo::GENDER => 'male',
+            TableInfo::HAS_IMAGE => false,
+            TableInfo::ORDER_BY_CRITERIA_INDEXED_BY_NAME => [
+                OrderByCriteria::ORDER_BY_ID => [
+                    OrderByCriteria::CRITERIA_COLUMN => 'id',
+                    OrderByCriteria::CRITERIA_ORDER => OrderByCriteria::ORDER_ASC,
+                    OrderByCriteria::CRITERIA_CAPTION => 'ID',
+                ],
+                OrderByCriteria::ORDER_BY_ID_DESC => [
+                    OrderByCriteria::CRITERIA_COLUMN => 'id',
+                    OrderByCriteria::CRITERIA_ORDER => OrderByCriteria::ORDER_DESC,
+                    OrderByCriteria::CRITERIA_CAPTION => 'ID (desc)',
+                ],
+                OrderByCriteria::ORDER_BY_NAME => [
+                    OrderByCriteria::CRITERIA_COLUMN => 'admin_logs.reg_name',
+                    OrderByCriteria::CRITERIA_ORDER => OrderByCriteria::ORDER_ASC,
+                    OrderByCriteria::CRITERIA_CAPTION => 'Nombre',
+                ],
+                OrderByCriteria::ORDER_BY_NAME_DESC => [
+                    OrderByCriteria::CRITERIA_COLUMN => 'admin_logs.reg_name',
+                    OrderByCriteria::CRITERIA_ORDER => OrderByCriteria::ORDER_DESC,
+                    OrderByCriteria::CRITERIA_CAPTION => 'Nombre (desc)',
+                ],
+                OrderByCriteria::ORDER_BY_TYPE => [
+                    OrderByCriteria::CRITERIA_COLUMN => 'admin_logs.type',
+                    OrderByCriteria::CRITERIA_ORDER => OrderByCriteria::ORDER_ASC,
+                    OrderByCriteria::CRITERIA_CAPTION => 'Tipo',
+                ],
+                OrderByCriteria::ORDER_BY_TYPE_DESC => [
+                    OrderByCriteria::CRITERIA_COLUMN => 'admin_logs.type',
+                    OrderByCriteria::CRITERIA_ORDER => OrderByCriteria::ORDER_DESC,
+                    OrderByCriteria::CRITERIA_CAPTION => 'Tipo (desc)',
+                ],
+                OrderByCriteria::ORDER_BY_TABLE => [
+                    OrderByCriteria::CRITERIA_COLUMN => 'admin_logs.table',
+                    OrderByCriteria::CRITERIA_ORDER => OrderByCriteria::ORDER_ASC,
+                    OrderByCriteria::CRITERIA_CAPTION => 'Tabla',
+                ],
+                OrderByCriteria::ORDER_BY_TABLE_DESC => [
+                    OrderByCriteria::CRITERIA_COLUMN => 'admin_logs.table',
+                    OrderByCriteria::CRITERIA_ORDER => OrderByCriteria::ORDER_DESC,
+                    OrderByCriteria::CRITERIA_CAPTION => 'Tabla (desc)',
+                ],
+                OrderByCriteria::ORDER_BY_USER => [
+                    OrderByCriteria::CRITERIA_COLUMN => 'users.name',
+                    OrderByCriteria::CRITERIA_ORDER => OrderByCriteria::ORDER_ASC,
+                    OrderByCriteria::CRITERIA_CAPTION => 'Usuario',
+                ],
+                OrderByCriteria::ORDER_BY_USER_DESC => [
+                    OrderByCriteria::CRITERIA_COLUMN => 'users.name',
+                    OrderByCriteria::CRITERIA_ORDER => OrderByCriteria::ORDER_DESC,
+                    OrderByCriteria::CRITERIA_CAPTION => 'Usuario (desc)',
+                ],
+                OrderByCriteria::ORDER_BY_DATE => [
+                    OrderByCriteria::CRITERIA_COLUMN => 'admin_logs.created_at',
+                    OrderByCriteria::CRITERIA_ORDER => OrderByCriteria::ORDER_ASC,
+                    OrderByCriteria::CRITERIA_CAPTION => 'Fecha',
+                ],
+                OrderByCriteria::ORDER_BY_DATE_DESC => [
+                    OrderByCriteria::CRITERIA_COLUMN => 'admin_logs.created_at',
+                    OrderByCriteria::CRITERIA_ORDER => OrderByCriteria::ORDER_DESC,
+                    OrderByCriteria::CRITERIA_CAPTION => 'Fecha (desc)',
+                ],
+            ],
+        ],
     ];
 
     public array $tableInfo;
@@ -92,17 +163,129 @@ class BaseComponent extends Component
 
     public ?bool $isCheckAllSelector = null;
 
+    //export
+
+    public string $formatExport = '';
+
+    public string $filenameExportTable = '';
+
+    public string $filenameExportSelected = '';
+
     /** @var array<int, string> */
     protected array $optionProperties = [];
 
     /** @var array<int, string> */
     protected array $filterProperties = [];
 
+    public function viewFilters(): void
+    {
+        $this->dispatchEvent(EventNames::NAME_OPEN_FILTERS_MODAL);
+    }
+
+    public function cancelFilter(string $property): void
+    {
+        if (!\array_key_exists($property, self::PROPERTY_INITIAL_VALUES)) {
+            return;
+        }
+
+        if ($property === TableFilters::NAME_USER) {
+            $this->userName = self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_USER_NAME];
+        }
+
+        $this->{$property} = self::PROPERTY_INITIAL_VALUES[$property];
+    }
+
+    public function setOrderBy($name): void
+    {
+        $orderCriteria = $this->tableInfo[TableInfo::ORDER_BY_CRITERIA_INDEXED_BY_NAME][$name];
+
+        $this->orderBy = $name;
+        $this->orderByColumn = $orderCriteria[OrderByCriteria::CRITERIA_COLUMN];
+        $this->orderByOrder = $orderCriteria[OrderByCriteria::CRITERIA_ORDER];
+
+        $this->page = 1;
+    }
+
+    public function setPerPage($number): void
+    {
+        $this->perPage = $number;
+    }
+
+    /**
+     * Computed Property
+     */
+    public function getFiltersAppliedProperty(): bool
+    {
+        return !(
+            $this->orderBy === self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_ORDER_BY]
+            && $this->search === self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_SEARCH]
+            && $this->type === self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_TYPE]
+            && $this->table === self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_TABLE]
+            && $this->user === self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_USER]
+            && $this->perPage === self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_PER_PAGE]
+        );
+    }
+
+    public function select(int $id): void
+    {
+        if (isset($this->selectedIds[$id])) {
+            unset($this->selectedIds[$id]);
+            $this->isCheckAllSelector = false;
+
+            return;
+        }
+
+        $this->selectedIds[$id] = $id;
+    }
+
+    public function deselect($id): void
+    {
+        unset($this->selectedIds[$id]);
+
+        if (empty($this->selectedIds)) {
+            $this->dispatchEvent(EventNames::NAME_CLOSE_SELECTED_MODAL);
+        }
+    }
+
+    public function cancelSelection(): void
+    {
+        $this->selectedIds = TableFilters::VALUE_EMPTY_ARRAY;
+        $this->dispatchEvent(EventNames::NAME_CLOSE_SELECTED_MODAL);
+    }
+
+    public function viewSelected(): void
+    {
+        if (empty($this->selectedIds)) {
+            return;
+        }
+
+        $this->dispatchEvent(EventNames::NAME_OPEN_SELECTED_MODAL);
+    }
+
+    public function confirmDestroy(): void
+    {
+        if (empty($this->selectedIds)) {
+            return;
+        }
+
+        $this->dispatchEvent(EventNames::NAME_OPEN_DESTROY_MODAL);
+    }
+
+    public function closeAnyModal(): void
+    {
+        $this->currentModal = null;
+    }
+
+    protected function getTableInfoByTableName(string $tableName): array
+    {
+        return self::TABLE_INFO_INDEXED_BY_TABLE_NAME[$tableName];
+    }
+
     /**
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function initializeCommonFilters(string $tableName, array $tableInfo): void
+    protected function initializeCommonFilters(string $tableName, array $tableInfo): void
     {
         $this->search = session()->get($tableName.'.'.TableFilters::NAME_SEARCH) ?? self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_SEARCH];
         $this->type = session()->get($tableName.'.'.TableFilters::NAME_TYPE) ?? self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_TYPE];
@@ -120,7 +303,7 @@ class BaseComponent extends Component
      * @throws NotFoundExceptionInterface
      * @throws ContainerExceptionInterface
      */
-    public function initializeOptions(string $tableName): void
+    protected function initializeOptions(string $tableName): void
     {
         $this->isShowTableImages = session()->get($tableName.'.'.TableOptions::NAME_IS_SHOW_TABLE_IMAGES) ?? self::PROPERTY_INITIAL_VALUES[TableOptions::NAME_IS_SHOW_TABLE_IMAGES];
         $this->isShowStriped = session()->get($tableName.'.'.TableOptions::NAME_IS_SHOW_STRIPED) ?? self::PROPERTY_INITIAL_VALUES[TableOptions::NAME_IS_SHOW_STRIPED];
@@ -134,20 +317,7 @@ class BaseComponent extends Component
         $this->isCheckAllSelector = session()->get($tableName.'.'.TableOptions::NAME_IS_CHECK_ALL_SELECTOR) ?? self::PROPERTY_INITIAL_VALUES[TableOptions::NAME_IS_CHECK_ALL_SELECTOR];
     }
 
-    public function cancelFilter(string $property): void
-    {
-        if (!\array_key_exists($property, self::PROPERTY_INITIAL_VALUES)) {
-            return;
-        }
-
-        if ($property === TableFilters::NAME_USER) {
-            $this->userName = self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_USER_NAME];
-        }
-
-        $this->{$property} = self::PROPERTY_INITIAL_VALUES[$property];
-    }
-
-    public function resetCommonFilters(string $tableName, array $tableInfo): void
+    protected function resetCommonFilters(string $tableName): void
     {
         $this->search = self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_SEARCH];
         $this->type = self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_TYPE];
@@ -170,7 +340,7 @@ class BaseComponent extends Component
     /**
      * @param array<int, string> $properties
      */
-    public function setPropertiesInSession(array $properties, string $tableName): void
+    protected function setPropertiesInSession(array $properties, string $tableName): void
     {
         foreach ($properties as $property) {
             if (!\property_exists($this, $property)) {
@@ -190,47 +360,7 @@ class BaseComponent extends Component
         }
     }
 
-    public function setOrderBy($name): void
-    {
-        $orderCriteria = $this->tableInfo[TableInfo::ORDER_BY_CRITERIA_INDEXED_BY_NAME][$name];
-
-        $this->orderBy = $name;
-        $this->orderByColumn = $orderCriteria[OrderByCriteria::CRITERIA_COLUMN];
-        $this->orderByOrder = $orderCriteria[OrderByCriteria::CRITERIA_ORDER];
-
-        $this->page = 1;
-    }
-
-    public function confirmDestroy(): void
-    {
-        if (empty($this->selectedIds)) {
-            return;
-        }
-
-        $this->dispatchEvent(EventNames::NAME_OPEN_DESTROY_MODAL);
-    }
-
-
-
-
-
-
-
-    public function deselect($id): void
-    {
-        unset($this->selectedIds[$id]);
-
-        if (empty($this->selectedIds)) {
-            $this->dispatchEvent(EventNames::NAME_CLOSE_SELECTED_MODAL);
-        }
-    }
-
-    public function closeAnyModal(): void
-    {
-        $this->currentModal = null;
-    }
-
-    public function dispatchEvent(string $eventName): void
+    protected function dispatchEvent(string $eventName): void
     {
         $this->emit($eventName);
     }

@@ -155,7 +155,7 @@
             @this.viewSelected(true);
         });
         Mousetrap.bind(['command+shift+f', 'ctrl+shift+f'], function() {
-            @this.viewFilters(true);
+            @this.viewFilters();
         });
         Mousetrap.bind('c s', function() {
             @this.cancelSelection();
@@ -164,22 +164,22 @@
             @this.resetFilters();
         });
         Mousetrap.bind('p 1', function() {
-            @this.setFilterPerPage("5");
+            @this.setPerPage("5");
         });
         Mousetrap.bind('p 2', function() {
-            @this.setFilterPerPage("10");
+            @this.setPerPage("10");
         });
         Mousetrap.bind('p 3', function() {
-            @this.setFilterPerPage("15");
+            @this.setPerPage("15");
         });
         Mousetrap.bind(['p q', 'p 4'], function() {
-            @this.setFilterPerPage("25");
+            @this.setPerPage("25");
         });
         Mousetrap.bind('p 5', function() {
-            @this.setFilterPerPage("50");
+            @this.setPerPage("50");
         });
         Mousetrap.bind('p 6', function() {
-            @this.setFilterPerPage("100");
+            @this.setPerPage("100");
         });
 
         $(".search-input").keydown(function(event) {

@@ -7,6 +7,7 @@ namespace App\Managers;
 use App\Enum\OrderByCriteria;
 use App\Models\AdminLog;
 use App\Repositories\AdminLogRepository;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class AdminLogManager
@@ -63,32 +64,6 @@ class AdminLogManager
         return $this->repository->getDistinctTypes();
     }
 
-    public function findByUserIdAndTypeAndTable()
-    {
-        $regs = AdminLog::select('admin_logs.*', 'users.name as user_name')
-            ->leftJoin('users', 'users.id', 'admin_logs.user_id')
-            ->where(function ($query) {
-                if (trim($this->search) !== "") {
-                    $query->where('admin_logs.reg_name', 'LIKE', "%{$this->search}%")
-                        ->orWhere('admin_logs.reg_id', 'LIKE', "%{$this->search}%")
-                        ->orWhere('admin_logs.table', 'LIKE', "%{$this->search}%")
-                        ->orWhere('admin_logs.id', 'LIKE', "%{$this->search}%");
-                }
-            })
-            ->when($this->filterType, function ($query) {
-                $query->where('admin_logs.type', $this->filterType);
-            })
-            ->when($this->filterUser, function ($query) {
-                $query->where('admin_logs.user_id', $this->filterUser);
-            })
-            ->when($this->filterTable, function ($query) {
-                $query->where('admin_logs.table', $this->filterTable);
-            })
-            ->orderBy($this->getOrder($this->order)['field'], $this->getOrder($this->order)['direction'])
-            ->orderBy('admin_logs.id', 'desc')
-            ->paginate($this->perPage)->onEachSide(2);
-    }
-
     public function commandFilter(
         ?string $search = null,
         ?string $type = null,
@@ -110,5 +85,13 @@ class AdminLogManager
         $criteria['orderDirection'] = $orderDirection;
 
         return $this->repository->findBy($criteria, $orderBy, $orderDirection, $perPage, $offset, $limit);
+    }
+
+    /**
+     * @param int[] $ids
+     */
+    public function findByIds(array $ids, ?string $orderBy = null, ?string $orderDirection = null): Collection
+    {
+        return $this->repository->findByIds($ids, $orderBy, $orderDirection);
     }
 }

@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\Enum\OrderByCriteria;
 use App\Models\AdminLog;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class AdminLogRepository
@@ -106,5 +107,21 @@ class AdminLogRepository
         }
 
         return $queryBuilder->paginate($perPage)->onEachSide(2);
+    }
+
+    /**
+     * @param int[] $ids
+     */
+    public function findByIds(array $ids, ?string $orderBy = null, ?string $orderDirection = null): Collection
+    {
+        $queryBuilder = AdminLog::leftJoin('users', 'users.id', 'admin_logs.user_id')
+            ->select('admin_logs.*', 'users.name as user_name')
+            ->whereIn('admin_logs.id', $ids);
+
+        if ($orderBy !== null && $orderDirection !== null) {
+            $queryBuilder->orderBy($orderBy, $orderDirection);
+        }
+
+        return $queryBuilder->get();
     }
 }
