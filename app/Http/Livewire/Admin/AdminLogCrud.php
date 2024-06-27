@@ -113,10 +113,7 @@ class AdminLogCrud extends BaseComponent
 
     public function checkAll(): void
     {
-        $data = $this->getData();
-        $ids = $this->getIdsIndexedByIdFromData($data);
-
-        foreach ($ids as $id) {
+        foreach ($this->getIdsFromData() as $id) {
             if ($this->isCheckAllSelector) {
                 unset($this->selectedIds[$id]);
 
@@ -232,14 +229,18 @@ class AdminLogCrud extends BaseComponent
 
     private function setIsCheckAllSelector(): void
     {
-        $this->isCheckAllSelector = !\array_diff($this->getIdsIndexedByIdFromData($this->data), $this->selectedIds);
+        $this->isCheckAllSelector = !\array_diff($this->getIdsFromData(), $this->selectedIds);
     }
 
     /**
      * @return int[]
      */
-    private function getIdsIndexedByIdFromData(LengthAwarePaginator|Collection $data): array
+    private function getIdsFromData(): array
     {
-        return $data->pluck('id', 'id')->toArray();
+        if (!isset($this->data)) {
+            $this->data = $this->getData();
+        }
+
+        return $this->data->pluck('id')->toArray();
     }
 }
