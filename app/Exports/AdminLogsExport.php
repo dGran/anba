@@ -2,7 +2,6 @@
 
 namespace App\Exports;
 
-use App\Models\AdminLog;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\Exportable;
@@ -12,20 +11,20 @@ class AdminLogsExport implements FromCollection, WithHeadings
 {
     use Exportable;
 
-    protected $regs;
+    protected \Illuminate\Database\Eloquent\Collection $data;
 
-    public function __construct($regs = null)
+    public function __construct($data = null)
     {
-        $this->regs = $regs;
+        $this->data = $data;
     }
 
     public function collection(): Collection
     {
-        return $this->regs ?: AdminLog::all();
+        return $this->data;
     }
 
     public function headings(): array
     {
-        return ['id', 'user_id', 'type', 'table', 'reg_id', 'reg_name', 'detail', 'detail_before'];
+        return ['id', 'user_id', 'type', 'table', 'reg_id', 'reg_name', 'detail', 'detail_before', 'created_at', 'updated_at'];
     }
 }

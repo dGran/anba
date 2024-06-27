@@ -161,7 +161,7 @@ class AdminLogCrud extends BaseComponent
         $filename = $this->filenameExportTable ?: $this->tableInfo['plural'];
         $filename .= '.'.$this->formatExport;
         $data = $this->getData(false);
-        $data->makeHidden(['user_name', 'updated_at']);
+        $data->makeHidden(['user_name']);
 
         $this->dispatchEvent(EventNames::NAME_CLOSE_EXPORT_TABLE_MODAL);
         $this->sessionService->dispatchFlash(SessionService::FLASH_TYPE_SUCCESS, 'Registros exportados correctamente!.');
@@ -180,7 +180,7 @@ class AdminLogCrud extends BaseComponent
         $filename = $this->filenameExportSelected ?: 'logs_seleccionados';
         $filename .= '.'.$this->formatExport;
         $data = $this->getSelectedData();
-        $data->makeHidden(['user_name', 'updated_at']);
+        $data->makeHidden(['user_name']);
 
         $this->dispatchEvent(EventNames::NAME_CLOSE_EXPORT_SELECTED_MODAL);
         $this->sessionService->dispatchFlash(SessionService::FLASH_TYPE_SUCCESS, 'Registros exportados correctamente!.');
