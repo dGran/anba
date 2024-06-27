@@ -68,12 +68,8 @@ class AdminLogCrud extends BaseComponent
         $this->setPropertiesInSession($this->optionProperties, $this->tableName);
 
         $this->data = $this->getData();
-
-        if ($this->page !== 1 && $this->data->total() > 0 && $this->data->isEmpty()) {
-            $this->previousPage();
-        }
-
-        $this->handleSelection();
+        $this->checkCurrentPage();
+        $this->setIsCheckAllSelector();
 
         return view('admin.admin_logs', [
             'data' => $this->data,
@@ -228,7 +224,14 @@ class AdminLogCrud extends BaseComponent
         return $this->adminLogManager->findByIds($this->selectedIds, $this->orderByColumn, $this->orderByOrder);
     }
 
-    private function handleSelection(): void
+    private function checkCurrentPage(): void
+    {
+        if ($this->page !== 1 && $this->data->total() > 0 && $this->data->isEmpty()) {
+            $this->previousPage();
+        }
+    }
+
+    private function setIsCheckAllSelector(): void
     {
         $this->isCheckAllSelector = !\array_diff($this->getIdsIndexedByIdFromData($this->data), $this->selectedIds);
     }
