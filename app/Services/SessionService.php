@@ -77,7 +77,7 @@ class SessionService
         }
     }
 
-    public function flashDestroyFromSelectedIds(int $countDeleted, int $countToDelete): void
+    public function dispatchDestroyFlashFromSelectedIds(int $countDeleted, int $countToDelete): void
     {
         if ($countDeleted > 0) {
             session()->flash(self::FLASH_TYPE_SUCCESS, $countToDelete === 1 ? 'Registro eliminado correctamente!.' : 'Registros eliminados correctamente!.');
@@ -92,5 +92,10 @@ class SessionService
         }
 
         session()->flash(self::FLASH_TYPE_ERROR, 'El registro no puede ser eliminado o ya no existe.');
+    }
+
+    public function dispatchFlash(string $type, string $message): void
+    {
+        session()->flash($type, $message);
     }
 }

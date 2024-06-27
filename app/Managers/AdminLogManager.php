@@ -74,7 +74,7 @@ class AdminLogManager
         ?string $orderDirection = OrderByCriteria::ORDER_ASC,
         ?int $offset = null,
         ?int $limit = null
-    ): LengthAwarePaginator {
+    ): LengthAwarePaginator|Collection {
         $criteria = [];
         $criteria['search'] = $search;
         $criteria['type'] = $type;

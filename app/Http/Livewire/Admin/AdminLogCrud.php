@@ -19,6 +19,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Maatwebsite\Excel\Facades\Excel;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class AdminLogCrud extends BaseComponent
 {
@@ -66,7 +67,12 @@ class AdminLogCrud extends BaseComponent
         $this->setPropertiesInSession($this->filterProperties, $this->tableName);
         $this->setPropertiesInSession($this->optionProperties, $this->tableName);
 
-        $this->getData();
+        $this->data = $this->getData();
+
+        if ($this->page !== 1 && $this->data->total() > 0 && $this->data->isEmpty()) {
+            $this->previousPage();
+        }
+
         $this->handleSelection();
 
         return view('admin.admin_logs', [
@@ -106,14 +112,14 @@ class AdminLogCrud extends BaseComponent
         }
 
         $this->selectedIds = TableFilters::VALUE_EMPTY_ARRAY;
-        $this->sessionService->flashDestroyFromSelectedIds($countDeleted, \count($this->selectedIds));
+        $this->sessionService->dispatchDestroyFlashFromSelectedIds($countDeleted, \count($this->selectedIds));
         $this->dispatchEvent(EventNames::NAME_CLOSE_DESTROY_MODAL);
     }
 
     public function checkAll(): void
     {
-        $this->getData();
-        $ids = $this->getIdsIndexedByIdFromData();
+        $data = $this->getData();
+        $ids = $this->getIdsIndexedByIdFromData($data);
 
         foreach ($ids as $id) {
             if ($this->isCheckAllSelector) {
@@ -148,70 +154,43 @@ class AdminLogCrud extends BaseComponent
         $this->resetCommonFilters($this->tableName);
     }
 
-    ///
-    //////////////////////OPTIMIZED///////////////////
-    ///
-
-    //todo: pending refactor -> use Box Spout¿?
-    //Export & Import
-    public function confirmExportTable($format): void
+    public function confirmExportTable(string $format): void
     {
         $this->formatExport = $format;
         $this->dispatchEvent(EventNames::NAME_OPEN_EXPORT_TABLE_MODAL);
     }
 
-    public function tableExport()
+    public function tableExport(): BinaryFileResponse
     {
+        $filename = $this->filenameExportTable ?: $this->tableInfo['plural'];
+        $filename .= '.'.$this->formatExport;
+        $data = $this->getData(false);
+        $data->makeHidden(['user_name', 'updated_at']);
+
         $this->dispatchEvent(EventNames::NAME_CLOSE_EXPORT_TABLE_MODAL);
+        $this->sessionService->dispatchFlash(SessionService::FLASH_TYPE_SUCCESS, 'Registros exportados correctamente!.');
 
-        $filename = $this->filenameExportTable ?: 'logs';
-
-        $regs = AdminLog::
-        leftJoin('users', 'users.id', 'admin_logs.user_id')
-            ->select('admin_logs.*', 'users.name as user_name')
-            ->name($this->search)
-            ->type($this->type)
-            ->user($this->user)
-            ->table($this->table)
-            ->orderBy($this->orderByColumn, $this->orderByOrder)
-            ->orderBy('admin_logs.id', 'desc')
-            ->get();
-
-        $regs->makeHidden(['user_name', 'updated_at']);
-
-        session()->flash('success', 'Registros exportados correctamente!.');
-        return Excel::download(new AdminLogsExport($regs), $filename . '.' . $this->formatExport);
+        return Excel::download(new AdminLogsExport($data), $filename);
     }
 
-    public function confirmExportSelected($format): void
+    public function confirmExportSelected(string $format): void
     {
         $this->formatExport = $format;
         $this->dispatchEvent(EventNames::NAME_OPEN_EXPORT_SELECTED_MODAL);
     }
 
-    public function selectedExport()
+    public function selectedExport(): BinaryFileResponse
     {
-        $this->dispatchEvent(EventNames::NAME_CLOSE_EXPORT_SELECTED_MODAL);
-
         $filename = $this->filenameExportSelected ?: 'logs_seleccionados';
+        $filename .= '.'.$this->formatExport;
+        $data = $this->getSelectedData();
+        $data->makeHidden(['user_name', 'updated_at']);
 
-        $regs = AdminLog::
-        leftJoin('users', 'users.id', 'admin_logs.user_id')
-            ->select('admin_logs.*', 'users.name as user_name')
-            ->whereIn('admin_logs.id', $this->selectedIds)
-            ->orderBy($this->orderByColumn, $this->orderByOrder)
-            ->orderBy('admin_logs.id', 'desc')
-            ->get();
-        $regs->makeHidden(['user_name', 'updated_at']);
+        $this->dispatchEvent(EventNames::NAME_CLOSE_EXPORT_SELECTED_MODAL);
+        $this->sessionService->dispatchFlash(SessionService::FLASH_TYPE_SUCCESS, 'Registros exportados correctamente!.');
 
-        session()->flash('success', 'Registros exportados correctamente!.');
-
-        return Excel::download(new AdminLogsExport($regs), $filename . '.' . $this->formatExport);
+        return Excel::download(new AdminLogsExport($data), $filename.'.'.$this->formatExport);
     }
-
-    ///
-    //////////////////////OPTIMIZED///////////////////
-    ///
 
     /**
      * @throws ContainerExceptionInterface
@@ -231,21 +210,17 @@ class AdminLogCrud extends BaseComponent
         $this->relatedTypes = $types;
     }
 
-    private function getData(): void
+    private function getData(bool $withPaginator = true): LengthAwarePaginator|Collection
     {
-        $this->data = $this->adminLogManager->commandFilter(
+        return $this->adminLogManager->commandFilter(
             $this->search,
             $this->type,
             $this->userName,
             $this->table,
-            $this->perPage,
+            $withPaginator ? $this->perPage : null,
             $this->orderByColumn,
             $this->orderByOrder
         );
-
-        if ($this->page !== 1 && $this->data->total() > 0 && $this->data->isEmpty()) {
-            $this->previousPage();
-        }
     }
 
     private function getSelectedData(): Collection
@@ -255,14 +230,14 @@ class AdminLogCrud extends BaseComponent
 
     private function handleSelection(): void
     {
-        $this->isCheckAllSelector = !\array_diff($this->getIdsIndexedByIdFromData(), $this->selectedIds);
+        $this->isCheckAllSelector = !\array_diff($this->getIdsIndexedByIdFromData($this->data), $this->selectedIds);
     }
 
     /**
      * @return int[]
      */
-    private function getIdsIndexedByIdFromData(): array
+    private function getIdsIndexedByIdFromData(LengthAwarePaginator|Collection $data): array
     {
-        return $this->data->pluck('id', 'id')->toArray();
+        return $data->pluck('id', 'id')->toArray();
     }
 }

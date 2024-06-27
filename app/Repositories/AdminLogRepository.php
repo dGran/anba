@@ -60,7 +60,7 @@ class AdminLogRepository
         ?int $perPage = null,
         ?int $limit = null,
         ?int $offset = null
-    ): LengthAwarePaginator {
+    ): LengthAwarePaginator|Collection {
         $search = $criteria['search'] ?? null;
         $type = $criteria['type'] ?? null;
         $userName = $criteria['userName'] ?? null;
@@ -104,6 +104,10 @@ class AdminLogRepository
 
         if ($offset !== null) {
             $queryBuilder->offset($offset);
+        }
+
+        if ($perPage === null) {
+            return $queryBuilder->get();
         }
 
         return $queryBuilder->paginate($perPage)->onEachSide(2);
