@@ -128,7 +128,7 @@ class AdminLogCrud extends BaseComponent
         }
 	}
 
-    public function getUserNameByUser(): void
+    public function getUserName(): void
     {
         if ($this->user === TableFilters::VALUE_ALL) {
             return;

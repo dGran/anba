@@ -6,6 +6,15 @@ namespace App\Enum;
 
 class TableFilters
 {
+    public const PER_PAGE_DESCRIPTIONS_INDEXED_BY_VALUE = [
+        5 => '5 por página',
+        10 => '10 por página',
+        15 => '15 por página',
+        25 => '25 por página',
+        50 => '50 por página',
+        100 => '100 por página',
+    ];
+
     public const NAME_SEARCH = 'search';
 
     public const NAME_TYPE = 'type';

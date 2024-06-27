@@ -10,7 +10,6 @@
                 </button>
             </div>
             <div class="modal-body">
-
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label class="text-sm text-uppercase tracking-wide">Tipo</label>
@@ -36,7 +35,7 @@
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label class="text-sm text-uppercase tracking-wide">Usuario</label>
-                        <select class="form-control custom-select text-sm" wire:model="user" wire:change="getUserNameByUser">
+                        <select class="form-control custom-select text-sm" wire:model="user" wire:change="getUserName">
                             <option value="all">Todos los usuarios</option>
                             @foreach ($relatedUsers as $userId => $userName)
                                 <option value="{{ $userId }}">{{ $userName }}</option>
@@ -55,36 +54,23 @@
                             @endforeach
                             </select>
             			</div>
-            			<!-- /.form-group -->
             		</div>
-            		<!-- /.col -->
 	    			<div class="col-md-6">
             			<div class="form-group">
             				<label class="text-sm text-uppercase tracking-wide">Paginación</label>
-							{{-- <div wire:ignore> --}}
-								<select class="form-control custom-select show-tick text-sm" wire:model="perPage" id="selectPerPage">
-									<option value="5">5 por página</option>
-									<option value="10">10 por página</option>
-									<option value="15">15 por página</option>
-									<option value="25">25 por página</option>
-									<option value="50">50 por página</option>
-									<option value="100">100 por página</option>
-								</select>
-							{{-- </div> --}}
+                            <select class="form-control custom-select show-tick text-sm" wire:model="perPage" id="selectPerPage">
+                                @foreach(\App\Enum\TableFilters::PER_PAGE_DESCRIPTIONS_INDEXED_BY_VALUE as $value => $description)
+                                <option value={{ $value }}>{{ $description }}</option>
+                                @endforeach
+                            </select>
             			</div>
-            			<!-- /.form-group -->
             		</div>
-            		<!-- /.col -->
             	</div>
             </div>
 
             <div class="modal-footer" style="background: #F9FAFB">
-                <button type="button" class="btn btn-danger ml-2 text-xs text-uppercase tracking-widest" wire:click="resetFilters" wire:loading.attr="disabled">
-                    Reset
-                </button>
-                <button type="button" class="btn btn-borderless ml-2 text-xs text-uppercase tracking-widest" data-dismiss="modal" wire:loading.attr="disabled" wire:click="closeAnyModal">
-                    cerrar
-                </button>
+                <button type="button" class="btn btn-danger ml-2 text-xs text-uppercase tracking-widest" wire:click="resetFilters" wire:loading.attr="disabled">Reset</button>
+                <button type="button" class="btn btn-borderless ml-2 text-xs text-uppercase tracking-widest" data-dismiss="modal" wire:loading.attr="disabled" wire:click="closeAnyModal">cerrar</button>
             </div>
         </div>
     </div>
