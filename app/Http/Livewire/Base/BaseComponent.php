@@ -200,12 +200,23 @@ class BaseComponent extends Component
 
     public function setOrderBy($name): void
     {
-        $orderCriteria = $this->tableInfo[TableInfo::ORDER_BY_CRITERIA_INDEXED_BY_NAME][$name];
+        if (\str_ends_with($this->orderBy, '_desc')) {
+            $currentOrderBy = \str_replace('_desc', '', $this->orderBy);
 
+            if ($name === $currentOrderBy) {
+                $this->orderBy = OrderByCriteria::ORDER_BY_ID_DESC;
+                $this->orderByColumn = OrderByCriteria::ORDER_BY_ID;
+                $this->orderByOrder = OrderByCriteria::ORDER_DESC;
+                $this->page = 1;
+
+                return;
+            }
+        }
+
+        $orderCriteria = $this->tableInfo[TableInfo::ORDER_BY_CRITERIA_INDEXED_BY_NAME][$name];
         $this->orderBy = $name;
         $this->orderByColumn = $orderCriteria[OrderByCriteria::CRITERIA_COLUMN];
         $this->orderByOrder = $orderCriteria[OrderByCriteria::CRITERIA_ORDER];
-
         $this->page = 1;
     }
 
