@@ -15,6 +15,7 @@ use App\Managers\UserManager;
 use App\Services\SessionService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -100,9 +101,13 @@ class AdminLogCrud extends BaseComponent
             if ($reg->canDestroy()) {
                 try {
                     $reg->delete();
-                    $countDeleted++;
                 } catch (\Throwable $exception) {
+                    Log::critical(__METHOD__.' - Error deleting record with id: '.$id.' - Exception: '.$exception->getMessage());
+
+                    continue;
                 }
+
+                $countDeleted++;
             }
         }
 
