@@ -20,11 +20,11 @@
                     <div class="dropdown-divider"></div>
                 @endif
 
-                <a class="dropdown-item d-flex align-items-center" wire:click="confirmExportSelected('xls')"><i
+                <a class="dropdown-item d-flex align-items-center" wire:click="confirmExportSelectedToFile('xls')"><i
                         class="bx bxs-file-export mr-2"></i>Exportar (.xls)</a>
-                <a class="dropdown-item d-flex align-items-center" wire:click="confirmExportSelected('xlsx')"><i
+                <a class="dropdown-item d-flex align-items-center" wire:click="confirmExportSelectedToFile('xlsx')"><i
                         class="bx bxs-file-export mr-2"></i>Exportar (.xlsx)</a>
-                <a class="dropdown-item d-flex align-items-center" wire:click="confirmExportSelected('csv')"><i
+                <a class="dropdown-item d-flex align-items-center" wire:click="confirmExportSelectedToFile('csv')"><i
                         class="bx bxs-file-export mr-2"></i>Exportar (.csv)</a>
 
                 <div class="dropdown-divider"></div>
@@ -50,12 +50,12 @@
                     <h6 class="dropdown-header">Opciones de tabla</h6>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item d-flex align-items-center {{ $data->count() === 0 ? 'disabled' : '' }}"
-                       wire:click="confirmExportTable('xls')"><i class="bx bxs-file-export mr-2"></i>Exportar (.xls)</a>
+                       wire:click="confirmExportToFile('xls')"><i class="bx bxs-file-export mr-2"></i>Exportar (.xls)</a>
                     <a class="dropdown-item d-flex align-items-center {{ $data->count() === 0 ? 'disabled' : '' }}"
-                       wire:click="confirmExportTable('xlsx')"><i class="bx bxs-file-export mr-2"></i>Exportar
+                       wire:click="confirmExportToFile('xlsx')"><i class="bx bxs-file-export mr-2"></i>Exportar
                         (.xlsx)</a>
                     <a class="dropdown-item d-flex align-items-center {{ $data->count() === 0 ? 'disabled' : '' }}"
-                       wire:click="confirmExportTable('csv')"><i class="bx bxs-file-export mr-2"></i>Exportar (.csv)</a>
+                       wire:click="confirmExportToFile('csv')"><i class="bx bxs-file-export mr-2"></i>Exportar (.csv)</a>
                 </div>
             </div>
         </div>

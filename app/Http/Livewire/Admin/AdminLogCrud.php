@@ -146,7 +146,7 @@ class AdminLogCrud extends BaseComponent
         $this->resetCommonFilters($this->tableName);
     }
 
-    public function confirmExportTable(string $format): void
+    public function confirmExportToFile(string $format): void
     {
         $this->exportFormat = $format;
         $this->dispatchEvent(EventNames::NAME_OPEN_EXPORT_TABLE_MODAL);
@@ -160,12 +160,12 @@ class AdminLogCrud extends BaseComponent
         $data->makeHidden(['user_name']);
 
         $this->dispatchEvent(EventNames::NAME_CLOSE_EXPORT_TABLE_MODAL);
-        $this->sessionService->dispatchFlash(SessionService::FLASH_TYPE_SUCCESS, 'Registros exportados correctamente!.');
+        $this->sessionService->dispatchFlash(SessionService::FLASH_TYPE_SUCCESS, 'Exportación de registros completada con éxito.');
 
         return Excel::download(new AdminLogsExport($data), $filename);
     }
 
-    public function confirmExportSelected(string $format): void
+    public function confirmExportSelectedToFile(string $format): void
     {
         $this->exportFormat = $format;
         $this->dispatchEvent(EventNames::NAME_OPEN_EXPORT_SELECTED_MODAL);
@@ -179,7 +179,7 @@ class AdminLogCrud extends BaseComponent
         $data->makeHidden(['user_name']);
 
         $this->dispatchEvent(EventNames::NAME_CLOSE_EXPORT_SELECTED_MODAL);
-        $this->sessionService->dispatchFlash(SessionService::FLASH_TYPE_SUCCESS, 'Registros exportados correctamente!.');
+        $this->sessionService->dispatchFlash(SessionService::FLASH_TYPE_SUCCESS, 'Exportación de registros completada con éxito.');
 
         return Excel::download(new AdminLogsExport($data), $filename.'.'.$this->exportFormat);
     }
