@@ -12,7 +12,6 @@ use App\Exports\AdminLogsExport;
 use App\Http\Livewire\Base\BaseComponent;
 use App\Managers\AdminLogManager;
 use App\Managers\UserManager;
-use App\Models\AdminLog;
 use App\Services\SessionService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
