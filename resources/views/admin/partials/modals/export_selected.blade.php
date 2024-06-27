@@ -15,22 +15,22 @@
             </div>
             <div class="modal-body text-center">
                 @if (count($selectedData) === 1)
-                    <p>Se va a exportar {{ $modelGender = 'male' ? 'el' : 'la' }} {{ $tableInfo['singular'] }} <strong>{{ $selectedData->first()->getName() }}</strong> en formato <strong>".{{ $formatExport }}"</strong></p>
+                    <p>Se va a exportar {{ $modelGender = 'male' ? 'el' : 'la' }} {{ $tableInfo['singular'] }} <strong>{{ $selectedData->first()->getName() }}</strong> en formato <strong>".{{ $exportFormat }}"</strong></p>
                 @else
-                    <p>Se van a exportar {{ $modelGender = 'male' ? 'los' : 'las' }} {{ count($selectedData) }} {{ $tableInfo['plural'] }} seleccionados en formato <strong>".{{ $formatExport }}"</strong></p>
+                    <p>Se van a exportar {{ $modelGender = 'male' ? 'los' : 'las' }} {{ count($selectedData) }} {{ $tableInfo['plural'] }} seleccionados en formato <strong>".{{ $exportFormat }}"</strong></p>
                     <p class="font-weight-bold m-0 mb-1">Se aplicarán los filtros y el orden actual</p>
                 @endif
 
                 <p class="mt-4 pt-4" style="text-align: left">
                     <label class="text-uppercase tracking-wide text-xs" style="font-weight: normal;">Nombre del archivo</label><span style="margin-left: .5rem; text-transform: uppercase; font-size: 10px">(opcional)</span>
-                    <input type="text" class="form-control text-xs" wire:model="filenameExportSelected" placeholder="Nombre del archivo .{{ $formatExport }}" autofocus>
+                    <input type="text" class="form-control text-xs" wire:model="exportSelectedFilename" placeholder="Nombre del archivo .{{ $exportFormat }}" autofocus>
                 </p>
             </div>
             <div class="modal-footer" style="background: #F9FAFB">
                 <button type="button" class="btn btn-borderless ml-2 text-xs text-uppercase tracking-widest" data-dismiss="modal" wire:loading.attr="disabled" wire:click="closeAnyModal">
                     Cancelar
                 </button>
-                <button type="button" class="btn btn-primary ml-2 text-xs text-uppercase tracking-widest" wire:click="selectedExport" wire:loading.attr="disabled">
+                <button type="button" class="btn btn-primary ml-2 text-xs text-uppercase tracking-widest" wire:click="exportSelectedToFile" wire:loading.attr="disabled">
                     Exportar
                 </button>
             </div>

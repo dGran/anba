@@ -168,11 +168,11 @@ class BaseComponent extends Component
 
     //export
 
-    public string $formatExport = TableFilters::VALUE_NULL_STRING;
+    public string $exportFormat = TableFilters::VALUE_NULL_STRING;
 
-    public string $filenameExportTable = TableFilters::VALUE_NULL_STRING;
+    public string $exportFilename = TableFilters::VALUE_NULL_STRING;
 
-    public string $filenameExportSelected = TableFilters::VALUE_NULL_STRING;
+    public string $exportSelectedFilename = TableFilters::VALUE_NULL_STRING;
 
     /** @var array<int, string> */
     protected array $optionProperties = [];

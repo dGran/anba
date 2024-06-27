@@ -10,19 +10,19 @@
                 </button>
             </div>
             <div class="modal-body text-center">
-                <p>Se van a exportar todos los registros de la tabla de {{ $tableInfo['plural'] }} en formato <strong>".{{ $formatExport }}"</strong></p>
+                <p>Se van a exportar todos los registros de la tabla de {{ $tableInfo['plural'] }} en formato <strong>".{{ $exportFormat }}"</strong></p>
                 <p class="font-weight-bold m-0 mb-1">Se aplicarán los filtros y el orden actual</p>
 
                 <p class="mt-4 pt-4" style="text-align: left">
                     <label class="text-uppercase tracking-wide text-xs" style="font-weight: normal;">Nombre del archivo</label><span style="margin-left: .5rem; text-transform: uppercase; font-size: 10px">(opcional)</span>
-                    <input type="text" class="form-control text-xs" wire:model="filenameExportTable" placeholder="Nombre del archivo .{{ $formatExport }}" autofocus>
+                    <input type="text" class="form-control text-xs" wire:model="exportFilename" placeholder="Nombre del archivo .{{ $exportFormat }}" autofocus>
                 </p>
             </div>
             <div class="modal-footer" style="background: #F9FAFB">
                 <button type="button" class="btn btn-borderless ml-2 text-xs text-uppercase tracking-widest" data-dismiss="modal" wire:loading.attr="disabled" wire:click="closeAnyModal">
                     Cancelar
                 </button>
-                <button type="button" class="btn btn-primary ml-2 text-xs text-uppercase tracking-widest" wire:click="tableExport" wire:loading.attr="disabled">
+                <button type="button" class="btn btn-primary ml-2 text-xs text-uppercase tracking-widest" wire:click="exportToFile" wire:loading.attr="disabled">
                     Exportar
                 </button>
             </div>

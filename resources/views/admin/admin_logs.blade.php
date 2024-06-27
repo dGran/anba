@@ -36,7 +36,7 @@
     @include('admin.admin_logs.modals.filters')
     @include('admin.admin_logs.modals.view')
     @include('admin.partials.modals.destroy')
-    @include('admin.partials.modals.export_table')
+    @include('admin.partials.modals.export')
     @include('admin.partials.modals.export_selected')
     @include('admin.partials.modals.selected')
 

@@ -67,8 +67,8 @@ class AdminLogCrud extends BaseComponent
         $this->setPropertiesInSession($this->optionProperties, $this->tableName);
 
         $this->data = $this->getData();
-        $this->checkCurrentPage();
-        $this->setIsCheckAllSelector();
+        $this->validateCurrentPage();
+        $this->updateIsCheckAllSelector();
 
         return view('admin.admin_logs', [
             'data' => $this->data,
@@ -148,14 +148,14 @@ class AdminLogCrud extends BaseComponent
 
     public function confirmExportTable(string $format): void
     {
-        $this->formatExport = $format;
+        $this->exportFormat = $format;
         $this->dispatchEvent(EventNames::NAME_OPEN_EXPORT_TABLE_MODAL);
     }
 
-    public function tableExport(): BinaryFileResponse
+    public function exportToFile(): BinaryFileResponse
     {
-        $filename = $this->filenameExportTable ?: $this->tableInfo['plural'];
-        $filename .= '.'.$this->formatExport;
+        $filename = $this->exportFilename ?: $this->tableInfo['plural'];
+        $filename .= '.'.$this->exportFormat;
         $data = $this->getData(false);
         $data->makeHidden(['user_name']);
 
@@ -167,21 +167,21 @@ class AdminLogCrud extends BaseComponent
 
     public function confirmExportSelected(string $format): void
     {
-        $this->formatExport = $format;
+        $this->exportFormat = $format;
         $this->dispatchEvent(EventNames::NAME_OPEN_EXPORT_SELECTED_MODAL);
     }
 
-    public function selectedExport(): BinaryFileResponse
+    public function exportSelectedToFile(): BinaryFileResponse
     {
-        $filename = $this->filenameExportSelected ?: 'logs_seleccionados';
-        $filename .= '.'.$this->formatExport;
+        $filename = $this->exportSelectedFilename ?: 'logs_seleccionados';
+        $filename .= '.'.$this->exportFormat;
         $data = $this->getSelectedData();
         $data->makeHidden(['user_name']);
 
         $this->dispatchEvent(EventNames::NAME_CLOSE_EXPORT_SELECTED_MODAL);
         $this->sessionService->dispatchFlash(SessionService::FLASH_TYPE_SUCCESS, 'Registros exportados correctamente!.');
 
-        return Excel::download(new AdminLogsExport($data), $filename.'.'.$this->formatExport);
+        return Excel::download(new AdminLogsExport($data), $filename.'.'.$this->exportFormat);
     }
 
     /**
@@ -220,18 +220,6 @@ class AdminLogCrud extends BaseComponent
         return $this->adminLogManager->findByIds($this->selectedIds, $this->orderByColumn, $this->orderByOrder);
     }
 
-    private function checkCurrentPage(): void
-    {
-        if ($this->page !== 1 && $this->data->total() > 0 && $this->data->isEmpty()) {
-            $this->previousPage();
-        }
-    }
-
-    private function setIsCheckAllSelector(): void
-    {
-        $this->isCheckAllSelector = !\array_diff($this->getIdsFromData(), $this->selectedIds);
-    }
-
     /**
      * @return int[]
      */
@@ -242,5 +230,17 @@ class AdminLogCrud extends BaseComponent
         }
 
         return $this->data->pluck('id')->toArray();
+    }
+
+    private function validateCurrentPage(): void
+    {
+        if ($this->page !== 1 && $this->data->total() > 0 && $this->data->isEmpty()) {
+            $this->previousPage();
+        }
+    }
+
+    private function updateIsCheckAllSelector(): void
+    {
+        $this->isCheckAllSelector = !\array_diff($this->getIdsFromData(), $this->selectedIds);
     }
 }
