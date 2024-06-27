@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Admin;
 
 use App\Enum\EventNames;
-use App\Enum\LivewireQueryString;
 use App\Enum\OrderByCriteria;
 use App\Enum\TableFilters;
 use App\Exports\AdminLogsExport;
@@ -24,12 +23,12 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 class AdminLogCrud extends BaseComponent
 {
     protected $queryString = [
-        LivewireQueryString::NAME_SEARCH => ['except' => TableFilters::VALUE_NULL_STRING],
-        LivewireQueryString::NAME_FILTER_TYPE => ['except' => TableFilters::VALUE_ALL],
-        LivewireQueryString::NAME_FILTER_USER => ['except' => TableFilters::VALUE_ALL],
-        LivewireQueryString::NAME_FILTER_TABLE => ['except' => TableFilters::VALUE_ALL],
-        LivewireQueryString::NAME_PER_PAGE => ['except' => TableFilters::PER_PAGE_DEFAULT_VALUE],
-        LivewireQueryString::NAME_ORDER_BY => ['except' => OrderByCriteria::ORDER_BY_ID_DESC],
+        TableFilters::NAME_SEARCH => ['except' => TableFilters::VALUE_NULL_STRING],
+        TableFilters::NAME_TYPE => ['except' => TableFilters::VALUE_ALL],
+        TableFilters::NAME_USER => ['except' => TableFilters::VALUE_ALL],
+        TableFilters::NAME_TABLE => ['except' => TableFilters::VALUE_ALL],
+        TableFilters::NAME_PER_PAGE => ['except' => TableFilters::PER_PAGE_DEFAULT_VALUE],
+        TableFilters::NAME_ORDER_BY => ['except' => OrderByCriteria::ORDER_BY_ID_DESC],
     ];
 
     private AdminLogManager $adminLogManager;

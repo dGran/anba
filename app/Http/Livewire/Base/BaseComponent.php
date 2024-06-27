@@ -118,7 +118,7 @@ class BaseComponent extends Component
 
     public array $tableInfo;
 
-    //filters
+    //filter properties
 
     public ?string $search = null;
 
@@ -144,7 +144,7 @@ class BaseComponent extends Component
 
     public ?array $relatedTables = null;
 
-    //options
+    //option properties
 
     public ?bool $isShowTableImages = null;
 
@@ -166,7 +166,7 @@ class BaseComponent extends Component
 
     public ?bool $isCheckAllSelector = null;
 
-    //export
+    //export properties
 
     public string $exportFormat = TableFilters::VALUE_NULL_STRING;
 
@@ -333,11 +333,16 @@ class BaseComponent extends Component
         $this->orderByColumn = self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_ORDER_BY_COLUMN];
         $this->orderByOrder = self::PROPERTY_INITIAL_VALUES[TableFilters::NAME_ORDER_BY_ORDER];
 
-        $this->clearSessionVariables($tableName);
+        $this->forgetSessionKeys($tableName);
 
         if ($tableName === TableNames::TABLE_PLAYERS) {
             $this->dispatchEvent('resetFiltersMode');
         }
+    }
+
+    protected function dispatchEvent(string $eventName): void
+    {
+        $this->emit($eventName);
     }
 
     /**
@@ -363,12 +368,7 @@ class BaseComponent extends Component
         }
     }
 
-    protected function dispatchEvent(string $eventName): void
-    {
-        $this->emit($eventName);
-    }
-
-    private function clearSessionVariables(string $tableName): void
+    private function forgetSessionKeys(string $tableName): void
     {
         session()->forget([
             $tableName.'.'.TableFilters::NAME_SEARCH,
