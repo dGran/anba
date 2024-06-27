@@ -1,29 +1,17 @@
 @if ($paginator->hasPages())
     <nav>
         <ul class="pagination">
-            {{-- Previous Page Link --}}
-            @if ($paginator->onFirstPage())
-                <li class="page-item disabled" aria-disabled="true" aria-label="@lang('pagination.previous')">
-                    <a class="page-link" aria-hidden="true">
-                        <i class='bx bx-chevron-left text-lg'></i>
-                    </a>
-                </li>
-            @else
-                <li class="page-item">
-                    <a class="page-link" rel="prev" aria-label="@lang('pagination.previous')" tabindex="0" wire:click="previousPage">
-                        <i class='bx bx-chevron-left text-lg'></i>
-                    </a>
-                </li>
-            @endif
+            <li class="page-item @if ($paginator->onFirstPage()) disabled @endif">
+                <button class="page-link" rel="prev" aria-label="@lang('pagination.previous')" tabindex="0" wire:click="previousPage" wire:loading.attr="disabled">
+                    <i class='bx bx-chevron-left text-lg'></i>
+                </button>
+            </li>
 
-            {{-- Pagination Elements --}}
             @foreach ($elements as $element)
-                {{-- "Three Dots" Separator --}}
                 @if (is_string($element))
                     <li class="d-none d-md-block page-item separator disabled" aria-disabled="true"><span class="page-link">{{ $element }}</span></li>
                 @endif
 
-                {{-- Array Of Links --}}
                 @if (is_array($element))
                     @foreach ($element as $page => $url)
                         @if ($page === $paginator->currentPage())
@@ -35,30 +23,15 @@
                 @endif
             @endforeach
 
-            @if ($paginator->hasMorePages())
-                <li class="page-item">
-                    <a class="page-link" rel="next" aria-label="@lang('pagination.next')" tabindex="0" wire:click="nextPage">
-                        <i class='bx bx-chevron-right text-lg'></i>
-                    </a>
-                </li>
-            @else
-                <li class="page-item disabled" aria-disabled="true" aria-label="@lang('pagination.next')">
-                    <a class="page-link" aria-hidden="true">
-                        <i class='bx bx-chevron-right text-lg'></i>
-                    </a>
-                </li>
-            @endif
+            <li class="page-item @if (!$paginator->hasMorePages()) disabled @endif">
+                <button class="page-link" rel="next" aria-label="@lang('pagination.next')" tabindex="0" wire:click="nextPage" wire:loading.attr="disabled">
+                    <i class='bx bx-chevron-right text-lg'></i>
+                </button>
+            </li>
         </ul>
     </nav>
 
     <div class="pagination-info">
-        <p>
-            <span class="font-medium">{{ $paginator->firstItem() }}</span>
-            <span>/</span>
-            <span class="font-medium">{{ $paginator->lastItem() }}</span>
-            <span>de</span>
-            <span class="font-medium">{{ $paginator->total() }}</span>
-            <span>registros</span>
-        </p>
+        <p class="font-medium">{{ $paginator->firstItem() }} / {{ $paginator->lastItem() }} de {{ $paginator->total() }} registros</p>
     </div>
 @endif
