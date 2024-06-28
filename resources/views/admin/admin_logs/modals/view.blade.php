@@ -11,7 +11,7 @@
                     </button>
                 </div>
                 <div class="modal-body p-3">
-                    <ul class="rounded list-inline mb-0">
+                    <ul class="border rounded list-inline mb-0">
                         <li class="d-flex align-items-center p-2 rounded-top" style="border-bottom: 1px solid #e9ecef" onmouseover="this.style.background='#F9FAFB';" onmouseout="this.style.background='';">
                             <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold text-xs">ID</div>
                             <div class="col-7 text-right text-sm">{{ $regView->id }}</div>
@@ -38,7 +38,7 @@
                         </li>
                         <li class="d-flex align-items-center p-2" style="border-bottom: 1px solid #e9ecef" onmouseover="this.style.background='#F9FAFB';" onmouseout="this.style.background='';">
                             <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold text-xs">Fecha</div>
-                            <div class="col-7 text-right text-sm">{{ $regView->created_at ? $regView->getCreatedAtDate() . ' - ' . $regView->getCreatedAtTime() : 'N/D'}}</div>
+                            <div class="col-7 text-right text-sm">{{ $regView->getCreatedAt()->format('Y-m-d H:i:s') }}</div>
                         </li>
                         <li class="d-flex align-items-start p-2" style="border-bottom: 1px solid #e9ecef" onmouseover="this.style.background='#F9FAFB';" onmouseout="this.style.background='';">
                             <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold text-xs">Detalle</div>
@@ -50,7 +50,7 @@
                                 @endif
                             </div>
                         </li>
-                        <li class="d-flex align-items-start p-2" style="border-bottom: 1px solid #e9ecef" onmouseover="this.style.background='#F9FAFB';" onmouseout="this.style.background='';">
+                        <li class="d-flex align-items-start p-2" onmouseover="this.style.background='#F9FAFB';" onmouseout="this.style.background='';">
                             <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold text-xs">Detalle anterior</div>
                             <div class="col-7 text-right text-sm">
                                 @if ($regView->detail_before)

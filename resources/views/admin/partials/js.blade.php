@@ -123,16 +123,6 @@
         return false;
     });
 
-    Mousetrap.bind(['shift+l', 'shift+l'], function() {
-        $('#left-sidebar').trigger('click');
-        return false;
-    });
-
-    Mousetrap.bind(['shift+r', 'shift+r'], function() {
-        $('#right-sidebar').trigger('click');
-        return false;
-    });
-
     document.addEventListener('livewire:load', function () {
         Mousetrap.bind("right", function() {
             @this.setNextPage();
@@ -197,23 +187,10 @@
         });
     });
 
-    const rightAside = document.querySelector('.control-sidebar');
-    const rightSidebarToggleButton = document.getElementById('right-sidebar');
-
-    function handleClickOutsideRightSidebar(event) {
-        const targetElement = event.target;
-        const body = document.querySelector('body');
-
-        if (body.classList.contains('control-sidebar-slide-open') && !rightAside.contains(targetElement) && targetElement !== rightSidebarToggleButton && !rightSidebarToggleButton.contains(targetElement)) {
-            $('#right-sidebar').trigger('click');
-        }
-    }
-
-    document.addEventListener('click', handleClickOutsideRightSidebar);
-
     document.addEventListener('DOMContentLoaded', function() {
         const leftSidebarButton = document.getElementById('left-sidebar');
         const rightSidebarButton = document.getElementById('right-sidebar');
+        const rightAside = document.querySelector('.control-sidebar');
 
         function updateSidebarIcon(button, isOpenClass, openIconClass, closedIconClass) {
             const iconElement = button.querySelector('i');
@@ -243,7 +220,44 @@
 
         setupSidebarButton(leftSidebarButton, 'sidebar-collapse', 'fa-angle-double-right', 'fa-angle-double-left');
         setupSidebarButton(rightSidebarButton, 'control-sidebar-slide-open', 'fa-angle-double-right', 'fa-angle-double-left');
+
+        function handleClickOutsideRightSidebar(event) {
+            const targetElement = event.target;
+            const body = document.querySelector('body');
+
+            if (body.classList.contains('control-sidebar-slide-open') && !rightAside.contains(targetElement) && targetElement !== rightSidebarButton && !rightSidebarButton.contains(targetElement)) {
+                $('#right-sidebar').trigger('click');
+
+                // Necesitamos actualizar el icono después de cerrar el sidebar derecho
+                setTimeout(function() {
+                    updateSidebarIcon(rightSidebarButton, 'control-sidebar-slide-open', 'fa-angle-double-right', 'fa-angle-double-left');
+                }, 100);
+            }
+        }
+
+        document.addEventListener('click', handleClickOutsideRightSidebar);
+
+        Mousetrap.bind(['shift+l', 'shift+l'], function() {
+            $('#left-sidebar').trigger('click');
+
+            setTimeout(function() {
+                updateSidebarIcon(leftSidebarButton, 'sidebar-collapse', 'fa-angle-double-right', 'fa-angle-double-left');
+            }, 100);
+
+            return false;
+        });
+
+        Mousetrap.bind(['shift+r', 'shift+r'], function() {
+            $('#right-sidebar').trigger('click');
+
+            setTimeout(function() {
+                updateSidebarIcon(rightSidebarButton, 'control-sidebar-slide-open', 'fa-angle-double-right', 'fa-angle-double-left');
+            }, 100);
+
+            return false;
+        });
     });
+
 
     $('.modal').on('shown.bs.modal', function() {
         $(this).find('[autofocus]').focus();

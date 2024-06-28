@@ -1627,6 +1627,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   padding-left: 2rem;
   padding-right: 2rem;
 }
+.px-0{
+  padding-left: 0px;
+  padding-right: 0px;
+}
 .pt-6{
   padding-top: 1.5rem;
 }
