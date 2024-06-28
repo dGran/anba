@@ -75,7 +75,8 @@ class AdminLogRepository
                     $query->where('admin_logs.reg_name', 'LIKE', "%{$search}%")
                         ->orWhere('admin_logs.reg_id', 'LIKE', "%{$search}%")
                         ->orWhere('admin_logs.table', 'LIKE', "%{$search}%")
-                        ->orWhere('admin_logs.id', 'LIKE', "%{$search}%");
+                        ->orWhere('admin_logs.id', 'LIKE', "%{$search}%")
+                        ->orWhere('users.name', 'LIKE', "%{$search}%");
                 }
             });
         }
