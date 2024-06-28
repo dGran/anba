@@ -125,11 +125,11 @@
 
     document.addEventListener('livewire:load', function () {
         Mousetrap.bind("right", function() {
-            @this.setNextPage();
+            @this.nextPage();
             return false;
         });
         Mousetrap.bind("left", function() {
-            @this.setPreviousPage();
+            @this.previousPage();
             return false;
         });
         Mousetrap.bind(['command+shift+a', 'ctrl+shift+a'], function() {
@@ -153,22 +153,22 @@
             @this.resetFilters();
         });
         Mousetrap.bind('p 1', function() {
-            @this.setPerPage("5");
+            @this.setPerPage(5);
         });
         Mousetrap.bind('p 2', function() {
-            @this.setPerPage("10");
+            @this.setPerPage(10);
         });
         Mousetrap.bind('p 3', function() {
-            @this.setPerPage("15");
+            @this.setPerPage(15);
         });
         Mousetrap.bind(['p q', 'p 4'], function() {
-            @this.setPerPage("25");
+            @this.setPerPage(25);
         });
         Mousetrap.bind('p 5', function() {
-            @this.setPerPage("50");
+            @this.setPerPage(50);
         });
         Mousetrap.bind('p 6', function() {
-            @this.setPerPage("100");
+            @this.setPerPage(100);
         });
 
         $(".search-input").keydown(function(event) {
@@ -228,7 +228,6 @@
             if (body.classList.contains('control-sidebar-slide-open') && !rightAside.contains(targetElement) && targetElement !== rightSidebarButton && !rightSidebarButton.contains(targetElement)) {
                 $('#right-sidebar').trigger('click');
 
-                // Necesitamos actualizar el icono después de cerrar el sidebar derecho
                 setTimeout(function() {
                     updateSidebarIcon(rightSidebarButton, 'control-sidebar-slide-open', 'fa-angle-double-right', 'fa-angle-double-left');
                 }, 100);
@@ -236,6 +235,10 @@
         }
 
         document.addEventListener('click', handleClickOutsideRightSidebar);
+
+        rightAside.addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
 
         Mousetrap.bind(['shift+l', 'shift+l'], function() {
             $('#left-sidebar').trigger('click');
@@ -257,7 +260,6 @@
             return false;
         });
     });
-
 
     $('.modal').on('shown.bs.modal', function() {
         $(this).find('[autofocus]').focus();

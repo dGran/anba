@@ -150,6 +150,15 @@ class AdminLogCrud extends BaseComponent
         $this->userName = $user->getName();
     }
 
+    public function setFilter(string $field, string $value): void
+    {
+        $this->{$field} = $value;
+
+        if ($field === TableFilters::NAME_USER) {
+            $this->getUserName();
+        }
+    }
+
     public function resetFilters(): void
     {
         $this->resetCommonFilters($this->tableName);
