@@ -11,6 +11,7 @@ use App\Exports\AdminLogsExport;
 use App\Http\Livewire\Base\BaseComponent;
 use App\Managers\AdminLogManager;
 use App\Managers\UserManager;
+use App\Services\AdminLogService;
 use App\Services\SessionService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -33,6 +34,8 @@ class AdminLogCrud extends BaseComponent
 
     private AdminLogManager $adminLogManager;
 
+    private AdminLogService $adminLogService;
+
     private UserManager $userManager;
 
     private SessionService $sessionService;
@@ -47,10 +50,12 @@ class AdminLogCrud extends BaseComponent
      */
     public function boot(
         AdminLogManager $adminLogManager,
+        AdminLogService $adminLogService,
         UserManager $userManager,
         SessionService $sessionService
     ): void {
         $this->adminLogManager = $adminLogManager;
+        $this->adminLogService = $adminLogService;
         $this->userManager = $userManager;
         $this->sessionService = $sessionService;
 
@@ -97,7 +102,7 @@ class AdminLogCrud extends BaseComponent
                 continue;
             }
 
-            if ($reg->canDestroy()) {
+            if ($this->adminLogService->canDestroy($reg)) {
                 try {
                     $reg->delete();
                 } catch (\Throwable $exception) {

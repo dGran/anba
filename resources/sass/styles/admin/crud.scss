@@ -61,6 +61,22 @@
 	}
 }
 
+.applied-filters {
+    .filter {
+        a {
+            i {
+                color: #727272;
+            }
+            &:hover {
+                background-color: #f7f8f9;
+                i {
+                    color: #3d3d3d;
+                }
+            }
+        }
+    }
+}
+
 //team stats
 .admin-crud-team-stats-wrapper {
 	background-color: #F9FAFB;

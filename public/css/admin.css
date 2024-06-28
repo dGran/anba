@@ -439,6 +439,16 @@
   margin: 0.25em;
 }
 
+.applied-filters .filter a i {
+  color: #727272;
+}
+.applied-filters .filter a:hover {
+  background-color: #f7f8f9;
+}
+.applied-filters .filter a:hover i {
+  color: #3d3d3d;
+}
+
 .admin-crud-team-stats-wrapper {
   background-color: #F9FAFB;
   border: 1px solid #ced4da;
@@ -679,6 +689,22 @@
 }
 body {
   color: #495057;
+}
+
+#left-sidebar i {
+  font-size: 1.25rem;
+  color: #727272;
+}
+#left-sidebar i:hover {
+  color: #3d3d3d;
+}
+
+#right-sidebar i {
+  font-size: 1.25rem;
+  color: #727272;
+}
+#right-sidebar i:hover {
+  color: #3d3d3d;
 }
 
 /* Extra small devices (portrait phones, less than 576px) */

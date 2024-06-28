@@ -408,6 +408,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 .pointer-events-none{
   pointer-events: none;
 }
+.visible{
+  visibility: visible;
+}
 .static{
   position: static;
 }

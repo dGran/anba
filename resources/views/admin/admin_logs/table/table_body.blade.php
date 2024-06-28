@@ -64,9 +64,8 @@
             </div>
         </td>
         <td class="{{ $isShowDateColumn ?: 'd-none' }}" style="width: 200px; min-width: 200px; max-width: 200px">
-            <span>{{ $datum->getCreatedAtDate() }} - {{ $datum->getCreatedAtTime() }}</span>
+            <span>{{ $datum->getCreatedAt()->format('Y-m-d H:i:s') }}</span>
         </td>
     </tr>
 @endforeach
 </tbody>
-

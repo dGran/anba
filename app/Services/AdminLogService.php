@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Factories\DTO\AdminLogFactory as AdminLogDTOFactory;
 use App\Factories\Models\AdminLogFactory;
 use App\Managers\AdminLogManager;
+use App\Models\AdminLog;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 
@@ -46,5 +47,11 @@ class AdminLogService
                 'reg_data_before' => $regDataBefore,
             ]);
         }
+    }
+
+    public function canDestroy(AdminLog $adminLog): bool
+    {
+        //TODO
+        return True;
     }
 }

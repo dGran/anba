@@ -133,7 +133,6 @@
         return false;
     });
 
-
     document.addEventListener('livewire:load', function () {
         Mousetrap.bind("right", function() {
             @this.setNextPage();
@@ -198,6 +197,54 @@
         });
     });
 
+    const rightAside = document.querySelector('.control-sidebar');
+    const rightSidebarToggleButton = document.getElementById('right-sidebar');
+
+    function handleClickOutsideRightSidebar(event) {
+        const targetElement = event.target;
+        const body = document.querySelector('body');
+
+        if (body.classList.contains('control-sidebar-slide-open') && !rightAside.contains(targetElement) && targetElement !== rightSidebarToggleButton && !rightSidebarToggleButton.contains(targetElement)) {
+            $('#right-sidebar').trigger('click');
+        }
+    }
+
+    document.addEventListener('click', handleClickOutsideRightSidebar);
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const leftSidebarButton = document.getElementById('left-sidebar');
+        const rightSidebarButton = document.getElementById('right-sidebar');
+
+        function updateSidebarIcon(button, isOpenClass, openIconClass, closedIconClass) {
+            const iconElement = button.querySelector('i');
+            const body = document.querySelector('body');
+            const isOpen = body.classList.contains(isOpenClass);
+
+            if (isOpen) {
+                iconElement.classList.remove(closedIconClass);
+                iconElement.classList.add(openIconClass);
+            } else {
+                iconElement.classList.remove(openIconClass);
+                iconElement.classList.add(closedIconClass);
+            }
+        }
+
+        function setupSidebarButton(button, isOpenClass, openIconClass, closedIconClass) {
+            updateSidebarIcon(button, isOpenClass, openIconClass, closedIconClass);
+
+            button.addEventListener('click', function() {
+                updateSidebarIcon(button, isOpenClass, openIconClass, closedIconClass);
+
+                setTimeout(function() {
+                    updateSidebarIcon(button, isOpenClass, openIconClass, closedIconClass);
+                }, 100);
+            });
+        }
+
+        setupSidebarButton(leftSidebarButton, 'sidebar-collapse', 'fa-angle-double-right', 'fa-angle-double-left');
+        setupSidebarButton(rightSidebarButton, 'control-sidebar-slide-open', 'fa-angle-double-right', 'fa-angle-double-left');
+    });
+
     $('.modal').on('shown.bs.modal', function() {
         $(this).find('[autofocus]').focus();
     });
@@ -205,9 +252,4 @@
     if ("{{ $currentModal }}") {
         $('#{{ $currentModal }}').modal('show');
     }
-
-    // fix padding-right on open modal
-    // $('.modal').on('show.bs.modal', function (e) {
-    //     $('body').addClass('test');
-    // });
 </script>
