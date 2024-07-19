@@ -7,16 +7,15 @@ namespace App\Http\Livewire\Admin;
 use App\Enum\EventNames;
 use App\Enum\OrderByCriteria;
 use App\Enum\TableFilters;
-use App\Exports\AdminLogsExport;
 use App\Http\Livewire\Base\BaseComponent;
 use App\Managers\AdminLogManager;
 use App\Managers\UserManager;
 use App\Services\AdminLogService;
+use App\Services\FileExportService;
 use App\Services\SessionService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
-use Maatwebsite\Excel\Facades\Excel;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -38,8 +37,6 @@ class AdminLogCrud extends BaseComponent
 
     private UserManager $userManager;
 
-    private SessionService $sessionService;
-
     private string $tableName = 'admin_logs';
 
     private LengthAwarePaginator $data;
@@ -49,21 +46,24 @@ class AdminLogCrud extends BaseComponent
      * @throws NotFoundExceptionInterface
      */
     public function boot(
-        AdminLogManager $adminLogManager,
-        AdminLogService $adminLogService,
-        UserManager $userManager,
-        SessionService $sessionService
+        SessionService $sessionService,
+        FileExportService $fileExportService
     ): void {
-        $this->adminLogManager = $adminLogManager;
-        $this->adminLogService = $adminLogService;
-        $this->userManager = $userManager;
-        $this->sessionService = $sessionService;
+        parent::boot($sessionService, $fileExportService);
+        $this->initializeAdditionalServices();
 
         $this->tableInfo = $this->getTableInfoByTableName($this->tableName);
         $this->optionProperties = $this->sessionService->getOptionPropertiesByTableName($this->tableName);
         $this->filterProperties = $this->sessionService->getFilterPropertiesByTableName($this->tableName);
         $this->initializeOptions($this->tableName);
         $this->initializeFilters();
+    }
+
+    protected function initializeAdditionalServices(): void
+    {
+        $this->adminLogManager = resolve(AdminLogManager::class);
+        $this->adminLogService = resolve(AdminLogService::class);
+        $this->userManager = resolve(UserManager::class);
     }
 
     public function render()
@@ -170,17 +170,25 @@ class AdminLogCrud extends BaseComponent
         $this->dispatchEvent(EventNames::NAME_OPEN_EXPORT_TABLE_MODAL);
     }
 
-    public function exportToFile(): BinaryFileResponse
+//    public function exportToFileOld(): BinaryFileResponse
+//    {
+//        $filename = $this->exportFilename ?: $this->tableInfo['plural'];
+//        $filename .= '.'.$this->exportFormat;
+//        $data = $this->getData(false);
+//        $data->makeHidden(['user_name']);
+//
+//        $this->dispatchEvent(EventNames::NAME_CLOSE_EXPORT_TABLE_MODAL);
+//        $this->sessionService->dispatchFlash(SessionService::FLASH_TYPE_SUCCESS, 'Exportación de registros completada con éxito.');
+//
+//        return Excel::download(new AdminLogsExport($data), $filename);
+//    }
+
+    public function exportToFile(): ?BinaryFileResponse
     {
         $filename = $this->exportFilename ?: $this->tableInfo['plural'];
-        $filename .= '.'.$this->exportFormat;
         $data = $this->getData(false);
-        $data->makeHidden(['user_name']);
 
-        $this->dispatchEvent(EventNames::NAME_CLOSE_EXPORT_TABLE_MODAL);
-        $this->sessionService->dispatchFlash(SessionService::FLASH_TYPE_SUCCESS, 'Exportación de registros completada con éxito.');
-
-        return Excel::download(new AdminLogsExport($data), $filename);
+        return $this->export($this->tableName, $filename, $data);
     }
 
     public function confirmExportSelectedToFile(string $format): void
@@ -189,17 +197,25 @@ class AdminLogCrud extends BaseComponent
         $this->dispatchEvent(EventNames::NAME_OPEN_EXPORT_SELECTED_MODAL);
     }
 
-    public function exportSelectedToFile(): BinaryFileResponse
+//    public function exportSelectedToFileOld(): BinaryFileResponse
+//    {
+//        $filename = $this->exportSelectedFilename ?: 'logs_seleccionados';
+//        $filename .= '.'.$this->exportFormat;
+//        $data = $this->getSelectedData();
+//        $data->makeHidden(['user_name']);
+//
+//        $this->dispatchEvent(EventNames::NAME_CLOSE_EXPORT_SELECTED_MODAL);
+//        $this->sessionService->dispatchFlash(SessionService::FLASH_TYPE_SUCCESS, 'Exportación de registros completada con éxito.');
+//
+//        return Excel::download(new AdminLogsExport($data), $filename.'.'.$this->exportFormat);
+//    }
+
+    public function exportSelectedToFile(): ?BinaryFileResponse
     {
         $filename = $this->exportSelectedFilename ?: 'logs_seleccionados';
-        $filename .= '.'.$this->exportFormat;
         $data = $this->getSelectedData();
-        $data->makeHidden(['user_name']);
 
-        $this->dispatchEvent(EventNames::NAME_CLOSE_EXPORT_SELECTED_MODAL);
-        $this->sessionService->dispatchFlash(SessionService::FLASH_TYPE_SUCCESS, 'Exportación de registros completada con éxito.');
-
-        return Excel::download(new AdminLogsExport($data), $filename.'.'.$this->exportFormat);
+        return $this->export($this->tableName, $filename, $data);
     }
 
     /**

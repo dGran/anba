@@ -11,10 +11,15 @@ use App\Enum\TableInfo;
 use App\Enum\TableNames;
 use App\Enum\TableOptions;
 use App\Models\AdminLog;
+use App\Services\FileExportService;
+use App\Services\SessionService;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class BaseComponent extends Component
 {
@@ -179,6 +184,18 @@ class BaseComponent extends Component
 
     /** @var array<int, string> */
     protected array $filterProperties = [];
+
+    protected SessionService $sessionService;
+
+    protected FileExportService $fileExportService;
+
+    public function boot(
+        SessionService $sessionService,
+        FileExportService $fileExportService
+    ): void {
+        $this->sessionService = $sessionService;
+        $this->fileExportService = $fileExportService;
+    }
 
     public function viewFilters(): void
     {
@@ -376,6 +393,34 @@ class BaseComponent extends Component
 
                 session()->put($sessionKey, $this->userName);
             }
+        }
+    }
+
+    protected function export(string $tableName, string $filename, Collection $data): ?BinaryFileResponse
+    {
+        try {
+            $filePath = $this->fileExportService->exportByTable($tableName, $data, $this->exportFormat, $filename);
+            $fullFilename = $filename.'.'.$this->exportFormat;
+
+            $this->sessionService->dispatchFlash(SessionService::FLASH_TYPE_SUCCESS, 'Exportación de registros completada con éxito.');
+            $this->dispatchEvent(EventNames::NAME_CLOSE_EXPORT_TABLE_MODAL);
+
+            return response()->download($filePath, $fullFilename)->deleteFileAfterSend(true);
+        } catch (\Throwable $exception) {
+            if ($exception instanceof \InvalidArgumentException) {
+                $message = 'No se han definido los cabeceros para la tabla '.$this->tableName;
+            }
+
+            if ($exception instanceof \RuntimeException) {
+                $message = 'Se ha producido un error exportar los datos al fichero';
+            }
+
+            Log::critical(__METHOD__.' - '.$message.' - Exception: '.$exception->getMessage());
+
+            $this->sessionService->dispatchFlash(SessionService::FLASH_TYPE_ERROR, $message);
+            $this->dispatchEvent(EventNames::NAME_CLOSE_EXPORT_TABLE_MODAL);
+
+            return null;
         }
     }
 
