@@ -177,9 +177,9 @@ class Matchl extends Component
 
 		if ($this->match->clash_id) {
 			$this->check_clash($this->match->clash_id);
-//			$this->createClashPosts($this->match->id);
+			$this->createClashPosts($this->match->id);
 		} else {
-//			$this->createMatchPosts($this->match->id);
+			$this->createMatchPosts($this->match->id);
 		}
 
 		$this->scoreReportModal = false;
