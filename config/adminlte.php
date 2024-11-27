@@ -233,11 +233,11 @@ return [
     */
 
     'menu' => [
-        [
-            'text' => 'Buscar...',
-            'search' => true,
-            'topnav' => true,
-        ],
+//        [
+//            'text' => 'Buscar...',
+//            'search' => true,
+//            'topnav' => true,
+//        ],
         [
             'text' => 'blog',
             'url'  => 'admin/blog',
@@ -247,12 +247,17 @@ return [
             'text'        => 'Dashboard',
             'url'         => 'admin',
             'icon'        => 'bx bxs-dashboard',
-            'label'       => 'LESS',
-            'label_color' => 'info',
+//            'label'       => 'LESS',
+//            'label_color' => 'info',
         ],
         [
             'text'        => 'Log',
             'route'       => 'admin.log',
+            'icon'        => 'fas fa-history',
+        ],
+        [
+            'text'        => 'User Ip Log',
+            'route'       => 'admin.user_ip_log',
             'icon'        => 'fas fa-history',
         ],
         ['header' => 'COMPETICION'],
@@ -267,13 +272,13 @@ return [
         //     'url'         => 'admin/temporadas/' . $currentSeason->slug . '/partidos',
         //     'icon'        => 'fas fa-basketball-ball',
         // ],
-        [
-            'text'        => 'Playoffs',
-            'route'       => 'home',
-            'icon'        => 'fas fa-basketball-ball',
-            'label'       => 'PENDING',
-            'label_color' => 'warning',
-        ],
+//        [
+//            'text'        => 'Playoffs',
+//            'route'       => 'home',
+//            'icon'        => 'fas fa-basketball-ball',
+//            'label'       => 'PENDING',
+//            'label_color' => 'warning',
+//        ],
         // [
         //     'text'        => 'Reportes',
         //     'route'       => 'home',
@@ -287,13 +292,13 @@ return [
             'route'       => 'admin.posts',
             'icon'        => 'bx bx-news',
         ],
-        [
-            'text'        => 'Declaraciones',
-            'route'       => 'home',
-            'icon'        => 'fas fa-microphone-alt',
-            'label'       => 'PENDING',
-            'label_color' => 'warning',
-        ],
+//        [
+//            'text'        => 'Declaraciones',
+//            'route'       => 'home',
+//            'icon'        => 'fas fa-microphone-alt',
+//            'label'       => 'PENDING',
+//            'label_color' => 'warning',
+//        ],
         // [
         //     'text'        => 'Enfermería',
         //     'route'       => 'admin.posts',
@@ -310,13 +315,13 @@ return [
             'route'       => 'admin.teams',
             'icon'        => 'bx bxs-data',
         ],
-        [
-            'text'        => 'Paises',
-            'route'       => 'home',
-            'icon'        => 'bx bxs-data',
-            'label'       => 'PENDING',
-            'label_color' => 'warning',
-        ],
+//        [
+//            'text'        => 'Paises',
+//            'route'       => 'home',
+//            'icon'        => 'bx bxs-data',
+//            'label'       => 'PENDING',
+//            'label_color' => 'warning',
+//        ],
         [
             'text'        => 'Divisiones',
             'route'       => 'admin.divisions',
@@ -332,13 +337,13 @@ return [
             'route'       => 'admin.users',
             'icon'        => 'bx bxs-data',
         ],
-        [
-            'text'        => 'Roles',
-            'route'       => 'home',
-            'icon'        => 'bx bxs-data',
-            'label'       => 'PENDING',
-            'label_color' => 'warning',
-        ],
+//        [
+//            'text'        => 'Roles',
+//            'route'       => 'home',
+//            'icon'        => 'bx bxs-data',
+//            'label'       => 'PENDING',
+//            'label_color' => 'warning',
+//        ],
 
         ['header' => 'CONFIGURACION'],
         [
@@ -346,32 +351,32 @@ return [
             'route'       => 'admin.injuries',
             'icon'        => 'fas fa-briefcase-medical',
         ],
-        [
-            'text'        => 'General',
-            'route'       => 'home',
-            'icon'        => 'fas fa-cog',
-            'label'       => 'LESS',
-            'label_color' => 'info',
-        ],
+//        [
+//            'text'        => 'General',
+//            'route'       => 'home',
+//            'icon'        => 'fas fa-cog',
+//            'label'       => 'LESS',
+//            'label_color' => 'info',
+//        ],
         [
             'text'        => 'Notificaciones',
             'route'       => 'admin.config.notifications',
             'icon'        => 'fab fa-discord',
         ],
-        [
-            'text'        => 'Jugadores',
-            'route'       => 'home',
-            'icon'        => 'fas fa-cog',
-            'label'       => 'LESS',
-            'label_color' => 'info',
-        ],
-        [
-            'text'        => '(Score Header)',
-            'route'       => 'home',
-            'icon'        => 'fas fa-cog',
-            'label'       => 'LESS',
-            'label_color' => 'info',
-        ],
+//        [
+//            'text'        => 'Jugadores',
+//            'route'       => 'home',
+//            'icon'        => 'fas fa-cog',
+//            'label'       => 'LESS',
+//            'label_color' => 'info',
+//        ],
+//        [
+//            'text'        => '(Score Header)',
+//            'route'       => 'home',
+//            'icon'        => 'fas fa-cog',
+//            'label'       => 'LESS',
+//            'label_color' => 'info',
+//        ],
 
 
         // ['header' => 'account_settings'],

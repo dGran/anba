@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Livewire\Admin\UserIpLogCrud;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\TeamController;
@@ -102,6 +103,7 @@ Route::middleware(['auth:sanctum', 'verified', 'role:super-admin|admin', 'passwo
 	Route::get('/', Dashboard::class)->name('admin');
 	//good
 	Route::get('log', AdminLogCrud::class)->name('admin.log');
+	Route::get('user-ip-log', UserIpLogCrud::class)->name('admin.user_ip_log');
 	Route::get('jugadores', PlayerCrud::class)->name('admin.players');
 	Route::get('equipos', TeamCrud::class)->name('admin.teams');
 	Route::get('divisiones', DivisionCrud::class)->name('admin.divisions');

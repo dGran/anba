@@ -1,8 +1,8 @@
-@section('title', 'Dashboard')
+@section('title', 'Log')
 
 @section('content_header')
     <h5 class="content-header-name">
-        Dashboard
+        User IP Log
     </h5>
 @stop
 
@@ -26,18 +26,29 @@
     {{-- Toastr --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous"></script>
 
+    @include('admin.partials.js')
 @stop
 
 <div class="py-2"> {{-- slot --}}
 
     @include('admin.partials.session_messages')
-{{--    @include('admin.dashboard.data')--}}
+    @include('admin.user_ip_logs.filters')
+    @include('admin.user_ip_logs.table')
+
+    {{-- modals --}}
+    @include('admin.user_ip_logs.modals.filters')
+    @include('admin.user_ip_logs.modals.view')
+
+    @include('admin.partials.modals.destroy')
+    @include('admin.partials.modals.export_table')
+    @include('admin.partials.modals.export_selected')
+    @include('admin.partials.modals.selected')
 
     {{-- right-sidebar --}}
-{{--    @if (config('adminlte.right_sidebar'))--}}
-{{--        <aside class="control-sidebar control-sidebar-{{ config('adminlte.right_sidebar_theme') }} shadow overflow-auto">--}}
-{{--            @include('admin.dashboard.right-sidebar')--}}
-{{--        </aside>--}}
-{{--    @endif--}}
+    @if (config('adminlte.right_sidebar'))
+        <aside class="control-sidebar control-sidebar-{{ config('adminlte.right_sidebar_theme') }} shadow overflow-auto">
+            @include('admin.user_ip_logs.right-sidebar')
+        </aside>
+    @endif
 
 </div> {{-- end-slot --}}

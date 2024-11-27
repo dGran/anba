@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
+use App\Events\UserLoggedIn;
+use App\Listeners\LogUserIp;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
-
 use App\Events\TableWasUpdated;
 use App\Listeners\InsertAdminLog;
 use App\Events\PostStored;
@@ -28,6 +28,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         PostStored::class => [
             SendPostNotification::class,
+        ],
+        UserLoggedIn::class => [
+            LogUserIp::class,
         ],
     ];
 
