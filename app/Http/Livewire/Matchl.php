@@ -188,22 +188,16 @@ class Matchl extends Component
 
 	public function storeResult(): void
 	{
-        $loggedUserId = auth()->user();
-
-        if ($loggedUserId === null) {
-            return;
+        foreach ($this->scores as $key => $score_temp) {
+            $score = Score::create([
+                'match_id' => $this->match->id,
+                'seasons_scores_headers_id' => $score_temp['seasons_scores_headers_id'],
+                'local_score' => $score_temp['local_score'],
+                'visitor_score' => $score_temp['visitor_score'],
+                'order' => $key + 1,
+                'updated_user_id' => auth()->user()->id,
+            ]);
         }
-
-		foreach ($this->scores as $key => $score_temp) {
-			$score = Score::create([
-				'match_id' => $this->match->id,
-				'seasons_scores_headers_id' => $score_temp['seasons_scores_headers_id'],
-				'local_score' => $score_temp['local_score'],
-				'visitor_score' => $score_temp['visitor_score'],
-				'order' => $key+1,
-				'updated_user_id' => $loggedUserId,
-			]);
-		}
 
 		$match = \App\Models\MatchModel::find($this->match->id);
 		$match->extra_times = $this->extra_times ?: 0;
