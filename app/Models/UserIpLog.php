@@ -10,6 +10,8 @@ class UserIpLog extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $fillable = ['user_id', 'ip', 'date_last_login', 'counter'];
 
     public function user()
