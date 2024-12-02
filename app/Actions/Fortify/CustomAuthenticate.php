@@ -2,6 +2,7 @@
 
 namespace App\Actions\Fortify;
 
+use App\Events\UserLoggedIn;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -13,14 +14,7 @@ class CustomAuthenticate
         $user = User::where('email', $request->email)->first();
 
         if ($user && Hash::check($request->password, $user->password)) {
-            $ip = $request->ip();
-            $userLoggedSessionKey = \date(\DATE_W3C).'_user_'.$user->id.'_logged';
-
-            if (!$request->session()->has($userLoggedSessionKey)) {
-                $request->session()->put($userLoggedSessionKey, true);
-                event(new \App\Events\UserLoggedIn($user, $ip));
-            }
-
+            event(new UserLoggedIn($user, $request->ip()));
             $request->session()->regenerate();
 
             return $user;

@@ -186,8 +186,14 @@ class Matchl extends Component
 		session()->flash('success', 'Reporte de resultado registrado correctamente.');
 	}
 
-	public function storeResult()
+	public function storeResult(): void
 	{
+        $loggedUserId = auth()->user();
+
+        if ($loggedUserId === null) {
+            return;
+        }
+
 		foreach ($this->scores as $key => $score_temp) {
 			$score = Score::create([
 				'match_id' => $this->match->id,
@@ -195,7 +201,7 @@ class Matchl extends Component
 				'local_score' => $score_temp['local_score'],
 				'visitor_score' => $score_temp['visitor_score'],
 				'order' => $key+1,
-				'updated_user_id' => auth()->user()->id,
+				'updated_user_id' => $loggedUserId,
 			]);
 		}
 
