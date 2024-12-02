@@ -29,6 +29,15 @@
             <span class="d-inline-block cursor-pointer" wire:click="order('user')">Usuario</span>
         @endif
     </th>
+    <th class="{{ $colLocation ?: 'd-none' }}">
+        @if ($order === 'location')
+            <span class="d-inline-block cursor-pointer" wire:click="order('location_desc')">Localización<i class="fas fa-sort-alpha-up pl-1"></i></span>
+        @elseif ($order === 'location_desc')
+            <span class="d-inline-block cursor-pointer" wire:click="order('location')">Localización<i class="fas fa-sort-alpha-down pl-1"></i></span>
+        @else
+            <span class="d-inline-block cursor-pointer" wire:click="order('location')">Localización</span>
+        @endif
+    </th>
     <th class="{{ $colCounter ?: 'd-none' }}">
         @if ($order === 'counter')
             <span class="d-inline-block cursor-pointer" wire:click="order('counter_desc')">Recuento<i class="fas fa-sort-numeric-up pl-1"></i></span>

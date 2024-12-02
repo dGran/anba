@@ -22,6 +22,7 @@ class UserIpLog extends Model
         if (\trim($value) !== "") {
             return $query->where(function($q) use ($value) {
                 $q->where('user_ip_logs.ip', 'LIKE', "%{$value}%")
+                    ->orWhere('user_ip_logs.location', 'LIKE', "%{$value}%")
                     ->orWhere('users.name', 'LIKE', "%{$value}%");
                 })
             ;

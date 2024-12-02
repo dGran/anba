@@ -30,9 +30,15 @@ class ClientIpInformationCommand extends Command
     public function handle(Request $request): int
     {
         $ip = $this->option('ip') ?? ClientHelper::getClientIP($request);
-        $this->info("Obteniendo información para la IP: {$ip}");
+        $this->info("Getting information for the IP: {$ip}");
 
         $location = ClientHelper::getGeoLocation($ip);
+
+        if (empty($location)) {
+            $this->error('Could not obtain information for IP');
+
+            return CommandAlias::FAILURE;
+        }
 
         if (isset($location['error'])) {
             $this->error("Error: {$location['error']}");

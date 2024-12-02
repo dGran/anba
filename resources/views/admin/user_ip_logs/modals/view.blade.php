@@ -26,6 +26,10 @@
                             <div class="col-7 text-right text-sm">{{ $regView->user ? $regView->user->name : 'N/D'}}</div>
                         </li>
                         <li class="d-flex align-items-center p-2" style="border-bottom: 1px solid #e9ecef" onmouseover="this.style.background='#F9FAFB';" onmouseout="this.style.background='';">
+                            <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold text-xs">Localización</div>
+                            <div class="col-7 text-right text-sm">{{ $regView->location ?: 'N/D'}}</div>
+                        </li>
+                        <li class="d-flex align-items-center p-2" style="border-bottom: 1px solid #e9ecef" onmouseover="this.style.background='#F9FAFB';" onmouseout="this.style.background='';">
                             <div class="col-5 text-left text-uppercase tracking-widest font-weight-bold text-xs">Recuento</div>
                             <div class="col-7 text-right text-sm">{{ $regView->counter ?: 'N/D'}}</div>
                         </li>

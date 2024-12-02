@@ -6,6 +6,7 @@ namespace App\Http\Util;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class ClientHelper
 {
@@ -33,9 +34,13 @@ class ClientHelper
                 ];
             }
 
-            return ['error' => 'Unable to retrieve location'];
+            Log::Error('Could not obtain information for IP: '.$ip);
+
+            return [];
         } catch (\Throwable $exception) {
-            return ['error' => $exception->getMessage()];
+            Log::Error('Error when obtaining information for the IP: '.$ip.' - Exception: '.$exception->getMessage());
+
+            return [];
         }
     }
 }

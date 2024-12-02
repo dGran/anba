@@ -31,11 +31,18 @@
                     <img class="image rounded-circle non-selectable" src="{{ $reg->getUserImg() }}" alt="{{ $reg->user ? $reg->user->name : 'Usuario' }}" style="width: 40px;">
                 @endif
                 <span class="truncate {{ !$showTableImages ?: 'pl-2' }} {{ !$reg->user ? 'text-muted' : '' }}">
-						{{ $reg->user ? $reg->user->name : '' }}
-					</span>
+                    {{ $reg->user ? $reg->user->name : '' }}
+                </span>
             </div>
         </td>
-        <td class="{{ $colCounter ?: 'd-none' }}" style="width: 200px; min-width: 200px; max-width: 200px">
+        <td class="truncate {{ $colLocation ?: 'd-none' }}" style="width: 390px; min-width: 390px; max-width: 390px">
+            <div class="d-flex align-items-center">
+                <span class="truncate {{ !$reg->location ? 'text-muted' : '' }}">
+                    {{ $reg->location ?: 'N/D' }}
+                </span>
+            </div>
+        </td>
+        <td class="{{ $colCounter ?: 'd-none' }}" style="width: 120px; min-width: 120px; max-width: 120px">
 				<span>
 					{{ $reg->counter }}
 				</span>

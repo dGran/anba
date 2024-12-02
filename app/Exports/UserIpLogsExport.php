@@ -29,7 +29,7 @@ class UserIpLogsExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            'id', 'user_id', 'ip', 'date_last_login', 'counter', 'user_name'
+            'id', 'user_id', 'ip', 'location', 'date_last_login', 'counter', 'user_name'
         ];
     }
 }

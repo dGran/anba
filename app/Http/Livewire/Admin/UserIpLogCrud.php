@@ -31,8 +31,9 @@ class UserIpLogCrud extends Component
 	public $showTableImages;
 	public $striped;
 	public $fixedFirstColumn;
-	public $colUser;
-	public $colCounter;
+    public $colUser;
+    public $colLocation;
+    public $colCounter;
 	public $colDate;
 
 	// general vars
@@ -64,11 +65,12 @@ class UserIpLogCrud extends Component
 			'user_ip_logs.showTableImages' => $this->showTableImages ? 'on' : 'off',
 			'user_ip_logs.striped' => $this->striped ? 'on' : 'off',
 			'user_ip_logs.colUser' => $this->colUser ? 'on' : 'off',
-			'user_ip_logs.colCounter' => $this->colCounter ? 'on' : 'off',
+            'user_ip_logs.colLocation' => $this->colLocation ? 'on' : 'off',
+            'user_ip_logs.colCounter' => $this->colCounter ? 'on' : 'off',
 			'user_ip_logs.colDate' => $this->colDate ? 'on' : 'off',
 		]);
 
-		if (!$this->colUser && !$this->colCounter && !$this->colDate) {
+		if (!$this->colUser && !$this->colLocation && !$this->colCounter && !$this->colDate) {
 			session(['user_ip_logs.fixedFirstColumn' => 'off']);
 		}
 	}
@@ -97,6 +99,12 @@ class UserIpLogCrud extends Component
 			$this->colUser = session()->get('user_ip_logs.colUser') == 'on' ? true : false;
 		} else {
 			$this->colUser = true;
+		}
+
+		if (session()->get('user_ip_logs.colLocation')) {
+			$this->colLocation = session()->get('user_ip_logs.colLocation') == 'on' ? true : false;
+		} else {
+			$this->colLocation = true;
 		}
 
 		if (session()->get('user_ip_logs.colCounter')) {
@@ -498,6 +506,14 @@ class UserIpLogCrud extends Component
             ],
             'user_desc' => [
                 'field'     => 'users.name',
+                'direction' => 'desc'
+            ],
+            'location' => [
+                'field'     => 'location',
+                'direction' => 'asc'
+            ],
+            'location_desc' => [
+                'field'     => 'location',
                 'direction' => 'desc'
             ],
             'counter' => [

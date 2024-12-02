@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Listeners;
 
 use App\Events\UserLoggedIn;
+use App\Http\Util\ClientHelper;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -28,8 +29,20 @@ class LogUserIp
                 return;
             }
 
+            $location = null;
+
+            try {
+                $geoLocation = ClientHelper::getGeoLocation($ip);
+
+                if (!empty($geoLocation)) {
+                    $location = "{$geoLocation['city']} - {$geoLocation['region']} - {$geoLocation['country']}";
+                }
+            } catch (\Exception $exception) {
+                Log::error('The user location could not be registered - Exception: '.$exception->getMessage());
+            }
+
             DB::table('user_ip_logs')->updateOrInsert(
-                ['user_id' => $user->id, 'ip' => $ip],
+                ['user_id' => $user->id, 'ip' => $ip, 'location' => $location],
                 [
                     'date_last_login' => now(),
                     'counter' => DB::raw('IFNULL(counter, 0) + 1'),
