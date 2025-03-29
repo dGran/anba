@@ -24,3 +24,6 @@ storage/.DS_Store
 /.idea/modules.xml
 /.idea/php.xml
 /.idea/vcs.xml
+.idea/
+/storage/debugbar/
+/storage/framework/laravel-excel/
