@@ -876,6 +876,7 @@ class Standings extends Component
 	{
 		$playoff = Playoff::find($this->phase);
 		$current_season = Season::where('slug', $this->season)->first();
+
 		foreach ($playoff->rounds->first()->clashes as $clash) {
 			if ($clash->local_team_id && $clash->visitor_team_id) {
 				$match = MatchModel::create([
