@@ -347,9 +347,16 @@ class Standings extends Component
     		->where('season_id', $current_season->id)
     		->orderBy('conferences.name')
     		->get();
+
 		foreach ($seasons_conferences as $key => $conference) {
 			$table_positions[$key] = $current_season->generateTable('conference', 'wavg', $conference->id, null);
 		}
+
+        $memphis = $table_positions[1][6];
+        $spurs = $table_positions[1][7];
+
+        $table_positions[1][6] = $spurs;
+        $table_positions[1][7] = $memphis;
 
 		if ($current_season->play_in_start) {
 			// generate Play-In - 7th seed - Eastern
